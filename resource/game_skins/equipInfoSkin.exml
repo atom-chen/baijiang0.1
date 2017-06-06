@@ -55,6 +55,7 @@
 		</e:Skin>
 		</e:skinName>
 	</e:Button>
+	<e:Image source="equip_0002_png" x="126.99" y="6.66"/>
 	<e:Group id="detailGroup" width="1136" height="640" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0">
 		<e:Image source="mask_png" x="0" y="0" width="1136" height="640"/>
 		<e:Image source="equip_0006_png" x="388.5" y="77"/>
