@@ -1,7 +1,7 @@
 {
 	"groups": [
 		{
-			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,egret_icon_png,description_json,toast-bg_png,loading2_png,button_0001_png,button_0002_png,button_0003_png,button_0004_png,button_0005_png,button_0006_png,button_0007_png,button_0008_png,button_0009_png,button_0010_png,button_0011_png,button_0012_png,bg_0002_png,bg_0001_png,equip_0001_png,equip_0005_png,equip_0006_png,equip_0007_png,hero_0001_png,hero_0009_png,hero_0010_png,iconbg_0002_png,popmenu_0002_png,tips_png,popmenu_0001_png,star_0003_png,star_0004_png,star_0005_png,logo_png,setting_0001_png,setting_0002_png,star_0001_png,star_0002_png,tianfu_0004_png,tianfu_0005_png,tianfu_0001_png,tianfu_0002_png,tianfu_0003_png,mask_png,iconbg_0001_png,hero1_light_png,hero1_gray_png,hero2_light_png,hero2_gray_png,hero3_light_png,hero3_gray_png,talent1_1_png,talent1_2_png,talent1_3_png,talent1_4_png,talent1_5_png,talent1_6_png,talent1_7_png,talent2_1_png,talent2_2_png,talent2_3_png,talent2_4_png,talent2_5_png,talent2_6_png,talent2_7_png,talent3_1_png,talent3_2_png,talent3_3_png,talent3_4_png,talent3_5_png,talent3_6_png,talent3_7_png,TcHero_json,TcBiography_json,TcSkill_json,TcTalent_json,equip1_png,equip2_png,equip3_png,equip4_png,equip5_png,equip6_png,equip7_png,equip8_png,equip9_png,equip10_png,equip11_png,equip12_png,equip13_png,equip14_png,equip15_png,equip16_png,equip17_png,equip18_png,equip19_png,equip20_png,equip21_png,equip22_png,equip23_png,equip24_png,TcEquip_json,skill_1_png,skill_2_png,skill_3_png,skill_4_png,skill_5_png,skill_6_png,skill_7_png,skill_8_png,skill_9_png,skill_10_png,skill_11_png,skill_12_png,skill_13_png,skill_14_png,skill_15_png,skill_16_png,skill_18_png,skill_17_png,battle_0010_png,loading_0003_png,loading_0002_png,battle_0006_png,battle_0007_png,battle_0008_png,battle_0003_png,battle_0004_png,battle_0005_png,battle_0002_png,battle_0001_png,map_jpg,jiantou_png,button_0013_png,button_0014_png,map_png,button_0015_png,button_0016_png,button_0017_png,button_0018_png,button_0019_png,button_0020_png,button_0021_png,battle_0009_png,hero_0002_png,hero_0003_png,battle_0011_png,battle_0012_png,battle_0013_png,icon_0023_png,icon_0005_png,icon_0014_png,icon_0024_png,icon_0006_png,icon_0015_png,icon_0007_png,icon_0016_png,icon_0017_png,icon_0008_png,icon_0018_png,icon_0009_png,icon_0019_png,icon_0001_png,icon_0010_png,icon_0011_png,icon_0002_png,icon_0020_png,icon_0012_png,icon_0003_png,icon_0021_png,icon_0013_png,icon_0004_png,icon_0022_png,hero4_light_png,TcStage_json,map1_png,atk_effect_png,skill_mask_png,title_0001_png,heroConfig_json,denglu_0002_png,denglu_0003_png,denglu_0001_png,sensitiveWords_json,blood_0001_png,Title_0002_png,weapon2_0001_png,weapon2_0002_png,hero_0004_png,shop_0001_png,shop_0002_png,shop_0003_png,shop_0004_png,shop_0005_png,hero_0005_png,hero_0006_png,tipBg_png,touxiang_0001_png,diaochan_skill01_ske_json,diaochan_skill01_tex_json,diaochan_skill01_tex_png,enter_monster_01_ske_json,enter_monster_01_tex_json,enter_monster_01_tex_png,monster01_ske_json,monster01_tex_json,monster01_tex_png,Boss01_ske_json,Boss01_tex_json,Boss01_tex_png,Boss01_effect01_ske_json,Boss01_effect01_tex_json,Boss01_effect01_tex_png,daoguang_effect_ske_json,daoguang_effect_tex_json,daoguang_effect_tex_png,diaochan_ske_json,diaochan_tex_json,diaochan_tex_png,blood_die_ske_json,blood_die_tex_json,blood_die_tex_png,enermyConfig_json,newParticle_png,newParticle_json,blood_die_ske2_json,blood_die_tex2_json,blood_die_tex2_png,Boss01_ske2_json,Boss01_tex2_json,Boss01_tex2_png,Boss01_effect01_ske2_json,Boss01_effect01_tex2_json,Boss01_effect01_tex2_png,daoguang_effect_ske2_json,daoguang_effect_tex2_json,daoguang_effect_tex2_png,diaochan_ske2_json,diaochan_tex2_json,diaochan_tex2_png,diaochan_skill01_ske2_json,diaochan_skill01_tex2_json,diaochan_skill01_tex2_png,enter_monster_01_ske2_json,enter_monster_01_tex2_json,enter_monster_01_tex2_png,monster01_ske2_json,monster01_tex2_json,monster01_tex2_png,battle_00012_png,battle_00022_png,battle_00032_png,battle_00042_png,battle_00052_png,battle_00062_png,battle_00072_png,battle_00082_png,battle_00092_png,battle_00102_png,battle_00112_png,battle_00122_png,battle_00132_png,touxiang_00012_png,bg_00012_png,bg_00022_png,iconbg_00012_png,iconbg_00022_png,tipBg2_png,mask2_png,popmenu_00012_png,popmenu_00022_png,tips2_png,equip_00012_png,equip_00052_png,equip_00062_png,equip_00072_png,hero1_gray2_png,hero1_light2_png,hero2_gray2_png,hero2_light2_png,hero3_gray2_png,hero3_light2_png,hero4_light2_png,hero_00012_png,hero_00022_png,hero_00032_png,hero_00042_png,hero_00052_png,hero_00062_png,hero_00092_png,hero_00102_png,title_00012_png,icon_00012_png,icon_00022_png,icon_00032_png,icon_00042_png,icon_00052_png,icon_00062_png,icon_00072_png,icon_00082_png,icon_00092_png,icon_00102_png,icon_00112_png,icon_00122_png,icon_00132_png,icon_00142_png,icon_00152_png,icon_00162_png,icon_00172_png,icon_00182_png,icon_00192_png,icon_00202_png,icon_00212_png,icon_00222_png,icon_00232_png,icon_00242_png,skill_19_png,skill_102_png,skill_112_png,skill_122_png,skill_132_png,skill_142_png,skill_152_png,skill_162_png,skill_172_png,skill_182_png,skill_22_png,skill_32_png,skill_42_png,skill_52_png,skill_62_png,skill_72_png,skill_82_png,skill_92_png,skill_mask2_png,talent1_12_png,talent1_22_png,talent1_32_png,talent1_42_png,talent1_52_png,talent1_62_png,talent1_72_png,talent2_12_png,talent2_22_png,talent2_32_png,talent2_42_png,talent2_52_png,talent2_62_png,talent2_72_png,talent3_12_png,talent3_22_png,talent3_32_png,talent3_42_png,talent3_52_png,talent3_62_png,talent3_72_png,equip110_png,equip102_png,equip112_png,equip122_png,equip132_png,equip142_png,equip152_png,equip162_png,equip172_png,equip182_png,equip192_png,equip25_png,equip202_png,equip212_png,equip222_png,equip232_png,equip242_png,equip32_png,equip42_png,equip52_png,equip62_png,equip72_png,equip82_png,equip92_png,weapon2_00012_png,weapon2_00022_png,denglu_00042_png,denglu_00052_png,enterProgress2_png,enterProgressBg2_png,loading22_png,loading_00012_png,loading_00022_png,loading_00032_png,toast-bg2_png,logo2_png,setting_00012_png,setting_00022_png,star_00012_png,star_00022_png,star_00032_png,star_00042_png,star_00052_png,Title_00022_png,newParticle2_json,newParticle2_png,shop_00012_png,shop_00022_png,shop_00032_png,shop_00042_png,shop_00052_png,tianfu_00012_png,tianfu_00022_png,tianfu_00032_png,tianfu_00042_png,tianfu_00052_png,atk_effect2_png,blood_00012_png,jiantou2_png,map2_jpg,map2_png,map12_png,enermyConfig2_json,heroConfig2_json,sensitiveWords2_json,TcBiography2_json,TcEquip2_json,TcHero2_json,TcSkill2_json,TcStage2_json,TcTalent2_json,button_00012_png,button_00022_png,button_00032_png,button_00042_png,button_00052_png,button_00062_png,button_00072_png,button_00082_png,button_00092_png,button_00102_png,button_00112_png,button_00122_png,button_00132_png,button_00142_png,button_00152_png,button_00162_png,button_00172_png,button_00182_png,button_00192_png,button_00202_png,button_00212_png,denglu_00012_png,denglu_00022_png,denglu_00032_png,diaochan_skill_tex_png,diaochan_skill_ske_json,diaochan_skill_tex_json,swordDance_png,combo_png,combo_fnt,combo_bg_png,curtain_png",
+			"keys": "checkbox_select_disabled_png,checkbox_select_down_png,checkbox_select_up_png,checkbox_unselect_png,selected_png,border_png,header_png,radiobutton_select_disabled_png,radiobutton_select_down_png,radiobutton_select_up_png,radiobutton_unselect_png,roundthumb_png,thumb_png,track_png,tracklight_png,handle_png,off_png,on_png,button_down_png,button_up_png,thumb_pb_png,track_pb_png,track_sb_png,egret_icon_png,description_json,toast-bg_png,loading2_png,button_0001_png,button_0002_png,button_0003_png,button_0004_png,button_0005_png,button_0006_png,button_0007_png,button_0008_png,button_0009_png,button_0010_png,button_0011_png,button_0012_png,bg_0002_png,bg_0001_png,equip_0001_png,equip_0005_png,equip_0006_png,equip_0007_png,hero_0001_png,hero_0009_png,hero_0010_png,iconbg_0002_png,popmenu_0002_png,tips_png,popmenu_0001_png,star_0003_png,star_0004_png,star_0005_png,logo_png,setting_0001_png,setting_0002_png,star_0001_png,star_0002_png,tianfu_0001_png,tianfu_0002_png,mask_png,iconbg_0001_png,hero1_light_png,hero1_gray_png,hero2_light_png,hero2_gray_png,hero3_light_png,hero3_gray_png,talent1_1_png,talent1_2_png,talent1_3_png,talent1_4_png,talent1_5_png,talent1_6_png,talent1_7_png,talent2_1_png,talent2_2_png,talent2_3_png,talent2_4_png,talent2_5_png,talent2_6_png,talent2_7_png,talent3_1_png,talent3_2_png,talent3_3_png,talent3_4_png,talent3_5_png,talent3_6_png,talent3_7_png,TcHero_json,TcBiography_json,TcSkill_json,TcTalent_json,equip1_png,equip2_png,equip3_png,equip4_png,equip5_png,equip6_png,equip7_png,equip8_png,equip9_png,equip10_png,equip11_png,equip12_png,equip13_png,equip14_png,equip15_png,equip16_png,equip17_png,equip18_png,equip19_png,equip20_png,equip21_png,equip22_png,equip23_png,equip24_png,TcEquip_json,skill_1_png,skill_2_png,skill_3_png,skill_4_png,skill_5_png,skill_6_png,skill_7_png,skill_8_png,skill_9_png,skill_10_png,skill_11_png,skill_12_png,skill_13_png,skill_14_png,skill_15_png,skill_16_png,skill_18_png,skill_17_png,battle_0010_png,loading_0003_png,loading_0002_png,battle_0006_png,battle_0007_png,battle_0008_png,battle_0003_png,battle_0004_png,battle_0005_png,battle_0002_png,battle_0001_png,map_jpg,jiantou_png,button_0013_png,button_0014_png,map_png,button_0015_png,button_0016_png,button_0017_png,button_0018_png,button_0019_png,button_0020_png,button_0021_png,battle_0009_png,hero_0002_png,hero_0003_png,battle_0011_png,battle_0012_png,battle_0013_png,icon_0023_png,icon_0005_png,icon_0014_png,icon_0024_png,icon_0006_png,icon_0015_png,icon_0007_png,icon_0016_png,icon_0017_png,icon_0008_png,icon_0018_png,icon_0009_png,icon_0019_png,icon_0001_png,icon_0010_png,icon_0011_png,icon_0002_png,icon_0020_png,icon_0012_png,icon_0003_png,icon_0021_png,icon_0013_png,icon_0004_png,icon_0022_png,hero4_light_png,TcStage_json,map1_png,atk_effect_png,skill_mask_png,title_0001_png,heroConfig_json,denglu_0002_png,denglu_0003_png,denglu_0001_png,sensitiveWords_json,blood_0001_png,Title_0002_png,weapon2_0001_png,weapon2_0002_png,hero_0004_png,shop_0001_png,shop_0002_png,shop_0003_png,shop_0004_png,shop_0005_png,hero_0005_png,hero_0006_png,tipBg_png,touxiang_0001_png,diaochan_skill01_ske_json,diaochan_skill01_tex_json,diaochan_skill01_tex_png,enter_monster_01_ske_json,enter_monster_01_tex_json,enter_monster_01_tex_png,monster01_ske_json,monster01_tex_json,monster01_tex_png,Boss01_ske_json,Boss01_tex_json,Boss01_tex_png,Boss01_effect01_ske_json,Boss01_effect01_tex_json,Boss01_effect01_tex_png,daoguang_effect_ske_json,daoguang_effect_tex_json,daoguang_effect_tex_png,diaochan_ske_json,diaochan_tex_json,diaochan_tex_png,blood_die_ske_json,blood_die_tex_json,blood_die_tex_png,enermyConfig_json,newParticle_png,newParticle_json,blood_die_ske2_json,blood_die_tex2_json,blood_die_tex2_png,Boss01_ske2_json,Boss01_tex2_json,Boss01_tex2_png,Boss01_effect01_ske2_json,Boss01_effect01_tex2_json,Boss01_effect01_tex2_png,daoguang_effect_ske2_json,daoguang_effect_tex2_json,daoguang_effect_tex2_png,diaochan_ske2_json,diaochan_tex2_json,diaochan_tex2_png,diaochan_skill01_ske2_json,diaochan_skill01_tex2_json,diaochan_skill01_tex2_png,enter_monster_01_ske2_json,enter_monster_01_tex2_json,enter_monster_01_tex2_png,monster01_ske2_json,monster01_tex2_json,monster01_tex2_png,battle_00012_png,battle_00022_png,battle_00032_png,battle_00042_png,battle_00052_png,battle_00062_png,battle_00072_png,battle_00082_png,battle_00092_png,battle_00102_png,battle_00112_png,battle_00122_png,battle_00132_png,touxiang_00012_png,bg_00012_png,bg_00022_png,iconbg_00012_png,iconbg_00022_png,tipBg2_png,mask2_png,popmenu_00012_png,popmenu_00022_png,tips2_png,equip_00012_png,equip_00052_png,equip_00062_png,equip_00072_png,hero1_gray2_png,hero1_light2_png,hero2_gray2_png,hero2_light2_png,hero3_gray2_png,hero3_light2_png,hero4_light2_png,hero_00012_png,hero_00022_png,hero_00032_png,hero_00042_png,hero_00052_png,hero_00062_png,hero_00092_png,hero_00102_png,title_00012_png,icon_00012_png,icon_00022_png,icon_00032_png,icon_00042_png,icon_00052_png,icon_00062_png,icon_00072_png,icon_00082_png,icon_00092_png,icon_00102_png,icon_00112_png,icon_00122_png,icon_00132_png,icon_00142_png,icon_00152_png,icon_00162_png,icon_00172_png,icon_00182_png,icon_00192_png,icon_00202_png,icon_00212_png,icon_00222_png,icon_00232_png,icon_00242_png,skill_19_png,skill_102_png,skill_112_png,skill_122_png,skill_132_png,skill_142_png,skill_152_png,skill_162_png,skill_172_png,skill_182_png,skill_22_png,skill_32_png,skill_42_png,skill_52_png,skill_62_png,skill_72_png,skill_82_png,skill_92_png,skill_mask2_png,talent1_12_png,talent1_22_png,talent1_32_png,talent1_42_png,talent1_52_png,talent1_62_png,talent1_72_png,talent2_12_png,talent2_22_png,talent2_32_png,talent2_42_png,talent2_52_png,talent2_62_png,talent2_72_png,talent3_12_png,talent3_22_png,talent3_32_png,talent3_42_png,talent3_52_png,talent3_62_png,talent3_72_png,equip110_png,equip102_png,equip112_png,equip122_png,equip132_png,equip142_png,equip152_png,equip162_png,equip172_png,equip182_png,equip192_png,equip25_png,equip202_png,equip212_png,equip222_png,equip232_png,equip242_png,equip32_png,equip42_png,equip52_png,equip62_png,equip72_png,equip82_png,equip92_png,weapon2_00012_png,weapon2_00022_png,denglu_00042_png,denglu_00052_png,enterProgress2_png,enterProgressBg2_png,loading22_png,loading_00012_png,loading_00022_png,loading_00032_png,toast-bg2_png,logo2_png,setting_00012_png,setting_00022_png,star_00012_png,star_00022_png,star_00032_png,star_00042_png,star_00052_png,Title_00022_png,newParticle2_json,newParticle2_png,shop_00012_png,shop_00022_png,shop_00032_png,shop_00042_png,shop_00052_png,tianfu_00012_png,tianfu_00022_png,atk_effect2_png,blood_00012_png,jiantou2_png,map2_jpg,map2_png,map12_png,enermyConfig2_json,heroConfig2_json,sensitiveWords2_json,TcBiography2_json,TcEquip2_json,TcHero2_json,TcSkill2_json,TcStage2_json,TcTalent2_json,button_00012_png,button_00022_png,button_00032_png,button_00042_png,button_00052_png,button_00062_png,button_00072_png,button_00082_png,button_00092_png,button_00102_png,button_00112_png,button_00122_png,button_00132_png,button_00142_png,button_00152_png,button_00162_png,button_00172_png,button_00182_png,button_00192_png,button_00202_png,button_00212_png,denglu_00012_png,denglu_00022_png,denglu_00032_png,diaochan_skill_tex_png,diaochan_skill_ske_json,diaochan_skill_tex_json,swordDance_png,combo_png,combo_fnt,combo_bg_png,curtain_png,equip_0002_png,talent_yunzhishou_png,talent_qinheli_png,talent_dadidezhufu_png,talent_xieneng_png,talent_renciguanghuan_png,talent_shengminghuiliu_png,talent_kaituozhe_png,talent_xunjirufeng_png,talent_kuangfeng_png,talent_siwangbiaoji_png,talent_xukongshandianhongliu_png,talent_guiji_png,talent_shoulie_png,talent_mengji_png,talent_yuhe_png,talent_hanwei_png,talent_shengyan_png,talent_honghuangzhili_png,talent_wuchuketao_png,talent_qiling_png,talent_bihuzhiguang_png",
 			"name": "preload"
 		},
 		{
@@ -331,16 +331,6 @@
 			"name": "star_0002_png"
 		},
 		{
-			"url": "assets/talent/tianfu_0004.png",
-			"type": "image",
-			"name": "tianfu_0004_png"
-		},
-		{
-			"url": "assets/talent/tianfu_0005.png",
-			"type": "image",
-			"name": "tianfu_0005_png"
-		},
-		{
 			"url": "assets/talent/tianfu_0001.png",
 			"type": "image",
 			"name": "tianfu_0001_png"
@@ -349,11 +339,6 @@
 			"url": "assets/talent/tianfu_0002.png",
 			"type": "image",
 			"name": "tianfu_0002_png"
-		},
-		{
-			"url": "assets/talent/tianfu_0003.png",
-			"type": "image",
-			"name": "tianfu_0003_png"
 		},
 		{
 			"url": "assets/common/mask.png",
@@ -2193,21 +2178,6 @@
 			"url": "assets/talent/tianfu_0002.png"
 		},
 		{
-			"name": "tianfu_00032_png",
-			"type": "image",
-			"url": "assets/talent/tianfu_0003.png"
-		},
-		{
-			"name": "tianfu_00042_png",
-			"type": "image",
-			"url": "assets/talent/tianfu_0004.png"
-		},
-		{
-			"name": "tianfu_00052_png",
-			"type": "image",
-			"url": "assets/talent/tianfu_0005.png"
-		},
-		{
 			"name": "atk_effect2_png",
 			"type": "image",
 			"url": "assets/testBattle/atk_effect.png"
@@ -2441,6 +2411,116 @@
 			"name": "curtain_png",
 			"type": "image",
 			"url": "assets/other/curtain.png"
+		},
+		{
+			"name": "equip_0002_png",
+			"type": "image",
+			"url": "assets/equip/equip_0002.png"
+		},
+		{
+			"name": "talent_yunzhishou_png",
+			"type": "image",
+			"url": "assets/talent/talent_yunzhishou.png"
+		},
+		{
+			"name": "talent_qinheli_png",
+			"type": "image",
+			"url": "assets/talent/talent_qinheli.png"
+		},
+		{
+			"name": "talent_dadidezhufu_png",
+			"type": "image",
+			"url": "assets/talent/talent_dadidezhufu.png"
+		},
+		{
+			"name": "talent_xieneng_png",
+			"type": "image",
+			"url": "assets/talent/talent_xieneng.png"
+		},
+		{
+			"name": "talent_renciguanghuan_png",
+			"type": "image",
+			"url": "assets/talent/talent_renciguanghuan.png"
+		},
+		{
+			"name": "talent_shengminghuiliu_png",
+			"type": "image",
+			"url": "assets/talent/talent_shengminghuiliu.png"
+		},
+		{
+			"name": "talent_kaituozhe_png",
+			"type": "image",
+			"url": "assets/talent/talent_kaituozhe.png"
+		},
+		{
+			"name": "talent_xunjirufeng_png",
+			"type": "image",
+			"url": "assets/talent/talent_xunjirufeng.png"
+		},
+		{
+			"name": "talent_kuangfeng_png",
+			"type": "image",
+			"url": "assets/talent/talent_kuangfeng.png"
+		},
+		{
+			"name": "talent_siwangbiaoji_png",
+			"type": "image",
+			"url": "assets/talent/talent_siwangbiaoji.png"
+		},
+		{
+			"name": "talent_xukongshandianhongliu_png",
+			"type": "image",
+			"url": "assets/talent/talent_xukongshandianhongliu.png"
+		},
+		{
+			"name": "talent_guiji_png",
+			"type": "image",
+			"url": "assets/talent/talent_guiji.png"
+		},
+		{
+			"name": "talent_shoulie_png",
+			"type": "image",
+			"url": "assets/talent/talent_shoulie.png"
+		},
+		{
+			"name": "talent_mengji_png",
+			"type": "image",
+			"url": "assets/talent/talent_mengji.png"
+		},
+		{
+			"name": "talent_yuhe_png",
+			"type": "image",
+			"url": "assets/talent/talent_yuhe.png"
+		},
+		{
+			"name": "talent_hanwei_png",
+			"type": "image",
+			"url": "assets/talent/talent_hanwei.png"
+		},
+		{
+			"name": "talent_shengyan_png",
+			"type": "image",
+			"url": "assets/talent/talent_shengyan.png"
+		},
+		{
+			"name": "talent_honghuangzhili_png",
+			"type": "image",
+			"url": "assets/talent/talent_honghuangzhili.png"
+		},
+		{
+			"name": "talent_wuchuketao_png",
+			"type": "image",
+			"url": "assets/talent/talent_wuchuketao.png"
+		},
+		{
+			"name": "talent_qiling_png",
+			"type": "image",
+			"url": "assets/talent/talent_qiling.png"
+		},
+		{
+			"name": "talent_bihuzhiguang_png",
+			"type": "image",
+			"url": "assets/talent/talent_bihuzhiguang.png"
 		}
 	]
 }
