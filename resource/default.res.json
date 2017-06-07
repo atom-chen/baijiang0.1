@@ -109,12 +109,17 @@
 			"name": "talent_yunzhishou_png",
 			"type": "image",
 			"url": "assets/talent/talent_yunzhishou.png"
+		},
+		{
+			"name": "shop_0002_png",
+			"type": "image",
+			"url": "assets/shop/shop_0002.png"
 		}
 	],
 	"groups": [
 		{
 			"name": "preload",
-			"keys": "equip_0002_png,talent_bihuzhiguang_png,talent_dadidezhufu_png,talent_guiji_png,talent_hanwei_png,talent_honghuangzhili_png,talent_kaituozhe_png,talent_kuangfeng_png,talent_mengji_png,talent_qiling_png,talent_qinheli_png,talent_renciguanghuan_png,talent_shengminghuiliu_png,talent_shengyan_png,talent_shoulie_png,talent_siwangbiaoji_png,talent_wuchuketao_png,talent_xieneng_png,talent_xukongshandianhongliu_png,talent_xunjirufeng_png,talent_yuhe_png,talent_yunzhishou_png"
+			"keys": "equip_0002_png,talent_bihuzhiguang_png,talent_dadidezhufu_png,talent_guiji_png,talent_hanwei_png,talent_honghuangzhili_png,talent_kaituozhe_png,talent_kuangfeng_png,talent_mengji_png,talent_qiling_png,talent_qinheli_png,talent_renciguanghuan_png,talent_shengminghuiliu_png,talent_shengyan_png,talent_shoulie_png,talent_siwangbiaoji_png,talent_wuchuketao_png,talent_xieneng_png,talent_xukongshandianhongliu_png,talent_xunjirufeng_png,talent_yuhe_png,talent_yunzhishou_png,shop_0002_png"
 		}
 	]
 }
