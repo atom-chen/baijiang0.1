@@ -32,10 +32,11 @@
 	<e:Button id="btn_skill" label="" x="1021.2" y="525.5" width="100" height="100">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="skill_16_png" width.down="80%" height.down="80%" horizontalCenter="0" verticalCenter="0"/>
+			<e:Image width="100%" height="100%" source="skill_18_png"/>
 			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
 			</e:Skin>
 		</e:skinName>
+
 
 	</e:Button>
 	<e:Label id="lab_name" text="貂蝉" x="68" y="16.2" fontFamily="Microsoft YaHei" size="23" bold="true" textColor="0xfffadc"/>
