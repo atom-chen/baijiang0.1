@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin width="280" height="472" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="panel_shop_png" x="0" y="0"/>
+	<e:Label id="lab_name" text="购买1280钻石" y="18" horizontalCenter="0" fontFamily="Microsoft YaHei" size="28" textColor="0xd142b9" bold="true"/>
+	<e:Image id="img_item" width="251" height="237" x="15" y="69" anchorOffsetX="0" anchorOffsetY="0" smoothing="false"/>
+	<e:Label text="X" x="127" y="339" fontFamily="Microsoft YaHei" size="22" bold="true" textColor="0x0befd2"/>
+	<e:Label id="lab_count" text="1280" x="143" y="326" fontFamily="Microsoft YaHei" size="35"/>
+	<e:Button id="btn_itemDetail" label="" x="228" y="324">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="shop_0003_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Image id="img_soul01" source="shop_0011_png" x="62" y="326"/>
+	<e:Button id="btn_buy" label="1208" x="4.5" y="377">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_shopBuy_png" source.down="btn_shopBuy_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="24.5" verticalCenter="1.5" textColor="0x0a0000" fontFamily="Microsoft YaHei" bold="true"/>
+			</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Image id="img_soul02" source="shop_0011_png" x="80" y="405"/>
+</e:Skin>
