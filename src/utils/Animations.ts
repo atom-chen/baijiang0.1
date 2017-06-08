@@ -130,4 +130,11 @@ namespace Animations {
             });
         });
     }
+
+    /**弹窗弹出动画 */
+    export function popupOut(target:any, time:number=500, func:Function=null) {
+        target.scaleX = 0;
+        target.scaleY = 0;
+        egret.Tween.get(target).to({scaleX:1.0, scaleY:1.0}, time, 	egret.Ease.quintOut);
+    }
 }
