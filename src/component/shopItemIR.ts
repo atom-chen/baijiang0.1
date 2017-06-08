@@ -10,6 +10,10 @@ class shopItemIR extends Base {
 
     protected createChildren(): void{
         this.shopItemPop = new ShopItemPop();
+        this.shopItemPop.anchorOffsetX = Common.SCREEN_W/2;
+        this.shopItemPop.anchorOffsetY = Common.SCREEN_H/2;
+        this.shopItemPop.x = Common.SCREEN_W/2;
+        this.shopItemPop.y = Common.SCREEN_H/2;
     }
 
     private onComplete():void {
@@ -28,7 +32,7 @@ class shopItemIR extends Base {
             case this.btn_buy:
                 GameLayerManager.gameLayer().maskLayer.addChild(this.shopItemPop);
                 this.shopItemPop.show(this.content);
-                Animations.fadeOut(this.shopItemPop, 500);
+                Animations.popupOut(this.shopItemPop, 500);
             break;
             default:
             break;

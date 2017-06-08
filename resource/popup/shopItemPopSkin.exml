@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
-    <e:Image source="mask_png" x="0" y="0" width="1136" height="640"/>
+    <e:Image source="mask_png" width="5680" height="3200" x="-2272" y="-1280"/>
 	<e:Image source="shop_popupBg1_png" x="70" y="46"/>
 	<e:Label text="商品信息" x="488" y="84" textColor="0xdedede" fontFamily="Microsoft YaHei" bold="true" size="40"/>
 	<e:Button id="btn_back" label="" x="985" y="74">
