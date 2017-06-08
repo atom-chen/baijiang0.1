@@ -49,6 +49,7 @@
     "resource/popup/changeEquipSkin.exml",
     "resource/popup/equipUpgradeSkin.exml",
     "resource/popup/resetAttrSkin.exml",
+    "resource/popup/shopItemPopSkin.exml",
     "resource/popup/unlockStarLvSkin.exml"
   ]
 }

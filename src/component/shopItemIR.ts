@@ -9,6 +9,7 @@ class shopItemIR extends Base {
     }
 
     protected createChildren(): void{
+        this.shopItemPop = new ShopItemPop();
     }
 
     private onComplete():void {
@@ -25,6 +26,9 @@ class shopItemIR extends Base {
             case this.btn_itemDetail:
             break;
             case this.btn_buy:
+                GameLayerManager.gameLayer().maskLayer.addChild(this.shopItemPop);
+                this.shopItemPop.show(this.content);
+                Animations.fadeOut(this.shopItemPop, 500);
             break;
             default:
             break;
@@ -35,6 +39,7 @@ class shopItemIR extends Base {
      * 显示
      */
     public show(content:any, type:string):void {
+        this.content = content;
         this.lab_name.text = content.name;
         this.img_item.source = content.imgItem;
         this.lab_count.text = content.count;
@@ -61,5 +66,11 @@ class shopItemIR extends Base {
     /**购买按钮 */
     private btn_buy:eui.Button;
     /**购买按钮的图标 */
-    private img_btnBuy:any; 
+    private img_btnBuy:any;
+    /**内容 */
+    private content:any;
+
+    /*******************弹窗********************/
+    private shopItemPop:ShopItemPop;
+    /*******************************************/
 }
