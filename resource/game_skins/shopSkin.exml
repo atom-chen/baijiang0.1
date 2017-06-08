@@ -59,9 +59,48 @@
 		</e:skinName>
 	</e:ToggleButton>
 	<e:Image source="shop_0008_png" x="4" y="141.84"/>
-	<e:ViewStack id="stack_shop" width="1116" height="484" x="11" y="146" anchorOffsetX="0" anchorOffsetY="0">
-		<e:Group id="soulGroup" width="100%" height="100%" name="Group"/>
+	<e:ViewStack id="stack_shop" width="1116" height="484" x="11" y="146" anchorOffsetX="0" anchorOffsetY="0" selectedIndex="1">
+		<e:Scroller id="scrollDiamond" width="100%" height="100%" x="0" y="0">
+		</e:Scroller>
+		<e:Group id="groupEquip" width="1116" height="483" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0">
+			<e:Image source="shop_0009_png" x="10" y="0" scaleX="1" scaleY="1"/>
+			<e:Label text="兵器库" x="34" y="15" textColor="0xf9eccf" fontFamily="Microsoft YaHei" size="60" bold="true" italic="true"/>
+			<e:Label text="钻石抽取武器，10回必出紫色武器。" x="36" y="174" textColor="0x79725f" fontFamily="Microsoft YaHei" size="25" bold="true"/>
+			<e:Image source="shop_0010_png" x="17.5" y="230.5"/>
+			<e:Image source="shop_0010_png" x="568" y="230.5"/>
+			<e:Label text="获得武器数量" x="155" y="244.5" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true"/>
+			<e:Label text="x" x="358" y="244.5" textColor="0x2383a9" fontFamily="Microsoft YaHei" bold="true"/>
+			<e:Label text="1" x="382" y="239.5" fontFamily="Microsoft YaHei" bold="true" size="35"/>
+			<e:Label text="获得武器数量" x="689" y="247" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true"/>
+			<e:Label text="x" x="892" y="247" textColor="0x2383A9" fontFamily="Microsoft YaHei" bold="true"/>
+			<e:Label text="10" x="916" y="242" fontFamily="Microsoft YaHei" bold="true" size="35"/>
+			<e:Label text="可获得：2-4星武器" x="167" y="312" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true" size="25"/>
+			<e:Label text="可获得：2-5星武器，" x="624" y="313.5" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true" size="25"/>
+			<e:Label text="必出一紫色武器" x="873" y="313.5" fontFamily="Microsoft YaHei" bold="true" size="25" textColor="0x932481"/>
+			<e:Button id="btn_oneDraw" label="220" x="145.5" y="364">
+				<e:skinName>
+					<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_draw_png" width.down="90%" height.down="90%" verticalCenter="0" horizontalCenter="0"/>
+					<e:Label id="labelDisplay" verticalCenter="0" left="140" fontFamily="Microsoft YaHei" textColor="0x0a0003" bold="true" size.down="27"/>
+					</e:Skin>
+				</e:skinName>
+			</e:Button>
+			<e:Button id="btn_tenDraw" label="2200" x="696" y="364">
+				<e:skinName>
+				<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_draw_png" width.down="90%" height.down="90%" verticalCenter="0" horizontalCenter="0"/>
+					<e:Label id="labelDisplay" verticalCenter="0" left="140" fontFamily="Microsoft YaHei" textColor="0x0a0003" bold="true" size.down="27"/>
+				</e:Skin>
+				</e:skinName>
+			</e:Button>
+
+		</e:Group>
+		<e:Scroller id="scrollReward" width="100%" height="100%" x="0" y="0">
+		</e:Scroller>
+		<e:Scroller id="scrollHero" width="100%" height="100%" x="0" y="0">
+		</e:Scroller>
 	</e:ViewStack>
+	
 	<e:Group id="detailGroup" width="1136" height="640" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" visible="false">
 		<e:Image source="mask_png" x="0" y="0" width="1136" height="640"/>
 		<e:Image source="equip_0006_png" x="388.5" y="77"/>

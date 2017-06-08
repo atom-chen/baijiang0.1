@@ -1,0 +1,12 @@
+{
+    "diamond":[
+        {"name":"购买300钻石", "count":300, "price":"￥30", "imgItem":"shop_0012_png", "detail":"内有300钻石"},
+        {"name":"购买1280钻石", "count":1280, "price":"￥128", "imgItem":"shop_0013_png", "detail":"内有1280钻石"}
+    ],
+    "packs":[
+        {"name":"新手礼包", "count":1, "price":500, "imgItem":"shop_0015_png", "detail":"礼包内有方天画戟x1、魂石x1000、经验x20000、钻石x50"}
+    ],
+    "heros":[
+        {"name":"赵云", "count":1, "price":1280, "imgItem":"shop_0014_png", "detail":"可以获得新英雄---赵云"}
+    ]
+}
