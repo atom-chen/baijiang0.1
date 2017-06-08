@@ -1,0 +1,12 @@
+{
+    "diamond":[
+        {"name":"购买300钻石", "count":300, "price":"￥30", "imgItem":"shop_0012_png"},
+        {"name":"购买1280钻石", "count":1280, "price":"￥128", "imgItem":"shop_0013_png"}
+    ],
+    "packs":[
+        {"name":"新手礼包", "count":1, "price":500, "imgItem":"shop_0015_png"}
+    ],
+    "heros":[
+        {"name":"赵云", "count":1, "price":1280, "imgItem":"shop_0014_png"}
+    ]
+}
