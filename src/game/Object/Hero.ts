@@ -404,7 +404,8 @@ class Hero extends BaseGameObject {
         this.curState = BaseGameObject.Action_Enter;
         this.armature.play(this.curState, 1);
         egret.setTimeout(()=>{
-            Animations.shakeScreen(SceneManager.battleScene, 2);
+            // Animations.shakeScreen(SceneManager.battleScene, 2);
+            ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
         }, this, 50);
     }
 

@@ -140,7 +140,8 @@ class Enermy extends BaseGameObject {
     /**受到攻击 */
     public gotoHurt(isSkillHurt:boolean = false) {
         if ((this.curState == Enermy.Action_Dead) || (this.curState == BaseGameObject.Action_Hurt)) return;
-        Animations.shakeScreen(SceneManager.battleScene, 2);
+        // Animations.shakeScreen(SceneManager.battleScene, 2);
+        ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
         this.curState = BaseGameObject.Action_Hurt;
         this.armature.play(this.curState, 0);
         this.effectArmature.visible = true;
