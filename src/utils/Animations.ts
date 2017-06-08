@@ -135,6 +135,11 @@ namespace Animations {
     export function popupOut(target:any, time:number=500, func:Function=null) {
         target.scaleX = 0;
         target.scaleY = 0;
-        egret.Tween.get(target).to({scaleX:1.0, scaleY:1.0}, time, 	egret.Ease.quintOut);
+        egret.Tween.get(target).to({scaleX:1.0, scaleY:1.0}, time, 	egret.Ease.backOut);
+    }
+
+    /**弹窗回收动画 */
+    export function popupIn(target:any, time:number=500, func:Function=null) {
+        egret.Tween.get(target).to({scaleX:0, scaleY:0}, time, 	egret.Ease.backIn);
     }
 }

@@ -9,7 +9,7 @@ class ShopItemPop extends Base {
     }
 
     protected childrenCreated():void {
-        
+
     }
 
     private onComplete():void {
@@ -19,7 +19,7 @@ class ShopItemPop extends Base {
 
     /**按钮监听 */
     private onBtnHandler(event:egret.TouchEvent):void {
-        Animations.fadeIn(this, 300, ()=>{
+        Animations.popupIn(this, 300, ()=>{
             GameLayerManager.gameLayer().maskLayer.removeChildren();
         });
         switch (event.currentTarget) {
@@ -41,6 +41,7 @@ class ShopItemPop extends Base {
         this.img_item.source = content.imgItem;
         this.lab_itemName.text = content.name;
         this.lab_detail.text = content.detail;
+        this.btn_buy.label = content.price;
     }
 
     /*******************按钮********************/
