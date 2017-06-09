@@ -135,11 +135,42 @@ namespace Animations {
     export function popupOut(target:any, time:number=500, func:Function=null) {
         target.scaleX = 0;
         target.scaleY = 0;
-        egret.Tween.get(target).to({scaleX:1.0, scaleY:1.0}, time, 	egret.Ease.backOut);
+        egret.Tween.get(target).to({scaleX:1.0, scaleY:1.0}, time, egret.Ease.backOut).call(()=>{
+            if (func) func();
+        });;
     }
 
     /**弹窗回收动画 */
     export function popupIn(target:any, time:number=500, func:Function=null) {
-        egret.Tween.get(target).to({scaleX:0, scaleY:0}, time, 	egret.Ease.backIn);
+        egret.Tween.get(target).to({scaleX:0, scaleY:0}, time, egret.Ease.backIn).call(()=>{
+            if (func) func();
+        });
+    }
+
+    /**
+     * 抽卡动画
+     * 星级分布:
+     * 2:72 108
+     * 3:54 90 126
+     * 4:36 72 108 144
+     * 5:18 54 90 126 162
+     * 6:0 36 72 108 144 180
+     */
+    export function drawCard(card:number, func:Function = null) {
+        let equipGrade:number = 0;
+        for (let i = 0; i < ConfigManager.tcEquip.length; i++) {
+            let equipConf = ConfigManager.tcEquip[i];
+            if (equipConf.id == card) {
+                equipGrade = equipConf.grade;
+                break;
+            }
+        }
+        // Common.globalMask.alpha = 1.0;
+        // let group:eui.Group = new eui.Group();
+        // let bg:egret.Bitmap = Utils.createBitmap(`drawCard0${equipGrade}_png`);
+        // bg.x = 186;
+        // group.addChild(Common.globalMask);
+        // group.addChild(bg);
+        // GameLayerManager.gameLayer().maskLayer.addChild(group);
     }
 }

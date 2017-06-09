@@ -16,6 +16,31 @@ class MainScene extends Base {
         this.btn_shop.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_applicate.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+        this.createFire();
+    }
+
+    /**
+     * 创建火光
+     */
+    private createFire():void {
+        let bg:egret.Bitmap = Utils.createBitmap("firePot_png");
+        this.addChild(bg);
+        bg.x = 392;
+        bg.y = 368;
+        //获取纹理
+        var texture = RES.getRes("ballParticle_png");
+        //获取配置
+        var config = RES.getRes("ballParticle_json");
+        //创建 GravityParticleSystem
+        var system = new particle.GravityParticleSystem(texture, config);
+        //启动粒子库
+        system.start();
+        system.x = bg.x + 70;
+        system.y = bg.y + 170;
+        system.emitterX = 0;
+        system.emitterY = 0;
+        system.scaleX = system.scaleY = 1.5;
+        this.addChild(system);
     }
 
     /**

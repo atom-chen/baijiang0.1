@@ -9,6 +9,8 @@ namespace ConfigManager {
     /**敌方配置文件 */
     export var enermyConfig:any;
 
+    /**装备配置文件 */
+    export var tcEquip:any
     /**
      * 加载配置文件
      */
@@ -16,5 +18,7 @@ namespace ConfigManager {
         tcStage = RES.getRes("TcStage_json");
         heroConfig = RES.getRes("heroConfig_json");
         enermyConfig = RES.getRes("enermyConfig_json");
+
+        tcEquip = RES.getRes("TcEquip_json");
     }
 }

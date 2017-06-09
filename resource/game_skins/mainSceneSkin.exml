@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
 	<e:Image source="bg_0002_png" x="0" y="0" width="1136" height="640"/>
-	<e:Button id="btn_ready" label="准备出战" x="448" y="217.36" anchorOffsetX="0" width="240" anchorOffsetY="0" height="92">
+	<e:Button id="btn_ready" label="准备出战" x="841.94" y="202.81" anchorOffsetX="0" width="240" anchorOffsetY="0" height="92">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0001_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
@@ -37,7 +37,7 @@
 		</e:skinName>
 	</e:Button>
 
-	<e:Button id="btn_shop" label="商城" x="448" y="334.53" width="240" height="92">
+	<e:Button id="btn_shop" label="商城" x="841.94" y="319.98" width="240" height="92">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0001_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>

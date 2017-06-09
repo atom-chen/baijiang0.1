@@ -30,11 +30,9 @@ namespace Utils {
     }
 
     //设置控件位置
-    export function setControlPosition(control:any, x:number, y:number, xScale:number, yScale:number):void{
+    export function setControlPosition(control:any, x:number, y:number):void{
         control.x = x;
         control.y = y;
-        control.scaleX = xScale;
-        control.scaleY = yScale;
     }
 
 	/**

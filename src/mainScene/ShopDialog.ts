@@ -10,8 +10,14 @@ class ShopDialog extends Base {
     }
 
     protected createChildren(): void{
+        this.drawCardPop = new DrawCardPop();
+        this.drawCardPop.anchorOffsetX = Common.SCREEN_W/2;
+        this.drawCardPop.anchorOffsetY = Common.SCREEN_H/2;
+        this.drawCardPop.x = Common.SCREEN_W/2;
+        this.drawCardPop.y = Common.SCREEN_H/2;
         this.stack_shop.selectedIndex = 0;
         this.btn_soul.selected = true;
+        this.cards = new Array();
     }
 
     protected childrenCreated(): void{
@@ -21,8 +27,6 @@ class ShopDialog extends Base {
     }
 
     private onComplete():void {
-        // this.btn_buy.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
-        // this.btn_detail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_soul.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_equip.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_reward.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
@@ -31,28 +35,15 @@ class ShopDialog extends Base {
         this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_closeDetail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
 
+        this.btn_oneDraw.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+        this.btn_tenDraw.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+
         this.btn_top = [this.btn_soul, this.btn_equip, this.btn_reward, this.btn_hero];
     }
 
     private onButtonHandler(event:egret.TouchEvent) {
         let target = event.currentTarget;
         switch (target) {
-            // case this.btn_buy:
-            //     if (Common.userData.soul < 1000) {
-            //         Animations.showTips("您的玉魂不足", 1, true);
-            //     }else{
-            //         Common.userData.soul -= 1000;
-            //         Animations.showTips("购买武器成功", 1);
-            //         if (Common.userData.equip.length == 0) {
-            //             Common.userData.equip = new Array();
-            //         }
-            //         Common.userData.equip[0] = 2;
-            //         this.itemGroup.visible = false;
-            //     }
-            // break;
-            // case this.btn_detail:
-            //     this.detailGroup.visible = true;
-            // break;
             case this.btn_soul:
                 Utils.viewStackStatus(this.stack_shop, this.btn_top, 0);
             break;
@@ -64,6 +55,20 @@ class ShopDialog extends Base {
             break;
             case this.btn_hero:
                 Utils.viewStackStatus(this.stack_shop, this.btn_top, 3);
+            break;
+            case this.btn_oneDraw:
+                this.cards = [];
+                let id = modShop.drawOnce();
+                this.cards.push(id);
+                Common.log(this.cards);
+                // Animations.drawCard(id);
+                this.createEquipPop(this.cards, "once")
+            break;
+            case this.btn_tenDraw:
+                this.cards = [];
+                this.cards = modShop.drawTen();
+                Common.log(this.cards);
+                this.createEquipPop(this.cards, "ten");
             break;
             case this.btn_closeDetail:
                 this.detailGroup.visible = false;
@@ -88,6 +93,14 @@ class ShopDialog extends Base {
         scroller.viewport = group;
     }
 
+    /**
+     * 创建弹窗
+     */
+    private createEquipPop(id:Array<number>, type:string) {
+        GameLayerManager.gameLayer().maskLayer.addChild(this.drawCardPop);
+        this.drawCardPop.show(id, type);
+        Animations.popupOut(this.drawCardPop, 500);
+    }
 
     /**商城的配置文件 */
     private tcShop:any;
@@ -115,4 +128,15 @@ class ShopDialog extends Base {
     private btn_back:eui.Button;
     private detailGroup:eui.Group;
     private btn_closeDetail:eui.Group;
+
+    /**单抽按钮 */
+    private btn_oneDraw:eui.Button;
+    /**十连按钮 */
+    private btn_tenDraw:eui.Button;
+    /**卡组 */
+    private cards:Array<number>;
+
+    /*******************弹窗********************/
+    private drawCardPop:DrawCardPop;
+    /*******************************************/
 }

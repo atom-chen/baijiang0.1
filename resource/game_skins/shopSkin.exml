@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
-	<e:Image source="shop_0001_png" x="0" y="0"/>
+	<e:Image source="shop_0001_png" x="0" y="0" height="640"/>
 	<e:Image source="shop_0005_png" x="144.47" y="8.84"/>
 
-	<e:Image source="battle_0001_png" x="759" y="38" width="168" height="44"/>
-	<e:Image source="battle_0002_png" x="951" y="38" width="168" height="44"/>
-	<e:Label id="lab_money" text="99999" y="45" size="27" fontFamily="Microsoft YaHei" textColor="0xE29828" bold="true" x="833"/>
-	<e:Label id="lab_soul" text="99999" y="45" size="27" fontFamily="Microsoft YaHei" textColor="0x36C9BC" bold="true" x="1022"/>
+	<e:Image x="759" y="38" width="160" height="44" source="sole_0001_png"/>
+	<e:Image x="951" y="38" width="160" height="44" source="crystal_0001_png"/>
+	<e:Label id="lab_money" text="99999" y="45" size="27" fontFamily="Microsoft YaHei" bold="true" x="833" textColor="0x851a9b"/>
+	<e:Label id="lab_soul" text="99999" y="45" size="27" fontFamily="Microsoft YaHei" bold="true" x="1022" textColor="0x2d6ea6"/>
 
 
 
@@ -26,58 +26,58 @@
 
 
 
-	<e:ToggleButton id="btn_soul" label="钻石&amp;魂石" x="28" y="89.84" width="232" height="52">
+	<e:ToggleButton id="btn_soul" label="钻石&amp;魂石" x="28" y="93.6" width="232" height="52">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="btn_shopChange_over_png" source.down="btn_shopChange_png"/>
-			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-5" size="32" fontFamily="Microsoft YaHei" bold="true" textColor="0xF9ECCF" textColor.down="0x000000"/>
+			<e:Label id="labelDisplay" horizontalCenter="1.5" verticalCenter="-3.5" size="28" fontFamily="Microsoft YaHei" bold="true" textColor.down="0x000000" textColor="0x959185"/>
 			</e:Skin>
 		</e:skinName>
 	</e:ToggleButton>
-	<e:ToggleButton id="btn_equip" label="武器" x="270" y="89.84" width="232" height="52">
+	<e:ToggleButton id="btn_equip" label="武器" x="270" y="93.6" width="232" height="52">
 		<e:skinName>
 		<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="btn_shopChange_over_png" source.down="btn_shopChange_png"/>
-			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-5" size="32" fontFamily="Microsoft YaHei" bold="true" textColor="0xF9ECCF" textColor.down="0x000000"/>
+			<e:Label id="labelDisplay" horizontalCenter="1.5" verticalCenter="-3.5" size="32" fontFamily="Microsoft YaHei" bold="true" textColor.down="0x000000" textColor="0x959185"/>
 		</e:Skin>
 		</e:skinName>
 	</e:ToggleButton>
-	<e:ToggleButton id="btn_reward" label="礼包" x="512" y="89.84" width="232" height="52">
+	<e:ToggleButton id="btn_reward" label="礼包" x="512" y="93.6" width="232" height="52">
 		<e:skinName>
 		<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="btn_shopChange_over_png" source.down="btn_shopChange_png"/>
-			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-5" size="32" fontFamily="Microsoft YaHei" bold="true" textColor="0xF9ECCF" textColor.down="0x000000"/>
+			<e:Label id="labelDisplay" horizontalCenter="0.5" verticalCenter="-3.5" size="32" fontFamily="Microsoft YaHei" bold="true" textColor.down="0x000000" textColor="0x959185"/>
 		</e:Skin>
 		</e:skinName>
 	</e:ToggleButton>
-	<e:ToggleButton id="btn_hero" label="英雄" x="754" y="89.84" width="232" height="52">
+	<e:ToggleButton id="btn_hero" label="英雄" x="754" y="93.6" width="232" height="52">
 		<e:skinName>
 		<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="btn_shopChange_over_png" source.down="btn_shopChange_png"/>
-			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-5" size="32" fontFamily="Microsoft YaHei" bold="true" textColor="0xF9ECCF" textColor.down="0x000000"/>
+			<e:Label id="labelDisplay" horizontalCenter="0.5" verticalCenter="-3.5" size="32" fontFamily="Microsoft YaHei" bold="true" textColor.down="0x000000" textColor="0x959185"/>
 		</e:Skin>
 		</e:skinName>
 	</e:ToggleButton>
-	<e:Image source="shop_0008_png" x="4" y="141.84"/>
+	<e:Image source="shop_0008_png" x="4" y="144.66"/>
 	<e:ViewStack id="stack_shop" width="1116" height="484" x="11" y="146" anchorOffsetX="0" anchorOffsetY="0" selectedIndex="1">
-		<e:Scroller id="scrollDiamond" width="100%" height="100%" x="0" y="0">
+		<e:Scroller id="scrollDiamond" width="100%" height="100%" x="-2.66" y="0.51">
 		</e:Scroller>
-		<e:Group id="groupEquip" width="1116" height="483" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0">
-			<e:Image source="shop_0009_png" x="10" y="0" scaleX="1" scaleY="1"/>
-			<e:Label text="兵器库" x="34" y="15" textColor="0xf9eccf" fontFamily="Microsoft YaHei" size="60" bold="true" italic="true"/>
-			<e:Label text="钻石抽取武器，10回必出紫色武器。" x="36" y="174" textColor="0x79725f" fontFamily="Microsoft YaHei" size="25" bold="true"/>
-			<e:Image source="shop_0010_png" x="17.5" y="230.5"/>
-			<e:Image source="shop_0010_png" x="568" y="230.5"/>
-			<e:Label text="获得武器数量" x="155" y="244.5" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true"/>
-			<e:Label text="x" x="358" y="244.5" textColor="0x2383a9" fontFamily="Microsoft YaHei" bold="true"/>
-			<e:Label text="1" x="382" y="239.5" fontFamily="Microsoft YaHei" bold="true" size="35"/>
-			<e:Label text="获得武器数量" x="689" y="247" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true"/>
-			<e:Label text="x" x="892" y="247" textColor="0x2383A9" fontFamily="Microsoft YaHei" bold="true"/>
-			<e:Label text="10" x="916" y="242" fontFamily="Microsoft YaHei" bold="true" size="35"/>
-			<e:Label text="可获得：2-4星武器" x="167" y="312" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true" size="25"/>
-			<e:Label text="可获得：2-5星武器，" x="624" y="313.5" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true" size="25"/>
-			<e:Label text="必出一紫色武器" x="873" y="313.5" fontFamily="Microsoft YaHei" bold="true" size="25" textColor="0x932481"/>
-			<e:Button id="btn_oneDraw" label="220" x="145.5" y="364">
+		<e:Group id="groupEquip" width="1116" height="483" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" visible="false">
+			<e:Image source="shop_0009_png" x="10" y="9.32" scaleX="1" scaleY="1"/>
+
+			<e:Label text="钻石抽取武器，10回必出紫色武器。" x="26.5" y="190.64" textColor="0x79725f" fontFamily="Microsoft YaHei" size="25" bold="true"/>
+			<e:Image source="shop_0010_png" x="17.5" y="235.82"/>
+			<e:Image source="shop_0010_png" x="568" y="235.82"/>
+			<e:Label text="获得武器数量" x="155" y="249.82" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true"/>
+			<e:Label text="x" x="358" y="249.82" textColor="0x2383a9" fontFamily="Microsoft YaHei" bold="true"/>
+			<e:Label text="1" x="382" y="244.82" fontFamily="Microsoft YaHei" bold="true" size="35"/>
+			<e:Label text="获得武器数量" x="689" y="252.32" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true"/>
+			<e:Label text="x" x="892" y="252.32" textColor="0x2383A9" fontFamily="Microsoft YaHei" bold="true"/>
+			<e:Label text="10" x="916" y="247.32" fontFamily="Microsoft YaHei" bold="true" size="35"/>
+			<e:Label text="可获得：1-5星武器" x="167" y="317.32" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true" size="25"/>
+			<e:Label text="可获得：1-5星武器，" x="624" y="318.82" textColor="0x606060" fontFamily="Microsoft YaHei" bold="true" size="25"/>
+			<e:Label text="必出一紫色武器" x="873" y="318.82" fontFamily="Microsoft YaHei" bold="true" size="25" textColor="0x932481"/>
+			<e:Button id="btn_oneDraw" label="220" x="145.5" y="368">
 				<e:skinName>
 					<e:Skin states="up,down,disabled">
 					<e:Image width="100%" height="100%" source="btn_draw_png" width.down="90%" height.down="90%" verticalCenter="0" horizontalCenter="0"/>
@@ -85,7 +85,7 @@
 					</e:Skin>
 				</e:skinName>
 			</e:Button>
-			<e:Button id="btn_tenDraw" label="2200" x="696" y="364">
+			<e:Button id="btn_tenDraw" label="2200" x="696" y="368">
 				<e:skinName>
 				<e:Skin states="up,down,disabled">
 					<e:Image width="100%" height="100%" source="btn_draw_png" width.down="90%" height.down="90%" verticalCenter="0" horizontalCenter="0"/>
