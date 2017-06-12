@@ -90,4 +90,53 @@ namespace modShop {
         // Common.log("洗牌", ids, ids.length);
         return ids;
     }
+
+    /**
+     * 将物品放入背包
+     */
+    export function putPackage(ids:Array<number>):void {
+        // Common.log("背包", JSON.stringify(repeatCount(ids)));
+        let list:Array<Object> = repeatCount(ids);
+        if (Common.userData.equip && Common.userData.equip.length == 0) {
+            Common.userData.equip = list;
+            // Common.log("武器", JSON.stringify(Common.userData.equip))
+            return
+        }
+        for (let i = 0; i < list.length; i++) {
+            //背包中是否已经存在
+            let isExist:boolean = false;
+            for (let j = 0; j < Common.userData.equip.length; j++) {
+                let equip = Common.userData.equip[j];
+                if (list[i]["id"] == equip["id"]) {
+                    isExist = true;
+                    equip["count"] += list[i]["count"];
+                }
+            }
+            if (isExist == false) Common.userData.equip.push(list[i]);
+        }
+        // Common.log("武器", JSON.stringify(Common.userData.equip))
+    }
+
+    /**
+     * 返回数组相同元素并且计算个数
+     */
+    function repeatCount(ids:Array<number>):any {
+        var list = [];
+        var listMap = {};
+        for (let i = 0; i < ids.length; i++) {
+            let id = ids[i];
+            if (!!listMap[id]) {
+                listMap[id] ++;
+            }else{
+                listMap[id] = 1;
+            }
+        }
+        for (var item in listMap) {
+            list.push({
+                id:item,
+                count:listMap[item]
+            })
+        }
+        return list;
+    }
 }
