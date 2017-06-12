@@ -8,14 +8,18 @@ class ChangeEquipPop extends Base {
         this.skinName = "resource/popup/changeEquipSkin.exml";
     }
 
+    protected createChildren(): void{
+        this.selectIndex = 0;
+        this.createEquip();
+    }
+
     protected childrenCreated():void {
-        
+        this.show();
     }
 
     private onComplete():void {
         this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onBtnHandler, this);
         this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onBtnHandler, this);
-        this.createEquip();
     }
 
     private createEquip():void {
@@ -25,11 +29,7 @@ class ChangeEquipPop extends Base {
             this.scrollGroup.addChild(equipGroup);
             let bg1:eui.Image = new eui.Image();
             bg1.source = "iconbg_0001_png";
-            equipGroup["bg2"] = new eui.Image();
-            equipGroup["bg2"].source = "iconbg_0002_png";
-            equipGroup["bg2"].visible = false;
             equipGroup.addChild(bg1);
-            equipGroup.addChild(equipGroup["bg2"]);
             equipGroup.x = 115*((i-1)%7);
             equipGroup.y = 115*(Math.ceil(i/7)-1);
         }
@@ -39,15 +39,10 @@ class ChangeEquipPop extends Base {
     private onBtnHandler(event:egret.TouchEvent):void {
         switch (event.currentTarget) {
             case this.btn_change:
-                let id = Common.userData.equip[0];
                 this.parent.removeChild(this);
-                if (id == null) return;
-                Common.curPanel.img_equip.source = `weapon2_000${id}_png`;
-                if (id == 1) {
-                    Common.userData.equip[0] = 2;
-                }else{
-                    Common.userData.equip[0] = 1;
-                }
+                if (Common.userData.equip.length == 0) return;
+                let id = Common.userData.equip[this.selectIndex]["id"];
+                Common.curPanel.updateUI(id);
             break;
             default:
                 this.parent.removeChild(this);
@@ -60,21 +55,30 @@ class ChangeEquipPop extends Base {
         for (let i = 0; i < Common.userData.equip.length; i++) {
             let equipImage:eui.Image = new eui.Image();
             equipImage.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
-            let equipId = Common.userData.equip[i];
-            // equipImage.name = i;
-            equipImage.source = `weapon2_000${equipId}_png`;
-            equipImage.x = -5;
-            equipImage.y = -30;
-            equipImage.scaleX = 0.4;
-            equipImage.scaleY = 0.4;
+            let equip = Common.userData.equip[i];
+            equipImage["id"] = i;
+            equipImage.source = `Sequip${25-equip["id"]}_png`;
+            equipImage.x = 0;
+            equipImage.y = 0;
             this.equipGroup[i]["image"] = equipImage;
             this.equipGroup[i].addChild(equipImage);
+        }
+        if (!this.img_selectBox) {
+            this.img_selectBox = Utils.createBitmap("iconbg_0002_png");
+            this.img_selectBox.visible = false;
+        }
+        if (Common.userData.equip.length >= 1) {
+            this.img_selectBox.visible = true;
+            this.equipGroup[this.selectIndex].addChild(this.img_selectBox);
         }
     }
 
     /**点击装备 */
-    private onEquip():void {
-        this.equipGroup[0]["bg2"].visible = true;
+    private onEquip(event:egret.TouchEvent):void {
+        let target = event.currentTarget;
+        this.selectIndex = target.id;
+        this.img_selectBox.visible = true;
+        this.equipGroup[this.selectIndex].addChild(this.img_selectBox);
     }
 
 
@@ -86,5 +90,8 @@ class ChangeEquipPop extends Base {
     private btn_change:eui.Button;
 
     /*******************图片和文字************************/
-    
+    /**选中框 */
+    private img_selectBox:egret.Bitmap;
+    /**选中的图片索引 */
+    private selectIndex:number;
 }

@@ -93,7 +93,7 @@ class CycleSlide extends eui.Component {
         else if (pos == "right"){
             this.curHeroCount = (--this.curHeroCount < 0) ? 2 : this.curHeroCount;
         }
-        ReadyDialog.instance.showHero(this.curHeroCount+1);
+        Common.curPanel.showHero(this.curHeroCount+1);
         this.mid_Image.source = this._heroImage[this.curHeroCount][0];
         this.mid_Image.source = "hero4_light_png";
         let left_count = (this.curHeroCount == 0) ? 2 : this.curHeroCount - 1;

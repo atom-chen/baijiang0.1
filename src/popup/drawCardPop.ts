@@ -23,10 +23,10 @@ class DrawCardPop extends Base {
     private onButtonHandler(event:egret.TouchEvent):void {
         Animations.popupIn(this, 300, ()=>{
             GameLayerManager.gameLayer().maskLayer.removeChildren();
+            modShop.putPackage(this.ids);
         });
         switch (event.currentTarget) {
             case this.btn_get:
-                modShop.putPackage(this.ids);
             break;
             case this.btn_back:
                 

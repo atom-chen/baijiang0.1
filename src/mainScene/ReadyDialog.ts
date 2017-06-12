@@ -12,7 +12,7 @@ class ReadyDialog extends Base {
         this.tcHero = RES.getRes("TcHero_json");
         this.tcBiography = RES.getRes("TcBiography_json");
         this.tcSkill = RES.getRes("TcSkill_json");
-        ReadyDialog.instance = this;
+        // ReadyDialog.instance = this;
     }
 
     private uiCompleteHandler():void {
@@ -80,10 +80,15 @@ class ReadyDialog extends Base {
                 });
             break;
             case this.btn_change:
+                if (Common.userData.equip.length == 0) {
+                    Animations.showTips("没有可以更换的武器", 1, true);
+                    return;
+                }
                 if (!this.changeEquipPop) {
                     this.changeEquipPop = new ChangeEquipPop();
+                }else{
+                    this.changeEquipPop.show();
                 }
-                this.changeEquipPop.show();
                 this.addChild(this.changeEquipPop);
             break;
             default:
@@ -129,12 +134,25 @@ class ReadyDialog extends Base {
                 }
             }
         }
-        //装备
-        let equipId = this.tcHero[hero_id].equip;
-        this.img_equip.source = `weapon2_000${equipId}_png`;
     }
 
-    public static instance:ReadyDialog;
+    /**
+     * 更新界面
+     */
+    public updateUI(id:number):void {
+        let equip:any;
+        for (let i = 0; i < ConfigManager.tcEquip.length; i++) {
+            if (ConfigManager.tcEquip[i].id == id) {
+                equip = ConfigManager.tcEquip[i];
+                break;
+            }
+        }
+        this.img_equip.source = `equip${25-id}_png`;
+        this.lab_equipName.text = equip.name;
+        // this.lab_equipLv
+    }
+
+    // public static instance:ReadyDialog;
     /**替换武器弹窗 */
     private changeEquipPop:ChangeEquipPop;
     /**叠层 */
@@ -162,7 +180,9 @@ class ReadyDialog extends Base {
     private cycleSlide:CycleSlide;
 
 	/*******************文字和图片***********************/
+    /**传记 */
 	private lab_biography:eui.Label;
+    /**技能相关 */
     private lab_skillname1:eui.Label;
     private lab_skillname2:eui.Label;
     private lab_skillname3:eui.Label;
@@ -172,14 +192,17 @@ class ReadyDialog extends Base {
     private lab_detail1:eui.Label;
     private lab_detail2:eui.Label;
     private lab_detail3:eui.Label;
+    private img_skill1:eui.Image;
+    private img_skill2:eui.Image;
+    private img_skill3:eui.Image;
+    /**武器属性相关 */
     private lab_life:eui.Label;
     private lab_attack:eui.Label;
     private lab_attSp:eui.Label;
     private lab_armor:eui.Label;
     private lab_speed:eui.Label;
-    private img_skill1:eui.Image;
-    private img_skill2:eui.Image;
-    private img_skill3:eui.Image;
-    public img_equip:eui.Image;
+    private lab_equipName:eui.Label;
+    private lab_equipLv:eui.Label;
+    private img_equip:eui.Image;
 	/*************************************************/
 }

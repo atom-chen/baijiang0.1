@@ -41,10 +41,10 @@
 			<e:Label text="人物详情" x="233.19" y="11.16" fontFamily="Microsoft YaHei" bold="true" size="36" textColor="0x0c0c0c"/>
 			<e:Image source="hero_0003_png" x="15.83" y="67"/>
 			<e:Image x="23.33" y="75" source="hero_0004_png" anchorOffsetX="0" width="272" anchorOffsetY="0" height="368"/>
-			<e:Image id="img_equip" x="21.33" y="66" anchorOffsetX="0" width="272" anchorOffsetY="0" height="368" source="weapon2_0001_png"/>
+			<e:Image id="img_equip" x="31" y="139" anchorOffsetX="0" width="256" anchorOffsetY="0" height="244" source=""/>
 			<e:Image source="shop_0003_png" x="246.83" y="395"/>
-			<e:Label text="武器名称" x="96.33" y="88" fontFamily="Microsoft YaHei" bold="true" textColor="0xf9eccf"/>
-			<e:Label text="等级：1" x="42.33" y="403" fontFamily="Microsoft YaHei" bold="true" textColor="0xF9ECCF" size="24"/>
+			<e:Label id="lab_equipName" text="" y="88" fontFamily="Microsoft YaHei" bold="true" textColor="0xf9eccf" horizontalCenter="-154"/>
+			<e:Label id="lab_equipLv" text="等级：1" x="42.33" y="403" fontFamily="Microsoft YaHei" bold="true" textColor="0xF9ECCF" size="24"/>
 			<e:Button id="btn_change" label="替换" x="17.33" y="460">
 				<e:skinName>
 				<e:Skin states="up,down,disabled">
@@ -65,7 +65,6 @@
 			<e:Label id="lab_armor" text="20" y="318" fontFamily="Microsoft YaHei" size="25" bold="true" right="110" left="472" textColor="0x89816c"/>
 			<e:Label text="移速：" x="353.83" y="371.5" fontFamily="Microsoft YaHei" size="25" bold="true" textColor="0x89816c"/>
 			<e:Label id="lab_speed" text="5" x="472.33" y="371.5" fontFamily="Microsoft YaHei" size="25" bold="true" textColor="0x89816c"/>
-
 		</e:Group>
 	</e:ViewStack>
 	<e:ToggleButton id="btn_biography" label="传记" x="597.5" y="11.16" anchorOffsetX="0" width="168" anchorOffsetY="0" height="76" visible="false">
