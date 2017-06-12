@@ -6,17 +6,22 @@ class TalentDialog extends Base {
         super();
         this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this);
         this.skinName = "resource/game_skins/talentWindowSkin.exml";
-        this.btn_page1.selected = true;
+        // this.btn_page1.selected = true;
         this.page1 = new TalentIR(0);
         this.pageGroup.addChild(this.page1);
         this.tcTalent = RES.getRes("TcTalent_json");
         TalentDialog.instance = this;
     }
 
+    protected createChildren(): void{
+        this.topBtn = [];
+    }
+
+    protected childrenCreated():void {
+        this.show(Common.userData.talentPage)
+    }
+
     private uiCompleteHandler():void {
-        this.btn_page1.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_page2.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_page3.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_add.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_reset.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
@@ -24,7 +29,7 @@ class TalentDialog extends Base {
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
         this.btn_closeDetail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
         this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
-        this.topBtn = [this.btn_page1, this.btn_page2, this.btn_page3];
+        // this.topBtn = [this.btn_page1];
     }
 
     /**
@@ -33,15 +38,9 @@ class TalentDialog extends Base {
     private topBtnListener(event:egret.TouchEvent):void {
         this._focusBtn = event.currentTarget;
         switch (this._focusBtn) {
-            case this.btn_page1:
-                this.createTalentPage(0);
-            break;
-            case this.btn_page2:
-                this.createTalentPage(1);
-            break;
-            case this.btn_page3:
-                this.createTalentPage(2);
-            break;
+            // case this.btn_page1:
+            //     this.createTalentPage(0);
+            // break;
             case this.btn_add:
                 this.lab_title.text = "购买天赋";
                 this.lab_detail.text = "购买天赋需要花费50玉石";
@@ -92,6 +91,10 @@ class TalentDialog extends Base {
      */
     private onPurchass(type:number):void {
         this.popupGroup.visible = false;
+        if (type == 1) {
+            //购买天赋页
+
+        }
     }
     /**
      * 创建天赋页
@@ -117,13 +120,36 @@ class TalentDialog extends Base {
         this.lab_skillDetail.text = this.tcTalent[id].content;
     }
 
+    /**
+     * 界面显示
+     */
+    public show(pages:number):void {
+        for (let i = 0; i < pages; i++) {
+            if (!this.topBtn[i]) {
+                var skinName = 
+                `<e:Group xmlns:e="http://ns.egret.com/eui">
+                        <e:ToggleButton label="0">
+                            <e:Skin states="up,down,disabled">
+                                <e:Image width="100%" height="100%" source="button_0006_png" source.down="button_0007_png"/>
+                                <e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" textColor.down="0xFFFFFF" bold="true" fontFamily="Microsoft YaHei" textColor="0x111111"/>
+                            </e:Skin>
+                        </e:ToggleButton>
+                    </e:Group>`;
+                var clazz = EXML.parse(skinName);
+                this.topBtn[i] = new clazz();
+                this.topBtn[i].x = 155 + 55 * i;
+                this.topBtn[i].y = 100;
+                Common.log(this.topBtn[i]);
+                // this.topBtn[i].label = "1";
+            }
+            this.addChild(this.topBtn[i]);
+        }
+    }
+
     public static instance:TalentDialog;
     /**天赋的配置文件 */
     private tcTalent:any;
 	/*******************顶部按钮***********************/
-	private btn_page1:eui.ToggleButton;
-	private btn_page2:eui.ToggleButton;
-	private btn_page3:eui.ToggleButton;
 	private topBtn:eui.ToggleButton[];
 	/*************************************************/
 	/*******************技能升级弹窗***********************/
@@ -145,7 +171,7 @@ class TalentDialog extends Base {
     private btn_add:eui.Button;
     /**能量点 */
     private lab_power:eui.Label;
-    /**叠层 */
+    /**天赋面板 */
     private pageGroup:eui.Group;
     /**弹出 */
     private popupGroup:eui.Group;
