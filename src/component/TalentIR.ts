@@ -11,7 +11,7 @@ class TalentIR extends Base {
             for (let j = 0; j < 7; j++) {
                 let iconImage:eui.Image = new eui.Image();
                 iconImage.source = `talent${i}_${j+1}_png`;
-                iconImage.x = this.position[j][0] + (i-1)*367;
+                iconImage.x = this.position[j][0] + (i-1)*357;
                 iconImage.y = this.position[j][1];
                 iconImage.name = `${7*i+j-6}`;
                 iconImage.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onIconListener, this)
@@ -42,5 +42,5 @@ class TalentIR extends Base {
     /**页数 */
     public page:number;
     /**位置 */
-    private position = [[48,14],[252,14],[93,119],[208,119],[47,225],[253,225],[151,332]]
+    private position = [[61,14],[267,14],[109,119],[219,119],[59,225],[268,225],[163,332]]
 }

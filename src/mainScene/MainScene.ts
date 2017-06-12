@@ -68,6 +68,8 @@ class MainScene extends Base {
 				GameLayerManager.gameLayer().panelLayer.removeChildren();
                 if (!this.talentDialog) {
                     this.talentDialog = new TalentDialog();
+                }else{
+                    this.talentDialog.show(Common.userData.talentPage);
                 }
                 GameLayerManager.gameLayer().panelLayer.addChild(this.talentDialog);
 				break;

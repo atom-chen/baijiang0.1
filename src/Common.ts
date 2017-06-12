@@ -11,6 +11,7 @@ namespace Common {
         "distance":400,
         "money":0,
         "soul":0,
+        "talentPage":1,
     };
     /**舞台的宽度 */
     export var SCREEN_W:number;
