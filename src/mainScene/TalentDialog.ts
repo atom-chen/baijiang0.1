@@ -7,18 +7,24 @@ class TalentDialog extends Base {
         this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this);
         this.skinName = "resource/game_skins/talentWindowSkin.exml";
         // this.btn_page1.selected = true;
-        this.page1 = new TalentIR(0);
-        this.pageGroup.addChild(this.page1);
+        // this.page1 = new TalentIR(0);
+        // this.pageGroup.addChild(this.page1);
         this.tcTalent = RES.getRes("TcTalent_json");
         TalentDialog.instance = this;
     }
 
     protected createChildren(): void{
+        this.topBtnSkin = [];
         this.topBtn = [];
+        this.pages = [];
     }
 
     protected childrenCreated():void {
-        this.show(Common.userData.talentPage)
+        this.show(Common.userData.talentPage);
+        for (let i = 0; i < Common.userData.talentPage; i++) {
+            this.pages[i] = new TalentIR(i);
+        }
+        this.pageGroup.addChild(this.pages[0]);
     }
 
     private uiCompleteHandler():void {
@@ -93,17 +99,57 @@ class TalentDialog extends Base {
         this.popupGroup.visible = false;
         if (type == 1) {
             //购买天赋页
-
+            this.createToggleBtn(Common.userData.talentPage);
+            Common.userData.talentPage ++;
+            this.btn_add.x = 155 + 55 * Common.userData.talentPage;
+            Utils.toggleButtonStatus(this.topBtn, Common.userData.talentPage- 1);
+            this.pages[Common.userData.talentPage- 1] = new TalentIR(Common.userData.talentPage- 1);
+            this.pageGroup.addChild(this.pages[Common.userData.talentPage- 1]);
         }
     }
+
+    /**
+     * 天赋页按钮监听
+     */
+    private pageBtnListener(event:egret.TouchEvent):void {
+        let target = event.currentTarget;
+        // Common.log(target);
+        this.createTalentPage(target.id);
+    }
+
+    /**
+     * 创建天赋页选项按钮
+     */
+    private createToggleBtn(id:number):void {
+        var skinName = 
+        `<e:Group xmlns:e="http://ns.egret.com/eui">
+                <e:ToggleButton label="0">
+                    <e:Skin states="up,down,disabled">
+                        <e:Image width="100%" height="100%" source="button_0006_png" source.down="button_0007_png"/>
+                        <e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" textColor.down="0xFFFFFF" bold="true" fontFamily="Microsoft YaHei" textColor="0x111111"/>
+                    </e:Skin>
+                </e:ToggleButton>
+            </e:Group>`;
+        var clazz = EXML.parse(skinName);
+        this.topBtnSkin[id] = new clazz();
+        this.topBtnSkin[id].x = 155 + 55 * id;
+        this.topBtnSkin[id].y = 100;
+        let toggleBtn:any = this.topBtnSkin[id].getChildAt(0);
+        toggleBtn.id = id;
+        toggleBtn.addEventListener(egret.TouchEvent.TOUCH_TAP, this.pageBtnListener, this);
+        this.topBtn.push(toggleBtn);
+        toggleBtn.label = `${id + 1}`;
+        this.addChild(this.topBtnSkin[id]);
+    }
+
     /**
      * 创建天赋页
      */
     private createTalentPage(pageCount:number):void {
         this.pageGroup.removeChildren();
-        this.page1.setTalentDetail(pageCount);
+        this.pages[pageCount].setTalentDetail(pageCount);
         Utils.toggleButtonStatus(this.topBtn, pageCount);
-        this.pageGroup.addChild(this.page1);
+        this.pageGroup.addChild(this.pages[pageCount]);
     }
 
     public showPopup(num:number):void {
@@ -125,32 +171,21 @@ class TalentDialog extends Base {
      */
     public show(pages:number):void {
         for (let i = 0; i < pages; i++) {
-            if (!this.topBtn[i]) {
-                var skinName = 
-                `<e:Group xmlns:e="http://ns.egret.com/eui">
-                        <e:ToggleButton label="0">
-                            <e:Skin states="up,down,disabled">
-                                <e:Image width="100%" height="100%" source="button_0006_png" source.down="button_0007_png"/>
-                                <e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" textColor.down="0xFFFFFF" bold="true" fontFamily="Microsoft YaHei" textColor="0x111111"/>
-                            </e:Skin>
-                        </e:ToggleButton>
-                    </e:Group>`;
-                var clazz = EXML.parse(skinName);
-                this.topBtn[i] = new clazz();
-                this.topBtn[i].x = 155 + 55 * i;
-                this.topBtn[i].y = 100;
-                Common.log(this.topBtn[i]);
-                // this.topBtn[i].label = "1";
+            if (!this.topBtnSkin[i]) {
+                this.createToggleBtn(i);
             }
-            this.addChild(this.topBtn[i]);
+            this.addChild(this.topBtnSkin[i]);
         }
+        this.btn_add.x = 155 + 55 * pages;
+        this.topBtn[0].selected = true;
     }
 
     public static instance:TalentDialog;
     /**天赋的配置文件 */
     private tcTalent:any;
 	/*******************顶部按钮***********************/
-	private topBtn:eui.ToggleButton[];
+	private topBtnSkin:eui.ToggleButton[];
+    private topBtn:Array<any>;
 	/*************************************************/
 	/*******************技能升级弹窗***********************/
     private skillPopupGroup:eui.Group;
@@ -185,6 +220,5 @@ class TalentDialog extends Base {
     private lab_detail:eui.Label;
     /**购买类型 */
     private purchassType:number;
-    private page1:TalentIR;
-
+    private pages:Array<TalentIR>;
 }
