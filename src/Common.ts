@@ -11,7 +11,10 @@ namespace Common {
         "distance":400,
         "money":0,
         "soul":0,
-        "talentPage":2,
+        "power":0,
+        "talentPage":[
+            {"name":"pvp", "talent":[[1, 0], [2, 2], [8, 8], [9, 0], [15, 0], [16, 0]]}
+        ],
     };
     /**舞台的宽度 */
     export var SCREEN_W:number;
