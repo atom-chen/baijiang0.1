@@ -61,13 +61,14 @@ class TalentIR extends Base {
 
     private onIconListener(event:egret.TouchEvent):void {
         let id = event.currentTarget.name;
+        this.curTalentId = parseInt(id);
         TalentDialog.instance.showPopup(parseInt(id), parseInt(event.currentTarget["lv"]))
     }
 
     /**
      * 初始化解锁状态和天赋等级
      */
-    private initUnlockAndLv(curPage:number):void {
+    public initUnlockAndLv(curPage:number):void {
         let userTalent = Common.userData.talentPage[curPage].talent;
         for (let i = 0; i < userTalent.length; i++) {
             let talent = userTalent[i];
@@ -75,27 +76,47 @@ class TalentIR extends Base {
             this.iconGroup[id-1]["Mask"].visible = false;
             this.iconGroup[id-1]["lv"] = talent[1];
             this.lvGroup[id-1].text = `${talent[1]}/10`;
+            if (talent[1] == 10) this.lvGroup[id-1].textColor = 0x91bd32;
+        }
+        modTalent.setUnlock(curPage);
+    }
+
+    /**
+     * 重置
+     */
+    public reset(curPage:number):void {
+        modTalent.setUnlock(curPage);
+        for (let i = 0; i < modTalent.talentCount; i++) {
+            this.iconGroup[i]["Mask"].visible = true;
+            this.iconGroup[i]["lv"] = 0;
+            this.lvGroup[i].text = `0/10`;
+            this.lvGroup[i].textColor = Common.TextColors.lvNotFull;
         }
     }
 
     /**
      * 设置解锁的状态
      */
-    public setUnlock(curPage:number):void {
-        
+    public setUnlock(id:number):void {
+        this.iconGroup[id-1]["Mask"].visible = false;
     }
 
     /**
      * 设置等级
      */
-    public setTalentLv(curPage:number):void {
-        
+    public setTalentLv():void {
+        this.iconGroup[this.curTalentId-1]["lv"] ++;
+        let level = this.iconGroup[this.curTalentId-1]["lv"];
+        this.lvGroup[this.curTalentId-1].text = `${level}/10`;
+        if (level == 10) this.lvGroup[this.curTalentId-1].textColor = 0x91bd32;
     }
 
     public setTalentDetail(pageCount:number):void {
         this.pageText.text = `第${pageCount}页`;
     }
 
+    /**当前选中的天赋id */
+    private curTalentId:number;
     /** */
     private talentGroup:eui.Group;
     /**吸血点数 */
