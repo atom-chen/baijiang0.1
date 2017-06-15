@@ -2,7 +2,7 @@
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*">
 	<e:Image source="hero_0001_png" x="0" y="0" width="1136" height="640"/>
 	<e:Image source="hero_0005_png" x="0" y="94"/>
-	<e:Button id="btn_back" label="" x="21.5" y="20" width="88" height="52">
+	<e:Button id="btn_back" label="" x="14" y="14" width="104" height="68">
 		<e:skinName>
 		<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0005_png"/>
@@ -71,7 +71,7 @@
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0014_png" source.down="button_0015_png"/>
-			<e:Label id="labelDisplay" bold="true" textColor.down="0xac7841" fontFamily="Microsoft YaHei" textColor="0x130B0B" size="35" y="12" x="48"/>
+			<e:Label id="labelDisplay" bold="true" textColor.down="0xac7841" fontFamily="Microsoft YaHei" textColor="0x130B0B" size="32" horizontalCenter="0" verticalCenter="-8"/>
 			</e:Skin>
 		</e:skinName>
 
@@ -81,7 +81,7 @@
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0014_png" source.down="button_0015_png"/>
-			<e:Label id="labelDisplay" bold="true" textColor.down="0xac7841" fontFamily="Microsoft YaHei" textColor="0x130B0B" size="35" y="16.01" x="48"/>
+			<e:Label id="labelDisplay" bold="true" textColor.down="0xac7841" fontFamily="Microsoft YaHei" textColor="0x130B0B" size="33" horizontalCenter="0" verticalCenter="-8"/>
 			</e:Skin>
 		</e:skinName>
 
@@ -91,7 +91,7 @@
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0014_png" source.down="button_0015_png"/>
-			<e:Label id="labelDisplay" bold="true" textColor.down="0xac7841" fontFamily="Microsoft YaHei" textColor="0x130b0b" size="35" y="15.99" x="48"/>
+			<e:Label id="labelDisplay" bold="true" textColor.down="0xac7841" fontFamily="Microsoft YaHei" textColor="0x130b0b" size="33" verticalCenter="-8" horizontalCenter="0"/>
 			</e:Skin>
 		</e:skinName>
 
@@ -103,7 +103,7 @@
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0012_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-			<e:Label id="labelDisplay" horizontalCenter="-3.5" bold="true" fontFamily="Microsoft YaHei" size="35" textColor="0x240404" y="16" size.down="31"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" bold="true" fontFamily="Microsoft YaHei" size="32" textColor="0x240404" size.down="31" verticalCenter="-8"/>
 			</e:Skin>
 		</e:skinName>
 

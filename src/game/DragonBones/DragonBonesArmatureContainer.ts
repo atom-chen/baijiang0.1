@@ -90,7 +90,7 @@ class DragonBonesArmatureContainer extends egret.DisplayObjectContainer {
     /**
      * 播放动作
      */
-    public play(action:string, playTimes:number = undefined):void {
+    public play(action:string, playTimes:number = undefined, type:number = 1, frame:number = null):void {
         if (this.actions[action] == null) {
             Common.log("不存在动作---->"+action+typeof(action));
             return;
@@ -104,7 +104,11 @@ class DragonBonesArmatureContainer extends egret.DisplayObjectContainer {
         if (newArmature) {
             this.addChild(newArmature);
             this.curArmatureIndex = newArmatureIndex;
-            newArmature.play(action, playTimes);
+            if (type == 1) {
+                newArmature.play(action, playTimes);
+            }else{
+                newArmature.playByFrame(action, frame, playTimes);
+            }
         }
     }
 
@@ -154,6 +158,16 @@ class DragonBonesArmatureContainer extends egret.DisplayObjectContainer {
         var currArm:DragonBonesArmature = this.armatures[this.curArmatureIndex];
         if (currArm) {
             currArm.stop();
+        }
+    }
+
+    /**
+     * 停止当前动画到指定帧
+     */
+    public stopByFrame(action:string, frame:number):void {
+        var currArm:DragonBonesArmature = this.armatures[this.curArmatureIndex];
+        if (currArm) {
+            currArm.stopByFrame(action, frame);
         }
     }
 

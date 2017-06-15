@@ -204,6 +204,7 @@ class TalentDialog extends Base {
         this.pages[this.curPage].setTalentLv();
         this.pages[this.curPage].setUnlock(this.curTalentId);
         modTalent.setData(this.curPage, this.curTalentId, this.curLevel);
+        Animations.showTips("天赋升级成功", 1);
     }
 
     /**
@@ -223,7 +224,6 @@ class TalentDialog extends Base {
             }
         }
         this.lab_name.text = this.tcTalent[id].name;
-        this.lab_condition.text = this.tcTalent[id].condition;
         this.lab_skillDetail.text = this.tcTalent[id].content;
         this.lab_lv.text = `${lv}/10`;
         if (this.curLevel == 10) {
@@ -235,8 +235,11 @@ class TalentDialog extends Base {
         let btn:any = this.btn_upgrade.getChildAt(0);
         if (modTalent.isUnlock(this.curPage, num)) {
             btn.source = "button_0004_png";
+            this.lab_condition.text = "";
         }else{
             btn.source = "button_0010_png";
+            let strs = modTalent.getTips(this.curTalentId, false);
+            this.lab_condition.text = strs;
         }
     }
 

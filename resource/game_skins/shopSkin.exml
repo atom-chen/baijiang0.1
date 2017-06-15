@@ -15,7 +15,7 @@
 
 
 
-	<e:Button id="btn_back" label="" x="21.5" y="20" width="88" height="52">
+	<e:Button id="btn_back" label="" x="14" y="14" width="104" height="68">
 		<e:skinName>
 		<e:Skin states="up,down,disabled" xmlns:w="http://ns.egret.com/wing">
 			<e:Image width="100%" height="100%" source="button_0005_png"/>
@@ -59,7 +59,7 @@
 		</e:skinName>
 	</e:ToggleButton>
 	<e:Image source="shop_0008_png" x="4" y="144.66"/>
-	<e:ViewStack id="stack_shop" width="1116" height="484" x="11" y="146" anchorOffsetX="0" anchorOffsetY="0" selectedIndex="1">
+	<e:ViewStack id="stack_shop" width="1116" height="484" x="11" y="146" anchorOffsetX="0" anchorOffsetY="0" selectedIndex="3">
 		<e:Scroller id="scrollDiamond" width="100%" height="100%" x="-2.66" y="0.51">
 		</e:Scroller>
 		<e:Group id="groupEquip" width="1116" height="483" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" visible="false">
@@ -80,19 +80,23 @@
 			<e:Button id="btn_oneDraw" label="220" x="145.5" y="368">
 				<e:skinName>
 					<e:Skin states="up,down,disabled">
-					<e:Image width="100%" height="100%" source="btn_draw_png" width.down="90%" height.down="90%" verticalCenter="0" horizontalCenter="0"/>
-					<e:Label id="labelDisplay" verticalCenter="0" left="140" fontFamily="Microsoft YaHei" textColor="0x0a0003" bold="true" size.down="27"/>
+					<e:Image width="100%" height="100%" source="btn_shopBuy_png"/>
+					<e:Label id="labelDisplay" verticalCenter="-5.5" left="133" fontFamily="Microsoft YaHei" textColor="0x0a0003" bold="true" size.down="27"/>
 					</e:Skin>
 				</e:skinName>
+
 			</e:Button>
 			<e:Button id="btn_tenDraw" label="2200" x="696" y="368">
 				<e:skinName>
-				<e:Skin states="up,down,disabled">
-					<e:Image width="100%" height="100%" source="btn_draw_png" width.down="90%" height.down="90%" verticalCenter="0" horizontalCenter="0"/>
-					<e:Label id="labelDisplay" verticalCenter="0" left="140" fontFamily="Microsoft YaHei" textColor="0x0a0003" bold="true" size.down="27"/>
-				</e:Skin>
+					<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="btn_shopBuy_png"/>
+					<e:Label id="labelDisplay" verticalCenter="-4.5" left="134" fontFamily="Microsoft YaHei" textColor="0x0a0003" bold="true" size.down="27"/>
+					</e:Skin>
 				</e:skinName>
+
 			</e:Button>
+			<e:Image source="crystal_0002_png" x="770" y="388.33"/>
+			<e:Image source="crystal_0002_png" horizontalCenter="-319" verticalCenter="166.5"/>
 
 		</e:Group>
 		<e:Scroller id="scrollReward" width="100%" height="100%" x="0" y="0">

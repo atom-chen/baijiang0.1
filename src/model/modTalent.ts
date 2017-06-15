@@ -194,10 +194,12 @@ namespace modTalent {
     }
 
     /**未解锁状态的提示 */
-    export function getTips(talentId:number):string {
+    export function getTips(talentId:number, isTips:boolean = true):string {
         let pos = findPosition(talentId);
         let line:number = parseInt(pos[0]);
-        let str = `解锁${line}层天赋需${talentName[line-2]}天赋等级总和达到${unlockCondition[line-2]}`
+        let row:number = pos[1];
+        let str = `解锁${line}层天赋需${talentName[row]}天赋等级总和达到${unlockCondition[line-2]}`;
+        if (!isTips) str = `需${talentName[row]}天赋等级总和达到${unlockCondition[line-2]}`;
         return str;
     }
 
