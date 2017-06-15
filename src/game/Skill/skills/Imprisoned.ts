@@ -13,7 +13,8 @@ class Imprisoned extends SkillBase {
 
     public start(animation:string, target:any) {
         super.start(animation, target);
-        target.armature.play(animation, 1);
+        target.armature.play(BaseGameObject.Action_Idle, 0);
+        target.skillArmature.play(animation, 1);
     }
 
     public update(target:any) {
@@ -55,6 +56,13 @@ class Imprisoned extends SkillBase {
     /**若有附加buff，设置buff的id */
     public setBuffId(value:number) {
         this.buffIndex = value;
+    }
+
+    /**
+     * 技能附带的其他特效
+     */
+    private _additionEffect():void {
+        
     }
 
     private buff:UnableMove;

@@ -22,18 +22,18 @@
 			</e:Skin>
 		</e:skinName>
 	</e:Button>
-	<e:Button id="btn_reset" label="重置" x="993.32" y="99.57" anchorOffsetX="0" anchorOffsetY="0">
+	<e:Button id="btn_reset" label="重置" x="992" y="96" anchorOffsetX="0" anchorOffsetY="0">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="btn_reset_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-			<e:Label id="labelDisplay" bold="true" fontFamily="Microsoft YaHei" size="27" size.down="24" textColor="0x260303" horizontalCenter="0" verticalCenter="-3"/>
+			<e:Label id="labelDisplay" bold="true" fontFamily="Microsoft YaHei" size="25" size.down="24" textColor="0x260303" horizontalCenter="0" verticalCenter="-6"/>
 			</e:Skin>
 		</e:skinName>
 	</e:Button>
-	<e:Image source="power_0001_png" x="969" y="47"/>
+	<e:Image source="power_0001_png" x="954.85" y="47"/>
 
-	<e:Label id="lab_power" text="0" y="52.49" fontFamily="Microsoft YaHei" textColor="0xffd375" size="32" bold="true" right="14"/>
-	<e:Button id="btn_back" label="" x="21.5" y="20" width="88" height="52">
+	<e:Label id="lab_power" text="0" y="52.49" fontFamily="Microsoft YaHei" textColor="0xffd375" size="30" bold="true" right="44"/>
+	<e:Button id="btn_back" label="" x="14" y="14" width="104" height="68">
 		<e:skinName>
 		<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0005_png"/>
@@ -59,7 +59,7 @@
 			<e:skinName>
 				<e:Skin states="up,down,disabled">
 				<e:Image width="100%" height="100%" source="button_0011_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-				<e:Label id="labelDisplay" size.down="27" horizontalCenter="-0.5" verticalCenter="-6.5" bold="true" fontFamily="Microsoft YaHei" textColor="0x260303"/>
+				<e:Label id="labelDisplay" size.down="27" horizontalCenter="0" verticalCenter="-8" bold="true" fontFamily="Microsoft YaHei" textColor="0x260303"/>
 				</e:Skin>
 			</e:skinName>
 		</e:Button>
@@ -81,12 +81,12 @@
 		<e:Label text="等级：" x="423.01" y="147.83" size="22" fontFamily="Microsoft YaHei" textColor="0xb7b7b7" bold="true"/>
 		<e:Label id="lab_lv" text="0/10" x="511.01" y="147.83" size="22" fontFamily="Microsoft YaHei" textColor="0xb7b7b7" bold="true"/>
 		<e:Label id="lab_condition" text="需要xx天赋升到5级。" x="424.01" y="181.83" fontFamily="Microsoft YaHei" size="22" textColor="0x8c0a0a" bold="true"/>
-		<e:Label id="lab_skillDetail" text="对敌方英雄造成伤害时，回复伤害的10%血量。" x="424.01" y="216.33" fontFamily="Microsoft YaHei" size="22" multiline="true" width="275" lineSpacing="10" textColor="0xd1d1d1" bold="true"/>
+		<e:Label id="lab_skillDetail" text="对敌方英雄造成伤害时，回复伤害的10%血量。" x="424.01" y="216.33" fontFamily="Microsoft YaHei" size="22" multiline="true" width="275" lineSpacing="10" bold="true" textColor="0x707070"/>
 		<e:Button id="btn_upgrade" label="升级" x="479" y="422">
 			<e:skinName>
 				<e:Skin states="up,down,disabled">
 				<e:Image width="100%" height="100%" source="button_0004_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-				<e:Label id="labelDisplay" horizontalCenter="-1.5" verticalCenter="-4.5" textColor="0x260303" fontFamily="Microsoft YaHei" bold="true" size.down="27"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-8" textColor="0x260303" fontFamily="Microsoft YaHei" bold="true" size.down="27"/>
 				</e:Skin>
 			</e:skinName>
 		</e:Button>
