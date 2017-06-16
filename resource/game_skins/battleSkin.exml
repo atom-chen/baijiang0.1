@@ -2,8 +2,8 @@
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
 
 
-	<e:Image source="battle_0001_png" x="709" y="4" width="168" height="44"/>
-	<e:Image source="battle_0002_png" x="884" y="8.2" width="168" height="44"/>
+	<e:Image source="battle_0001_png" x="709" y="4" width="168" height="44" visible="false"/>
+	<e:Image source="battle_0002_png" x="884" y="8.2" width="168" height="44" visible="false"/>
 	<e:Image source="battle_0004_png" x="349.5" y="594.26" anchorOffsetX="0" width="456" anchorOffsetY="0" height="16"/>
 	<e:Image x="9" y="7" anchorOffsetX="0" width="196" anchorOffsetY="0" height="52" rotation="360" source="battle_0003_png"/>
 	<e:Image id="img_exp" x="65" y="50.14" anchorOffsetX="0" width="128" anchorOffsetY="0" height="4" rotation="360" source="battle_0012_png" visible="false"/>
@@ -15,8 +15,8 @@
 	<e:Image x="1021.2" y="525.5" anchorOffsetX="0" width="100" anchorOffsetY="0" height="100" source="battle_0006_png"/>
 	<e:Label id="lab_killCount" text="50/50" x="536.5" y="566.5" fontFamily="Microsoft YaHei" size="24" bold="true" textColor="0xfcf5e8"/>
 	<e:Label id="lab_lv" text="99" x="17.5" y="70.32" anchorOffsetX="0" width="27" size="15" fontFamily="Microsoft YaHei" visible="false"/>
-	<e:Label id="lab_money" text="99999" y="12.5" size="27" fontFamily="Microsoft YaHei" textColor="0xe29828" bold="true" right="264"/>
-	<e:Label id="lab_soul" text="99999" y="14.2" size="27" fontFamily="Microsoft YaHei" textColor="0x36c9bc" bold="true" right="90"/>
+	<e:Label id="lab_money" text="99999" y="12.5" size="27" fontFamily="Microsoft YaHei" textColor="0xe29828" bold="true" right="264" visible="false"/>
+	<e:Label id="lab_soul" text="99999" y="14.2" size="27" fontFamily="Microsoft YaHei" textColor="0x36c9bc" bold="true" right="90" visible="false"/>
 	<e:Button id="btn_pause" label="" x="1062.1" y="8.2" width="60" height="68">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">

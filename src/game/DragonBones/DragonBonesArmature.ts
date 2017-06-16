@@ -142,7 +142,7 @@ class DragonBonesArmature extends egret.DisplayObjectContainer {
      * 播放到指定帧结束
      */
     public stopByFrame(action:string, frame:number):void {
-        this.stop();
+        this.start();
         this._armature.animation.gotoAndStopByFrame(action, frame);
     }
 

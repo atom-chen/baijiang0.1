@@ -33,28 +33,29 @@
 			<e:Label id="lab_cd3" text="主动" y="258.98" fontFamily="Microsoft YaHei" size="20" horizontalCenter="199.5" bold="true" textColor="0x8d805a"/>
 			<e:Label id="lab_cd2" text="被动" y="258.98" fontFamily="Microsoft YaHei" size="20" horizontalCenter="2.5" bold="true" textColor="0x8d805a"/>
 			<e:Label id="lab_cd1" text="被动" y="258.98" fontFamily="Microsoft YaHei" size="20" horizontalCenter="-206.5" bold="true" textColor="0x8d805a"/>
-			<e:Label id="lab_detail1" text="" x="23" y="296.12" size="24" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
-			<e:Label id="lab_detail2" text="" x="226.99" y="296.12" size="24" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
-			<e:Label id="lab_detail3" text="" x="430.67" y="296.12" size="24" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
+			<e:Label id="lab_detail1" text="" x="23" y="296.12" size="20" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
+			<e:Label id="lab_detail2" text="" x="226.99" y="296.12" size="20" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
+			<e:Label id="lab_detail3" text="" x="430.67" y="296.12" size="20" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
 		</e:Group>
 		<e:Group id="detailGroup" width="620" height="548" x="0" y="0">
 			<e:Label text="人物详情" x="233.19" y="11.16" fontFamily="Microsoft YaHei" bold="true" size="36" textColor="0x0c0c0c"/>
 			<e:Image source="hero_0003_png" x="15.83" y="67"/>
 			<e:Image x="23.33" y="75" source="hero_0004_png" anchorOffsetX="0" width="272" anchorOffsetY="0" height="368"/>
 			<e:Image id="img_equip" x="31" y="139" anchorOffsetX="0" width="256" anchorOffsetY="0" height="244" source=""/>
-			<e:Image source="shop_0003_png" x="246.83" y="395"/>
+			<e:Image source="shop_0003_png" x="246.83" y="395" visible="false"/>
 			<e:Label id="lab_equipName" text="" y="88" fontFamily="Microsoft YaHei" bold="true" textColor="0xf9eccf" horizontalCenter="-154"/>
 			<e:Label id="lab_equipLv" text="等级：1" x="42.33" y="403" fontFamily="Microsoft YaHei" bold="true" textColor="0xF9ECCF" size="24"/>
 			<e:Button id="btn_change" label="替换" x="17.33" y="460">
 				<e:skinName>
-				<e:Skin states="up,down,disabled">
-					<e:Image width="100%" height="100%" source="button_0004_png" width.down="90%" height.down="90%" verticalCenter="0" horizontalCenter="0"/>
-					<e:Label id="labelDisplay" verticalCenter="0" bold="true" fontFamily="Microsoft YaHei" size="35" textColor="0x240404" y="16" size.down="31" horizontalCenter="0"/>
-				</e:Skin>
+					<e:Skin states="up,down,disabled">
+					<e:Image width="100%" height="100%" source="button_0019_png"/>
+					<e:Label id="labelDisplay" verticalCenter="-8" bold="true" fontFamily="Microsoft YaHei" size="32" y="16" size.down="31" horizontalCenter="0" textColor="0x202811"/>
+					</e:Skin>
 				</e:skinName>
 
+
 			</e:Button>
-			<e:Label text="当前属性" x="396.33" y="91" fontFamily="Microsoft YaHei" bold="true" textColor="0x606060"/>
+			<e:Label text="角色当前属性" x="366.98" y="95" fontFamily="Microsoft YaHei" bold="true" textColor="0x606060" size="28"/>
 			<e:Label text="生命：" x="353.83" y="159" fontFamily="Microsoft YaHei" size="25" bold="true" textColor="0x89816c"/>
 			<e:Label id="lab_life" text="2000" y="159" fontFamily="Microsoft YaHei" size="25" bold="true" right="79" left="472" textColor="0x89816c"/>
 			<e:Label text="攻击：" x="353.83" y="212" fontFamily="Microsoft YaHei" size="25" bold="true" textColor="0x89816c"/>
@@ -103,7 +104,7 @@
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0012_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-			<e:Label id="labelDisplay" horizontalCenter="0" bold="true" fontFamily="Microsoft YaHei" size="32" textColor="0x240404" size.down="31" verticalCenter="-8"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" bold="true" fontFamily="Microsoft YaHei" size="32" textColor="0x240404" size.down="31" verticalCenter="-12"/>
 			</e:Skin>
 		</e:skinName>
 

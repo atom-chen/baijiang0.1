@@ -1,6 +1,9 @@
 class Enermy extends BaseGameObject {
     public constructor() {
         super();
+    this.colorFlilter = new egret.ColorMatrixFilter(this.colorMatrix);
+    this.defaultFlilter = new egret.ColorMatrixFilter(this.defaultMatrix);
+    // this.filters = [this.colorFlilter];
     }
 
     public initDragonBonesArmature(name:string):void {
@@ -34,6 +37,7 @@ class Enermy extends BaseGameObject {
         this.isEnemy = true;
         this.isSkillHurt = false;
         this.lastAnimation = "";
+        // this.maskImprisoned.mask = this;
     }
 
     public update(time:number):void {
@@ -228,7 +232,20 @@ class Enermy extends BaseGameObject {
     }
     /****************************************************/
 
-
+    public colorMatrix = [
+        1,0,0,0.4,0,
+        1,0,0,0,0,
+        1,0,0,0,0,
+        0,0,0,1,0
+    ]
+    public colorFlilter:egret.ColorMatrixFilter;
+    public defaultMatrix = [
+        1,0,0,0,0,
+        0,1,0,0,0,
+        0,0,1,0,0,
+        0,0,0,1,0
+    ]
+    public defaultFlilter:egret.ColorMatrixFilter;
     /**受到的伤害是否为技能伤害 */
     public isSkillHurt:boolean;
 

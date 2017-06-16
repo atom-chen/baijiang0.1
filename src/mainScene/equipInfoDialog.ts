@@ -80,12 +80,6 @@ class EquipInfoDialog extends Base {
                 }
                 this.addChild(this.changeEquipPop);
             break;
-            case this.btn_upgrade:
-                if (!this.equipUpgradePop) {
-                    this.equipUpgradePop = new EquipUpgradePop();
-                }
-                this.addChild(this.equipUpgradePop);
-            break;
             case this.btn_closeDetail:
                 this.detailGroup.visible = false;
             break;
@@ -102,10 +96,6 @@ class EquipInfoDialog extends Base {
     private onResetUnlock(type:string):void {
         switch (type) {
             case "reset":
-                if (!this.resetEquipAttrPop) {
-                    this.resetEquipAttrPop = new ResetEquipAttrPop();
-                }
-                this.addChild(this.resetEquipAttrPop);
             break;
             default:
                 if (!this.unlockStarLvPop) {
@@ -129,9 +119,7 @@ class EquipInfoDialog extends Base {
     private equip_id:number;
 
     /********************弹窗************************/
-    private resetEquipAttrPop:ResetEquipAttrPop;
     private changeEquipPop:ChangeEquipPop;
-    private equipUpgradePop:EquipUpgradePop;
     private unlockStarLvPop:UnlockStarLvPop;
     /************************************************/
 

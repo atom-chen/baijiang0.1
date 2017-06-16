@@ -9,6 +9,7 @@ class Hero extends BaseGameObject {
         this.comboTimer.addEventListener(egret.TimerEvent.TIMER, this.onCombo, this);
         this.comboTimer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onComboComplete, this);
         this.shadow = Utils.createBitmap("shadow_png");
+        this.shadow.y = -this.shadow.height/2;
         this.shadow.scaleX = 1.5;
         this.shadow.anchorOffsetX = this.shadow.width/2;
         this.addChild(this.shadow);
@@ -300,7 +301,7 @@ class Hero extends BaseGameObject {
     /**奔跑 */
     public gotoRun() {
         this.curState = "run";
-        let useSpeed:number = this.speed * 0.1;
+        let useSpeed:number = this.speed * 0.15;
         this.radian = MathUtils.getRadian2(this.x, this.y, this.endX, this.endY);
         let animation = this.getWalkPosition("run", this.radian);
         this.deltaX = Math.cos(this.radian) * useSpeed;
@@ -331,6 +332,11 @@ class Hero extends BaseGameObject {
                     this.buff[i].update();
                     return true;
                 }
+            }
+            //圆波剑舞
+            else if (this.buff[i].buffData.id == 6) {
+                this.buff[i].update();
+                return false;
             }
         }
         return false;
@@ -433,7 +439,10 @@ class Hero extends BaseGameObject {
                 this.armature.visible = false;
             break;
             case "evtStart":
-                
+                this.skill.update(this);
+            break;
+            case "shildEnd":
+                this.skillArmature.visible = false;
             break;
             default:
             break;
@@ -457,7 +466,7 @@ class Hero extends BaseGameObject {
             break;
             case BaseGameObject.Action_Enter:
                 this.gotoIdle();
-                // this.setBuff();
+                this.setBuff();
                 this.shadow.visible = true;
             break;
         }

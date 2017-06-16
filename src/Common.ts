@@ -156,4 +156,10 @@ namespace Common {
         globalMask.width = SCREEN_W;
         globalMask.height = SCREEN_H;
     }
+
+    export function SetXY(obj:any, x:number, y:number):void{
+        if(obj == null) return;
+        obj.x = x;
+        obj.y = y;
+    }
 }

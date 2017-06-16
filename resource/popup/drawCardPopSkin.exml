@@ -6,12 +6,12 @@
 	<e:Button id="btn_get" label="获取" x="424" y="483">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="btn_shopGet_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
+			<e:Image width="100%" height="100%" source="btn_draw_png"/>
 			<e:Label id="labelDisplay" horizontalCenter="1.5" size.down="27" textColor="0x242d00" fontFamily="Microsoft YaHei" bold="true" y="14"/>
 			</e:Skin>
 		</e:skinName>
 	</e:Button>
-	<e:Button id="btn_back" label="" x="985" y="73">
+	<e:Button id="btn_back" label="" x="985" y="80">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0009_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
