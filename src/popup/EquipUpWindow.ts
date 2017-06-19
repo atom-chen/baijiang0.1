@@ -40,6 +40,7 @@ class EquipUpWindow extends Base{
     private onTouchUpGrade(event:egret.TouchEvent):void{
 
         if(this.equip_info.Lv >= modEquip.EquipSource.EQUIPLV){
+            Animations.showTips("等级已满", 1, true);
             return;
         }
         
@@ -48,6 +49,7 @@ class EquipUpWindow extends Base{
         this.equip_info.SetEquipAttr(attr.attack + 20, attr.defend + 10, attr.blood + 50);
         attr = this.equip_info.GetEquipAttr();
         this.showUpgradeInfo(attr);
+        Animations.showTips("升级成功", 1);
         this.dispatchEventWith(modEquip.EquipSource.UPGRADE, false, this.equip_info.Lv);
     }
 

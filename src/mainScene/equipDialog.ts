@@ -276,7 +276,7 @@ class EquipDialog extends Base {
             }
             else
             {
-                console.log(" you equip lv without 100lv");
+                Animations.showTips("等级不足，无法升星", 1, true);
             }
         }
     }

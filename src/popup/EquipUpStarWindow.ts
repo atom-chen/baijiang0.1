@@ -70,7 +70,10 @@ class EquipUpStarWindow extends Base{
     }
 
     private onTouchUpStar(event:egret.TouchEvent):void{
-        if(!this.isEnough()) return;
+        if(!this.isEnough()){
+            Animations.showTips("装备不足，无法升星", 1, true);
+            return;
+        }
 
         for(let i:number = 0; i < this.equip_list.length; i++){
             this.equip_list[i].removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
@@ -86,6 +89,7 @@ class EquipUpStarWindow extends Base{
         this.equip_info.InsertAttrType(attrType);
         this.equip_info.Lv = 0;
         this.equip_info.Star++;
+        Animations.showTips("升星成功", 1);
 
         this.Close(true);
     }

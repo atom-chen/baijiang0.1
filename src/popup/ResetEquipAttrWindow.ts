@@ -39,6 +39,7 @@ class ResetEqiopAttrWindow extends Base{
         this.equip_info.ChangeAttrType(this._index, type, rand % 100);
         this.lab_attr.text = modEquip.GetAttrInfo(type, rand % 100);
         this.changeAttrInfo(type, rand % 100);
+        Animations.showTips("洗练成功", 1);
         this.dispatchEventWith(modEquip.EquipSource.RESETATTR, false, {type:type,value:rand % 100,index:this._index})
     }
 
