@@ -80,7 +80,7 @@ class BattleScene extends Base {
      */
     private initBattleDragonBones():void {
         let arr:Array<string> = ["daoguang_effect", "diaochan", "diaochan_skill01", "monster01", "enter_monster_01", "Boss01",
-        "Boss01_effect01", "blood_die", "diaochan_skill"];
+        "Boss01_effect01", "blood_die", "diaochan_skill", "zhaoyun", "zhaoyun_skill", "buxiaoman", "buxiaoman_skill"];
         for (let i = 0; i < arr.length; i++) {
             let name:string = arr[i];
             let skeletonData = RES.getRes(name+"_ske_json");
@@ -244,7 +244,7 @@ class BattleScene extends Base {
     private createHero():void {
         this.hero = ObjectPool.pop("Hero");
         GameData.heros.push(this.hero);
-        this.hero.init("diaochan");
+        this.hero.init("zhaoyun");
         this.hero.x = Common.SCREEN_W/2;
         this.hero.y = Common.SCREEN_H/2;
         // this.hero.anchorOffsetY = -33;

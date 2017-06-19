@@ -9,7 +9,7 @@ class EnterGameScene extends Base {
     }
 
     private uiCompleteHandler():void {
-        Common.kbengine.Event.register("onConnectionState", this, "onConnectionState");
+        // Common.kbengine.Event.register("onConnectionState", this, "onConnectionState");
         this.btn_begin.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEnterGame, this);
         this.btn_rank.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onRank, this);
     }
@@ -43,7 +43,7 @@ class EnterGameScene extends Base {
         // NetConnect.send(1, data, function(data) {
 
         // })
-        Common.kbengine.Event.fire("login", "wujiangu", "123456", "demo");
+        // Common.kbengine.Event.fire("login", "wujiangu", "123456", "demo");
         GameLayerManager.gameLayer().sceneLayer.removeChildren();
         SceneManager.mainScene = new MainScene();
         GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.mainScene);

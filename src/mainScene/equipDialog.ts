@@ -17,14 +17,18 @@ class EquipDialog extends Base {
         this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchChange, this);
         this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onCloseReset, this);
-        this.createEquip()
         this.init();
     }
 
     /** 初始化数据 */
     private init():void{
+
+        this.equipGroup = new eui.Group();
+        this.scrollGroup.addChild(this.equipGroup);
+
         this.resetGroup = new eui.Group();
         this.scrollGroup.addChild(this.resetGroup);
+
         this.reset_list = [];
         this.reset_btn_list = [];
         this.img_star_list = [];
@@ -37,24 +41,8 @@ class EquipDialog extends Base {
             this.reset_btn_list[i] = new eui.Image();
             this.img_star_list[i] = new egret.Bitmap();
             this.txt_attr_list[i] = new egret.TextField();
-        }
-    }
-
-    /**
-     * 创建武器组
-     */
-    private createEquip():void {
-
-        this.equipGroup = new eui.Group();
-        this.scrollGroup.addChild(this.equipGroup);
-
-        let equip_data = [24, 5, 7, 9, 11, 22, 3, 4, 6, 18];
-        for (let i = 0; i < equip_data.length; i++) {
-            let equipInfo:modEquip.EquipInfo = new modEquip.EquipInfo();
-            equipInfo.Id = equip_data[i];
-            equipInfo.Star = Math.ceil(equip_data[i] / 4);
-            this.insertAttrType(equipInfo);
-            modEquip.EquipData.GetInstance().Add(equipInfo);
+            this.txt_attr_list[i].bold = true;
+            this.txt_attr_list[i].fontFamily = "Microsoft YaHei";
         }
 
         for(let i:number = 0; i < 6; i++){
@@ -65,11 +53,14 @@ class EquipDialog extends Base {
 
         this.imgClick = new egret.Bitmap( RES.getRes("equip_0009_png"));
         this.btn_weapon.currentState = "down";
+        this.btn_close.visible = false;
 
-        this.CreateGoods();
+        this.Show();
 
         let len = modEquip.EquipData.GetInstance().GetEquipNum();
-        if(len > 0) this.ShowGoodsInfo(0);
+        if(len > 0){
+            this.ShowGoodsInfo(0);
+        } 
         else this.imgClick.visible = false;
     }
 
@@ -104,7 +95,6 @@ class EquipDialog extends Base {
         let id = parseInt(target.name);
         if(this.goods_index == id) return;
 
-        Common.SetXY(this.imgClick, target.x, target.y);
         this.goods_index = id;
         this.ShowGoodsInfo(id);
     }
@@ -144,10 +134,11 @@ class EquipDialog extends Base {
     }
 
     /** 创建物品信息 */
-    public CreateGoods():void{
+    public Show():void{
 
         //移除所有的对象
         for(let i:number = 0; i < this.weapon_list.length; i++) this.weapon_list.pop();
+        this.weapon_list = [];
         this.equipGroup.removeChildren();
 
         //获得当前拥有的物品
@@ -160,10 +151,10 @@ class EquipDialog extends Base {
             img.source = `Sequip${25-equip_list[i].Id}_png`;
             this.equipGroup.addChild(img); 
             img.name = i + "";
-            this.weapon_list.push(img);
-            img.x = 100*col;
-            img.y = 100*raw;
+            img.x = 4 +104*col;
+            img.y = 4 +104*raw;
             img.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchGoods, this);
+            this.weapon_list.push(img);
 
             //判断当前选择的物品再哪里 因为是重新创建所以要做一个判断
              if(this.equip_info){
@@ -186,6 +177,8 @@ class EquipDialog extends Base {
             {text:"100", style:{"textColor":0xf28b01}}
         ]
 
+        Common.SetXY(this.imgClick, this.weapon_list[index].x, this.weapon_list[index].y);
+        
         this.showEquipStar(this.equip_info.Star);
     }
 
@@ -200,15 +193,6 @@ class EquipDialog extends Base {
             {
                 this.star_list[i].texture = RES.getRes("star_00_png");
             }
-        }
-    }
-
-    /** 插入属性类型和值 */
-    private insertAttrType(equipInfo:modEquip.EquipInfo):void{
-        for(let i:number = 1; i <= equipInfo.Star; i++){
-            let type = i % 3 == 0 ? 3: i % 3;
-            let attrType:modEquip.AttrType = new modEquip.AttrType(type, Math.floor(100 / i));
-            equipInfo.InsertAttrType(attrType);
         }
     }
 
@@ -283,11 +267,12 @@ class EquipDialog extends Base {
 
     private onUpStar(event:egret.Event):void{
         this.equip_up_star.removeEventListener(modEquip.EquipSource.UPSTAR, this.onUpStar, this);
+
         if(event.data == true){
-            this.CreateGoods();
             let starIndex = this.equip_info.Star - 1;
             this.lab_lv.textFlow = <Array<egret.ITextElement>>[{text:"等级: 0/", style:{"textColor":0x877575}},{text:"100", style:{"textColor":0xf28b01}}]
             this.star_list[starIndex].texture = RES.getRes(modEquip.GetEquipLvFromValue(this.equip_info.GetPointTypeFromIndex(starIndex).Value).img);
+            this.Show();
             this.showResetGroup();
         }
     }

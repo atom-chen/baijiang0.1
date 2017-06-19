@@ -2,7 +2,7 @@
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
     <e:Image source="mask_png" width="5680" height="3200" x="-2272" y="-1280"/>
 	<e:Image x="70" y="46" source="shop_popupBg1_png"/>
-	<e:Label text="商品信息" x="484.01" y="80.01" textColor="0xdedede" fontFamily="Microsoft YaHei" bold="true" size="40"/>
+	<e:Label text="商品信息" x="484.01" y="80.01" textColor="0xdedede" fontFamily="Microsoft YaHei" bold="true" size="40" visible="false"/>
 	<e:Button id="btn_back" label="" x="985" y="82">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
@@ -25,4 +25,5 @@
 
 	</e:Button>
 	<e:Image source="crystal_0002_png" x="496" y="493"/>
+	<e:Image source="title_00012_png" x="496" y="82"/>
 </e:Skin>

@@ -52,12 +52,13 @@ class ChangeEquipPop extends Base {
 
     /**设置弹出的内容显示 */
     public show():void {
-        for (let i = 0; i < Common.userData.equip.length; i++) {
+        let equipData:modEquip.EquipData = modEquip.EquipData.GetInstance();
+        for (let i = 0; i < equipData.GetEquipNum(); i++) {
             let equipImage:eui.Image = new eui.Image();
             equipImage.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
-            let equip = Common.userData.equip[i];
+            let id = equipData.GetEquipFromIndex(i).Id;
             equipImage["id"] = i;
-            equipImage.source = `Sequip${25-equip["id"]}_png`;
+            equipImage.source = `Sequip${25-id}_png`;
             equipImage.x = 0;
             equipImage.y = 0;
             this.equipGroup[i]["image"] = equipImage;
@@ -67,7 +68,7 @@ class ChangeEquipPop extends Base {
             this.img_selectBox = Utils.createBitmap("iconbg_0002_png");
             this.img_selectBox.visible = false;
         }
-        if (Common.userData.equip.length >= 1) {
+        if (equipData.GetEquipNum() >= 1) {
             this.img_selectBox.visible = true;
             this.equipGroup[this.selectIndex].addChild(this.img_selectBox);
         }

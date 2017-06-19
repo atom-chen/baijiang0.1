@@ -56,7 +56,7 @@ class Hero extends BaseGameObject {
         //     armatureContainer.scaleY = 1.5;
         //     this.skillEffectArmature.push(armatureContainer);
         // }
-        this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(skillArmature, skillArmature, 20), [
+        this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(skillArmature, skillArmature, 10), [
             Hero.Effect_Skill01,
             Hero.Effect_SKill02,
             Hero.Effect_SKill03
@@ -79,7 +79,7 @@ class Hero extends BaseGameObject {
         this.name = name;
         this.offset = [[3, -111], [75, -107], [119, -48], [75, 14], [0, 23]];
         // this.offset = [[2, -74], [49, -71], [79, -32], [50, 9], [0, 15]]
-        this.speed = 30;
+        this.speed = 40;
         this.atk_range = 200;
         this.atk_speed = 150;
         this.combo = 0;
@@ -243,6 +243,9 @@ class Hero extends BaseGameObject {
                         this.isHit = true;
                         this.combo ++;
                     }
+                    if (this.isAttackBuff(this.enermy[i])) {
+                        // Common.log("击晕了");
+                    }
                     this.enermy[i].gotoHurt();
                 }else{
                 }
@@ -301,7 +304,7 @@ class Hero extends BaseGameObject {
     /**奔跑 */
     public gotoRun() {
         this.curState = "run";
-        let useSpeed:number = this.speed * 0.15;
+        let useSpeed:number = this.speed * 0.1;
         this.radian = MathUtils.getRadian2(this.x, this.y, this.endX, this.endY);
         let animation = this.getWalkPosition("run", this.radian);
         this.deltaX = Math.cos(this.radian) * useSpeed;
@@ -361,6 +364,29 @@ class Hero extends BaseGameObject {
             return;
         }
         SceneManager.battleScene.battleSceneCom.onHurt();
+    }
+
+    /**
+     * 检测是否有普通攻击的buff
+     */
+    private isAttackBuff(target:any):boolean {
+        let status:boolean = false;
+        for (let i = 0; i < this.buff.length; i++) {
+            //击晕(以10%概率测试)
+            if (this.buff[i].buffData.id == 7) {
+                let random = MathUtils.getRandom(1, 100);
+                if (random <= this.buff[i].buffData.probability) {
+                    this.buff[i].update(target);
+                    status = true;
+                }
+            }
+            //增加属性
+            else if (this.buff[i].buffData.id == 8) {
+                this.buff[i].update(this);
+                status = true;
+            }
+        }
+        return status;
     }
 
     /**攻击 */

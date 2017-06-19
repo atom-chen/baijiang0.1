@@ -12,7 +12,6 @@ class ReadyDialog extends Base {
         this.tcHero = RES.getRes("TcHero_json");
         this.tcBiography = RES.getRes("TcBiography_json");
         this.tcSkill = RES.getRes("TcSkill_json");
-        // ReadyDialog.instance = this;
     }
 
     private uiCompleteHandler():void {
@@ -80,7 +79,7 @@ class ReadyDialog extends Base {
                 });
             break;
             case this.btn_change:
-                if (Common.userData.equip.length == 0) {
+                if (modEquip.EquipData.GetInstance().GetEquipNum() == 0) {
                     Animations.showTips("没有可以更换的武器", 1, true);
                     return;
                 }

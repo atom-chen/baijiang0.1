@@ -20,5 +20,13 @@
         "buff":[
             {"name":"Dodge", "id":5}
         ]
+    },
+    "zhaoyun":{
+        "attr":[],
+        "skill1":"SevenInOut",
+        "buff":[
+            {"name":"Stunned", "id":7},
+            {"name":"AddProperty", "id":8}
+        ]
     }
 }

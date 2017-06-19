@@ -24,4 +24,5 @@
 
 	</e:Button>
 	<e:Image source="Title_0002_png" x="481" y="79"/>
+	<e:Image source="equip_0011_png" x="109.68" y="419.67" width="908"/>
 </e:Skin>

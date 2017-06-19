@@ -135,7 +135,7 @@ class EquipUpStarWindow extends Base{
                 img.source = `Sequip${25-list[i].Id}_png`;
                 this.scrollGroup.addChild(img); 
                 this.equip_list.push(img);
-                Common.SetXY(img, 100*col, 100*raw);
+                Common.SetXY(img, 4 + 104*col, 4 + 104*raw);
                 img.name = index + "";
                 index++;
                 this.id_list.push(list[i].Id)

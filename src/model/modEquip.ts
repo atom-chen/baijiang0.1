@@ -5,7 +5,7 @@ namespace modEquip {
 
     /**装备的通用资源 */
     export class EquipSource{
-        public static EQUIPLV:number = 100;
+        public static EQUIPLV:number = 50;
         public static RESETATTR:string = "RESETATTR";
         public static UPSTAR:string = "UPSTAR";
         public static UPGRADE:string = "UPGRADE";
@@ -158,11 +158,27 @@ namespace modEquip {
             return this.equip_list.length;
         }
 
-        /** 活动指定的物品 */
+        /** 根据索引获得指定的物品 */
         public GetEquipFromIndex(index:number):EquipInfo{
             if(index < 0 || index > this.equip_list.length) return;
 
             return this.equip_list[index];
+        }
+
+        /** 根据指定的id获得武器 */
+        public GetEquipFromId(id:number):EquipInfo{
+            for(let i in this.equip_list){
+                if(this.equip_list[i].Id == id) return this.equip_list[i];
+            }
+
+            return null;
+        }
+
+        /** 插入装备信息 */
+        public InsertEquipInfo(id:number):void{
+            let info:EquipInfo = new EquipInfo();
+            info.Id = id;
+            this.equip_list.push(info);
         }
 
         /** 移除添加的洗练的装备 

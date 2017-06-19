@@ -8,11 +8,11 @@ class Enermy extends BaseGameObject {
 
     public initDragonBonesArmature(name:string):void {
         //受伤动画
-        this.effectArmature.register(DragonBonesFactory.getInstance().makeArmature("daoguang_effect", "daoguang_effect", 4.0), [
+        this.effectArmature.register(DragonBonesFactory.getInstance().makeArmature("daoguang_effect", "daoguang_effect", 8), [
             BaseGameObject.Action_Hurt
         ]);
         //死亡受伤动画
-        this.effectArmature.register(DragonBonesFactory.getInstance().makeArmature("blood_die", "blood_die", 4.0), [
+        this.effectArmature.register(DragonBonesFactory.getInstance().makeArmature("blood_die", "blood_die", 8), [
             Enermy.Action_HurtDie
         ]);
         //出场动画
@@ -182,6 +182,12 @@ class Enermy extends BaseGameObject {
     /****************************************************/
 
     /***********************其他函数**********************/
+    /**
+     * 设置状态
+     */
+    public setCurState(state:string):void {
+        this.curState = state;
+    }
     /**
      * 移动到指定的位置
      * 

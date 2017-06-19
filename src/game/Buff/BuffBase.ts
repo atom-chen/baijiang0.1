@@ -17,6 +17,7 @@ class BuffBase {
         this.buffData.description = "";
         this.buffData.duration = 0;
         this.buffData.frequency = 0;
+        this.buffData.probability = 100;
         this.buffData.superpositionType = SuperpositionType.SuperpositionType_None;
         this.buffData.buffType = BuffType.BuffType_DeBuff;
         this.buffData.disperseType = DisperseType.DisperseType_NoClear;
