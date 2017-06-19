@@ -39,16 +39,17 @@
     <!--这个标签为不通过egret提供的第三方库的方式使用的 javascript 文件，请将这些文件放在libs下，但不要放在modules下面。-->
     <!--other_libs_files_start-->
     <script egret="lib" src="polyfill/promise.js" src-release="polyfill/promise.min.js"></script>
+    <script egret="lib" src="libs/kbengine/kbengine.js" src-release="libs/kbengine/kbengine.min.js"></script>
     <!--other_libs_files_end-->
 
     <!--这个标签会被替换为项目中所有的 javascript 文件。删除 game_files 标签后，项目文件加载列表将不会变化，请谨慎操作！-->
     <!--game_files_start-->
 	<script egret="game" src="bin-debug/game/Object/BaseGameObject.js"></script>
-	<script egret="game" src="bin-debug/game/Buff/BuffBase.js"></script>
 	<script egret="game" src="bin-debug/game/Machine/BaseStateMachine.js"></script>
 	<script egret="game" src="bin-debug/game/Object/Enermy.js"></script>
 	<script egret="game" src="bin-debug/game/Skill/SkillBase.js"></script>
 	<script egret="game" src="bin-debug/Base.js"></script>
+	<script egret="game" src="bin-debug/game/Buff/BuffBase.js"></script>
 	<script egret="game" src="bin-debug/mainScene/equipDialog.js"></script>
 	<script egret="game" src="bin-debug/component/shopItemIR.js"></script>
 	<script egret="game" src="bin-debug/component/TalentIR.js"></script>
@@ -83,7 +84,7 @@
 	<script egret="game" src="bin-debug/localStorage/LocalStorage.js"></script>
 	<script egret="game" src="bin-debug/Main.js"></script>
 	<script egret="game" src="bin-debug/mainScene/BattleScene.js"></script>
-	<script egret="game" src="bin-debug/component/ScrollView.js"></script>
+	<script egret="game" src="bin-debug/utils/utilsClass/ShakeTools.js"></script>
 	<script egret="game" src="bin-debug/mainScene/equipInfoDialog.js"></script>
 	<script egret="game" src="bin-debug/mainScene/MainScene.js"></script>
 	<script egret="game" src="bin-debug/mainScene/ReadyDialog.js"></script>
@@ -122,7 +123,7 @@
 	<script egret="game" src="bin-debug/utils/Utils.js"></script>
 	<script egret="game" src="bin-debug/utils/utilsClass/LEvent.js"></script>
 	<script egret="game" src="bin-debug/utils/utilsClass/LListener.js"></script>
-	<script egret="game" src="bin-debug/utils/utilsClass/ShakeTools.js"></script>
+	<script egret="game" src="bin-debug/component/ScrollView.js"></script>
 	<!--game_files_end-->
 	<!--<script src="https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js"></script>-->
 	<script src="http://api.egret-labs.org/games/www/static/egreth5sdk.js"></script>

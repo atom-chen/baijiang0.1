@@ -112,6 +112,7 @@ class Main extends eui.UILayer {
         if(this.isThemeLoadEnd && this.isResourceLoadEnd){
             //加载配置文件
             ConfigManager.loadConfig();
+            Common.initKBEngine();
             this.startCreateScene();
         }
     }

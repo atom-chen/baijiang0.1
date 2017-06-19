@@ -162,4 +162,14 @@ namespace Common {
         obj.x = x;
         obj.y = y;
     }
+
+    /**kbengine */
+    export var kbengine;
+    /**初始化kbengine */
+    export function initKBEngine() {
+        let args = KBEngine.getInstance();
+        // args.port = 3306;
+        KBEngine.create(args);
+        kbengine = KBEngine;
+    }
 }
