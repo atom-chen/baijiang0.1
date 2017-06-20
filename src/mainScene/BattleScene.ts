@@ -11,7 +11,7 @@ class BattleScene extends Base {
         this.produceTimer = new egret.Timer(2000, 0);
         this.timer.addEventListener(egret.TimerEvent.TIMER, this.timerFunc, this);
         this.produceTimer.addEventListener(egret.TimerEvent.TIMER, this.timerCreateMonster, this);
-        this.initBattleDragonBones();
+        // this.initBattleDragonBones();
     }
     protected createChildren(): void{
         this.createMap();
@@ -73,21 +73,6 @@ class BattleScene extends Base {
      */
     public stopProduce() {
         this.produceTimer.stop();
-    }
-
-    /**
-     * 初始化战斗使用的动画数据
-     */
-    private initBattleDragonBones():void {
-        let arr:Array<string> = ["daoguang_effect", "diaochan", "diaochan_skill01", "monster01", "enter_monster_01", "Boss01",
-        "Boss01_effect01", "blood_die", "diaochan_skill", "zhaoyun", "zhaoyun_skill", "buxiaoman", "buxiaoman_skill"];
-        for (let i = 0; i < arr.length; i++) {
-            let name:string = arr[i];
-            let skeletonData = RES.getRes(name+"_ske_json");
-            let textureData = RES.getRes(name+"_tex_json");
-            let texture = RES.getRes(name+"_tex_png");
-            DragonBonesFactory.getInstance().initDragonBonesArmatureFile(skeletonData, textureData, texture);
-        }
     }
 
     private timerFunc(event:egret.TimerEvent) {
@@ -244,7 +229,7 @@ class BattleScene extends Base {
     private createHero():void {
         this.hero = ObjectPool.pop("Hero");
         GameData.heros.push(this.hero);
-        this.hero.init("zhaoyun");
+        this.hero.init(GameData.curHero);
         this.hero.x = Common.SCREEN_W/2;
         this.hero.y = Common.SCREEN_H/2;
         // this.hero.anchorOffsetY = -33;

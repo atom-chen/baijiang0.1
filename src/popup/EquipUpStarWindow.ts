@@ -27,9 +27,7 @@ class EquipUpStarWindow extends Base{
     private initData():void{
 
         for(let i:number = 0; i < 3; i++){
-            this.changeObjectStatus(this.source_list[i], "-1", "");
-            this.icon_list[i].visible = false;
-            this.click_list[i] = 0;
+            this.set_obj_attr(i, false, 0,"-1", "");
         }
 
         this.lab_sole.text = "";
@@ -96,23 +94,14 @@ class EquipUpStarWindow extends Base{
 
     private onTouchSource(event:egret.TouchEvent):void{
         let target = event.target;
-        let index = 0;
 
-        switch(target){
-            case this.img_source1:
-                index = 0;
+        for(let i:number = 0; i < this.source_list.length; i++){
+            if(target.name == this.source_list[i].name){
+                this.set_obj_attr(i, false, 0,"-1", "");
                 break;
-            case this.img_source2:
-                index = 1;
-                break;
-            case this.img_source3:
-                index = 2;
-                break;
+            }
         }
-
-        this.click_list[index] = 0;
-        this.icon_list[index].visible = false;
-        this.changeObjectStatus(target, "-1", "");
+       
         this.lab_sole.text = "";
     }
 
@@ -148,10 +137,23 @@ class EquipUpStarWindow extends Base{
         }
     }
 
+    private isSameEquip(target:any):boolean{
+        let isSame:boolean = false;
+        for(let i:number = 0; i < this.source_list.length; i++){
+            if(target.name == this.source_list[i].name){
+                isSame = true;
+                this.set_obj_attr(i, false, 0,"-1", "");
+                break;
+            }
+        }
+
+        return isSame;
+    }
+
     private onTouchEquip(event:egret.TouchEvent):void{
         let target = event.target;
 
-        if(target.name == this.img_source1.name || target.name == this.img_source2.name || target.name == this.img_source3.name) return;
+       if(this.isSameEquip(target)) return;
 
         let index = this.getEmptyIndex();
         if(index == -1){
@@ -160,18 +162,7 @@ class EquipUpStarWindow extends Base{
 
         this.icon_list[index].visible = true;
         Common.SetXY(this.icon_list[index], target.x, target.y);
-        switch(index)
-        {
-            case 0:
-                this.changeObjectStatus(this.img_source1, target.name, target.source);
-                break;
-            case 1:
-                this.changeObjectStatus(this.img_source2, target.name, target.source);
-                break;
-            case 2:
-                this.changeObjectStatus(this.img_source3, target.name, target.source);
-                break;
-        }
+        this.changeObjectStatus(this.source_list[index], target.name, target.source);
 
         if(this.isEnough()) this.lab_sole.text = "10000";
     }
@@ -200,6 +191,12 @@ class EquipUpStarWindow extends Base{
         if(obj == null) return;
         obj.source = source;
         obj.name   = name;
+    }
+
+    private set_obj_attr(index:number, isVisible:boolean, clickNum:number, strName:string, strSource:string):void{
+        this.changeObjectStatus(this.source_list[index], strName, strSource);
+        this.icon_list[index].visible = isVisible;
+        this.click_list[index] = clickNum;
     }
 
 

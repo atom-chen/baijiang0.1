@@ -90,7 +90,7 @@ class DragonBonesArmatureContainer extends egret.DisplayObjectContainer {
     /**
      * 播放动作
      */
-    public play(action:string, playTimes:number = undefined, type:number = 1, frame:number = null):void {
+    public play(action:string, playTimes:number = undefined, type:number = 1, frame:number = null, timeScale:number = 1):void {
         if (this.actions[action] == null) {
             Common.log("不存在动作---->"+action+typeof(action));
             return;
@@ -105,22 +105,22 @@ class DragonBonesArmatureContainer extends egret.DisplayObjectContainer {
             this.addChild(newArmature);
             this.curArmatureIndex = newArmatureIndex;
             if (type == 1) {
-                newArmature.play(action, playTimes);
+                newArmature.play(action, playTimes, timeScale);
             }else{
-                newArmature.playByFrame(action, frame, playTimes);
+                newArmature.playByFrame(action, frame, playTimes, timeScale);
             }
         }
     }
 
     /**
-     * 播放多个动画
+     * 设置动画的播放速度
      */
-    public playMulti(actions:Array<string>, id:Array<number>, playTimes:Array<number> = null) {
-        if (this.actions[actions[0]] == null) {
-            Common.log("不存在动作---->"+actions[0]+typeof(actions[0]));
+    public setTimeScale(action:string, value:number) {
+        if (this.actions[action] == null) {
+            Common.log("不存在动作---->"+action+typeof(action));
             return;
         }
-        let newArmatureIndex:number = this.actions[actions[0]];
+        let newArmatureIndex:number = this.actions[action];
         if (newArmatureIndex != this.curArmatureIndex) {
             this.remove()
         }
@@ -129,7 +129,7 @@ class DragonBonesArmatureContainer extends egret.DisplayObjectContainer {
         if (newArmature) {
             this.addChild(newArmature);
             this.curArmatureIndex = newArmatureIndex;
-            newArmature.playMuti(actions, id, playTimes);
+            newArmature.setTimeScale(action, value);
         }
     }
 

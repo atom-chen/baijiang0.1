@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*">
 	<e:Image source="tianfu_0001_png" x="0" y="0" width="1136" height="640"/>
+	<e:Image x="950" y="40" width="160" height="44" source="crystal_0001_png"/>
+	<e:Label id="lab_soul" text="99999" y="50" size="25" fontFamily="Microsoft YaHei" bold="true" x="1020" textColor="0x2D6EA6"/>
 	<e:Image source="tianfu_0002_png" x="127.66" y="8.5"/>
 	<e:Label text="浩劫" x="53" y="593" textColor="0x545454" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" width="218" anchorOffsetY="0" height="38" visible="false"/>
 	<e:Label text="风行" x="404" y="593" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" width="218" anchorOffsetY="0" height="38" textColor="0x545454" visible="false"/>
@@ -22,17 +24,17 @@
 			</e:Skin>
 		</e:skinName>
 	</e:Button>
-	<e:Button id="btn_reset" label="重置" x="992" y="96" anchorOffsetX="0" anchorOffsetY="0">
+	<e:Button id="btn_reset" label="重置" x="992" y="100" anchorOffsetX="0" anchorOffsetY="0">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="btn_reset_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-			<e:Label id="labelDisplay" bold="true" fontFamily="Microsoft YaHei" size="25" size.down="24" textColor="0x260303" horizontalCenter="0" verticalCenter="-6"/>
+			<e:Label id="labelDisplay" bold="true" fontFamily="Microsoft YaHei" size="25" size.down="24" textColor="0x260303" horizontalCenter="0" verticalCenter="-4"/>
 			</e:Skin>
 		</e:skinName>
 	</e:Button>
-	<e:Image source="power_0001_png" x="954.85" y="47"/>
+	<e:Image source="power_0001_png" x="780" y="40"/>
 
-	<e:Label id="lab_power" text="0" y="52.49" fontFamily="Microsoft YaHei" textColor="0xffd375" size="30" bold="true" right="44"/>
+	<e:Label id="lab_power" text="99999" y="50" fontFamily="Microsoft YaHei" textColor="0xffd375" size="25" bold="true" x="850" textAlign="left"/>
 	<e:Button id="btn_back" label="" x="14" y="14" width="104" height="68">
 		<e:skinName>
 		<e:Skin states="up,down,disabled">
@@ -86,10 +88,11 @@
 		<e:Button id="btn_upgrade" label="升级" x="479" y="422">
 			<e:skinName>
 				<e:Skin states="up,down,disabled">
-				<e:Image width="100%" height="100%" source="button_0019_png"/>
-				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-8" fontFamily="Microsoft YaHei" bold="true" size.down="27" textColor="0x192608"/>
+				<e:Image width="100%" height="100%" source="button_0004_png"/>
+				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-8" fontFamily="Microsoft YaHei" bold="true" size.down="27" textColor="0x260303"/>
 				</e:Skin>
 			</e:skinName>
+
 
 		</e:Button>
 		<e:Label id="lab_consume" text="升级需消耗xxxx能量点" fontFamily="Microsoft YaHei" size="22" horizontalCenter="-8" verticalCenter="199" bold="true" textColor="0xa79b6b"/>

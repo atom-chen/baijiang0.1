@@ -42,20 +42,6 @@ class Hero extends BaseGameObject {
         /**从配置文件读取技能动画 */
         let heroConfig = ConfigManager.heroConfig[name];
         let skillArmature = `${name}_skill`;
-        // this.skillEffect = heroConfig["animation"];
-        // let arrEffect = Object.keys(this.skillEffect);
-        // let armatureName = `${name}_skill`;
-        // this.skillEffectArmature = [];
-        // for (let i = 0; i < arrEffect.length; i++) {
-        //     let armatureContainer:DragonBonesArmatureContainer = new DragonBonesArmatureContainer();
-        //     this.addChild(armatureContainer);
-        //     armatureContainer.register(DragonBonesFactory.getInstance().makeArmature(armatureName, armatureName, 4.0), [
-        //         this.skillEffect[arrEffect[i]],
-        //     ]);
-        //     armatureContainer.scaleX = 1.5;
-        //     armatureContainer.scaleY = 1.5;
-        //     this.skillEffectArmature.push(armatureContainer);
-        // }
         this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(skillArmature, skillArmature, 10), [
             Hero.Effect_Skill01,
             Hero.Effect_SKill02,
@@ -312,7 +298,8 @@ class Hero extends BaseGameObject {
         this.reverse(this, this.radian);
         if (!this.isPlay || this.lastAnimation != animation) {
             this.lastAnimation = animation;
-            this.armature.play(animation, 0);
+            this.armature.play(animation, 0, 1, 0, 2);
+            // this.armature.setTimeScale(animation, 2);
             this.isPlay = true;
         }
     }
@@ -330,8 +317,9 @@ class Hero extends BaseGameObject {
             }
             //回避伤害(以40%概率测试)
             else if (this.buff[i].buffData.id == 5) {
-                let random = MathUtils.getRandom(100);
-                if (random <= 40) {
+                let random = MathUtils.getRandom(1, 100);
+                if (random <= 90) {
+                    Common.log("闪避");
                     this.buff[i].update();
                     return true;
                 }
@@ -464,6 +452,9 @@ class Hero extends BaseGameObject {
             case "idleEnd":
                 this.armature.visible = false;
             break;
+            case "disappear":
+                Common.log("disappear")
+                this.visible = false;
             case "evtStart":
                 this.skill.update(this);
             break;

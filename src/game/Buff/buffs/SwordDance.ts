@@ -108,7 +108,7 @@ class SwordDance extends BuffBase {
         if (this.isTimeOut) {
             this.isTimeOut = false;
             this.ShowEffect();
-            this.target.skillArmature.play(this.effectName, 1);
+            this.target.skillArmature.play(this.effectName, 1, 1, 0, 2);
             this.position(this.target.skillArmature);
             let duration = this.buffData.cd * 1000;
             TimerManager.getInstance().doTimer(duration, 0, this.buffEnd, this);

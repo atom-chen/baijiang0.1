@@ -3,10 +3,10 @@
 	<e:Image source="shop_0001_png" x="0" y="0" height="640"/>
 	<e:Image source="shop_0005_png" x="144.47" y="8.84"/>
 
-	<e:Image x="759" y="38" width="160" height="44" source="sole_0001_png"/>
-	<e:Image x="951" y="38" width="160" height="44" source="crystal_0001_png"/>
-	<e:Label id="lab_money" text="99999" y="45" size="27" fontFamily="Microsoft YaHei" bold="true" x="833" textColor="0x851a9b"/>
-	<e:Label id="lab_soul" text="99999" y="45" size="27" fontFamily="Microsoft YaHei" bold="true" x="1022" textColor="0x2d6ea6"/>
+	<e:Image x="780" y="40" width="160" height="44" source="sole_0001_png"/>
+	<e:Image x="950" y="40" width="160" height="44" source="crystal_0001_png"/>
+	<e:Label id="lab_money" text="99999" y="50" size="25" fontFamily="Microsoft YaHei" bold="true" x="851.65" textColor="0x851a9b"/>
+	<e:Label id="lab_soul" text="99999" y="50.66" size="25" fontFamily="Microsoft YaHei" bold="true" x="1020" textColor="0x2d6ea6"/>
 
 
 

@@ -21,8 +21,8 @@ class Enermy extends BaseGameObject {
         ]);
 
         //buff动画
-        this.buffArmature.register(DragonBonesFactory.getInstance().makeArmature("diaochan_skill01", "diaochan_skill01", 1.0), [
-            "skill01"
+        this.buffArmature.register(DragonBonesFactory.getInstance().makeArmature("buff", "buff", 10), [
+            "Burning"
         ]);
 
         this.effectArmature.scaleX = 1.5;

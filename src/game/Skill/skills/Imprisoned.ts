@@ -16,7 +16,7 @@ class Imprisoned extends SkillBase {
     public start(animation:string, target:any) {
         super.start(animation, target);
         target.armature.play(BaseGameObject.Action_Idle, 0);
-        target.skillArmature.play(animation, 1);
+        target.skillArmature.play(animation, 1, 1, 0, 2);
     }
 
     public update(target:any) {

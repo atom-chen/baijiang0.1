@@ -9,8 +9,10 @@ class ChangeEquipPop extends Base {
     }
 
     protected createChildren(): void{
-        this.selectIndex = 0;
-        this.createEquip();
+        this.selectId = 0;
+        this.changeId = 0;
+        this.img_list = [];
+        this.img_selectBox = Utils.createBitmap("iconbg_0002_png");
     }
 
     protected childrenCreated():void {
@@ -22,29 +24,18 @@ class ChangeEquipPop extends Base {
         this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onBtnHandler, this);
     }
 
-    private createEquip():void {
-        for (let i = 1; i <= 24; i++) {
-            let equipGroup:eui.Group = new eui.Group();
-            this.equipGroup.push(equipGroup)
-            this.scrollGroup.addChild(equipGroup);
-            let bg1:eui.Image = new eui.Image();
-            bg1.source = "iconbg_0001_png";
-            equipGroup.addChild(bg1);
-            equipGroup.x = 115*((i-1)%7);
-            equipGroup.y = 115*(Math.ceil(i/7)-1);
-        }
-    }
-
     /**按钮监听 */
     private onBtnHandler(event:egret.TouchEvent):void {
-        switch (event.currentTarget) {
+        
+        switch (event.target) {
             case this.btn_change:
                 this.parent.removeChild(this);
-                if (Common.userData.equip.length == 0) return;
-                let id = Common.userData.equip[this.selectIndex]["id"];
-                Common.curPanel.updateUI(id);
+                if (modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
+                this.changeId = this.selectId;
+                this.dispatchEventWith(modEquip.EquipSource.CHANGEEQUIP, false, this.changeId);
             break;
             default:
+                this.selectId = this.changeId;
                 this.parent.removeChild(this);
             break;
         }
@@ -52,38 +43,47 @@ class ChangeEquipPop extends Base {
 
     /**设置弹出的内容显示 */
     public show():void {
+
+       for(let i:number = 0; i < this.img_list.length; i++) this.img_list.pop();
+       this.img_list = [];
+       this.scrollGroup.removeChildren();
+
+       let col, raw;
         let equipData:modEquip.EquipData = modEquip.EquipData.GetInstance();
         for (let i = 0; i < equipData.GetEquipNum(); i++) {
-            let equipImage:eui.Image = new eui.Image();
-            equipImage.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
+            this.img_list[i] = new eui.Image();
+            this.img_list[i].addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
             let id = equipData.GetEquipFromIndex(i).Id;
-            equipImage["id"] = i;
-            equipImage.source = `Sequip${25-id}_png`;
-            equipImage.x = 0;
-            equipImage.y = 0;
-            this.equipGroup[i]["image"] = equipImage;
-            this.equipGroup[i].addChild(equipImage);
+            this.img_list[i]["id"] = id;
+            this.img_list[i].source = `Sequip${25-id}_png`;
+            raw = Math.floor(i / 7);
+            col = i % 7;
+            this.img_list[i].x = col * 115;
+            this.img_list[i].y = raw * 115;
+            this.scrollGroup.addChild(this.img_list[i]);
+
+            if(this.changeId == id){
+                Common.SetXY(this.img_selectBox, this.img_list[i].x, this.img_list[i].y);
+            }
         }
-        if (!this.img_selectBox) {
-            this.img_selectBox = Utils.createBitmap("iconbg_0002_png");
-            this.img_selectBox.visible = false;
-        }
+
+        this.scrollGroup.addChild(this.img_selectBox);
+
         if (equipData.GetEquipNum() >= 1) {
+            if(this.changeId == 0) this.selectId = this.img_list[0]["id"];
             this.img_selectBox.visible = true;
-            this.equipGroup[this.selectIndex].addChild(this.img_selectBox);
         }
     }
 
     /**点击装备 */
     private onEquip(event:egret.TouchEvent):void {
         let target = event.currentTarget;
-        this.selectIndex = target.id;
-        this.img_selectBox.visible = true;
-        this.equipGroup[this.selectIndex].addChild(this.img_selectBox);
+        this.selectId = target.id;
+        Common.SetXY(this.img_selectBox, target.x, target.y);
     }
 
+    private img_list:Array<eui.Image>;
 
-    private equipGroup:eui.Group[] = [];
     private scrollGroup:eui.Group;
     /**返回按钮 */
     private btn_back:eui.Button;
@@ -94,5 +94,6 @@ class ChangeEquipPop extends Base {
     /**选中框 */
     private img_selectBox:egret.Bitmap;
     /**选中的图片索引 */
-    private selectIndex:number;
+    private selectId:number;
+    private changeId:number;
 }

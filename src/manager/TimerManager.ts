@@ -28,6 +28,7 @@ class TimerManager {
 
     /**对象排序，并重新设置层级 */
     private objectSort():void {
+        if (!GameData.heros || !GameData.monsters || !GameData.boss || GameData.heros.length == 0) return;
         for (let i = 0; i < GameData.heros.length; i++) {
             this._object.push(GameData.heros[i]);
         }

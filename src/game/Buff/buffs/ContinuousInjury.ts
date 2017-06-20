@@ -26,7 +26,7 @@ class ContinuousInjury extends BuffBase {
 
     /**开始 */
     public buffStart(target:any) {
-        target.gotoWalk();
+        target.gotoRun();
         this.AddEffect(target);
         TimerManager.getInstance().doTimer(1000, this.buffData.duration, this.update, this, this.buffEnd, this);
     }
@@ -64,7 +64,7 @@ class ContinuousInjury extends BuffBase {
     /**刷新数据 */
     public update() {
         if (this.target.hp > 0) {
-            this.target.gotoWalk();
+            this.target.gotoRun();
             this.bloodEffect();
         }
     }
@@ -85,7 +85,7 @@ class ContinuousInjury extends BuffBase {
             break;
             case PostionType.PostionType_Body:
                 target.buffArmature.x = 0;
-                target.buffArmature.y = -45;
+                target.buffArmature.y = 0;
             break;
         }
     }

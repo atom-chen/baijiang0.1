@@ -38,7 +38,6 @@ class SevenInOut extends SkillBase {
         super.start(animation, target);
         this.target = target;
         target.gotoIdle();
-        target.visible = false;
         target.skillArmature.play(animation, 1);
         SceneManager.battleScene.addChild(target.skillArmature);
         target.skillArmature.x = 600;
@@ -47,7 +46,7 @@ class SevenInOut extends SkillBase {
         for (let i = 0; i < this.copySkillArmature.length; i++) {
             egret.setTimeout(()=>{
                 this.copySkillArmature[i].visible = true;
-                this.copySkillArmature[i].play(animation, 1);
+                this.copySkillArmature[i].play(animation, 1, 2, 2);
             }, this, 100 *(i+1));
         }
         egret.setTimeout(()=>{

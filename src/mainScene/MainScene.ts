@@ -16,15 +16,8 @@ class MainScene extends Base {
         this.btn_shop.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_applicate.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
-        this.initData();
+        UserDataInfo.GetInstance().InitEquipInfo();
         this.createFire();
-    }
-
-    private initData():void{
-        let equip_data = [24, 5, 7, 9, 11, 22, 3, 4, 6, 18];
-        for (let i = 0; i < equip_data.length; i++) {
-            modEquip.EquipData.GetInstance().InsertEquipInfo(equip_data[i]);
-        }
     }
 
     /**
@@ -61,6 +54,8 @@ class MainScene extends Base {
 				GameLayerManager.gameLayer().panelLayer.removeChildren();
                 if (!this.readyDialog) {
                     this.readyDialog = new ReadyDialog();
+                }else{
+                    this.readyDialog.show();
                 }
                 Common.curPanel = this.readyDialog;
                 GameLayerManager.gameLayer().panelLayer.addChild(this.readyDialog)

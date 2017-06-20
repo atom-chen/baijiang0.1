@@ -9,6 +9,7 @@ namespace modEquip {
         public static RESETATTR:string = "RESETATTR";
         public static UPSTAR:string = "UPSTAR";
         public static UPGRADE:string = "UPGRADE";
+        public static CHANGEEQUIP:string = "CHANGEEQUIP";
     }
 
     /** 撞瘪的属性类型 */
@@ -49,7 +50,6 @@ namespace modEquip {
            this.id   = 0;
            this.lv   = 0;
            this.star = 0;
-           this.holeNum = 0;
            this.attack = 50;
            this.defend = 10;
            this.blood = 100;
@@ -78,14 +78,6 @@ namespace modEquip {
 
         public get Star(){
             return this.star;
-        }
-
-        public set HoleNum(val:number){
-            this.holeNum = val;
-        }
-
-        public get HoleNum(){
-            return  this.holeNum;
         }
 
         public GetEquipAttr():any{
@@ -120,7 +112,6 @@ namespace modEquip {
         private id:number;          //装备id
         private lv:number;          //装备等级
         private star:number;        //装备星级
-        private holeNum:number;     //装备控数
         private attack:number;      
         private defend:number;
         private blood:number;
@@ -179,6 +170,23 @@ namespace modEquip {
             let info:EquipInfo = new EquipInfo();
             info.Id = id;
             this.equip_list.push(info);
+            this.listSort();
+        }
+
+        private swapData(i:number, j:number):void{
+            let temp:EquipInfo = this.equip_list[i];
+            this.equip_list[i] = this.equip_list[j];
+            this.equip_list[j] = temp;
+        }
+
+        private listSort():void{
+            for(let i:number = 0; i < this.equip_list.length; i++){
+                for(let j:number = i + 1; j < this.equip_list.length; j++){
+                    if(this.equip_list[i].Id < this.equip_list[j].Id){
+                        this.swapData(i, j);
+                    }
+                }
+            }
         }
 
         /** 移除添加的洗练的装备 

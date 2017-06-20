@@ -56,16 +56,13 @@ class EquipDialog extends Base {
         this.btn_close.visible = false;
 
         this.Show();
-
-        let len = modEquip.EquipData.GetInstance().GetEquipNum();
-        if(len > 0){
-            this.ShowGoodsInfo(0);
-        } 
-        else this.imgClick.visible = false;
+        
     }
 
     /** 点击升级按钮 */    
     private onTouchUpGrade(event:egret.TouchEvent):void{
+        if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
+
         if(this.equip_up_window == null){
             this.equip_up_window = new EquipUpWindow();
         }
@@ -95,7 +92,6 @@ class EquipDialog extends Base {
         let id = parseInt(target.name);
         if(this.goods_index == id) return;
 
-        this.goods_index = id;
         this.ShowGoodsInfo(id);
     }
 
@@ -112,6 +108,8 @@ class EquipDialog extends Base {
 
     /** 点击关闭洗练 */
     private onTouchChange(event:egret.TouchEvent):void{
+        if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
+
         if(this.btn_change.currentState == "down") return;
         this.setGroupStatus(false, true, "洗练", "null", "down");
         this.showResetGroup();
@@ -130,44 +128,32 @@ class EquipDialog extends Base {
 
     private onTouchClose():void{
         this.setGroupStatus(true, false, "兵器库", "down", "null");
+        UserDataInfo.GetInstance().SaveEquipInfo();
         GameLayerManager.gameLayer().panelLayer.removeChildren();
     }
 
     /** 创建物品信息 */
     public Show():void{
 
-        //移除所有的对象
-        for(let i:number = 0; i < this.weapon_list.length; i++) this.weapon_list.pop();
-        this.weapon_list = [];
-        this.equipGroup.removeChildren();
+        this.createEquips();
 
-        //获得当前拥有的物品
-        let raw, col;
-        let equip_list = modEquip.EquipData.GetInstance().GetEquipList();
-        for (let i = 0; i < equip_list.length; i++) {
-            raw = Math.floor(i / 6);
-            col = i % 6;
-            let img:eui.Image = new eui.Image();
-            img.source = `Sequip${25-equip_list[i].Id}_png`;
-            this.equipGroup.addChild(img); 
-            img.name = i + "";
-            img.x = 4 +104*col;
-            img.y = 4 +104*raw;
-            img.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchGoods, this);
-            this.weapon_list.push(img);
-
-            //判断当前选择的物品再哪里 因为是重新创建所以要做一个判断
-             if(this.equip_info){
-                if(this.equip_info.Id == equip_list[i].Id){
-                    Common.SetXY(this.imgClick, img.x, img.y);
-                }
-            }
-        }
-        this.equipGroup.addChild(this.imgClick);
+        let len = modEquip.EquipData.GetInstance().GetEquipNum();
+        if(len > 0){
+            this.imgClick.visible = true;
+            this.ShowGoodsInfo(0);
+        } 
+        else 
+        {
+            this.lab_lv.text = "";
+            this.lab_name.text = "";
+            this.img_weapon.source = "";
+            this.imgClick.visible = false;
+        } 
     }
 
     /** 显示物品信息 */
     public ShowGoodsInfo(index:number){
+        this.goods_index = index;
         this.equip_info = modEquip.EquipData.GetInstance().GetEquipFromIndex(index);
         let equip_data = modEquip.TcEquipData.GetInstance().GetEquipInfoFromId(this.equip_info.Id);
         this.lab_name.text = equip_data.name;
@@ -272,7 +258,7 @@ class EquipDialog extends Base {
             let starIndex = this.equip_info.Star - 1;
             this.lab_lv.textFlow = <Array<egret.ITextElement>>[{text:"等级: 0/", style:{"textColor":0x877575}},{text:"100", style:{"textColor":0xf28b01}}]
             this.star_list[starIndex].texture = RES.getRes(modEquip.GetEquipLvFromValue(this.equip_info.GetPointTypeFromIndex(starIndex).Value).img);
-            this.Show();
+            this.createEquips();
             this.showResetGroup();
         }
     }
@@ -290,6 +276,37 @@ class EquipDialog extends Base {
         this.txt_attr_list[index].textColor = data.color;
         this.img_star_list[index].texture = RES.getRes(data.img);
         this.star_list[index].texture = RES.getRes(data.img)
+    }
+
+    private createEquips():void{
+        //移除所有的对象
+        for(let i:number = 0; i < this.weapon_list.length; i++) this.weapon_list.pop();
+        this.weapon_list = [];
+        this.equipGroup.removeChildren();
+
+        //获得当前拥有的物品
+        let raw, col;
+        let equip_list = modEquip.EquipData.GetInstance().GetEquipList();
+        for (let i = 0; i < equip_list.length; i++) {
+            raw = Math.floor(i / 6);
+            col = i % 6;
+            let img:eui.Image = new eui.Image();
+            img.source = `Sequip${25-equip_list[i].Id}_png`;
+            this.equipGroup.addChild(img); 
+            img.name = i + "";
+            img.x = 4 +104*col;
+            img.y = 4 +104*raw;
+            img.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchGoods, this);
+            this.weapon_list.push(img);
+
+            //判断当前选择的物品再哪里 因为是重新创建所以要做一个判断
+             if(this.equip_info){
+                if(this.equip_info.Id == equip_list[i].Id){
+                    Common.SetXY(this.imgClick, img.x, img.y);
+                }
+            }
+        }
+        this.equipGroup.addChild(this.imgClick);
     }
 
     /** 显示洗练的租 */
