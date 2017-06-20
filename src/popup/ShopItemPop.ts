@@ -24,11 +24,15 @@ class ShopItemPop extends Base {
         });
         switch (event.currentTarget) {
             case this.btn_buy:
-                if (Common.userData.soul < 1000) {
-                    Animations.showTips("您的玉魂不足", 1, true);
-                }else{
-                    Common.userData.soul -= 1000;
-                    Animations.showTips("购买武器成功", 1);
+                if (this.content.type == "rmb") {
+                    Animations.showTips("无法购买，现金充值尚未开放", 1, true);
+                }else {
+                    if (Common.userData.soul < this.content.price) {
+                        Animations.showTips("您的玉魂不足", 1, true);
+                    }else{
+                        Common.userData.soul -= this.content.price;
+                        Animations.showTips("购买武器成功", 1);
+                    }
                 }
             break;
             default:
@@ -38,12 +42,15 @@ class ShopItemPop extends Base {
 
     /**设置弹出的内容显示 */
     public show(content:any):void {
+        this.content = content;
         this.img_item.source = content.imgItem;
         this.lab_itemName.text = content.name;
         this.lab_detail.text = content.detail;
         this.btn_buy.label = content.price;
     }
 
+    /**内容 */
+    private content:any;
     /*******************按钮********************/
     private btn_buy:eui.Button;
     private btn_back:eui.Button;

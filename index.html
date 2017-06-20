@@ -39,6 +39,7 @@
     <!--这个标签为不通过egret提供的第三方库的方式使用的 javascript 文件，请将这些文件放在libs下，但不要放在modules下面。-->
     <!--other_libs_files_start-->
     <script egret="lib" src="polyfill/promise.js" src-release="polyfill/promise.min.js"></script>
+    <script egret="lib" src="libs/kbengine/kbengine.js" src-release="libs/kbengine/kbengine.min.js"></script>
     <!--other_libs_files_end-->
 
     <!--这个标签会被替换为项目中所有的 javascript 文件。删除 game_files 标签后，项目文件加载列表将不会变化，请谨慎操作！-->
@@ -49,15 +50,17 @@
 	<script egret="game" src="bin-debug/game/Object/Enermy.js"></script>
 	<script egret="game" src="bin-debug/game/Skill/SkillBase.js"></script>
 	<script egret="game" src="bin-debug/Base.js"></script>
-	<script egret="game" src="bin-debug/mainScene/BattleScene.js"></script>
+	<script egret="game" src="bin-debug/Main.js"></script>
 	<script egret="game" src="bin-debug/component/shopItemIR.js"></script>
 	<script egret="game" src="bin-debug/component/TalentIR.js"></script>
 	<script egret="game" src="bin-debug/enterGameScene/EnterGameScene.js"></script>
 	<script egret="game" src="bin-debug/AssetAdapter.js"></script>
 	<script egret="game" src="bin-debug/game/Buff/BuffData.js"></script>
+	<script egret="game" src="bin-debug/game/Buff/buffs/AddProperty.js"></script>
 	<script egret="game" src="bin-debug/game/Buff/buffs/ContinuousInjury.js"></script>
 	<script egret="game" src="bin-debug/game/Buff/buffs/Dodge.js"></script>
 	<script egret="game" src="bin-debug/game/Buff/buffs/Shield.js"></script>
+	<script egret="game" src="bin-debug/game/Buff/buffs/Stunned.js"></script>
 	<script egret="game" src="bin-debug/game/Buff/buffs/SwordDance.js"></script>
 	<script egret="game" src="bin-debug/game/Buff/buffs/UnableMove.js"></script>
 	<script egret="game" src="bin-debug/game/DragonBones/DragonBonesArmature.js"></script>
@@ -77,12 +80,15 @@
 	<script egret="game" src="bin-debug/game/Skill/SkillData.js"></script>
 	<script egret="game" src="bin-debug/game/Skill/skills/Bristle.js"></script>
 	<script egret="game" src="bin-debug/game/Skill/skills/Imprisoned.js"></script>
+	<script egret="game" src="bin-debug/game/Skill/skills/SevenInOut.js"></script>
 	<script egret="game" src="bin-debug/game/Skill/skills/TaijiPalm.js"></script>
 	<script egret="game" src="bin-debug/heroInfo/heroInfoPanel.js"></script>
+	<script egret="game" src="bin-debug/kbe_scripts/Account.js"></script>
+	<script egret="game" src="bin-debug/kbe_scripts/GameObject.js"></script>
 	<script egret="game" src="bin-debug/LoadingUI.js"></script>
 	<script egret="game" src="bin-debug/localStorage/LocalStorage.js"></script>
-	<script egret="game" src="bin-debug/Main.js"></script>
 	<script egret="game" src="bin-debug/component/ScrollView.js"></script>
+	<script egret="game" src="bin-debug/mainScene/BattleScene.js"></script>
 	<script egret="game" src="bin-debug/mainScene/equipDialog.js"></script>
 	<script egret="game" src="bin-debug/mainScene/equipInfoDialog.js"></script>
 	<script egret="game" src="bin-debug/mainScene/MainScene.js"></script>
@@ -98,16 +104,19 @@
 	<script egret="game" src="bin-debug/manager/TimerManager.js"></script>
 	<script egret="game" src="bin-debug/manager/UserData.js"></script>
 	<script egret="game" src="bin-debug/model/modEquip.js"></script>
+	<script egret="game" src="bin-debug/model/modHero.js"></script>
 	<script egret="game" src="bin-debug/model/modShop.js"></script>
 	<script egret="game" src="bin-debug/model/modTalent.js"></script>
+	<script egret="game" src="bin-debug/model/UserDataInfo.js"></script>
 	<script egret="game" src="bin-debug/net/NetConnect.js"></script>
 	<script egret="game" src="bin-debug/net/NetUI.js"></script>
 	<script egret="game" src="bin-debug/popup/BattleFailPop.js"></script>
 	<script egret="game" src="bin-debug/popup/BattlePausePop.js"></script>
 	<script egret="game" src="bin-debug/popup/ChangeEquipPop.js"></script>
 	<script egret="game" src="bin-debug/popup/drawCardPop.js"></script>
-	<script egret="game" src="bin-debug/popup/EquipUpgradePop.js"></script>
-	<script egret="game" src="bin-debug/popup/resetEquipAttrPop.js"></script>
+	<script egret="game" src="bin-debug/popup/EquipUpStarWindow.js"></script>
+	<script egret="game" src="bin-debug/popup/EquipUpWindow.js"></script>
+	<script egret="game" src="bin-debug/popup/ResetEquipAttrWindow.js"></script>
 	<script egret="game" src="bin-debug/popup/ShopItemPop.js"></script>
 	<script egret="game" src="bin-debug/popup/UnlockStarLvPop.js"></script>
 	<script egret="game" src="bin-debug/ThemeAdapter.js"></script>
@@ -156,7 +165,7 @@
         //  }
 		 var isDebug = false;
 		 var RESOURCE = "";
-        egret.runEgret({renderMode:"webgl", audioType:0});
+        egret.runEgret({renderMode:"canvas", audioType:0});
     </script>
 </body>
 </html>

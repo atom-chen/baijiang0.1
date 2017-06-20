@@ -90,4 +90,37 @@ namespace modShop {
         // Common.log("洗牌", ids, ids.length);
         return ids;
     }
+
+    /**
+     * 将物品放入背包
+     */
+    export function putPackage(ids:Array<number>):void {
+        
+        ids.forEach(e=>{
+            modEquip.EquipData.GetInstance().InsertEquipInfo(e)
+        })
+    }
+
+    /**
+     * 返回数组相同元素并且计算个数
+     */
+    function repeatCount(ids:Array<number>):any {
+        var list = [];
+        var listMap = {};
+        for (let i = 0; i < ids.length; i++) {
+            let id = ids[i];
+            if (!!listMap[id]) {
+                listMap[id] ++;
+            }else{
+                listMap[id] = 1;
+            }
+        }
+        for (var item in listMap) {
+            list.push({
+                id:item,
+                count:listMap[item]
+            })
+        }
+        return list;
+    }
 }

@@ -6,17 +6,35 @@ class TalentDialog extends Base {
         super();
         this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this);
         this.skinName = "resource/game_skins/talentWindowSkin.exml";
-        this.btn_page1.selected = true;
-        this.page1 = new TalentIR(0);
-        this.pageGroup.addChild(this.page1);
         this.tcTalent = RES.getRes("TcTalent_json");
         TalentDialog.instance = this;
     }
 
+    protected createChildren(): void{
+        this.topBtnSkin = [];
+        this.topBtn = [];
+        this.pages = [];
+        this.popupGroup.anchorOffsetX = Common.SCREEN_W/2;
+        this.popupGroup.anchorOffsetY = Common.SCREEN_H/2;
+        this.popupGroup.x = Common.SCREEN_W/2;
+        this.popupGroup.y = Common.SCREEN_H/2;
+        this.skillPopupGroup.anchorOffsetX = Common.SCREEN_W/2;
+        this.skillPopupGroup.anchorOffsetY = Common.SCREEN_H/2;
+        this.skillPopupGroup.x = Common.SCREEN_W/2;
+        this.skillPopupGroup.y = Common.SCREEN_H/2;
+    }
+
+    protected childrenCreated():void {
+        for (let i = 0; i < Common.userData.talentPage.length; i++) {
+            this.pages[i] = new TalentIR(i);
+        }
+        this.show(Common.userData.talentPage.length);
+        this.pageGroup.addChild(this.pages[0]);
+        Utils.toggleButtonStatus(this.topBtn, 0);
+        this.curPage = 0;
+    }
+
     private uiCompleteHandler():void {
-        this.btn_page1.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_page2.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_page3.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_add.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_reset.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
@@ -24,7 +42,6 @@ class TalentDialog extends Base {
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
         this.btn_closeDetail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
         this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
-        this.topBtn = [this.btn_page1, this.btn_page2, this.btn_page3];
     }
 
     /**
@@ -33,26 +50,21 @@ class TalentDialog extends Base {
     private topBtnListener(event:egret.TouchEvent):void {
         this._focusBtn = event.currentTarget;
         switch (this._focusBtn) {
-            case this.btn_page1:
-                this.createTalentPage(0);
-            break;
-            case this.btn_page2:
-                this.createTalentPage(1);
-            break;
-            case this.btn_page3:
-                this.createTalentPage(2);
-            break;
             case this.btn_add:
                 this.lab_title.text = "购买天赋";
                 this.lab_detail.text = "购买天赋需要花费50玉石";
                 this.purchassType = 1;
+                Animations.popupOut(this.popupGroup, 500);
                 this.popupGroup.visible = true;
+                GameLayerManager.gameLayer().maskLayer.addChild(this.popupGroup);
             break;
             case this.btn_reset:
                 this.lab_title.text = "重置天赋";
                 this.lab_detail.text = "重置天赋需要花费5000金币";
-                 this.purchassType = 2;
+                this.purchassType = 2;
+                Animations.popupOut(this.popupGroup, 500);
                 this.popupGroup.visible = true;
+                GameLayerManager.gameLayer().maskLayer.addChild(this.popupGroup);
             break;
             default:
                 GameLayerManager.gameLayer().panelLayer.removeChildren();
@@ -66,10 +78,15 @@ class TalentDialog extends Base {
     private onPopupBtn(event:egret.TouchEvent):void {
         switch (event.currentTarget) {
             case this.btn_certain:
-                this.onPurchass(this.purchassType);
+                Animations.popupIn(this.popupGroup, 300, ()=>{
+                    GameLayerManager.gameLayer().maskLayer.removeChildren();
+                    this.onPurchass(this.purchassType);
+                });
             break;
             default:
-                this.popupGroup.visible = false;
+            Animations.popupIn(this.popupGroup, 300, ()=>{
+                GameLayerManager.gameLayer().maskLayer.removeChildren();
+            });
             break;
         }
     }
@@ -79,10 +96,17 @@ class TalentDialog extends Base {
     private onSkillPop(event:egret.TouchEvent):void {
         switch (event.currentTarget) {
             case this.btn_upgrade:
-                
+                if (modTalent.isUnlock(this.curPage, this.curTalentId)) {
+                    this.update();
+                }else{
+                    let strs = modTalent.getTips(this.curTalentId);
+                    Animations.showTips(strs, 1, true);
+                }
             break;
             default:
-                this.skillPopupGroup.visible = false;
+                Animations.popupIn(this.skillPopupGroup, 300, ()=>{
+                    GameLayerManager.gameLayer().maskLayer.removeChildren();
+                });
             break;
         }
     }
@@ -91,20 +115,107 @@ class TalentDialog extends Base {
      * 确定按钮方法
      */
     private onPurchass(type:number):void {
-        this.popupGroup.visible = false;
+        if (type == 1) {
+            //购买天赋页
+            this.pageGroup.removeChildren();
+            let talent = {"name":"", "count":0, "talent":[]};
+            Common.userData.talentPage.push(talent);
+            let len = Common.userData.talentPage.length;
+            this.createToggleBtn(len-1);
+            this.btn_add.x = 155 + 55 * len;
+            Utils.toggleButtonStatus(this.topBtn, len - 1);
+            this.curPage = len - 1;
+            this.pages[len- 1] = new TalentIR(len - 1);
+            this.pageGroup.addChild(this.pages[len - 1]);
+        }else{
+            //重置天赋页
+            if (Common.userData.talentPage[this.curPage].talent.length == 0) {
+                Animations.showTips("无需重置", 1, true);
+                return;
+            }
+            Common.userData.talentPage[this.curPage].talent = [];
+            this.pages[this.curPage].reset(this.curPage);
+        }
     }
+
+    /**
+     * 天赋页按钮监听
+     */
+    private pageBtnListener(event:egret.TouchEvent):void {
+        let target = event.currentTarget;
+        this.curPage = target.id;
+        // Common.log(target);
+        modTalent.setUnlock(this.curPage);
+        this.createTalentPage(target.id);
+    }
+
+    /**
+     * 创建天赋页选项按钮
+     */
+    private createToggleBtn(id:number):void {
+        var skinName = 
+        `<e:Group xmlns:e="http://ns.egret.com/eui">
+                <e:ToggleButton label="0">
+                    <e:Skin states="up,down,disabled">
+                        <e:Image width="100%" height="100%" source="button_0006_png" source.down="button_0007_png"/>
+                        <e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" textColor.down="0xFFFFFF" bold="true" fontFamily="Microsoft YaHei" textColor="0x111111"/>
+                    </e:Skin>
+                </e:ToggleButton>
+            </e:Group>`;
+        var clazz = EXML.parse(skinName);
+        this.topBtnSkin[id] = new clazz();
+        this.topBtnSkin[id].x = 155 + 55 * id;
+        this.topBtnSkin[id].y = 100;
+        let toggleBtn:any = this.topBtnSkin[id].getChildAt(0);
+        toggleBtn.id = id;
+        toggleBtn.addEventListener(egret.TouchEvent.TOUCH_TAP, this.pageBtnListener, this);
+        this.topBtn.push(toggleBtn);
+        toggleBtn.label = `${id + 1}`;
+        this.addChild(this.topBtnSkin[id]);
+    }
+
     /**
      * 创建天赋页
      */
     private createTalentPage(pageCount:number):void {
         this.pageGroup.removeChildren();
-        this.page1.setTalentDetail(pageCount);
+        this.pages[pageCount].setTalentDetail(pageCount);
         Utils.toggleButtonStatus(this.topBtn, pageCount);
-        this.pageGroup.addChild(this.page1);
+        this.pageGroup.addChild(this.pages[pageCount]);
     }
 
-    public showPopup(num:number):void {
+    /**
+     * 更新升级弹窗
+     */
+    private update():void {
+        if (this.curLevel >= 10) {
+            Animations.showTips("此天赋已满", 1, true);
+            return;
+        }
+        if (modTalent.isTalentFull(this.curPage, this.curTalentId)) {
+            Animations.showTips("天赋已点满", 1, true);
+            return;
+        }
+        this.curLevel ++;
+        this.lab_lv.text = `${this.curLevel}/10`;
+        if (this.curLevel == 10) this.lab_lv.textColor = Common.TextColors.lvFull;
+        //更新能量点
+        // this.lab_power
+        this.pages[this.curPage].setTalentLv();
+        this.pages[this.curPage].setUnlock(this.curTalentId);
+        modTalent.setData(this.curPage, this.curTalentId, this.curLevel);
+        Animations.showTips("天赋升级成功", 1);
+    }
+
+    /**
+     * 升级天赋弹窗
+     */
+    public showPopup(num:number, lv:number):void {
         this.skillPopupGroup.visible = true;
+        this.curLevel = lv;
+        this.curTalentId = num;
+        GameLayerManager.gameLayer().maskLayer.addChild(this.skillPopupGroup);
+        Animations.popupOut(this.skillPopupGroup, 500);
         let id:number = 0;
         for (let obj = 0; obj < 21; obj++) {
             if (this.tcTalent[obj].id == num) {
@@ -113,18 +224,51 @@ class TalentDialog extends Base {
             }
         }
         this.lab_name.text = this.tcTalent[id].name;
-        this.lab_condition.text = this.tcTalent[id].condition;
         this.lab_skillDetail.text = this.tcTalent[id].content;
+        this.lab_lv.text = `${lv}/10`;
+        if (this.curLevel == 10) {
+            this.lab_lv.textColor = Common.TextColors.lvFull;
+        }else{
+            this.lab_lv.textColor = Common.TextColors.lvNotFull;
+        }
+
+        let btn:any = this.btn_upgrade.getChildAt(0);
+        if (modTalent.isUnlock(this.curPage, num)) {
+            btn.source = "button_0004_png";
+            this.lab_condition.text = "";
+        }else{
+            btn.source = "button_0010_png";
+            let strs = modTalent.getTips(this.curTalentId, false);
+            this.lab_condition.text = strs;
+        }
+    }
+
+    /**
+     * 界面显示
+     */
+    public show(pages:number):void {
+        for (let i = 0; i < pages; i++) {
+            if (!this.topBtnSkin[i]) {
+                this.createToggleBtn(i);
+            }
+            this.addChild(this.topBtnSkin[i]);
+        }
+        this.btn_add.x = 155 + 55 * pages;
+        this.lab_power.text = `${Common.userData.power}`;
     }
 
     public static instance:TalentDialog;
     /**天赋的配置文件 */
     private tcTalent:any;
+    /**当前的天赋等级 */
+    private curLevel:number;
+    /**当前的天赋页 */
+    private curPage:number;
+    /**当前的天赋Id */
+    private curTalentId:number;
 	/*******************顶部按钮***********************/
-	private btn_page1:eui.ToggleButton;
-	private btn_page2:eui.ToggleButton;
-	private btn_page3:eui.ToggleButton;
-	private topBtn:eui.ToggleButton[];
+	private topBtnSkin:eui.ToggleButton[];
+    private topBtn:Array<any>;
 	/*************************************************/
 	/*******************技能升级弹窗***********************/
     private skillPopupGroup:eui.Group;
@@ -145,7 +289,7 @@ class TalentDialog extends Base {
     private btn_add:eui.Button;
     /**能量点 */
     private lab_power:eui.Label;
-    /**叠层 */
+    /**天赋面板 */
     private pageGroup:eui.Group;
     /**弹出 */
     private popupGroup:eui.Group;
@@ -159,6 +303,5 @@ class TalentDialog extends Base {
     private lab_detail:eui.Label;
     /**购买类型 */
     private purchassType:number;
-    private page1:TalentIR;
-
+    private pages:Array<TalentIR>;
 }

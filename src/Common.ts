@@ -11,6 +11,10 @@ namespace Common {
         "distance":400,
         "money":0,
         "soul":0,
+        "power":0,
+        "talentPage":[
+            {"name":"pvp", "count":0, "talent":[[1, 10], [2, 5], [8, 4], [9, 6]]}
+        ],
     };
     /**舞台的宽度 */
     export var SCREEN_W:number;
@@ -33,7 +37,9 @@ namespace Common {
         purple: 0xe938f2,//紫色 
         pink: 0xFF3030,//粉色 
         black: 0x2e2d2d,//黑色
-        golden: 0xFFD700 //金色
+        golden: 0xFFD700, //金色
+        lvNotFull: 0x6f685d, //等级未满
+        lvFull: 0x91bd32, //等级已满
     }
     /**全局字体大小 */
     export var LabelFontSize = {
@@ -149,5 +155,21 @@ namespace Common {
         globalMask.alpha = 0.01;
         globalMask.width = SCREEN_W;
         globalMask.height = SCREEN_H;
+    }
+
+    export function SetXY(obj:any, x:number, y:number):void{
+        if(obj == null) return;
+        obj.x = x;
+        obj.y = y;
+    }
+
+    /**kbengine */
+    export var kbengine;
+    /**初始化kbengine */
+    export function initKBEngine() {
+        let args = KBEngine.getInstance();
+        // args.port = 3306;
+        KBEngine.create(args);
+        kbengine = KBEngine;
     }
 }

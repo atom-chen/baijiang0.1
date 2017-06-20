@@ -14,4 +14,6 @@ class GameData {
     public static monsters:Array<Monster>;
     /**Boss */
     public static boss:Array<Boss>;
+    /**当前英雄 */
+    public static curHero:string = "diaochan";
 }

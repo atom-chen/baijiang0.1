@@ -12,7 +12,13 @@ class ReadyDialog extends Base {
         this.tcHero = RES.getRes("TcHero_json");
         this.tcBiography = RES.getRes("TcBiography_json");
         this.tcSkill = RES.getRes("TcSkill_json");
-        ReadyDialog.instance = this;
+    }
+
+    protected createChildren(): void{
+        this.show();
+        this._heroArmature = new Array();
+        this._selectBox = Utils.createBitmap("img_selectHero_png");
+        this._createHeroIcon();
     }
 
     private uiCompleteHandler():void {
@@ -32,26 +38,29 @@ class ReadyDialog extends Base {
                     this._skill[i][1] = this.lab_cd1;
                     this._skill[i][2] = this.lab_detail1;
                     this._skill[i][3] = this.img_skill1;
+                    this._skill[i][4] = this.img_skill1Bg;
                 break;
                 case 1:
                     this._skill[i][0] = this.lab_skillname2;
                     this._skill[i][1] = this.lab_cd2;
                     this._skill[i][2] = this.lab_detail2;
                     this._skill[i][3] = this.img_skill2;
+                    this._skill[i][4] = this.img_skill2Bg;
                 break;
                 default:
                     this._skill[i][0] = this.lab_skillname3;
                     this._skill[i][1] = this.lab_cd3;
                     this._skill[i][2] = this.lab_detail3;
                     this._skill[i][3] = this.img_skill3;
+                    this._skill[i][4] = this.img_skill3Bg;
                 break;
             }
         }
     }
 
     protected childrenCreated(): void{
-        this.cycleSlide.showHero(Common.userData.selectHero);
-        // this.showHero(Common.userData.selectHero);
+        // this.cycleSlide.showHero(Common.userData.selectHero);
+        this.showHero(Common.userData.selectHero);
     }
 
     private topBtnListener(event:egret.TouchEvent):void {
@@ -67,8 +76,9 @@ class ReadyDialog extends Base {
                 Utils.viewStackStatus(this.viewStack, this.topBtn, 2);
             break;
             case this.btn_battle:
+                this._stopTimer();
                 Animations.sceneTransition(()=>{
-                    Common.userData.selectHero = this.cycleSlide.getCurHeroCount();
+                    // Common.userData.selectHero = this.cycleSlide.getCurHeroCount();
                     GameLayerManager.gameLayer().sceneLayer.removeChildren();
                     GameLayerManager.gameLayer().panelLayer.removeChildren();
                     if (!SceneManager.battleScene) {
@@ -80,13 +90,20 @@ class ReadyDialog extends Base {
                 });
             break;
             case this.btn_change:
+                if (modEquip.EquipData.GetInstance().GetEquipNum() == 0) {
+                    Animations.showTips("没有可以更换的武器", 1, true);
+                    return;
+                }
                 if (!this.changeEquipPop) {
                     this.changeEquipPop = new ChangeEquipPop();
+                }else{
+                    this.changeEquipPop.show();
                 }
-                this.changeEquipPop.show();
+                this.changeEquipPop.addEventListener(modEquip.EquipSource.CHANGEEQUIP, this.updateUI, this);
                 this.addChild(this.changeEquipPop);
             break;
             default:
+                this._stopTimer();
                 GameLayerManager.gameLayer().panelLayer.removeChild(this);
             break;
         }
@@ -98,10 +115,12 @@ class ReadyDialog extends Base {
     public showHero(num:number) {
         let hero_id:number = 0;
         //英雄的id
-        for (let i = 0; i < this.tcHero.length; i++) {
-            if (this.tcHero[i].hero_id == num) {
-                hero_id = i;
-                break;
+        hero_id = modHero.getIndextFromId(num);
+        for (let i = 0; i < this._heroArmature.length; i++) {
+            if (hero_id == i) {
+                this._heroArmature[i].visible = true;
+            }else{
+                this._heroArmature[i].visible = false;
             }
         }
         //传记
@@ -124,17 +143,97 @@ class ReadyDialog extends Base {
                         this._skill[i][1].text = `冷却：${this.tcSkill[j].cd}秒`;
                     }
                     this._skill[i][2].text = this.tcSkill[j].content;
-                    this._skill[i][3].source = `skill_${skillId}_png`;
+                    this._skill[i][3].source = `skill_${this.tcSkill[j].image_id}_png`;
+                    this._skill[i][4].source = `${GameData.curHero}_skillBg_png`;
                     break;
                 }
             }
         }
-        //装备
-        let equipId = this.tcHero[hero_id].equip;
-        this.img_equip.source = `weapon2_000${equipId}_png`;
     }
 
-    public static instance:ReadyDialog;
+    /**
+     * 更新界面
+     */
+    public updateUI(event:egret.Event):void {
+        this.changeEquipPop.removeEventListener(modEquip.EquipSource.CHANGEEQUIP, this.updateUI, this);
+        let id = event.data;
+        let equip:any;
+        for (let i = 0; i < ConfigManager.tcEquip.length; i++) {
+            if (ConfigManager.tcEquip[i].id == id) {
+                equip = ConfigManager.tcEquip[i];
+                break;
+            }
+        }
+        this.img_equip.source = `Sequip${25-id}_png`;
+        this.lab_equipName.text = equip.name;
+    }
+
+    /**
+     * 显示界面
+     */
+    public show():void {
+        this._startTimer();
+    }
+
+    private _startTimer():void {
+        TimerManager.getInstance().startTimer();
+        DragonBonesFactory.getInstance().startTimer();
+    }
+
+    private _stopTimer():void {
+        TimerManager.getInstance().stopTimer();
+        DragonBonesFactory.getInstance().stopTimer();
+    }
+
+    /**创建骨架 */
+    private _createArmature(name:string):void {
+        let armature:DragonBonesArmatureContainer = new DragonBonesArmatureContainer();
+        this.addChild(armature);
+        armature.register(DragonBonesFactory.getInstance().makeArmature(name, name, 10), [
+            "idle"
+        ]);
+        armature.scaleX = 4;
+        armature.scaleY = 4;
+        armature.x = 260;
+        armature.y = 460;
+        armature.visible = false;
+        armature.play("idle", 0);
+        this._heroArmature.push(armature);
+    }
+
+    /**创建英雄头像 */
+    private _createHeroIcon():void {
+        let group:eui.Group = new eui.Group();
+        let count = 0;
+        for (var key in ConfigManager.heroConfig) {
+            let tempGroup:eui.Group = new eui.Group();
+            let img_head = Utils.createBitmap(`img_${key}_png`);
+            tempGroup.addChild(img_head);
+            tempGroup.addEventListener(egret.TouchEvent.TOUCH_TAP, this._onSelete, this);
+            tempGroup.x = count * 70;
+            tempGroup["id"] = ConfigManager.heroConfig[key]["id"];
+            tempGroup.name = key;
+            count ++;
+            group.addChild(tempGroup);
+            this._createArmature(key);
+        }
+        this._scrollHero.viewport = group;
+        this._scrollHero.addChild(this._selectBox);
+        this._selectBox.x = 0;
+        this._heroArmature[0].visible = true;
+        GameData.curHero = "diaochan";
+    }
+
+    private _onSelete(event:egret.TouchEvent):void {
+        let target = event.currentTarget;
+        let id = target["id"];
+        Common.userData.selectHero = id;
+        this._selectBox.x = target.x;
+        GameData.curHero = target.name;
+        this.showHero(id);
+    }
+
+    // public static instance:ReadyDialog;
     /**替换武器弹窗 */
     private changeEquipPop:ChangeEquipPop;
     /**叠层 */
@@ -160,9 +259,17 @@ class ReadyDialog extends Base {
     private btn_change:eui.Button;
     /**武将选择 */
     private cycleSlide:CycleSlide;
+    /**武将头像滑动框 */
+    private _scrollHero:eui.Scroller;
+    /**选中框 */
+    private _selectBox:egret.Bitmap;
+    /**骨架 */
+    private _heroArmature:Array<DragonBonesArmatureContainer>;
 
 	/*******************文字和图片***********************/
+    /**传记 */
 	private lab_biography:eui.Label;
+    /**技能相关 */
     private lab_skillname1:eui.Label;
     private lab_skillname2:eui.Label;
     private lab_skillname3:eui.Label;
@@ -172,14 +279,20 @@ class ReadyDialog extends Base {
     private lab_detail1:eui.Label;
     private lab_detail2:eui.Label;
     private lab_detail3:eui.Label;
+    private img_skill1Bg:eui.Image;
+    private img_skill2Bg:eui.Image;
+    private img_skill3Bg:eui.Image;
+    private img_skill1:eui.Image;
+    private img_skill2:eui.Image;
+    private img_skill3:eui.Image;
+    /**武器属性相关 */
     private lab_life:eui.Label;
     private lab_attack:eui.Label;
     private lab_attSp:eui.Label;
     private lab_armor:eui.Label;
     private lab_speed:eui.Label;
-    private img_skill1:eui.Image;
-    private img_skill2:eui.Image;
-    private img_skill3:eui.Image;
-    public img_equip:eui.Image;
+    private lab_equipName:eui.Label;
+    private lab_equipLv:eui.Label;
+    private img_equip:eui.Image;
 	/*************************************************/
 }

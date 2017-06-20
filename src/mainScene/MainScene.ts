@@ -16,6 +16,7 @@ class MainScene extends Base {
         this.btn_shop.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_applicate.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+        UserDataInfo.GetInstance().InitEquipInfo();
         this.createFire();
     }
 
@@ -53,6 +54,8 @@ class MainScene extends Base {
 				GameLayerManager.gameLayer().panelLayer.removeChildren();
                 if (!this.readyDialog) {
                     this.readyDialog = new ReadyDialog();
+                }else{
+                    this.readyDialog.show();
                 }
                 Common.curPanel = this.readyDialog;
                 GameLayerManager.gameLayer().panelLayer.addChild(this.readyDialog)
@@ -62,12 +65,18 @@ class MainScene extends Base {
                 if (!this.equipDialog) {
                     this.equipDialog = new EquipDialog();
                 }
+                else
+                {
+                    this.equipDialog.Show();
+                }
                 GameLayerManager.gameLayer().panelLayer.addChild(this.equipDialog);
 				break;
 			case this.btn_talent:
 				GameLayerManager.gameLayer().panelLayer.removeChildren();
                 if (!this.talentDialog) {
                     this.talentDialog = new TalentDialog();
+                }else{
+                    this.talentDialog.show(Common.userData.talentPage.length);
                 }
                 GameLayerManager.gameLayer().panelLayer.addChild(this.talentDialog);
 				break;

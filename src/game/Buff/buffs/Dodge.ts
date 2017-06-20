@@ -17,7 +17,7 @@ class Dodge extends BuffBase {
         this.buffData.controlType = ControlType.NO;
         this.buffData.postionType = PostionType.PostionType_Body;
         this.buffData.id = 5;
-        this.effectName = "skill01";
+        this.effectName = "skill02";
     }
 
     /**开始 */
@@ -28,7 +28,7 @@ class Dodge extends BuffBase {
     /**结束 */
     public buffEnd() {
         this.HideEffect();
-        this.target.effectArmature.removeCompleteCallFunc(this.buffEnd, this);
+        // this.target.effectArmature.removeCompleteCallFunc(this.buffEnd, this);
     }
 
     /**刷新数据 */
@@ -39,32 +39,32 @@ class Dodge extends BuffBase {
     /**增加特效 */
     public AddEffect(target:any) {
         this.ShowEffect();
-        target.buffArmature.play(this.effectName, 1);
-        target.buffArmature.addCompleteCallFunc(this.buffEnd, this);
+        target.skillArmature.play(this.effectName, 1);
+        // target.skillArmature.addCompleteCallFunc(this.buffEnd, this);
         switch (this.buffData.postionType) {
             case PostionType.PostionType_Foot:
-                target.buffArmature.x = 0;
-                target.buffArmature.y = 0;
+                target.skillArmature.x = 0;
+                target.skillArmature.y = 0;
             break;
             case PostionType.PostionType_Head:
-                target.buffArmature.x = 0;
-                target.buffArmature.y = -90;
+                target.skillArmature.x = 0;
+                target.skillArmature.y = -90;
             break;
             case PostionType.PostionType_Body:
-                target.buffArmature.x = 0;
-                target.buffArmature.y = -45;
+                target.skillArmature.x = 3;
+                target.skillArmature.y = 0;
             break;
         }
     }
 
     /**显示特效 */
     public ShowEffect() {
-        this.target.buffArmature.visible = true;
+        this.target.skillArmature.visible = true;
     }
 
     /**隐藏特效 */
     public HideEffect() {
-        this.target.buffArmature.visible = false;
+        this.target.skillArmature.visible = false;
     }
 
     private target:any;

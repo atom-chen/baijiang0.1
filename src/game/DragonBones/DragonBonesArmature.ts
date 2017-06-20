@@ -117,13 +117,40 @@ class DragonBonesArmature extends egret.DisplayObjectContainer {
     /**
      * 播放动画
      */
-    public play(action:string, playTimes:number = undefined):void {
+    public play(action:string, playTimes:number = undefined, timeScale:number = 1):void {
         this.start();
         if (playTimes == undefined) {
-            this._armature.animation.gotoAndPlay(action);
+            this._armature.animation.gotoAndPlay(action).timeScale = timeScale;
         }else{
-            this._armature.animation.gotoAndPlay(action, null, null, playTimes);
+            this._armature.animation.gotoAndPlay(action, null, null, playTimes).timeScale = timeScale;
         }
+    }
+
+    /**
+     * 从指定帧开始播放动画
+     */
+    public playByFrame(action:string, frame:number, playTimes:number, timeScale:number = 1):void {
+        this.start();
+        if (playTimes == undefined) {
+            this._armature.animation.gotoAndPlayByFrame(action, frame).timeScale = timeScale;
+        }else{
+            this._armature.animation.gotoAndPlayByFrame(action, frame, playTimes).timeScale = timeScale;
+        }
+    }
+
+    /**
+     * 设置动画的播放速度
+     */
+    public setTimeScale(action:string, value:number):void {
+        this._armature.animation.gotoAndPlay(action).timeScale = value;
+    }
+
+    /**
+     * 播放到指定帧结束
+     */
+    public stopByFrame(action:string, frame:number):void {
+        this.start();
+        this._armature.animation.gotoAndStopByFrame(action, frame);
     }
 
     /**

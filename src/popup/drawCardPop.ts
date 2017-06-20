@@ -9,7 +9,7 @@ class DrawCardPop extends Base {
     }
 
     protected createChildren(): void{
-
+        this.ids = new Array();
     }
 
     private onComplete():void {
@@ -23,6 +23,7 @@ class DrawCardPop extends Base {
     private onButtonHandler(event:egret.TouchEvent):void {
         Animations.popupIn(this, 300, ()=>{
             GameLayerManager.gameLayer().maskLayer.removeChildren();
+            modShop.putPackage(this.ids);
         });
         switch (event.currentTarget) {
             case this.btn_get:
@@ -37,8 +38,11 @@ class DrawCardPop extends Base {
      * 显示
      */
     public show(id:Array<number>, type:string):void {
+        this.ids = [];
+        this.ids = id;
         this.groupEquip.removeChildren();
         if (type == "ten" && id.length) {
+            //调整弹窗的背景和位置
             this.img_bg.source = "shop_popupBg3_png";
             Utils.setControlPosition(this.img_bg, 70, 46);
             Utils.setControlPosition(this.lab_title, 488, 83);
@@ -65,6 +69,8 @@ class DrawCardPop extends Base {
         }
     }
 
+
+    private ids:Array<number>;
     /**获取按钮 */
     private btn_get:eui.Button;
     /**返回按钮 */

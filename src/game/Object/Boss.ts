@@ -131,6 +131,7 @@ class Boss extends Enermy {
      */
     public gotoHurt(isSkillHurt:boolean = false) {
         super.gotoHurt();
+        // this.filters = [this.defaultFlilter];
         this.skillArmature.visible = false;
     }
 

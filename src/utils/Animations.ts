@@ -53,9 +53,12 @@ namespace Animations {
             }, this, 1000);
     }
     //淡出
-    export function fadeOut(target:any, time:number = 500, func:Function = null):void {
+    export function fadeOut(target:any, time:number = 500, func:Function = null, completeFunc:Function = null):void {
         target.alpha = 0;
         egret.Tween.get(target).to({ alpha: 1.0 }, time, egret.Ease.circOut).call(()=>{
+            if (completeFunc) {
+                completeFunc();
+            }
         });
         if (func) {
             func();

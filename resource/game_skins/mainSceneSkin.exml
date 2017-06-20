@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
 	<e:Image source="bg_0002_png" x="0" y="0" width="1136" height="640"/>
-	<e:Button id="btn_ready" label="准备出战" x="841.94" y="202.81" anchorOffsetX="0" width="240" anchorOffsetY="0" height="92">
+	<e:Button id="btn_ready" x="947.5" y="451.2" anchorOffsetX="0" width="132" anchorOffsetY="0" height="136">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0001_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-			<e:Label id="labelDisplay" horizontalCenter="-1.5" verticalCenter="-3" fontFamily="Microsoft YaHei" size="30" textColor="0xfde286" bold="true" size.down="27"/>
+			<e:Image width="100%" height="100%" source="btn_intoBattle_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
+			<e:Label id="labelDisplay" horizontalCenter="-1.5" verticalCenter="-3" fontFamily="Microsoft YaHei" size="30" textColor="0xfde286" bold="true" size.down="27" visible="false"/>
 			</e:Skin>
 		</e:skinName>
+
 	</e:Button>
 
-	<e:Button id="btn_equip" label="装备" x="816" y="168" anchorOffsetX="0" width="240" height="92" visible="false">
+	<e:Button id="btn_equip" x="836.08" y="179.31" anchorOffsetX="0" width="120" height="138">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0001_png" source.down="button_0001_png"/>
+			<e:Image width="100%" height="100%" source="btn_intoEquip_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
+			<e:Label id="labelDisplay" horizontalCenter="-1.5" verticalCenter="-3" fontFamily="Microsoft YaHei" size="30" textColor="0xFDE286" bold="true" visible="false"/>
+			</e:Skin>
+		</e:skinName>
+
+	</e:Button>
+
+	<e:Button id="btn_talent" x="909.4" y="294.31" width="120" height="138">
+		<e:skinName>
+			<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="btn_intoTalent_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
 			<e:Label id="labelDisplay" horizontalCenter="-1.5" verticalCenter="-3" fontFamily="Microsoft YaHei" size="30" textColor="0xFDE286" bold="true"/>
 			</e:Skin>
 		</e:skinName>
-	</e:Button>
 
-	<e:Button id="btn_talent" label="天赋" x="816" y="271" width="240" height="92" visible="false">
-		<e:skinName>
-			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0001_png" source.down="button_0001_png"/>
-			<e:Label id="labelDisplay" horizontalCenter="-1.5" verticalCenter="-3" fontFamily="Microsoft YaHei" size="30" textColor="0xFDE286" bold="true"/>
-			</e:Skin>
-		</e:skinName>
 	</e:Button>
 
 	<e:Button id="btn_setting" label="设置" x="816" y="373" width="240" height="92" visible="false">
@@ -37,13 +40,14 @@
 		</e:skinName>
 	</e:Button>
 
-	<e:Button id="btn_shop" label="商城" x="841.94" y="319.98" width="240" height="92">
+	<e:Button id="btn_shop" x="968.07" y="108.37" width="120" height="138">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0001_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-			<e:Label id="labelDisplay" horizontalCenter="-1.5" verticalCenter="-3" fontFamily="Microsoft YaHei" size="30" textColor="0xFDE286" bold="true" size.down="27"/>
+			<e:Image width="100%" height="100%" source="btn_intoShop_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
+			<e:Label id="labelDisplay" horizontalCenter="-1.5" verticalCenter="-3" fontFamily="Microsoft YaHei" size="30" textColor="0xFDE286" bold="true" size.down="27" visible="false"/>
 			</e:Skin>
 		</e:skinName>
+
 	</e:Button>
 	
 	<e:Group id="popupGroup" width="1136" height="640" x="0" y="0" anchorOffsetX="0" anchorOffsetY="0" visible="false">
@@ -70,4 +74,12 @@
 		<e:HSlider id="music_Hslider" width="234.4" height="30.4" x="475.6" y="289" anchorOffsetX="0" anchorOffsetY="0"/>
 		<e:HSlider id="sound_Hslider" width="234.4" height="30.4" x="475.6" y="362.8" anchorOffsetX="0" anchorOffsetY="0"/>
 	</e:Group>
+	<e:Image source="crystal_0001_png" x="959.65" y="10.48"/>
+	<e:Image source="sole_0001_png" x="785.98" y="10.48"/>
+	<e:Image source="power_0001_png" x="418.64" y="10.48"/>
+	<e:Image source="exp_0001_png" x="604.16" y="10.48"/>
+	<e:Label id="lab_soul0" text="99999" y="21" size="25" fontFamily="Microsoft YaHei" x="1032.08" textColor="0x2D6EA6" bold="true"/>
+	<e:Label id="lab_soul1" text="99999" y="21" size="25" fontFamily="Microsoft YaHei" x="858.86" bold="true" textColor="0x8b2ea5"/>
+	<e:Label id="lab_soul" text="99999" y="21" size="25" fontFamily="Microsoft YaHei" x="676.56" bold="true" textColor="0xbc822b"/>
+	<e:Label id="lab_soul2" text="99999" y="21" size="25" fontFamily="Microsoft YaHei" x="490.01" bold="true" textColor="0xc1a77c"/>
 </e:Skin>

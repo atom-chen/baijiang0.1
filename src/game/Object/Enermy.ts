@@ -1,15 +1,18 @@
 class Enermy extends BaseGameObject {
     public constructor() {
         super();
+    this.colorFlilter = new egret.ColorMatrixFilter(this.colorMatrix);
+    this.defaultFlilter = new egret.ColorMatrixFilter(this.defaultMatrix);
+    // this.filters = [this.colorFlilter];
     }
 
     public initDragonBonesArmature(name:string):void {
         //受伤动画
-        this.effectArmature.register(DragonBonesFactory.getInstance().makeArmature("daoguang_effect", "daoguang_effect", 4.0), [
+        this.effectArmature.register(DragonBonesFactory.getInstance().makeArmature("daoguang_effect", "daoguang_effect", 8), [
             BaseGameObject.Action_Hurt
         ]);
         //死亡受伤动画
-        this.effectArmature.register(DragonBonesFactory.getInstance().makeArmature("blood_die", "blood_die", 4.0), [
+        this.effectArmature.register(DragonBonesFactory.getInstance().makeArmature("blood_die", "blood_die", 8), [
             Enermy.Action_HurtDie
         ]);
         //出场动画
@@ -18,8 +21,8 @@ class Enermy extends BaseGameObject {
         ]);
 
         //buff动画
-        this.buffArmature.register(DragonBonesFactory.getInstance().makeArmature("diaochan_skill01", "diaochan_skill01", 1.0), [
-            "skill01"
+        this.buffArmature.register(DragonBonesFactory.getInstance().makeArmature("buff", "buff", 10), [
+            "Burning"
         ]);
 
         this.effectArmature.scaleX = 1.5;
@@ -34,6 +37,7 @@ class Enermy extends BaseGameObject {
         this.isEnemy = true;
         this.isSkillHurt = false;
         this.lastAnimation = "";
+        // this.maskImprisoned.mask = this;
     }
 
     public update(time:number):void {
@@ -179,6 +183,12 @@ class Enermy extends BaseGameObject {
 
     /***********************其他函数**********************/
     /**
+     * 设置状态
+     */
+    public setCurState(state:string):void {
+        this.curState = state;
+    }
+    /**
      * 移动到指定的位置
      * 
      */
@@ -228,7 +238,20 @@ class Enermy extends BaseGameObject {
     }
     /****************************************************/
 
-
+    public colorMatrix = [
+        1,0,0,0.4,0,
+        1,0,0,0,0,
+        1,0,0,0,0,
+        0,0,0,1,0
+    ]
+    public colorFlilter:egret.ColorMatrixFilter;
+    public defaultMatrix = [
+        1,0,0,0,0,
+        0,1,0,0,0,
+        0,0,1,0,0,
+        0,0,0,1,0
+    ]
+    public defaultFlilter:egret.ColorMatrixFilter;
     /**受到的伤害是否为技能伤害 */
     public isSkillHurt:boolean;
 

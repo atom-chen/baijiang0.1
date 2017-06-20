@@ -8,10 +8,15 @@ class Hero extends BaseGameObject {
         this.comboTimer.stop();
         this.comboTimer.addEventListener(egret.TimerEvent.TIMER, this.onCombo, this);
         this.comboTimer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onComboComplete, this);
+        this.shadow = Utils.createBitmap("shadow_png");
+        this.shadow.y = -this.shadow.height/2;
+        this.shadow.scaleX = 1.5;
+        this.shadow.anchorOffsetX = this.shadow.width/2;
+        this.addChild(this.shadow);
     }
 
     private initDragonBonesArmature(name:string):void {
-        this.armature.register(DragonBonesFactory.getInstance().makeArmature(name, name, 4.0), [
+        this.armature.register(DragonBonesFactory.getInstance().makeArmature(name, name, 20.0), [
             BaseGameObject.Action_Enter,
             BaseGameObject.Action_Idle,
             BaseGameObject.Action_Hurt,
@@ -22,11 +27,10 @@ class Hero extends BaseGameObject {
             BaseGameObject.Action_Attack05,
             Hero.Action_Run01,
             Hero.Action_Run02,
-            Hero.Action_Run03,
-            Hero.Action_Skill
+            Hero.Action_Run03
         ]);
         this.createSwordLight();
-        this.hideBone(name, "effect_att01");
+        // this.hideBone(name, "effect_att01");
         //增加动画帧执行函数
         this.armature.addFrameCallFunc(this.armatureFrame, this);
 
@@ -37,20 +41,13 @@ class Hero extends BaseGameObject {
 
         /**从配置文件读取技能动画 */
         let heroConfig = ConfigManager.heroConfig[name];
-        this.skillEffect = heroConfig["animation"];
-        let arrEffect = Object.keys(this.skillEffect);
-        let armatureName = `${name}_skill`;
-        this.skillEffectArmature = [];
-        for (let i = 0; i < arrEffect.length; i++) {
-            let armatureContainer:DragonBonesArmatureContainer = new DragonBonesArmatureContainer();
-            this.addChild(armatureContainer);
-            armatureContainer.register(DragonBonesFactory.getInstance().makeArmature(armatureName, armatureName, 4.0), [
-                this.skillEffect[arrEffect[i]],
-            ]);
-            armatureContainer.scaleX = 1.5;
-            armatureContainer.scaleY = 1.5;
-            this.skillEffectArmature.push(armatureContainer);
-        }
+        let skillArmature = `${name}_skill`;
+        this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(skillArmature, skillArmature, 10), [
+            Hero.Effect_Skill01,
+            Hero.Effect_SKill02,
+            Hero.Effect_SKill03
+        ]);
+        this.skillArmature.addFrameCallFunc(this.armatureFrame, this);
 
         this.skill = ObjectPool.pop(heroConfig["skill1"], [this]);
         this.skill.init();
@@ -58,6 +55,8 @@ class Hero extends BaseGameObject {
         this.armature.scaleY = 1.5;
         this.effectArmature.scaleX = 1.5;
         this.effectArmature.scaleY = 1.5;
+        this.skillArmature.scaleX = 1.5;
+        this.skillArmature.scaleY = 1.5;
     }
 
     public init(name:string) {
@@ -66,7 +65,7 @@ class Hero extends BaseGameObject {
         this.name = name;
         this.offset = [[3, -111], [75, -107], [119, -48], [75, 14], [0, 23]];
         // this.offset = [[2, -74], [49, -71], [79, -32], [50, 9], [0, 15]]
-        this.speed = 30;
+        this.speed = 40;
         this.atk_range = 200;
         this.atk_speed = 150;
         this.combo = 0;
@@ -80,6 +79,7 @@ class Hero extends BaseGameObject {
         this.lastAnimation = "";
         this.skill.skillData.skill_range = 150;
         this.visible = false;
+        this.shadow.visible = false;
         this.comboTimer.reset();
         egret.setTimeout(()=>{
             this.visible = true;
@@ -88,6 +88,7 @@ class Hero extends BaseGameObject {
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
         this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
+        this.skillArmature.addCompleteCallFunc(this.skillArmaturePlayEnd, this);
         this.effectArmature.visible = false;
     }
 
@@ -192,7 +193,7 @@ class Hero extends BaseGameObject {
      * 释放技能
      */
     public state_skill01(time:number):void {
-        this.skill.update(this);
+        // this.skill.update(this);
     }
 
     /**
@@ -227,6 +228,9 @@ class Hero extends BaseGameObject {
                     if (this.enermy[i].curState != Enermy.Action_Dead && this.enermy[i].curState != BaseGameObject.Action_Hurt) {
                         this.isHit = true;
                         this.combo ++;
+                    }
+                    if (this.isAttackBuff(this.enermy[i])) {
+                        // Common.log("击晕了");
                     }
                     this.enermy[i].gotoHurt();
                 }else{
@@ -294,7 +298,8 @@ class Hero extends BaseGameObject {
         this.reverse(this, this.radian);
         if (!this.isPlay || this.lastAnimation != animation) {
             this.lastAnimation = animation;
-            this.armature.play(animation, 0);
+            this.armature.play(animation, 0, 1, 0, 2);
+            // this.armature.setTimeScale(animation, 2);
             this.isPlay = true;
         }
     }
@@ -312,11 +317,17 @@ class Hero extends BaseGameObject {
             }
             //回避伤害(以40%概率测试)
             else if (this.buff[i].buffData.id == 5) {
-                let random = MathUtils.getRandom(100);
-                if (random <= 40) {
+                let random = MathUtils.getRandom(1, 100);
+                if (random <= 90) {
+                    Common.log("闪避");
                     this.buff[i].update();
                     return true;
                 }
+            }
+            //圆波剑舞
+            else if (this.buff[i].buffData.id == 6) {
+                this.buff[i].update();
+                return false;
             }
         }
         return false;
@@ -341,6 +352,29 @@ class Hero extends BaseGameObject {
             return;
         }
         SceneManager.battleScene.battleSceneCom.onHurt();
+    }
+
+    /**
+     * 检测是否有普通攻击的buff
+     */
+    private isAttackBuff(target:any):boolean {
+        let status:boolean = false;
+        for (let i = 0; i < this.buff.length; i++) {
+            //击晕(以10%概率测试)
+            if (this.buff[i].buffData.id == 7) {
+                let random = MathUtils.getRandom(1, 100);
+                if (random <= this.buff[i].buffData.probability) {
+                    this.buff[i].update(target);
+                    status = true;
+                }
+            }
+            //增加属性
+            else if (this.buff[i].buffData.id == 8) {
+                this.buff[i].update(this);
+                status = true;
+            }
+        }
+        return status;
     }
 
     /**攻击 */
@@ -392,8 +426,9 @@ class Hero extends BaseGameObject {
      */
     public gotoSkill() {
         if (this.curState != BaseGameObject.Action_Idle) return;
+        this.skillArmature.visible = true;
         this.curState = Hero.Action_Skill;
-        this.skill.start(this.curState, this);
+        this.skill.start(Hero.Effect_Skill01, this);
         SceneManager.battleScene.battleSceneCom.onCDTime();
     }
 
@@ -403,17 +438,32 @@ class Hero extends BaseGameObject {
     public gotoEnter() {
         this.curState = BaseGameObject.Action_Enter;
         this.armature.play(this.curState, 1);
-        egret.setTimeout(()=>{
-            // Animations.shakeScreen(SceneManager.battleScene, 2);
-            ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
-        }, this, 50);
     }
 
     /**
      * 帧事件处理函数
      */
-    private armatureFrame():void {
-        
+    private armatureFrame(event:dragonBones.FrameEvent):void {
+        let evt:string = event.frameLabel;
+        switch (evt) {
+            case "shake":
+                ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
+            break;
+            case "idleEnd":
+                this.armature.visible = false;
+            break;
+            case "disappear":
+                Common.log("disappear")
+                this.visible = false;
+            case "evtStart":
+                this.skill.update(this);
+            break;
+            case "shildEnd":
+                this.skillArmature.visible = false;
+            break;
+            default:
+            break;
+        }
     }
 
     /**
@@ -434,8 +484,15 @@ class Hero extends BaseGameObject {
             case BaseGameObject.Action_Enter:
                 this.gotoIdle();
                 this.setBuff();
+                this.shadow.visible = true;
             break;
         }
+    }
+
+    private skillArmaturePlayEnd():void {
+        this.skillArmature.visible = false;
+        this.armature.visible = true;
+        this.gotoIdle();
     }
     /**
      * 停止动画
@@ -477,14 +534,16 @@ class Hero extends BaseGameObject {
     private static Action_Run01:string = "run01";
     private static Action_Run02:string = "run02";
     private static Action_Run03:string = "run03";
-    private static Action_Skill:string = "skill01";
+    private static Action_Skill:string = "skill";
     private static Effect_Skill01:string = "skill01";
     private static Effect_SKill02:string = "skill02";
-    private static Effect_SKill03:string = "skill03_01";
-    private static Effect_SKill03_02:string = "skill03_02";
+    private static Effect_SKill03:string = "skill03";
 
     private atk_radian:number;
 
+
+    /**阴影 */
+    private shadow:egret.Bitmap;
     /**技能 */
     private skill:any;
     /**技能范围 */

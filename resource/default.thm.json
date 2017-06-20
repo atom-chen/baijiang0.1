@@ -29,6 +29,9 @@
     "resource/eui_skins/ToggleSwitchSkin.exml",
     "resource/eui_skins/VScrollBarSkin.exml",
     "resource/eui_skins/VSliderSkin.exml",
+    "resource/game_skins/EquipUpSkin.exml",
+    "resource/game_skins/EquipUpStarSkin.exml",
+    "resource/game_skins/ResetEquipAttrSkin.exml",
     "resource/game_skins/battleSkin.exml",
     "resource/game_skins/drawCardAnimateSkin.exml",
     "resource/game_skins/enterGameSkin.exml",
@@ -49,8 +52,6 @@
     "resource/popup/battleWinPopSken.exml",
     "resource/popup/changeEquipSkin.exml",
     "resource/popup/drawCardPopSkin.exml",
-    "resource/popup/equipUpgradeSkin.exml",
-    "resource/popup/resetAttrSkin.exml",
     "resource/popup/shopItemPopSkin.exml",
     "resource/popup/unlockStarLvSkin.exml"
   ]

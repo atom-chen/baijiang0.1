@@ -54,6 +54,10 @@ class BattleSceneCom extends Base {
         }
         this.img_skillMask.visible = false;
         this.img_killCount.scaleX = GameData.killCount/10.0;
+        this.img_skillBg.source = `${GameData.curHero}_skillBg_png`;
+        let object:any = this.btn_skill.getChildAt(0);
+        let skill = this._getActSkill();
+        object.source = `skill_${skill.image_id}_png`;
         this.img_hp.scaleX = 1.0;
         this.img_exp.scaleX = 0.01;
         this.money = Common.userData.money;
@@ -68,9 +72,6 @@ class BattleSceneCom extends Base {
         this.lab_stage.text = `第${GameData.curStage}关`;
         this.lab_stage.alpha = 0;
         Animations.fadeOutIn(this.lab_stage);
-        // Common.addEventListener(GameEvents.EVT_PRODUCEMONSTER, this.update, this);
-        // Common.addEventListener(GameEvents.EVT_SKILL, this.onCDTime, this);
-        // Common.addEventListener(GameEvents.EVT_HURT, this.onHurt, this);
     }
 
     /**更新界面 */
@@ -99,7 +100,7 @@ class BattleSceneCom extends Base {
 
     /**技能cd */
     public onCDTime():void {
-        this.cd_time = 15;
+        this.cd_time = 5;
         this.lab_cdTime.text = `${this.cd_time}`;
         this.lab_cdTime.visible = true;
         this.img_skillMask.visible = true;
@@ -123,6 +124,19 @@ class BattleSceneCom extends Base {
     public removeEventListener():void {
         Common.removeEventListener(GameEvents.EVT_PRODUCEMONSTER, this.update, this);
         Common.removeEventListener(GameEvents.EVT_SKILL, this.onCDTime, this);
+    }
+
+    private _getActSkill():any {
+        let skill:any;
+        let index = modHero.getCurIndex();
+        let skill_id = ConfigManager.tcHero[index].skill[2];
+        for (let j = 0; j < ConfigManager.tcSkill.length; j++) {
+            if (ConfigManager.tcSkill[j].id == skill_id) {
+                skill = ConfigManager.tcSkill[j];
+                break;
+            }
+        }
+        return skill;
     }
 
     /**暂停 */
@@ -151,4 +165,5 @@ class BattleSceneCom extends Base {
     private lab_cdTime:eui.Label;
     private img_skillMask:eui.Image;
     private lab_stage:eui.Label;
+    private img_skillBg:eui.Image;
 }

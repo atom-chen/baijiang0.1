@@ -67,6 +67,8 @@ class BuffData {
     public cd:number;
     /**可持续次数 */
     public frequency:number;
+    /**触发几率 */
+    public probability:number;
     /**叠加规则 */
     public superpositionType:SuperpositionType;
     /**Buff类型 */
@@ -76,5 +78,5 @@ class BuffData {
     /**作用点 */
     public postionType:PostionType;
     /**是否为控制 */
-    public controlType:ControlType;   
+    public controlType:ControlType;
 }

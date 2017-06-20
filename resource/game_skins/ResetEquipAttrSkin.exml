@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<e:Skin class="ResetEquipAttrSkin" width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
+	<e:Image source="mask_png" x="0" y="0" width="1136" height="640"/>
+	<e:Image source="equip_0008_png" horizontalCenter="0" verticalCenter="0"/>
+	<e:Label id="lab_money0" text="当前幸运值：0" x="317.17" y="204.2" anchorOffsetX="0" width="501.67" textAlign="center" fontFamily="Microsoft YaHei" size="35" bold="true" anchorOffsetY="0" height="52.33" verticalAlign="middle" textColor="0x9e8661"/>
+	<e:Button id="btn_reset" label="重置" x="406.5" y="483" height="76" width="288">
+		<e:skinName>
+		<e:Skin states="up,down,disabled">
+			<e:Image width="100%" height="100%" source="button_0011_png" source.down="button_0011_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-8" textColor="0x240404" bold="true" fontFamily="Microsoft YaHei" size="32"/>
+		</e:Skin>
+		</e:skinName>
+	</e:Button>
+	<e:Label text="重置属性" y="83" size="40" horizontalCenter="0" textColor="0xe8e3e3" bold="true" fontFamily="Microsoft YaHei" visible="false"/>
+	<e:Image source="equip_0005_png" x="258" y="312.98"/>
+	<e:Image id="imgStar" source="star_05_png" x="294.27" y="340.68"/>
+	<e:Label id="lab_attr" text="攻击力+20%" x="369.33" y="342.48" anchorOffsetX="0" width="382.82" size="25" fontFamily="Microsoft YaHei" anchorOffsetY="0" height="33" verticalAlign="middle" textAlign="center" bold="true" textColor="0xea7c23"/>
+	<e:Image id="btn_close" source="button_0009_png" x="988.48" y="81.56"/>
+	<e:Label id="lab_money" text="每次洗练可获得2点幸运值，当幸运值达到100时，下次洗练必得金色星阶属性" x="111.83" y="430.68" anchorOffsetX="0" width="907" textAlign="center" fontFamily="Microsoft YaHei" size="23" bold="true" textColor="0x6d6d6d"/>
+	<e:Image source="title_0006_png" x="481" y="79.96"/>
+</e:Skin>

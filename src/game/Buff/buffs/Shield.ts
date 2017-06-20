@@ -17,9 +17,9 @@ class Shield extends BuffBase {
         this.buffData.disperseType = DisperseType.DisperseType_NoClear;
         this.buffData.controlType = ControlType.NO;
         this.buffData.postionType = PostionType.PostionType_Body;
-        this.buffData.cd = 20;
+        this.buffData.cd = 60;
         this.buffData.id = 4;
-        this.effectName = "skill02";
+        this.effectName = "skill03";
     }
 
     /**开始 */
@@ -40,7 +40,8 @@ class Shield extends BuffBase {
 
     /**刷新数据 */
     public update(callBack:Function = null) {
-        this.HideEffect();
+        this.ShowEffect();
+        this.target.skillArmature.play(this.effectName, 1, 2, 10);
         let index = this.target.buff.indexOf(this);
         this.target.buff.splice(index, 1);
         ObjectPool.push(this);
@@ -53,11 +54,11 @@ class Shield extends BuffBase {
 
     /**动画播放完成监听 */
     private armaturePlayEnd():void {
-        this.target.skillEffectArmature[1].visible = false;
-        this.target.skillEffectArmature[2].visible = true;
-        this.target.skillEffectArmature[2].play(this.target.skillEffect["passive1_2"], 0);
-        this.position(this.target.skillEffectArmature[2]);
-        this.target.skillEffectArmature[1].removeCompleteCallFunc(this.armaturePlayEnd, this);
+        this.target.skillArmature.visible = false;
+        // this.target.skillEffectArmature[2].visible = true;
+        // this.target.skillEffectArmature[2].play(this.effectName, 1);
+        // this.position(this.target.skillEffectArmature[2]);
+        // this.target.skillEffectArmature[1].removeCompleteCallFunc(this.armaturePlayEnd, this);
     }
 
     /**作用点 */
@@ -82,20 +83,21 @@ class Shield extends BuffBase {
     public AddEffect(target:any) {
         this.target = target;
         this.ShowEffect();
-        target.skillEffectArmature[1].play(target.skillEffect["passive1_1"], 1);
-        target.skillEffectArmature[1].addCompleteCallFunc(this.armaturePlayEnd, this);
-        this.position(target.skillEffectArmature[1]);
+        target.skillArmature.play(this.effectName, 1);
+        // target.skillArmature.stopByFrame(this.effectName, 10);
+        target.skillArmature.addCompleteCallFunc(this.armaturePlayEnd, this);
+        this.position(target.skillArmature);
     }
 
     /**显示特效 */
     public ShowEffect() {
-        this.target.skillEffectArmature[1].visible = true;
+        this.target.skillArmature.visible = true;
     }
 
     /**隐藏特效 */
     public HideEffect() {
-        this.target.skillEffectArmature[1].visible = false;
-        this.target.skillEffectArmature[2].visible = false;
+        this.target.skillArmature.visible = false;
+        // this.target.skillEffectArmature[2].visible = false;
         // this.target.skillArmature.playMulti("skill03_01", 6, 0);
         // this.target.skillArmature.fadeOut(this.effectName);
         // this.target.skillArmature.visible = false;
