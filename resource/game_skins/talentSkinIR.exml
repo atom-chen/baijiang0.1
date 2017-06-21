@@ -31,6 +31,6 @@
 		<e:Label id="critText" text="0" x="510" y="441" visible="false"/>
 
 		<e:Label id="recoverText" text="0" x="877" y="441" visible="false"/>
-		<e:Label id="pageText" text="0" x="559.5" y="12"/>
+		<e:Label id="pageText" text="0" x="559.5" y="12" visible="false"/>
     </e:Group>
 </e:Skin>
