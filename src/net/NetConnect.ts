@@ -6,7 +6,7 @@
 namespace NetConnect {
     var httpRequest:egret.HttpRequest = null;
     var window:Window;
-    var url = "http://ggsporestudio.com/";
+    var url = "https://api.leancloud.cn/";
     // var url = "http://httpbin.org/post";
     //保存数据，发送的时候做md5加密
     var token:any;
@@ -26,10 +26,12 @@ namespace NetConnect {
         //设置数据格式为文本
         httpRequest.responseType = egret.HttpResponseType.TEXT;
         //打开一个为GET的http请求
+        url = "https://leancloud.cn:443/1.1/classes/Post"
         httpRequest.open(url, egret.HttpMethod.POST);
         _send(msg)
         //设置响应头
-        httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        // httpRequest.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        httpRequest.setRequestHeader("Content-Type", "application/json");
         //加载完成，通过事件的respond属性获取返回的信息
         httpRequest.addEventListener(egret.Event.COMPLETE, onPostComplete, NetConnect);
         //加载失败
@@ -50,6 +52,16 @@ namespace NetConnect {
         action_map[act_id] = callBack;
         if (isOpen == 0) {
             // msg_list.push(msg)
+            // msg =`"X-LC-Id: onCULkQ8rWJmAJtnjfxtxrkr-gzGzoHsz"` +
+            //     ` "X-LC-Key: FGupyEUQyuw4kKkvrU7ohM06"` +
+            //     ` \`{"content": "每个 Java 程序员必备的 8 个开发工具"}\``
+            msg = {
+                "X-LC-Id": "onCULkQ8rWJmAJtnjfxtxrkr-gzGzoHsz",
+                "X-LC-Key": "FGupyEUQyuw4kKkvrU7ohM06",
+                "content": "每个 Java 程序员必备的 8 个开发工具"
+            }
+            msg = JSON.stringify(msg)
+            Common.log(msg, typeof(msg));
             init(msg);
         }else{
             _send(msg);

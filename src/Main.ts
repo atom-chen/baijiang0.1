@@ -156,6 +156,7 @@ class Main extends eui.UILayer {
         // Common.log(nodeGame);
         SceneManager.enterGameScene = new EnterGameScene();
         GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.enterGameScene);
+        NetConnect.send(11001, {}, ()=>{})
         // SceneManager.battleScene = new BattleScene();
         // this.addChild(SceneManager.battleScene);
     }
