@@ -1,4 +1,4 @@
-class ResetEqiopAttrWindow extends Base{
+class ResetEqiopAttrWindow extends PopupWindow{
 
     public constructor(){
         super();
@@ -10,44 +10,54 @@ class ResetEqiopAttrWindow extends Base{
         this.removeEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
     }
 
+    public Init():void{
+
+    }
+
     public Show(equipInfo:modEquip.EquipInfo, index:number):void{
+        super.Show();
+
         this._index = index;
         this.equip_info = equipInfo;
         let attrType = this.equip_info.GetPointTypeFromIndex(index);
         this.changeAttrInfo(attrType.Type, attrType.Value);
-        this.lab_money.textFlow = <Array<egret.ITextElement>>[{text:"花费"}, {text:"10000钻石", style:{"textColor":0x06d5d6}},{text:"重置"}];
-        this.reset();
     }
 
-    private reset():void{
+    public Reset():void{
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
         this.btn_reset.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchReset, this);
     }
 
     public Close():void{
+        super.Close();
+
         this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
         this.btn_reset.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchReset, this);
         this.dispatchEventWith(modEquip.EquipSource.RESETATTR, false, -1);
         
-        if(this.parent) this.parent.removeChild(this);
     }
 
     private onTouchReset(event:egret.TouchEvent):void{
 
         let rand = Math.floor((Math.random() % 100 * 100));
-        let type = rand % 3 == 0 ? 3:rand % 3;
-        this.equip_info.ChangeAttrType(this._index, type, rand % 100);
-        this.lab_attr.text = modEquip.GetAttrInfo(type, rand % 100);
-        this.changeAttrInfo(type, rand % 100);
+        let type = rand % 5 == 0 ? 5:rand % 5;
+        let value = rand % 100;
+        if(modEquip.EquipData.GetInstance().Lucky == 100){
+            modEquip.EquipData.GetInstance().Lucky = 0;
+            value = 100;
+        } 
+        this.equip_info.ChangeAttrType(this._index, type, value);
+        this.changeAttrInfo(type, value);
         Animations.showTips("洗练成功", 1);
-        this.dispatchEventWith(modEquip.EquipSource.RESETATTR, false, {type:type,value:rand % 100,index:this._index})
+        this.dispatchEventWith(modEquip.EquipSource.RESETATTR, false, {type:type,value:value,index:this._index})
     }
 
     private changeAttrInfo(type:number, value:number){
-        this.lab_attr.text = modEquip.GetAttrInfo(type, value);
         let data = modEquip.GetEquipLvFromValue(value);
+        this.lab_attr.text = modEquip.GetAttrInfo(type, value);
         this.lab_attr.textColor = data.color;
         this.imgStar.source = data.img;
+        this.lab_money.text = "当前幸运值: " + modEquip.EquipData.GetInstance().Lucky;
     }
 
     private imgStar:eui.Image;

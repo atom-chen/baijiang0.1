@@ -10,11 +10,6 @@ class ShopDialog extends Base {
     }
 
     protected createChildren(): void{
-        this.drawCardPop = new DrawCardPop();
-        this.drawCardPop.anchorOffsetX = Common.SCREEN_W/2;
-        this.drawCardPop.anchorOffsetY = Common.SCREEN_H/2;
-        this.drawCardPop.x = Common.SCREEN_W/2;
-        this.drawCardPop.y = Common.SCREEN_H/2;
         this.stack_shop.selectedIndex = 0;
         this.btn_soul.selected = true;
         this.cards = new Array();
@@ -58,17 +53,29 @@ class ShopDialog extends Base {
             break;
             case this.btn_oneDraw:
                 this.cards = [];
-                let id = modShop.drawOnce();
-                this.cards.push(id);
-                Common.log(this.cards);
-                // Animations.drawCard(id);
-                this.createEquipPop(this.cards, "once")
+                let cardInfo = modShop.drawOnce();
+                this.cards.push(cardInfo);
+                Common.log(JSON.stringify(this.cards));
+                Animations.drawCard(cardInfo, ()=>{
+                    this.createEquipPop(this.cards, "once")
+                });
             break;
             case this.btn_tenDraw:
                 this.cards = [];
                 this.cards = modShop.drawTen();
-                Common.log(this.cards);
-                this.createEquipPop(this.cards, "ten");
+                let startLen = 0;
+                var popFunc = function() {
+                    if (startLen >= 10) {
+                        this.createEquipPop(this.cards, "ten");
+                    }else{
+                        Animations.drawCard(this.cards[startLen.toString()], ()=>{
+                            startLen ++;
+                            popFunc();
+                        });
+                    }
+                }.bind(this);
+
+                popFunc();
             break;
             case this.btn_closeDetail:
                 this.detailGroup.visible = false;
@@ -96,10 +103,13 @@ class ShopDialog extends Base {
     /**
      * 创建弹窗
      */
-    private createEquipPop(id:Array<number>, type:string) {
-        GameLayerManager.gameLayer().maskLayer.addChild(this.drawCardPop);
-        this.drawCardPop.show(id, type);
-        Animations.popupOut(this.drawCardPop, 500);
+    private createEquipPop(infos:Array<any>, type:string) {
+        let pop:PopupWindow = WindowManager.GetInstance().GetWindow("DrawCardPop");
+        pop.Show(infos, type);
+        pop.anchorOffsetX = Common.SCREEN_W/2;
+        pop.anchorOffsetY = Common.SCREEN_H/2;
+        Common.SetXY(pop, Common.SCREEN_W/2, Common.SCREEN_H/2)
+        Animations.popupOut(pop, 500);
     }
 
     /**商城的配置文件 */
@@ -134,9 +144,6 @@ class ShopDialog extends Base {
     /**十连按钮 */
     private btn_tenDraw:eui.Button;
     /**卡组 */
-    private cards:Array<number>;
-
-    /*******************弹窗********************/
-    private drawCardPop:DrawCardPop;
-    /*******************************************/
+    private cards:Array<any>;
+   
 }

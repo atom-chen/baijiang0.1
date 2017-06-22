@@ -2,28 +2,20 @@
 <e:Skin class="EquipUpSkin" width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
 	<e:Image source="mask_png" x="0" y="0" width="1136" height="640"/>
 	<e:Image source="equip_0004_png" horizontalCenter="0" verticalCenter="0"/>
-	<e:Label text="武器升级" horizontalCenter="0" verticalCenter="-214" size="40" bold="true" fontFamily="Microsoft YaHei" textColor="0xf2e7d2" visible="false"/>
-	<e:Image id="img_weapon" source="Sequip1_png" x="239" y="226"/>
-	<e:Label id="txt_weapon" text="武器名称" x="222" y="334" size="25" textAlign="center" anchorOffsetX="0" width="131" bold="true" fontFamily="Microsoft YaHei" textColor="0x5e5e5e"/>
+	<e:Label text="升级需要消耗" x="342.32" y="425" anchorOffsetX="0" width="185" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24"/>
+	<e:Image id="img_weapon" source="Sequip1_png" x="242" y="282"/>
+	<e:Label id="txt_weapon" text="武器名称" x="223.5" y="180.48" size="28" textAlign="center" anchorOffsetX="0" width="131" bold="true" fontFamily="Microsoft YaHei" textColor="0xb39e70"/>
 	<e:Image id="btn_close" source="button_0009_png" x="980" y="79.99"/>
-	<e:Label id="txt_front_attr_1" text="攻击力 400" x="403" y="217" anchorOffsetX="0" width="230" textAlign="right" fontFamily="Microsoft YaHei" bold="true" textColor="0x878787"/>
-	<e:Label id="txt_front_attr_2" text="攻击力 400" x="403" y="276" anchorOffsetX="0" width="230" textAlign="right" fontFamily="Microsoft YaHei" bold="true" textColor="0x878787"/>
-	<e:Label id="txt_front_attr_3" text="攻击力 400" x="403" y="334" anchorOffsetX="0" width="230" textAlign="right" fontFamily="Microsoft YaHei" bold="true" textColor="0x878787"/>
-	<e:Label id="txt_rear_attr_1" text="攻击力 400" x="688" y="217" anchorOffsetX="0" width="230" textAlign="left" fontFamily="Microsoft YaHei" bold="true" textColor="0x878787"/>
-	<e:Label id="txt_rear_attr_2" text="攻击力 400" x="693" y="276" anchorOffsetX="0" width="230" textAlign="left" fontFamily="Microsoft YaHei" bold="true" textColor="0x878787"/>
-	<e:Label id="txt_rear_attr_3" text="攻击力 400" x="693" y="334" anchorOffsetX="0" width="230" textAlign="left" fontFamily="Microsoft YaHei" bold="true" textColor="0x878787"/>
-	<e:Label text="&gt;&gt;" x="642" y="216" anchorOffsetX="0" width="47" fontFamily="Microsoft YaHei" bold="true" textColor="0x71b532"/>
-	<e:Label text=">>" x="643" y="275" anchorOffsetX="0" width="47" fontFamily="Microsoft YaHei" bold="true" textColor="0x71b532"/>
-	<e:Label text=">>" x="642" y="333" anchorOffsetX="0" width="47" fontFamily="Microsoft YaHei" bold="true" textColor="0x71b532"/>
-	<e:Label text="升级需要消耗" x="307" y="416" anchorOffsetX="0" width="185" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="28"/>
-	<e:Image source="exp_0002_png" x="492" y="412"/>
-	<e:Label id="txt_exp" text="10000" x="531" y="419" anchorOffsetX="0" width="101" size="25" textAlign="right" textColor="0xf28b09" rotation="0.1" bold="true" fontFamily="Microsoft YaHei"/>
-	<e:Label id="txt_sole" text="10000" x="689.04" y="419.41" anchorOffsetX="0" width="101" size="25" textAlign="right" rotation="0.1" bold="true" textColor="0xc91ebb" fontFamily="Microsoft YaHei"/>
-	<e:Image source="sole_0002_png" x="645" y="412"/>
+	<e:Label id="curr_lv" text="Lv.1" x="472" y="179.66" anchorOffsetX="0" width="236" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24" textAlign="center"/>
+	<e:Label id="next_lv" text="Lv.2" x="747.16" y="179.66" anchorOffsetX="0" width="230" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24" textAlign="center"/>
+	<e:Image source="exp_0002_png" x="492" y="416"/>
+	<e:Label id="txt_exp" text="100" x="531" y="425.66" anchorOffsetX="0" width="101" size="25" textAlign="right" textColor="0xf28b09" rotation="0.1" bold="true" fontFamily="Microsoft YaHei"/>
+	<e:Label id="txt_sole" text="100" x="689.04" y="426.07" anchorOffsetX="0" width="101" size="25" textAlign="right" rotation="0.1" bold="true" textColor="0xc91ebb" fontFamily="Microsoft YaHei"/>
+	<e:Image source="sole_0002_png" x="645" y="416"/>
 	<e:Button id="btn_upLevel" label="升级" y="483" anchorOffsetX="0" width="288" horizontalCenter="0">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0011_png"/>
+			<e:Image width="100%" height="100%" source="button_0011_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
 			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-10" bold="true" fontFamily="Microsoft YaHei" size="32" textColor="0x260303"/>
 			</e:Skin>
 		</e:skinName>

@@ -42,6 +42,7 @@ class EquipDialog extends Base {
             this.img_star_list[i] = new egret.Bitmap();
             this.txt_attr_list[i] = new egret.TextField();
             this.txt_attr_list[i].bold = true;
+            this.txt_attr_list[i].size = 25;
             this.txt_attr_list[i].fontFamily = "Microsoft YaHei";
         }
 
@@ -63,13 +64,9 @@ class EquipDialog extends Base {
     private onTouchUpGrade(event:egret.TouchEvent):void{
         if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
 
-        if(this.equip_up_window == null){
-            this.equip_up_window = new EquipUpWindow();
-        }
-
-        this.equip_up_window.addEventListener(modEquip.EquipSource.UPGRADE, this.upGradeGoodsInfo, this);
-        this.equip_up_window.Show(this.equip_info);
-        this.addChild(this.equip_up_window);
+        let pop:PopupWindow = WindowManager.GetInstance().GetWindow("EquipUpWindow");
+        pop.Show(this.equip_info);
+        pop.addEventListener(modEquip.EquipSource.UPGRADE, this.upGradeGoodsInfo, this);
     }
 
     /** 升级按钮的事件监听 */
@@ -80,9 +77,12 @@ class EquipDialog extends Base {
         else
         {
             this.lab_lv.textFlow = <Array<egret.ITextElement>>[
-                {text:"等级: " + event.data + "/", style:{"textColor":0x877575}},
+                {text:"等级: " + event.data + "/", style:{"textColor":0x727272}},
                 {text:"100", style:{"textColor":0xf28b01}}
             ]
+            if(event.data == modEquip.EquipSource.EQUIPLV){
+                if(this.btn_change.currentState == "down") this.showResetGroup();
+            } 
         }
     }
 
@@ -128,7 +128,6 @@ class EquipDialog extends Base {
 
     private onTouchClose():void{
         this.setGroupStatus(true, false, "兵器库", "down", "null");
-        UserDataInfo.GetInstance().SaveEquipInfo();
         GameLayerManager.gameLayer().panelLayer.removeChildren();
     }
 
@@ -159,7 +158,7 @@ class EquipDialog extends Base {
         this.lab_name.text = equip_data.name;
         this.img_weapon.source = RES.getRes(`equip${25-this.equip_info.Id}_png`);
         this.lab_lv.textFlow = <Array<egret.ITextElement>>[
-            {text:"等级: " + this.equip_info.Lv + "/", style:{"textColor":0x877575}},
+            {text:"等级: " + this.equip_info.Lv + "/", style:{"textColor":0x727272}},
             {text:"100", style:{"textColor":0xf28b01}}
         ]
 
@@ -179,6 +178,11 @@ class EquipDialog extends Base {
             {
                 this.star_list[i].texture = RES.getRes("star_00_png");
             }
+            this.star_list[i].visible = true;
+        }
+
+        for(let i:number = this.equip_info.Quality + 1; i < 6; i++){
+            this.star_list[i].visible = false;
         }
     }
 
@@ -195,8 +199,15 @@ class EquipDialog extends Base {
         }
         else
         {
-            strType = "可升星";
-            strImg = "button_0017_png";
+            if(this.equip_info.Lv == modEquip.EquipSource.EQUIPLV){
+                strType = "可升星";
+                strImg = "button_0017_png";
+            }
+            else
+            {
+                strType = "等级没满，不能升星";
+                strImg = "btn_upgradeStar_png";
+            }
         }
 
         let imgBg:egret.Bitmap = new egret.Bitmap(RES.getRes("equip_0005_png"));
@@ -225,24 +236,16 @@ class EquipDialog extends Base {
         
         if(this.equip_info.Star > index){
 
-            if(this.reset_equip_attr == null){
-                this.reset_equip_attr = new ResetEqiopAttrWindow();
-            }
-            let attrType = this.equip_info.GetPointTypeFromIndex(index);
-            let attrData = modEquip.GetEquipLvFromValue(attrType.Value);
-            this.reset_equip_attr.Show(this.equip_info, index);
-            this.addChild(this.reset_equip_attr);
-            this.reset_equip_attr.addEventListener(modEquip.EquipSource.RESETATTR, this.onResetEquipAttr, this);
+            let pop:PopupWindow = WindowManager.GetInstance().GetWindow("ResetEqiopAttrWindow");
+            pop.Show(this.equip_info, index);
+            pop.addEventListener(modEquip.EquipSource.RESETATTR, this.onResetEquipAttr, this);
         }
         else
         {
             if(this.equip_info.Lv >= modEquip.EquipSource.EQUIPLV){
-                if(this.equip_up_star == null){
-                    this.equip_up_star = new EquipUpStarWindow();
-                }
-                this.equip_up_star.Show(this.equip_info);
-                this.addChild(this.equip_up_star);
-                this.equip_up_star.addEventListener(modEquip.EquipSource.UPSTAR, this.onUpStar, this);
+                let pop:PopupWindow = WindowManager.GetInstance().GetWindow("EquipUpStarWindow");
+                pop.Show(this.equip_info);
+                pop.addEventListener(modEquip.EquipSource.UPSTAR, this.onUpStar, this);
             }
             else
             {
@@ -252,20 +255,25 @@ class EquipDialog extends Base {
     }
 
     private onUpStar(event:egret.Event):void{
-        this.equip_up_star.removeEventListener(modEquip.EquipSource.UPSTAR, this.onUpStar, this);
+        if(event.data == -1){
+            event.target.removeEventListener(modEquip.EquipSource.UPSTAR, this.onUpStar, this);
+            return;
+        }
 
-        if(event.data == true){
+        if(event.data == 1){
             let starIndex = this.equip_info.Star - 1;
-            this.lab_lv.textFlow = <Array<egret.ITextElement>>[{text:"等级: 0/", style:{"textColor":0x877575}},{text:"100", style:{"textColor":0xf28b01}}]
+            this.lab_lv.textFlow = <Array<egret.ITextElement>>[{text:"等级: 0/", style:{"textColor":0x727272}},{text:"100", style:{"textColor":0xf28b01}}]
             this.star_list[starIndex].texture = RES.getRes(modEquip.GetEquipLvFromValue(this.equip_info.GetPointTypeFromIndex(starIndex).Value).img);
-            this.createEquips();
             this.showResetGroup();
         }
+
+        this.createEquips();
+        
     }
 
     private onResetEquipAttr(event:egret.Event):void{
         if(event.data == -1){
-            this.reset_equip_attr.removeEventListener(modEquip.EquipSource.RESETATTR, this.onResetEquipAttr, this);
+            event.target.removeEventListener(modEquip.EquipSource.RESETATTR, this.onResetEquipAttr, this);
             return;
         }
 
@@ -322,6 +330,11 @@ class EquipDialog extends Base {
             {
                 this.createResetView(this.reset_list[i], i, false);
             }
+            this.reset_list[i].visible = true;
+        }
+
+        for(let i:number = this.equip_info.Quality + 1; i < 6; i++){
+            this.reset_list[i].visible = false;
         }
     }
 
@@ -365,9 +378,5 @@ class EquipDialog extends Base {
     private reset_list:Array<eui.Group>;
 
     /** lei */
-    private equip_up_window:EquipUpWindow;
     private equip_info:modEquip.EquipInfo;
-    private equip_up_star:EquipUpStarWindow;
-    private reset_equip_attr:ResetEqiopAttrWindow;
-
 }

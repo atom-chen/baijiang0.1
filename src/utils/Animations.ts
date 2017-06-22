@@ -159,21 +159,113 @@ namespace Animations {
      * 5:18 54 90 126 162
      * 6:0 36 72 108 144 180
      */
-    export function drawCard(card:number, func:Function = null) {
+    export function drawCard(card:any, func:Function = null) {
         let equipGrade:number = 0;
+        let name:string = ""
         for (let i = 0; i < ConfigManager.tcEquip.length; i++) {
             let equipConf = ConfigManager.tcEquip[i];
-            if (equipConf.id == card) {
+            if (equipConf.id == card.id) {
                 equipGrade = equipConf.grade;
+                name = equipConf.name;
                 break;
             }
         }
-        // Common.globalMask.alpha = 1.0;
-        // let group:eui.Group = new eui.Group();
-        // let bg:egret.Bitmap = Utils.createBitmap(`drawCard0${equipGrade}_png`);
-        // bg.x = 186;
-        // group.addChild(Common.globalMask);
-        // group.addChild(bg);
-        // GameLayerManager.gameLayer().maskLayer.addChild(group);
+
+        let group:eui.Group = new eui.Group();
+        let bg:egret.Bitmap = Utils.createBitmap("drawCardBg_png");
+        bg.width = Common.SCREEN_W;
+        bg.height = Common.SCREEN_H;
+        group.addChild(bg);
+        //白色遮罩
+        var shp:egret.Shape = new egret.Shape();
+        shp.graphics.beginFill( 0xffffff, 1);
+        shp.graphics.drawRect( 0, 0, Common.SCREEN_W, Common.SCREEN_H );
+        shp.graphics.endFill();
+        shp.alpha = 0;
+        group.addChild( shp );
+        //武器
+        let equipGroup:eui.Group = new eui.Group();
+        equipGroup.alpha = 0;
+        group.addChild(equipGroup);
+        let equipBg:egret.Bitmap = Utils.createBitmap(`drawCard0${equipGrade}_png`);
+        equipBg.x = 186;
+        equipGroup.addChild(equipBg);
+        let nameText:egret.TextField = Utils.createText(name, Common.SCREEN_W/2, 79, 45, 0x0A0000);
+        nameText.fontFamily = "Microsoft YaHei";
+        nameText.bold = true;
+        nameText.stroke = 3;
+        nameText.strokeColor = 0xfcfaf9;
+        nameText.anchorOffsetX = nameText.width/2;
+        equipGroup.addChild(nameText);
+        let img_equip:egret.Bitmap = Utils.createBitmap(`equip${25-card.id}_png`);
+        img_equip.anchorOffsetX = img_equip.width/2;
+        img_equip.x = nameText.x;
+        img_equip.y = 161;
+        equipGroup.addChild(img_equip);
+        let starGroup:eui.Group = new eui.Group();
+        equipGroup.addChild(starGroup);
+        for (let i = 0; i < equipGrade+1; i++) {
+            let img_star:egret.Bitmap = Utils.createBitmap("star_00_png");
+            img_star.x = 36 * i;
+            starGroup.addChild(img_star);
+        }
+        starGroup.anchorOffsetX = (equipGrade+1)*18;    //(width/2)
+        starGroup.x = Common.SCREEN_W/2;
+        starGroup.y = nameText.y + 50;
+        for (let i = 0; i < card.affix.length; i++) {
+            let imgId = 0;
+            for (let j = 0; j < modShop.affixValueRolls.length; j++) {
+                let affixInfo = modShop.affixValueRolls[j];
+                if (card.affix[i].value >= affixInfo[0] && card.affix[i].value <= affixInfo[1]) {
+                    imgId = j + 1;
+                    break;
+                }
+            }
+            let img_affix:egret.Bitmap = Utils.createBitmap(`star_0${imgId}_png`);
+            img_affix.x = 36 * i;
+            starGroup.addChild(img_affix);
+        }
+
+       //动画
+        var data = RES.getRes("drawCard_json");
+        var txtr = RES.getRes("drawCard_png");
+        var mcFactory:egret.MovieClipDataFactory = new egret.MovieClipDataFactory( data, txtr );
+        var mc1:egret.MovieClip = new egret.MovieClip( mcFactory.generateMovieClipData( "drawCard" ) );
+        mc1.x = Common.SCREEN_W/2 - 154;
+        mc1.y = Common.SCREEN_H/2 - 144;
+        mc1.visible = false;
+        group.addChild(mc1);
+
+        /********************动画********************/
+        var step3 = function() {
+            egret.Tween.get(equipGroup).to({ alpha: 1.0 }, 400);
+        }
+        var step2 = function() {
+            egret.setTimeout(()=>{
+                mc1.visible = true;
+                mc1.gotoAndPlay("drawCard", 1);
+                egret.setTimeout(step3, this, 250);
+            }, this, 200);
+            egret.Tween.get(shp).to({ alpha: 0 }, 250);
+        }
+        var step1 = function() {
+            egret.Tween.get(shp).to({ alpha: 1.0 }, 200).call(step2);
+        }
+        /*******************************************/
+        step1();
+        GameLayerManager.gameLayer().maskLayer.addChild(group);
+        //添加播放完成事件
+        mc1.addEventListener(egret.Event.COMPLETE, function (){
+            mc1.visible = false;
+            // step3();
+        }, this);
+        group.addEventListener(egret.TouchEvent.TOUCH_TAP, ()=>{
+            shp.graphics.clear();
+            egret.Tween.removeTweens(group);
+            GameLayerManager.gameLayer().maskLayer.removeChildren();
+            if (func) {
+                func();
+            }
+        }, this);
     }
 }

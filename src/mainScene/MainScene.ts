@@ -16,7 +16,6 @@ class MainScene extends Base {
         this.btn_shop.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_applicate.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
-        UserDataInfo.GetInstance().InitEquipInfo();
         this.createFire();
     }
 

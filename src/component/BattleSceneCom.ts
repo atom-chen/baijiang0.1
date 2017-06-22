@@ -27,11 +27,9 @@ class BattleSceneCom extends Base {
     private onPause(event:egret.TouchEvent):void {
         TimerManager.getInstance().stopTimer();
         SceneManager.battleScene.stopProduce();
-        if (!this.battlePausePop) {
-            this.battlePausePop = new BattlePausePop();
-        }
-        this.addChild(this.battlePausePop);
-        Animations.fadeOut(this.battlePausePop);
+        let pop = WindowManager.GetInstance().GetWindow("BattlePausePop");
+        pop.Show();
+        Animations.fadeOut(pop);
     }
 
     /**失败弹窗 */
@@ -59,18 +57,17 @@ class BattleSceneCom extends Base {
         let skill = this._getActSkill();
         object.source = `skill_${skill.image_id}_png`;
         this.img_hp.scaleX = 1.0;
-        this.img_exp.scaleX = 0.01;
         this.money = Common.userData.money;
         this.soul = Common.userData.soul;
         this.count = 0;
-        // GameData.curStage = 1;
         this.cd_time = 0;
         this.lab_cdTime.visible = false;
         this.lab_killCount.text = `${GameData.curStage}/5`;
-        this.lab_money.text = `${this.money}`;
-        this.lab_soul.text = `${this.soul}`;
         this.lab_stage.text = `第${GameData.curStage}关`;
         this.lab_stage.alpha = 0;
+        let index = modHero.getIndextFromId(Common.userData.selectHero);
+        this.lab_name.text = ConfigManager.tcHero[index].name;
+        this.img_headIcon.source = ConfigManager.tcHero[index].icon;
         Animations.fadeOutIn(this.lab_stage);
     }
 
@@ -80,8 +77,6 @@ class BattleSceneCom extends Base {
         GameData.killCount ++;
         Common.userData.money += MathUtils.getRandom(100, 200);
         Common.userData.soul += MathUtils.getRandom(10, 100);
-        this.lab_money.text = `${Common.userData.money}`;
-        this.lab_soul.text = `${Common.userData.soul}`;
         this.img_killCount.scaleX = GameData.killCount/10.0;
         if ( this.count >= this.tcStage[GameData.curStage-1].count) {
             this.count = 0;
@@ -142,7 +137,6 @@ class BattleSceneCom extends Base {
     /**暂停 */
     private btn_pause:eui.Button;
     private btn_skill:eui.Button;
-    private battlePausePop:BattlePausePop;
     private battleFailPop:BattleFailPop;
     private tcStage:any;
     private money:number;
@@ -152,16 +146,11 @@ class BattleSceneCom extends Base {
     private cd_time:number;
 
     /*******************图片和文字************************/
-    private img_exp:eui.Image;
+    private img_headIcon:eui.Image;
+    private lab_name:eui.Label;
     private img_hp:eui.Image;
     private img_killCount:egret.Bitmap;
-    private img_skill1:eui.Image;
-    private img_skill2:eui.Image;
-    private img_skill3:eui.Image;
     private lab_killCount:eui.Label;
-    private lab_lv:eui.Label;
-    private lab_money:eui.Label;
-    private lab_soul:eui.Label;
     private lab_cdTime:eui.Label;
     private img_skillMask:eui.Image;
     private lab_stage:eui.Label;

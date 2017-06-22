@@ -1,7 +1,7 @@
 /**
  * 战斗暂停弹窗
  */
-class BattlePausePop extends Base {
+class BattlePausePop extends PopupWindow {
     public constructor() {
         super();
         this.addEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
@@ -13,8 +13,11 @@ class BattlePausePop extends Base {
     }
 
     private onComplete():void {
-        this.btn_leave.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onBtnHandler, this);
-        this.btn_continue.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onBtnHandler, this);
+        this.removeEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
+    }
+
+    public Init():void{
+
     }
 
     /**按钮监听 */
@@ -36,8 +39,20 @@ class BattlePausePop extends Base {
     }
 
     /**设置弹出的内容显示 */
-    public show():void {
+    public Show():void {
+        super.Show();
+    }
 
+    public Reset():void{
+        this.btn_leave.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onBtnHandler, this);
+        this.btn_continue.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onBtnHandler, this);
+    }
+
+    public Close():void{
+        super.Close();
+
+        this.btn_leave.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onBtnHandler, this);
+        this.btn_continue.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onBtnHandler, this);
     }
 
     /**离开 */

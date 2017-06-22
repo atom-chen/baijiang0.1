@@ -41,12 +41,18 @@ class ShopItemPop extends Base {
     }
 
     /**设置弹出的内容显示 */
-    public show(content:any):void {
+    public show(content:any, type:string):void {
         this.content = content;
         this.img_item.source = content.imgItem;
         this.lab_itemName.text = content.name;
         this.lab_detail.text = content.detail;
         this.btn_buy.label = content.price;
+        let img_diamond:any = this.btn_buy.getChildAt(1);
+        if (type == "diamond") {
+            img_diamond.visible = false;
+        }else{
+            img_diamond.visible = true;
+        }
     }
 
     /**内容 */

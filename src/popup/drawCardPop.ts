@@ -1,20 +1,19 @@
 /**
  * 抽卡弹窗
  */
-class DrawCardPop extends Base {
+class DrawCardPop extends PopupWindow {
     public constructor() {
         super();
         this.addEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
         this.skinName = "resource/popup/drawCardPopSkin.exml";
     }
 
-    protected createChildren(): void{
-        this.ids = new Array();
+    private onComplete():void {
+        this.removeEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
     }
 
-    private onComplete():void {
-        this.btn_get.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
-        this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+    public Init(){
+        this.ids = new Array();
     }
 
     /**
@@ -22,8 +21,8 @@ class DrawCardPop extends Base {
      */
     private onButtonHandler(event:egret.TouchEvent):void {
         Animations.popupIn(this, 300, ()=>{
-            GameLayerManager.gameLayer().maskLayer.removeChildren();
             modShop.putPackage(this.ids);
+            this.Close();
         });
         switch (event.currentTarget) {
             case this.btn_get:
@@ -37,19 +36,21 @@ class DrawCardPop extends Base {
     /**
      * 显示
      */
-    public show(id:Array<number>, type:string):void {
+    public Show(infos:Array<any>, type:string):void {
+        super.Show();
+
         this.ids = [];
-        this.ids = id;
+        this.ids = infos;
         this.groupEquip.removeChildren();
-        if (type == "ten" && id.length) {
+        if (type == "ten" && infos.length) {
             //调整弹窗的背景和位置
             this.img_bg.source = "shop_popupBg3_png";
             Utils.setControlPosition(this.img_bg, 70, 46);
             Utils.setControlPosition(this.lab_title, 488, 83);
             Utils.setControlPosition(this.btn_get, 424, 483);
             Utils.setControlPosition(this.btn_back, 985, 73);
-            for (let i = 0; i < id.length; i++) {
-                let img_equip = Utils.createBitmap(`Sequip${25-id[i]}_png`);
+            for (let i = 0; i < infos.length; i++) {
+                let img_equip = Utils.createBitmap(`Sequip${25-infos[i].id}_png`);
                 this.groupEquip.addChild(img_equip);
                 img_equip.x = 100 * i;
                 if (i >= 5) {
@@ -63,10 +64,22 @@ class DrawCardPop extends Base {
             Utils.setControlPosition(this.lab_title, 488, 138);
             Utils.setControlPosition(this.btn_get, 424, 399);
             Utils.setControlPosition(this.btn_back, 800, 128);
-            let img_equip = Utils.createBitmap(`Sequip${25-id[0]}_png`);
+            let img_equip = Utils.createBitmap(`Sequip${25-infos[0].id}_png`);
             this.groupEquip.addChild(img_equip);
             Utils.setControlPosition(img_equip, 204, 44);
         }
+    }
+
+    public Close():void{
+        super.Close();
+
+        this.btn_get.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+        this.btn_back.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+    }
+
+    public Reset():void{
+        this.btn_get.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+        this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
     }
 
 

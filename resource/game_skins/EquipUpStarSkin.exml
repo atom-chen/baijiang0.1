@@ -3,7 +3,7 @@
 	<e:Image source="mask_png" x="0" y="0" width="1136" height="640"/>
 	<e:Image source="equip_0003_png" horizontalCenter="0" verticalCenter="0"/>
 	<e:Label text="武器升星" y="83" size="40" horizontalCenter="0" bold="true" fontFamily="Microsoft YaHei" textColor="0xfff4e0" visible="false"/>
-	<e:Label text="请放入升星材料" x="259" y="166.01" bold="true" size="25" fontFamily="Microsoft YaHei" textColor="0x7c7c7c"/>
+	<e:Label text="请放入升星材料" x="259" y="166.01" bold="true" size="25" fontFamily="Microsoft YaHei" textColor="0xb39e70"/>
 	<e:Image id="img_source1" x="185" y="225" source=""/>
 	<e:Image id="img_source2" x="304" y="225" source=""/>
 	<e:Image id="img_source3" x="421" y="225" source=""/>
@@ -18,7 +18,7 @@
 	<e:Button id="btn_upStar" label="升星" y="485" anchorOffsetX="0" width="288" horizontalCenter="0">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0011_png" source.down="button_0004_png"/>
+			<e:Image width="100%" height="100%" source="button_0011_png" source.down="button_0004_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
 			<e:Label id="labelDisplay" horizontalCenter="0" size="32" fontFamily="Microsoft YaHei" bold="true" textColor="0x260303" verticalCenter="-8"/>
 			</e:Skin>
 		</e:skinName>

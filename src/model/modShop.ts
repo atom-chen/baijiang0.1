@@ -4,6 +4,14 @@
 namespace modShop {
     /**抽卡roll的范围 */
     var rolls:Array<any> = [[1, 5400], [5401, 8900], [8901, 9900], [9901, 10000]]
+    /**星级roll的范围 */
+    var starRolls:Array<any> = [[1, 7000], [7001, 9500], [9501, 10000]]
+    /**词缀roll的范围 */
+    var affixRolls:Array<any> = [[1, 4000], [4001, 6900], [6901, 8500], [8501, 9500], [9501, 10000]]
+    /**词缀增加的值roll的范围 */
+    export var affixValueRolls:Array<any> = [[1, 20], [21, 40], [41, 60], [61, 80], [81, 100]];
+    /**词缀属性类型 */
+    var affixType:number = 3;
     /**
      * 抽卡逻辑(1~2:54, 3:35, 4:10, 5:1)
      * 1~2: [1, 5400]
@@ -29,22 +37,66 @@ namespace modShop {
     }
 
     /**
+     * 星级逻辑(抽卡和掉落)
+     * 0: 70%,
+     * 1: 25%,
+     * 2: 5%
+     */
+    function starDistribute(roll:number):number {
+        let star;
+        if (roll >= starRolls[0][0] && roll <= starRolls[0][1]) {
+            star = 0;
+        }
+        else if (roll >= starRolls[1][0] && roll <= starRolls[1][1]) {
+            star = 1;
+        }
+        else if (roll >= starRolls[2][0] && roll <= starRolls[2][1]) {
+            star = 2;
+        }
+        return star;
+    }
+
+    /**
+     * 词缀逻辑
+     */
+    function affixDistribute(roll:number):any {
+        let value:number = 0;
+        let type:number = 1;
+        for (let i = 0; i < affixRolls.length; i++) {
+            if (roll >= affixRolls[i][0] && roll <= affixRolls[i][1]) {
+                type = MathUtils.getRandom(1, affixType);
+                value = MathUtils.getRandom(affixValueRolls[i][0], affixValueRolls[i][1])
+                break;
+            }
+        }
+        return {"type":type, "value":value};
+    }
+
+    /**
      * 从紫色武器以上抽取(十抽情况下，前面9个在紫色品级一下的情况)
      */
-    function certainlyPurple():number {
+    function certainlyPurple():any {
         Common.log("非洲难民");
         let roll:number = MathUtils.getRandom(8901, 10000);
         let id:number = drawCard(roll);
-        return id;
+        let starRoll:number = MathUtils.getRandom(1, 10000);
+        let star:number = starDistribute(starRoll);
+        let affixs:Array<number> = new Array();
+        for (let i = 0; i < star; i ++) {
+            let affixRoll:number = MathUtils.getRandom(1, 10000);
+            let affix:any = affixDistribute(affixRoll);
+            affixs.push(affix);
+        }
+        return {"id":id, "star":star, "affix":affixs};
     }
 
     /**
      * fisher-yates shuffle算法(洗牌算法)
      */
-    function shuffle(arr:Array<number>):void {
+    function shuffle(arr:Array<any>):void {
         let len = arr.length;
         if (len == 0) return;
-        let temp = 0;
+        let temp:any;
         for (let i = 0; i < len; i++) {
                 let j = MathUtils.getRandom(1, len);
                 temp = arr[i];
@@ -55,33 +107,41 @@ namespace modShop {
 
     /**
      * 单抽(1~5星)
+     * @return {"id":1, "star":1, "affixs":[{"type":1, "value":1}]}
      */
-    export function drawOnce():number {
+    export function drawOnce():any {
         let roll:number = MathUtils.getRandom(1, 10000);
         let id:number = drawCard(roll);
-        // Common.log("roll:", roll, "id:", id);
-        return id;
+        let starRoll:number = MathUtils.getRandom(1, 10000);
+        let star:number = starDistribute(starRoll);
+        let affixs:Array<any> = new Array();
+        for (let i = 0; i < star; i ++) {
+            let affixRoll:number = MathUtils.getRandom(1, 10000);
+            let affix:any = affixDistribute(affixRoll);
+            affixs.push(affix);
+        }
+        return {"id":id, "star":star, "affix":affixs};
     }
 
     /**
      * 十连(必出紫色武器以上)
      */
-    export function drawTen():Array<number> {
-        let ids:any[] = [];
+    export function drawTen():Array<any> {
+        let ids:Array<any> = new Array();
         let isPurple:boolean = false;
         // 十抽
         for (let i = 0; i < 10; i++) {
-            let id = drawOnce();
+            let arrId = drawOnce();
             // 判断是否有紫色武器以上
-            if (id >= 15 && id <= 24) {
+            if (arrId[0] >= 15 && arrId[0] <= 24) {
                 isPurple = true;
             }
-            ids.push(id);
+            ids.push(arrId);
         }
         if (isPurple == false) {
             ids.pop();
-            let id = certainlyPurple();
-            ids.push(id);
+            let arrId = certainlyPurple();
+            ids.push(arrId);
         }
         shuffle(ids);
         for (let i = 0; i < ids.length; i ++) {
@@ -94,7 +154,7 @@ namespace modShop {
     /**
      * 将物品放入背包
      */
-    export function putPackage(ids:Array<number>):void {
+    export function putPackage(ids:Array<any>):void {
         
         ids.forEach(e=>{
             modEquip.EquipData.GetInstance().InsertEquipInfo(e)

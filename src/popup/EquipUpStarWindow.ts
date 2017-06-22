@@ -1,4 +1,4 @@
-class EquipUpStarWindow extends Base{
+class EquipUpStarWindow extends PopupWindow{
     public constructor(){
         super();
         this.addEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
@@ -7,10 +7,9 @@ class EquipUpStarWindow extends Base{
 
     private onComplete():void{
         this.removeEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
-        this.init();
     }
 
-    private init():void{
+    public Init():void{
         this.equip_list = [];
         this.icon_list =  [];
         this.click_list = [];
@@ -20,7 +19,6 @@ class EquipUpStarWindow extends Base{
             this.icon_list[i] = new egret.Bitmap(RES.getRes("equip_0009_png"));
             this.scrollGroup.addChild(this.icon_list[i]);
         }
-        this.lab_lucky.textFlow = <Array<egret.ITextElement>>[{text:"当前幸运值: "}, {text:"90%", style:{"size":45}}];
         this.initData();
     }
 
@@ -31,13 +29,15 @@ class EquipUpStarWindow extends Base{
         }
 
         this.lab_sole.text = "";
+        this.lab_lucky.textFlow = <Array<egret.ITextElement>>[{text:"当前幸运值: "}, {text:modEquip.EquipData.GetInstance().Lucky + "%", style:{"size":45}}];
     }
 
     public Show(equip_info:modEquip.EquipInfo):void{
+        super.Show();
+
         this.equip_info = equip_info;
         this.initData();
         this.showGoodsView();
-        this.Reset();
     }
 
     public Reset():void{
@@ -48,7 +48,9 @@ class EquipUpStarWindow extends Base{
         }
     }
 
-    public Close(isUpStar:boolean = false):void{
+    public Close():void{
+        super.Close();
+
         this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
         this.btn_upStar.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpStar, this);
 
@@ -60,36 +62,56 @@ class EquipUpStarWindow extends Base{
             this.equip_list[i].removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
         }
 
-        this.dispatchEventWith(modEquip.EquipSource.UPSTAR, false, isUpStar);
-
-        if(this.parent){
-            this.parent.removeChild(this);
-        }
+        this.dispatchEventWith(modEquip.EquipSource.UPSTAR, false, -1);
     }
 
     private onTouchUpStar(event:egret.TouchEvent):void{
-        if(!this.isEnough()){
+        if(!this.isHaveEquip()){         //如果当前没有装备 则不能点击升级
             Animations.showTips("装备不足，无法升星", 1, true);
             return;
         }
 
+        //移除所有的监听 防止去除后又重复监听
         for(let i:number = 0; i < this.equip_list.length; i++){
             this.equip_list[i].removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
         }
 
+        let rate:number = 0;
+        let equipData:Array<modEquip.EquipInfo> = [];
         for(let i:number = 0; i < this.click_list.length; i++){
-            if(this.click_list[i] != 0) modEquip.EquipData.GetInstance().RemovePointEquip(this.id_list[parseInt(this.source_list[i].name)]);
+            if(this.click_list[i] != 0){                //得到填入的装备槽的装备
+                let info:modEquip.EquipInfo = modEquip.EquipData.GetInstance().GetEquipFromIndex(parseInt(this.source_list[i].name));
+                equipData.push(info);
+                rate += modEquip.GetSuccessGoodsLv(this.equip_info, info);
+            }  
+        }
+       
+        for(let i:number = 0; i < equipData.length; i++){
+            modEquip.EquipData.GetInstance().RemoveEquipInfo(equipData[i]);
         }
 
-        let rand = Math.floor(((Math.random() % 100) * 100))
-        let type = rand % 3 == 0 ? 3 : rand % 3; 
-        let attrType:modEquip.AttrType = new modEquip.AttrType(type, rand % 100);
-        this.equip_info.InsertAttrType(attrType);
-        this.equip_info.Lv = 0;
-        this.equip_info.Star++;
-        Animations.showTips("升星成功", 1);
-
-        this.Close(true);
+        //判断是否升星成功
+        if(this.isUpStar(rate)){
+            let rand = Math.floor(((Math.random() % 100) * 100))
+            let type = rand % 5 == 0 ? 5 : rand % 5; 
+            let attrType:modEquip.AttrType = new modEquip.AttrType(type, rand % 100);
+            this.equip_info.InsertAttrType(attrType);
+            this.equip_info.Lv = 0;
+            this.equip_info.Star++;
+            Animations.showTips("升星成功", 1);
+            this.dispatchEventWith(modEquip.EquipSource.UPSTAR, false, 1);
+            this.Close();
+        }
+        else 
+        {
+            for(let i:number = 0; i < equipData.length; i++) modEquip.EquipData.GetInstance().Lucky += equipData[i].Quality * 10;
+            if(modEquip.EquipData.GetInstance().Lucky >= 100) modEquip.EquipData.GetInstance().Lucky = 100;
+            
+            Animations.showTips("升星失败", 1);
+            this.dispatchEventWith(modEquip.EquipSource.UPSTAR, false, 2);
+            this.initData();
+            this.showGoodsView();
+        }
     }
 
     private onTouchSource(event:egret.TouchEvent):void{
@@ -101,8 +123,7 @@ class EquipUpStarWindow extends Base{
                 break;
             }
         }
-       
-        this.lab_sole.text = "";
+        if(!this.isHaveEquip()) this.lab_sole.text = "";
     }
 
     /** 显示当前拥有的装备 */
@@ -111,13 +132,12 @@ class EquipUpStarWindow extends Base{
         for(let i:number = 0; i < this.equip_list.length; i++) this.equip_list.pop();
 
         this.scrollGroup.removeChildren();
-        this.id_list = [];
 
         let index:number = 0;
         let raw:number, col:number;
         let list:any = modEquip.EquipData.GetInstance().GetEquipList();
         for(let i:number = 0; i < list.length; i++){
-            if(list[i].Id != this.equip_info.Id){
+            if( (list[i].id == this.equip_info.Id && list[i].TypeID != this.equip_info.TypeID) || list[i].Id != this.equip_info.Id){
                 raw = Math.floor(index / 4);
                 col = index % 4;
                 let img:eui.Image = new eui.Image();
@@ -125,9 +145,8 @@ class EquipUpStarWindow extends Base{
                 this.scrollGroup.addChild(img); 
                 this.equip_list.push(img);
                 Common.SetXY(img, 4 + 104*col, 4 + 104*raw);
-                img.name = index + "";
+                img.name = i + "";
                 index++;
-                this.id_list.push(list[i].Id)
                 img.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
             }
         }
@@ -137,6 +156,9 @@ class EquipUpStarWindow extends Base{
         }
     }
 
+    /** 是否是相同的装备
+     * @param target 目标对象
+     */
     private isSameEquip(target:any):boolean{
         let isSame:boolean = false;
         for(let i:number = 0; i < this.source_list.length; i++){
@@ -146,7 +168,7 @@ class EquipUpStarWindow extends Base{
                 break;
             }
         }
-
+        if(!this.isHaveEquip()) this.lab_sole.text = "";
         return isSame;
     }
 
@@ -164,9 +186,10 @@ class EquipUpStarWindow extends Base{
         Common.SetXY(this.icon_list[index], target.x, target.y);
         this.changeObjectStatus(this.source_list[index], target.name, target.source);
 
-        if(this.isEnough()) this.lab_sole.text = "10000";
+        if(this.isHaveEquip()) this.lab_sole.text = "10000";
     }
 
+    /** 获得当前没满的索引  */
      private getEmptyIndex():number{
         let temp:number = -1;
         for(let i:number = 0; i < 3; i++){
@@ -180,11 +203,12 @@ class EquipUpStarWindow extends Base{
         return temp;
     }
 
-    private isEnough():boolean{
+    /** 判断是否有装备  */
+    private isHaveEquip():boolean{
         for(let i:number = 0; i < 3; i++){
-            if(this.click_list[i] == 0) return false;
+            if(this.click_list[i] != 0) return true;
         }
-        return true;
+        return false;
     }
 
     private changeObjectStatus(obj:any, name:string, source:string):void{
@@ -193,10 +217,19 @@ class EquipUpStarWindow extends Base{
         obj.name   = name;
     }
 
+    /** 设置对象的属性 */
     private set_obj_attr(index:number, isVisible:boolean, clickNum:number, strName:string, strSource:string):void{
         this.changeObjectStatus(this.source_list[index], strName, strSource);
         this.icon_list[index].visible = isVisible;
         this.click_list[index] = clickNum;
+    }
+
+    /**判断是否可以升星 */
+    private isUpStar(rate:number):boolean{
+        let isSuccess:boolean = false;
+        let rand = Math.floor((Math.random() % 100) * 100);
+        if(rate > rand) isSuccess = true;
+        return isSuccess;
     }
 
 
@@ -213,7 +246,6 @@ class EquipUpStarWindow extends Base{
     private equip_list:Array<eui.Image>;
     private icon_list:Array<egret.Bitmap>;
     private click_list:Array<number>;
-    private id_list:Array<number>;
     private source_list:any;
     
     private equip_info:modEquip.EquipInfo;

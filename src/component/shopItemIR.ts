@@ -31,7 +31,7 @@ class shopItemIR extends Base {
             break;
             case this.btn_buy:
                 GameLayerManager.gameLayer().maskLayer.addChild(this.shopItemPop);
-                this.shopItemPop.show(this.content);
+                this.shopItemPop.show(this.content, this.btn_buy.name);
                 Animations.popupOut(this.shopItemPop, 500);
             break;
             default:
@@ -49,11 +49,12 @@ class shopItemIR extends Base {
         this.lab_count.text = content.count;
         this.btn_buy.label = content.price;
         if (type == "diamond") {
-            this.img_btnBuy = this.btn_buy.getChildAt(0);
-            this.img_btnBuy.source = "btn_shopBuy_png";
-            this.btn_itemDetail.visible = false;
+            this.btn_buy.name = "diamond";
+            // this.img_btnBuy = this.btn_buy.getChildAt(0);
+            // this.img_btnBuy.source = "btn_shopBuy_png";
+            // this.btn_itemDetail.visible = false;
         }else{
-            
+            this.btn_buy.name = "other";
         }
     }
 

@@ -1,6 +1,5 @@
 class UserDataInfo{
     public constructor(){
-        
     }
 
     public static instance:UserDataInfo;
@@ -29,8 +28,11 @@ class UserDataInfo{
             equipInfo.Id = equip_list[i].id;
             equipInfo.Lv = equip_list[i].lv;
             equipInfo.Star = equip_list[i].star;
-            equipInfo.SetEquipAttr(equip_list[i].attack, equip_list[i].defend, equip_list[i].blood);
+            equipInfo.SetEquipAttr(equip_list[i].attr_list);
             modEquip.EquipData.GetInstance().Add(equipInfo);
         }
+    }
+
+    public SaveData():void{
     }
 }

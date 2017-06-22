@@ -5,7 +5,7 @@ namespace modEquip {
 
     /**装备的通用资源 */
     export class EquipSource{
-        public static EQUIPLV:number = 50;
+        public static EQUIPLV:number = 10;
         public static RESETATTR:string = "RESETATTR";
         public static UPSTAR:string = "UPSTAR";
         public static UPGRADE:string = "UPGRADE";
@@ -14,9 +14,11 @@ namespace modEquip {
 
     /** 撞瘪的属性类型 */
     export class AttrType{
-        public static ATTACK:number = 1;
-        public static DEFEND:number = 2;
-        public static BLOOD:number  = 3;
+        public static BLOOD:number  = 1;
+        public static ATTACK:number = 2;
+        public static DEFEND:number = 3;
+        public static CRIT:number   = 4;
+        public static DODGE:number  = 5;
 
         public constructor(type:number, value:number){
             this.type = type;
@@ -50,10 +52,11 @@ namespace modEquip {
            this.id   = 0;
            this.lv   = 0;
            this.star = 0;
-           this.attack = 50;
-           this.defend = 10;
-           this.blood = 100;
+           this.quality = 0;
+           this.typeID = 0;
            this.attrType = [];
+           this.attr_list = [];
+           for(let i:number = 0; i < 5; i++) this.attr_list[i] = 50;
        }
 
         public set Id(val:number){
@@ -80,8 +83,24 @@ namespace modEquip {
             return this.star;
         }
 
+        public get Quality(){
+            return this.quality;
+        }
+
+        public set Quality(val:number){
+            this.quality = val;
+        }
+
+        public set TypeID(val:number){
+            this.typeID = val;
+        }
+
+        public get TypeID(){
+            return this.typeID;
+        }
+
         public GetEquipAttr():any{
-            return {attack:this.attack, defend:this.defend,blood:this.blood};
+            return this.attr_list;
         }
 
         public InsertAttrType(attrType:AttrType):void{
@@ -103,25 +122,28 @@ namespace modEquip {
             return this.attrType[index];
         }
 
-        public SetEquipAttr(attack:number, defend:number, blood:number):void{
-            this.attack = attack;
-            this.defend = defend;
-            this.blood  = blood;
+        public SetEquipAttr(attrList:Array<number>):void{
+            for(let i:number = 0; i < 5; i++){
+                this.attr_list[i] = attrList[i];
+            }
         }
 
-        private id:number;          //装备id
-        private lv:number;          //装备等级
-        private star:number;        //装备星级
-        private attack:number;      
-        private defend:number;
-        private blood:number;
-        private attrType:Array<AttrType>;
+        private id:number;                      //装备id
+        private lv:number;                      //装备等级
+        private star:number;                    //装备星级
+        private quality:number;                 //装备的品质
+        private typeID:number;                  //装备的类型id 主要是区别id一样的时候不同的typeid
+        private attr_list:Array<number>;        //[1]生命[2]攻击[3]护甲[4]暴击[5]闪避
+        private attrType:Array<AttrType>;       //属性类型
     }
 
-    /** 装备数据 */
+    /** 装备数据 负责所有的装备信息 */
    export class EquipData{
         public constructor(){
             this.equip_list = [];
+            this.id_list = [];
+            this.lucky = 0;
+            for(let i:number = 1; i <= 24; i++) this.id_list[i] = 0;
         }
 
         public static instance:EquipData;
@@ -135,6 +157,7 @@ namespace modEquip {
 
         public Add(val:EquipInfo):void{
             this.equip_list.push(val);
+            this.listSort();
         }
 
         public Pop():void{
@@ -157,20 +180,57 @@ namespace modEquip {
         }
 
         /** 根据指定的id获得武器 */
-        public GetEquipFromId(id:number):EquipInfo{
+        public GetEquipFromId(id:number, typeId:number):EquipInfo{
             for(let i in this.equip_list){
-                if(this.equip_list[i].Id == id) return this.equip_list[i];
+                if(this.equip_list[i].Id == id && typeId == this.equip_list[i].TypeID) return this.equip_list[i];
             }
 
             return null;
         }
 
         /** 插入装备信息 */
-        public InsertEquipInfo(id:number):void{
+        public InsertEquipInfo(equipInfo:any):void{
             let info:EquipInfo = new EquipInfo();
-            info.Id = id;
+            info.Id = equipInfo.id;
+            info.Star = equipInfo.star;
+            info.Quality = TcEquipData.GetInstance().GetEquipInfoFromId(equipInfo.id).grade;
+            for(let i:number = 0; i < equipInfo.affix.length; i++){
+                let attrType = new AttrType(equipInfo.affix[i].type, equipInfo.affix[i].value);
+                info.InsertAttrType(attrType);
+            }
+            info.TypeID = this.id_list[info.Id]++;
+
             this.equip_list.push(info);
             this.listSort();
+        }
+
+        /** 移除装备信息 */
+        public RemoveEquipInfo(info:EquipInfo):void{
+            for(let i:number = 0; i < this.equip_list.length; i++){
+                if(info.Id == this.equip_list[i].Id && info.TypeID == this.equip_list[i].TypeID){
+                    for(let j:number = i; j < this.equip_list.length - 1; j++){
+                        this.equip_list[j] = this.equip_list[j + 1];
+                    }
+                    break;
+                }
+            }
+            this.equip_list.pop();
+        }
+
+        public RemoveEquipFromIndex(index:number):void{
+            if(index < 0 || index > this.equip_list.length) return;
+            for(let j:number = index; j < this.equip_list.length - 1; j++){
+                this.equip_list[j] = this.equip_list[j + 1];
+            }
+            this.equip_list.pop();
+        }
+
+        public set Lucky(val:number){
+            this.lucky = val;
+        }
+
+        public get Lucky(){
+            return this.lucky;
         }
 
         private swapData(i:number, j:number):void{
@@ -189,23 +249,9 @@ namespace modEquip {
             }
         }
 
-        /** 移除添加的洗练的装备 
-         * arr 对应的洗练的数组
-         */
-        public RemovePointEquip(id:number):void{
-
-            for(let i:number = 0; i < this.equip_list.length; i++){
-                if(id == this.equip_list[i].Id){
-                    for(let j:number = i; j < this.equip_list.length - 1; j++){
-                        this.equip_list[j] = this.equip_list[j + 1];
-                    }
-                    break;
-                }
-            }
-            this.equip_list.pop();
-        }
-
         private equip_list:Array<EquipInfo>;
+        private lucky:number;
+        private id_list:Array<number>;
     }
 
     export class TcEquipData{
@@ -233,35 +279,69 @@ namespace modEquip {
         private tcEquip:any;
     }
 
+    /** 获得升星槽 锁需要的表格 */
+    export class TcUpStar{
+        
+        public constructor(){
+            this.tcStar = RES.getRes("TcUpStar_json");
+        }
+
+        public static instance:TcUpStar;
+        public static GetInstance():TcUpStar{
+            if(this.instance == null){
+                this.instance = new TcUpStar();
+            }
+            return this.instance;
+        }
+
+        public GetConsumeFromGrade(grade:number):void{
+            return this.tcStar[grade - 1];
+        }
+
+        private tcStar:any;
+    }
+
+    /** 根据对应的类型和值 来获得对应的字符信息 */
     export function GetAttrInfo(type:number, value:number):string{
-        if(type == AttrType.ATTACK) return "攻击力+" + value + "%";
-        else if(type == AttrType.DEFEND) return "防御力+" + value + "%";
-        else if(type == AttrType.BLOOD) return "生命值+" + value + "%";
+        if(type == AttrType.ATTACK) return "攻击+" + value + "%";
+        else if(type == AttrType.DEFEND) return "护甲+" + value + "%";
+        else if(type == AttrType.BLOOD) return "生命+" + value + "%";
+        else if(type == AttrType.CRIT) return "暴击+" + value + "%";
+        else if(type == AttrType.DODGE) return "闪避+" + value + "%";
     }
 
     export function GetEquipLvFromValue(value):any{
+
+        if(value == 0) return {color:0x858685,img:"star_00_png"};
+
         if(value < 20){
-            return {color:0x727272,img:"star_00_png"};
+            return {color:0xffffff,img:"star_01_png"};
         }
         else if(value >= 20 && value < 40)
         {
-            return {color:0xffffff,img:"star_01_png"};
+            return {color:0x5e972b,img:"star_02_png"};
         }
         else if(value >= 40 && value < 60)
         {
-            return {color:0x71ed09,img:"star_02_png"};
+            return {color:0x2f76b0,img:"star_03_png"};
         }
         else if(value >= 60 && value < 80)
         {
-            return {color:0x292ba5,img:"star_03_png"};
+            return {color:0x852f9b,img:"star_04_png"};
         }
-        else if(value >= 80 && value < 90)
+        else if(value >= 80)
         {
-            return {color:0xb012c9,img:"star_04_png"};
+            return {color:0xab5515,img:"star_05_png"};
         }
-        else if(value = 90)
-        {
-            return {color:0xdb7b15,img:"star_05_png"};
-        }
+    }
+
+    /** 计算升级成功的概率 */
+    export function GetSuccessGoodsLv(upInfo:EquipInfo, consumeInfo:EquipInfo):number{
+        let successRate:number;
+        let consumeData:any = TcUpStar.GetInstance().GetConsumeFromGrade(consumeInfo.Quality);
+        let upData:any = TcUpStar.GetInstance().GetConsumeFromGrade(upInfo.Quality);
+        successRate = Math.floor((consumeData.skill / upData.star[upInfo.Star]) * 100 )
+
+        return successRate;
     }
 }

@@ -22,13 +22,13 @@ class ReadyDialog extends Base {
     }
 
     private uiCompleteHandler():void {
-        this.btn_biography.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
+        this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_skill.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_detail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_battle.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.topBtn = [this.btn_biography, this.btn_skill, this.btn_detail];
+        this.topBtn = [this.btn_upgrade, this.btn_skill, this.btn_detail];
         //每个人物的三个技能属性
         for (let i = 0; i < 3; i++) {
             this._skill[i] = new Array();
@@ -59,14 +59,13 @@ class ReadyDialog extends Base {
     }
 
     protected childrenCreated(): void{
-        // this.cycleSlide.showHero(Common.userData.selectHero);
         this.showHero(Common.userData.selectHero);
     }
 
     private topBtnListener(event:egret.TouchEvent):void {
         this._focusBtn = event.currentTarget;
         switch(this._focusBtn) {
-            case this.btn_biography:
+            case this.btn_upgrade:
                 Utils.viewStackStatus(this.viewStack, this.topBtn, 0);
             break;
             case this.btn_skill:
@@ -78,7 +77,6 @@ class ReadyDialog extends Base {
             case this.btn_battle:
                 this._stopTimer();
                 Animations.sceneTransition(()=>{
-                    // Common.userData.selectHero = this.cycleSlide.getCurHeroCount();
                     GameLayerManager.gameLayer().sceneLayer.removeChildren();
                     GameLayerManager.gameLayer().panelLayer.removeChildren();
                     if (!SceneManager.battleScene) {
@@ -116,18 +114,13 @@ class ReadyDialog extends Base {
         let hero_id:number = 0;
         //英雄的id
         hero_id = modHero.getIndextFromId(num);
+        //名字
+        this.lab_heroName.text = ConfigManager.tcHero[hero_id].name;
         for (let i = 0; i < this._heroArmature.length; i++) {
             if (hero_id == i) {
                 this._heroArmature[i].visible = true;
             }else{
                 this._heroArmature[i].visible = false;
-            }
-        }
-        //传记
-        for (let i = 0; i < this.tcBiography.length; i++) {
-            if (this.tcBiography[i].id == this.tcHero[hero_id].biography) {
-                this.lab_biography.text = this.tcBiography[i].content;
-                break;
             }
         }
         //技能
@@ -244,7 +237,7 @@ class ReadyDialog extends Base {
     private tcSkill:any;
     private _skill:any[] = [];
 	/*******************顶部按钮***********************/
-	private btn_biography:eui.ToggleButton;
+	private btn_upgrade:eui.ToggleButton;
 	private btn_skill:eui.ToggleButton;
 	private btn_detail:eui.ToggleButton;
 	private topBtn:eui.ToggleButton[];
@@ -257,8 +250,6 @@ class ReadyDialog extends Base {
     private btn_battle:eui.Button;
     /**替换按钮 */
     private btn_change:eui.Button;
-    /**武将选择 */
-    private cycleSlide:CycleSlide;
     /**武将头像滑动框 */
     private _scrollHero:eui.Scroller;
     /**选中框 */
@@ -267,8 +258,8 @@ class ReadyDialog extends Base {
     private _heroArmature:Array<DragonBonesArmatureContainer>;
 
 	/*******************文字和图片***********************/
-    /**传记 */
-	private lab_biography:eui.Label;
+    /**名字 */
+    private lab_heroName:eui.Label;
     /**技能相关 */
     private lab_skillname1:eui.Label;
     private lab_skillname2:eui.Label;

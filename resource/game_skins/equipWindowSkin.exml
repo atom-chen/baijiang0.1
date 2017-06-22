@@ -7,7 +7,7 @@
 	<e:Button id="btn_upgrade" label="升级" x="14" y="555.34" anchorOffsetX="0" width="168" anchorOffsetY="0" height="76">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0004_png"/>
+			<e:Image width="100%" height="100%" source="button_0004_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0" />
 			<e:Label id="labelDisplay" bold="true" fontFamily="Microsoft YaHei" size="32" textColor="0x260303" anchorOffsetX="-720720" anchorOffsetY="-6804" width="-105" height="-21" horizontalCenter="0" verticalCenter="-8"/>
 			</e:Skin>
 		</e:skinName>
