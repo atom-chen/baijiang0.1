@@ -3,6 +3,14 @@
  */
 namespace modEquip {
 
+    /**
+     * 更新各个装备信息
+     * 
+     */
+    export function update(equip:any) {
+        SceneManager.mainScene.readyDialog.updateEquip(equip);
+    }
+
     /**装备的通用资源 */
     export class EquipSource{
         public static EQUIPLV:number = 10;

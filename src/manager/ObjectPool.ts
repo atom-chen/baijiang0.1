@@ -57,6 +57,13 @@ class ObjectPool {
         return true;
     }
 
+    /**
+     * 查询对象池
+     */
+    public static Inquire():any {
+        return ObjectPool._poolData;
+    }
+
     /**池数据 */
     private static _poolData:any = {}
 }

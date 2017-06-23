@@ -144,7 +144,6 @@ class Enermy extends BaseGameObject {
     /**受到攻击 */
     public gotoHurt(isSkillHurt:boolean = false) {
         if ((this.curState == Enermy.Action_Dead) || (this.curState == BaseGameObject.Action_Hurt)) return;
-        // Animations.shakeScreen(SceneManager.battleScene, 2);
         ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
         this.curState = BaseGameObject.Action_Hurt;
         this.armature.play(this.curState, 0);
@@ -158,6 +157,7 @@ class Enermy extends BaseGameObject {
                 this.effectArmature.play(BaseGameObject.Action_Hurt, 1);
                 this.effectArmature.x = -15;
                 this.effectArmature.y = 0;
+                if (this.hp < 0) this.gotoDead();
             }
             this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
         }

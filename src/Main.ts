@@ -26,7 +26,6 @@
 //  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //////////////////////////////////////////////////////////////////////////////////////
-
 class Main extends eui.UILayer {
     /**
      * 加载进度界面
@@ -112,7 +111,6 @@ class Main extends eui.UILayer {
         if(this.isThemeLoadEnd && this.isResourceLoadEnd){
             //加载配置文件
             ConfigManager.loadConfig();
-            Common.initKBEngine();
             this.startCreateScene();
         }
     }
@@ -156,7 +154,8 @@ class Main extends eui.UILayer {
         // Common.log(nodeGame);
         SceneManager.enterGameScene = new EnterGameScene();
         GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.enterGameScene);
-        NetConnect.send(11001, {}, ()=>{})
+        LeanCloud.GetInstance().Login("wujiangu", "112345");
+        // NetConnect.send(11001, {}, ()=>{})
         // SceneManager.battleScene = new BattleScene();
         // this.addChild(SceneManager.battleScene);
     }

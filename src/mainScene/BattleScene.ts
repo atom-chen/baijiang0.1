@@ -297,6 +297,8 @@ class BattleScene extends Base {
         let heroCount = GameData.heros.length;
         let monsterCount = GameData.monsters.length;
         let bossCount = GameData.boss.length;
+        ObjectPool.push("HeroData");
+        Common.log(ObjectPool.Inquire())
         for (let i = 0; i < heroCount; i++) {
             let hero:Hero = GameData.heros[i];
             hero.removeComplete();

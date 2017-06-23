@@ -61,9 +61,10 @@ class Hero extends BaseGameObject {
 
     public init(name:string) {
         super.init(name);
+        let Data = ObjectPool.pop("HeroData", name);
         this.initDragonBonesArmature(name);
         this.name = name;
-        this.offset = [[3, -111], [75, -107], [119, -48], [75, 14], [0, 23]];
+        this.offset = [[1, -113], [77, -109], [121, -50], [75, 14], [0, 23]];
         // this.offset = [[2, -74], [49, -71], [79, -32], [50, 9], [0, 15]]
         this.speed = 40;
         this.atk_range = 200;
@@ -75,7 +76,6 @@ class Hero extends BaseGameObject {
         this.monsterRadian =[];
         this.enermy = [];
         this.buff = [];
-        this.passiveRelease = false;
         this.lastAnimation = "";
         this.skill.skillData.skill_range = 150;
         this.visible = false;
@@ -101,22 +101,6 @@ class Hero extends BaseGameObject {
             let newBuff = ObjectPool.pop(buff[i].name);
             this.addBuff(newBuff);
         }
-        // this.playMultiBuff();
-    }
-
-    /**
-     * 混合buff动画(不用)
-     */
-    public playMultiBuff():void {
-        this.buffEffect = [];
-        this.buffId = [];
-        for (let i = 0; i < this.buff.length; i++) {
-            if (this.buff[i].effectName && this.buff[i].buffData.id) {
-                this.buffEffect.push(this.buff[i].effectName);
-                this.buffId.push(this.buff[i].buffData.id);
-            }
-        }
-        // this.skillArmature.playMulti(this.buffEffect, this.buffId);
     }
 
     /**增加buff */
@@ -151,14 +135,6 @@ class Hero extends BaseGameObject {
      */
     public update(time:number):void {
         super.update(time);
-        //释放被动技能
-        if (this.passiveRelease) {
-            for (let i = 0; i < this.buff.length; i++) {
-                if (this.buff[i].buffData.id == 6) {
-                    this.buff[i].update();
-                }
-            }
-        }
     }
 
     /**
@@ -256,14 +232,6 @@ class Hero extends BaseGameObject {
     public state_hurt(time:number):void {
         // Common.log(this.effectArmature.getState(this.curState));
     }
-
-    /**
-     * 释放被动技能
-     */
-    public setPassiveRelease():void {
-        this.passiveRelease = true;
-    }
-
     /**
      * 走到指定的位置
      * 
@@ -284,6 +252,7 @@ class Hero extends BaseGameObject {
         this.curState = Hero.Action_Idle;
         this.isAttack = false;
         this.isPlay = false;
+        this.img_swordLight.visible = false;
         super.gotoIdle();
     }
 
@@ -404,10 +373,11 @@ class Hero extends BaseGameObject {
         this.atk_radian = MathUtils.getRadian2(this.originX, this.originY, endX, endY);
 
         this.img_swordLight.scaleX = 1;
-        this.img_swordLight.rotation = MathUtils.getAngle(this.atk_radian) + 360;
+        // this.img_swordLight.rotation = MathUtils.getAngle(this.atk_radian) + 360;
+        this.img_swordLight.rotation = 45 * this.offsetIndex - 90;
         if (this.reverse(this, this.atk_radian)) {
             this.img_swordLight.scaleX = -1;
-            this.img_swordLight.rotation = 360 - MathUtils.getAngle(this.atk_radian);
+            this.img_swordLight.rotation = 45 * this.offsetIndex + 90;
         }
         let dx = Math.cos(this.atk_radian) * this.atk_range;
         let dy = Math.sin(this.atk_radian) * this.atk_range;
@@ -556,9 +526,10 @@ class Hero extends BaseGameObject {
 
     private attack_effect:dragonBones.Bone;
     private img_swordLight:egret.Bitmap;
+    /**剑光的偏移 */
+
     private offset:any[];
     private offsetIndex:number;
-    private passiveRelease:boolean;
     /**是否攻击到敌人 */
     private isHit:boolean;
 }

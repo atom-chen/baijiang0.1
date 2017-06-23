@@ -4,17 +4,6 @@
 	<e:Image x="950" y="40" width="160" height="44" source="crystal_0001_png"/>
 	<e:Label id="lab_soul" text="99999" y="50" size="25" fontFamily="Microsoft YaHei" bold="true" x="1020" textColor="0x2D6EA6"/>
 	<e:Image source="tianfu_0002_png" x="127.66" y="8.5"/>
-	<e:Label text="浩劫" x="53" y="593" textColor="0x545454" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" width="218" anchorOffsetY="0" height="38" visible="false"/>
-	<e:Label text="风行" x="404" y="593" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" width="218" anchorOffsetY="0" height="38" textColor="0x545454" visible="false"/>
-	<e:Label text="回复" x="768.5" y="593" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" width="218" anchorOffsetY="0" height="38" textColor="0x545454" visible="false"/>
-	<e:ToggleButton id="btn_page1" label="1" x="155" y="100" width="48" height="48" visible="false">
-		<e:skinName>
-			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0006_png" source.down="button_0007_png"/>
-			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="0" textColor.down="0xFFFFFF" bold="true" fontFamily="Microsoft YaHei" textColor="0x111111"/>
-			</e:Skin>
-		</e:skinName>
-	</e:ToggleButton>
 	<e:Label text="天赋页" x="23" y="106.5" fontFamily="Microsoft YaHei" bold="true" size="35" textColor="0x0c0c0c"/>
 	<e:Button id="btn_add" label="" x="210" y="100" width="48" height="48">
 		<e:skinName>
@@ -71,7 +60,8 @@
 	</e:Group>
 	<e:Group id="skillPopupGroup" width="1136" height="640" x="1" y="1" anchorOffsetX="0" anchorOffsetY="0" visible="false">
 		<e:Image source="mask_png" width="5680" height="3200" x="-2272" y="-1280"/>
-		<e:Image x="399.5" y="84" width="332" height="472" source="equip_0006_png"/>
+		<e:Image x="398.17" y="84" width="332" height="472" source="equip_0006_png"/>
+		<e:Label id="lab_name" text="天赋名称" x="418.33" y="144.34" fontFamily="Microsoft YaHei" size="26" bold="true" textColor="0xA89A77"/>
 		<e:Button id="btn_closeDetail" label="" x="735.46" y="80.13">
 			<e:skinName>
 				<e:Skin states="up,down,disabled">
@@ -80,21 +70,29 @@
 				</e:Skin>
 			</e:skinName>
 		</e:Button>
-		<e:Label id="lab_name" text="天赋名称" x="419" y="102.33" fontFamily="Microsoft YaHei" size="30" bold="true"/>
-		<e:Label text="等级：" x="423.01" y="147.83" size="22" fontFamily="Microsoft YaHei" textColor="0xb7b7b7" bold="true"/>
-		<e:Label id="lab_lv" text="0/10" x="511.01" y="147.83" size="22" fontFamily="Microsoft YaHei" textColor="0xb7b7b7" bold="true"/>
-		<e:Label id="lab_condition" text="需要xx天赋升到5级。" x="424.01" y="181.83" fontFamily="Microsoft YaHei" size="22" textColor="0x8c0a0a" bold="true"/>
-		<e:Label id="lab_skillDetail" text="对敌方英雄造成伤害时，回复伤害的10%血量。" x="424.01" y="216.33" fontFamily="Microsoft YaHei" size="22" multiline="true" width="275" lineSpacing="10" bold="true" textColor="0x707070"/>
-		<e:Button id="btn_upgrade" label="升级" x="479" y="422">
+		<e:Label text="天赋升级" x="501.72" y="98.33" fontFamily="Microsoft YaHei" size="32" bold="true" textColor="0xf2ebcb"/>
+		<e:Label text="等级：" x="420.34" y="179.84" size="22" fontFamily="Microsoft YaHei" textColor="0xb7b7b7" bold="true"/>
+		<e:Label id="lab_lv" text="0/10" x="504.36" y="182.5" size="22" fontFamily="Microsoft YaHei" textColor="0xb7b7b7" bold="true"/>
+		<e:Label id="lab_condition" text="需要xx天赋升到5级。" x="424.01" y="181.83" fontFamily="Microsoft YaHei" size="22" textColor="0x8c0a0a" bold="true" visible="false"/>
+		<e:Label id="lab_skillDetail" text="对敌方英雄造成伤害时，回复伤害的10%血量。" x="420.34" y="214" fontFamily="Microsoft YaHei" size="20" multiline="true" width="291" lineSpacing="10" bold="true" textColor="0x707070" anchorOffsetX="0" anchorOffsetY="0" height="170"/>
+		<e:Button id="btn_upPower" label="1000" x="420" y="395">
 			<e:skinName>
 				<e:Skin states="up,down,disabled">
-				<e:Image width="100%" height="100%" source="button_0004_png"/>
-				<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-8" fontFamily="Microsoft YaHei" bold="true" size.down="27" textColor="0x260303"/>
+				<e:Image width="100%" height="100%" source="button_0004_png" horizontalCenter="0" verticalCenter="0" width.down="90%" height.down="90%"/>
+				<e:Image source="power_0002_png" horizontalCenter="-64" verticalCenter="-7" width.down="36" height.down="36"/>
+				<e:Label id="labelDisplay" verticalCenter="-8" fontFamily="Microsoft YaHei" bold="true" size.down="27" textColor="0xfff4d3" horizontalCenter="20"/>
 				</e:Skin>
 			</e:skinName>
-
-
 		</e:Button>
-		<e:Label id="lab_consume" text="升级需消耗xxxx能量点" fontFamily="Microsoft YaHei" size="22" horizontalCenter="-8" verticalCenter="199" bold="true" textColor="0xa79b6b"/>
+		<e:Button id="btn_upDiamond" label="50" x="420" y="471.5">
+			<e:skinName>
+				<e:Skin states="up,down,disabled">
+				<e:Image width="100%" height="100%" source="btn_shopGet_png" horizontalCenter="0" verticalCenter="0" width.down="90%" height.down="90%"/>
+				<e:Image source="crystal_0002_png" horizontalCenter="-62" verticalCenter="-7" width.down="36" height.down="36"/>
+				<e:Label id="labelDisplay" horizontalCenter="6" verticalCenter="-8" fontFamily="Microsoft YaHei" bold="true" size.down="27" textColor="0xFFF4D3" text="50"/>
+				</e:Skin>
+			</e:skinName>
+		</e:Button>
+		<e:Label id="lab_consume" text="升级需消耗xxxx能量点" fontFamily="Microsoft YaHei" size="22" horizontalCenter="-8" verticalCenter="199" bold="true" textColor="0xa79b6b" visible="false"/>
 	</e:Group>
 </e:Skin>

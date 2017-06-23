@@ -22,30 +22,30 @@
 		<e:skinName>
 		<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="btn_ready_png" source.down="btn_ready_over_png"/>
-			<e:Label id="labelDisplay" bold="true" textColor.down="0xac7841" fontFamily="Microsoft YaHei" size="33" horizontalCenter="0" verticalCenter="-4" textColor="0x959185"/>
+			<e:Label id="labelDisplay" bold="true" textColor.down="0x000000" fontFamily="Microsoft YaHei" size="33" horizontalCenter="0" verticalCenter="-4" textColor="0x959185"/>
 		</e:Skin>
 		</e:skinName>
 	</e:ToggleButton>
-	<e:ToggleButton id="btn_detail" label="详情" x="936" y="100" anchorOffsetX="0" width="196" anchorOffsetY="0" height="52">
+	<e:ToggleButton id="btn_detail" label="武器" x="936" y="100" anchorOffsetX="0" width="196" anchorOffsetY="0" height="52">
 		<e:skinName>
 		<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="btn_ready_png" source.down="btn_ready_over_png"/>
-			<e:Label id="labelDisplay" bold="true" textColor.down="0xac7841" fontFamily="Microsoft YaHei" size="33" verticalCenter="-4" horizontalCenter="0" textColor="0x959185"/>
+			<e:Label id="labelDisplay" bold="true" textColor.down="0x000000" fontFamily="Microsoft YaHei" size="33" verticalCenter="-4" horizontalCenter="0" textColor="0x959185"/>
 		</e:Skin>
 		</e:skinName>
 	</e:ToggleButton>
-	<e:ToggleButton id="btn_upgrade" label="传记" x="520" y="100.1" anchorOffsetX="0" width="196" anchorOffsetY="0" height="52">
+	<e:ToggleButton id="btn_upgrade" label="升级" x="520" y="100.1" anchorOffsetX="0" width="196" anchorOffsetY="0" height="52">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="btn_ready_png" source.down="btn_ready_over_png"/>
-			<e:Label id="labelDisplay" bold="true" textColor.down="0xac7841" fontFamily="Microsoft YaHei" size="32" horizontalCenter="0" verticalCenter="-4" textColor="0x959185"/>
+			<e:Label id="labelDisplay" bold="true" textColor.down="0x000000" fontFamily="Microsoft YaHei" size="32" horizontalCenter="0" verticalCenter="-4" textColor="0x959185"/>
 			</e:Skin>
 		</e:skinName>
 
 	</e:ToggleButton>
 
-	<e:ViewStack id="viewStack" width="613" height="401" x="522" y="147.33" anchorOffsetX="0" anchorOffsetY="0" selectedIndex="1">
-		<e:Group id="biographyGroup" anchorOffsetX="0" width="612" anchorOffsetY="0" height="399" y="0.67" x="-1" visible="false">
+	<e:ViewStack id="viewStack" width="613" height="401" x="522" y="147.33" anchorOffsetX="0" anchorOffsetY="0" selectedIndex="2">
+		<e:Group id="biographyGroup" anchorOffsetX="0" width="612" anchorOffsetY="0" height="399" y="0.67" x="-1">
 			<e:Label text="升级需要消耗" x="70.23" y="361.67" anchorOffsetX="0" width="185" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24"/>
 			<e:Image source="exp_0002_png" x="219.91" y="352.67"/>
 			<e:Label id="txt_exp" text="100" x="258.91" y="362.33" anchorOffsetX="0" width="101" size="25" textAlign="right" textColor="0xF28B09" rotation="0.1" bold="true" fontFamily="Microsoft YaHei"/>
@@ -56,14 +56,7 @@
 			<e:Label id="curr_lv" text="Lv.2" x="336.97" y="26.69" anchorOffsetX="0" width="236" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24" textAlign="center"/>
 			<e:Image source="bg_readyAttr_png" x="27.18" y="60"/>
 			<e:Image source="shop_0011_png" x="291.67" y="194"/>
-			<e:Button id="btn_change0" label="替换" x="16" y="408">
-				<e:skinName>
-				<e:Skin states="up,down,disabled">
-					<e:Image width="100%" height="100%" source="button_0019_png"/>
-					<e:Label id="labelDisplay" verticalCenter="-8" bold="true" fontFamily="Microsoft YaHei" size="32" y="16" size.down="31" horizontalCenter="0" textColor="0x202811" text="升级"/>
-				</e:Skin>
-				</e:skinName>
-			</e:Button>
+
 		</e:Group>
 		<e:Group id="skillGroup" width="612" height="401" x="-2.01" y="0" anchorOffsetX="0" anchorOffsetY="0" visible="false">
 			<e:Label text="技能" x="264" y="11.32" fontFamily="Microsoft YaHei" bold="true" size="36" textColor="0x0c0c0c" visible="false"/>
@@ -89,16 +82,12 @@
 			<e:Label id="lab_detail3" text="" x="423.07" y="225.29" size="20" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
 		</e:Group>
 		<e:Group id="detailGroup" width="620" height="402" x="0" y="0" anchorOffsetY="0" visible="false">
-			<e:Label text="人物详情" x="233.19" y="11.16" fontFamily="Microsoft YaHei" bold="true" size="36" textColor="0x0c0c0c" visible="false"/>
-			<e:Image id="img_weapon" source="equip1_png" x="68" y="16"/>
-			<e:Group width="216" height="36" y="16" anchorOffsetY="0" left="26">
-				<e:Image source="star_00_png" y="0" scaleX="1" scaleY="1" horizontalCenter="0"/>
-				<e:Image source="star_00_png" x="126" y="0" scaleX="1" scaleY="1" anchorOffsetX="0" width="36"/>
-				<e:Image source="star_00_png" x="54" y="0"/>
-			</e:Group>
-			<e:Image source="shop_0003_png" x="246.83" y="395" visible="false"/>
-			<e:Label id="lab_equipName" text="" y="16" fontFamily="Microsoft YaHei" bold="true" textColor="0xf9eccf" horizontalCenter="-142.5"/>
-			<e:Label id="lab_equipLv" text="等级：100/100" x="414" y="365.32" fontFamily="Microsoft YaHei" bold="true" size="24" textColor="0x8c8c8c"/>
+
+			<e:Image id="img_equip" x="68" y="16" width="468" height="384" source=""/>
+
+
+			<e:Label id="lab_equipName" text="" y="16" fontFamily="Microsoft YaHei" bold="true" textColor="0xf9eccf" horizontalCenter="-142.5" visible="false"/>
+			<e:Label id="lab_equipLv" text="等级：100/100" x="414" y="365.32" fontFamily="Microsoft YaHei" bold="true" size="24" textColor="0x8c8c8c" visible="false"/>
 			<e:Button id="btn_change" label="替换" x="16" y="408">
 				<e:skinName>
 					<e:Skin states="up,down,disabled">

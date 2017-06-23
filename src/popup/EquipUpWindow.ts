@@ -97,6 +97,8 @@ class EquipUpWindow extends PopupWindow{
         Animations.showTips("升级成功", 1);
         this.curr_lv.text = "Lv." + this.equip_info.Lv;
         this.next_lv.text = "Lv." + (this.equip_info.Lv + 1);
+        Common.log(JSON.stringify(this.equip_info))
+        modEquip.update(this.equip_info);
         this.dispatchEventWith(modEquip.EquipSource.UPGRADE, false, this.equip_info.Lv);
     }
 

@@ -39,7 +39,6 @@
     <!--这个标签为不通过egret提供的第三方库的方式使用的 javascript 文件，请将这些文件放在libs下，但不要放在modules下面。-->
     <!--other_libs_files_start-->
     <script egret="lib" src="polyfill/promise.js" src-release="polyfill/promise.min.js"></script>
-    <script egret="lib" src="libs/kbengine/kbengine.js" src-release="libs/kbengine/kbengine.min.js"></script>
     <!--other_libs_files_end-->
 
     <!--这个标签会被替换为项目中所有的 javascript 文件。删除 game_files 标签后，项目文件加载列表将不会变化，请谨慎操作！-->
@@ -66,6 +65,7 @@
 	<script egret="game" src="bin-debug/game/DragonBones/DragonBonesArmatureContainer.js"></script>
 	<script egret="game" src="bin-debug/game/DragonBones/DragonBonesFactory.js"></script>
 	<script egret="game" src="bin-debug/game/GameData.js"></script>
+	<script egret="game" src="bin-debug/game/HeroData.js"></script>
 	<script egret="game" src="bin-debug/game/Machine/BaseState.js"></script>
 	<script egret="game" src="bin-debug/Common.js"></script>
 	<script egret="game" src="bin-debug/game/Machine/IdleState.js"></script>
@@ -82,8 +82,7 @@
 	<script egret="game" src="bin-debug/game/Skill/skills/SevenInOut.js"></script>
 	<script egret="game" src="bin-debug/game/Skill/skills/TaijiPalm.js"></script>
 	<script egret="game" src="bin-debug/heroInfo/heroInfoPanel.js"></script>
-	<script egret="game" src="bin-debug/kbe_scripts/Account.js"></script>
-	<script egret="game" src="bin-debug/kbe_scripts/GameObject.js"></script>
+	<script egret="game" src="bin-debug/leanCloud/LeanCloud.js"></script>
 	<script egret="game" src="bin-debug/LoadingUI.js"></script>
 	<script egret="game" src="bin-debug/localStorage/LocalStorage.js"></script>
 	<script egret="game" src="bin-debug/Main.js"></script>
@@ -168,6 +167,13 @@
         //  }
 		var isDebug = false;
 		var RESOURCE = "";
+		var AV = AV || {};
+		var APP_ID = 'onCULkQ8rWJmAJtnjfxtxrkr-gzGzoHsz';
+		var APP_KEY = 'FGupyEUQyuw4kKkvrU7ohM06';
+		AV.init({
+		appId: APP_ID,
+		appKey: APP_KEY
+		});
         egret.runEgret({renderMode:"canvas", audioType:0});
     </script>
 </body>

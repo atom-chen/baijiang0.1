@@ -129,6 +129,7 @@ class EquipDialog extends Base {
     private onTouchClose():void{
         this.setGroupStatus(true, false, "兵器库", "down", "null");
         GameLayerManager.gameLayer().panelLayer.removeChildren();
+        LeanCloud.GetInstance().SaveEquipData();
     }
 
     /** 创建物品信息 */

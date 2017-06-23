@@ -160,6 +160,8 @@ namespace Animations {
      * 6:0 36 72 108 144 180
      */
     export function drawCard(card:any, func:Function = null) {
+        //动画是否播放完成
+        let isFinish:boolean = false;
         let equipGrade:number = 0;
         let name:string = ""
         for (let i = 0; i < ConfigManager.tcEquip.length; i++) {
@@ -200,7 +202,7 @@ namespace Animations {
         let img_equip:egret.Bitmap = Utils.createBitmap(`equip${25-card.id}_png`);
         img_equip.anchorOffsetX = img_equip.width/2;
         img_equip.x = nameText.x;
-        img_equip.y = 161;
+        img_equip.y = 181;
         equipGroup.addChild(img_equip);
         let starGroup:eui.Group = new eui.Group();
         equipGroup.addChild(starGroup);
@@ -211,7 +213,7 @@ namespace Animations {
         }
         starGroup.anchorOffsetX = (equipGrade+1)*18;    //(width/2)
         starGroup.x = Common.SCREEN_W/2;
-        starGroup.y = nameText.y + 50;
+        starGroup.y = nameText.y + 65;
         for (let i = 0; i < card.affix.length; i++) {
             let imgId = 0;
             for (let j = 0; j < modShop.affixValueRolls.length; j++) {
@@ -238,7 +240,9 @@ namespace Animations {
 
         /********************动画********************/
         var step3 = function() {
-            egret.Tween.get(equipGroup).to({ alpha: 1.0 }, 400);
+            egret.Tween.get(equipGroup).to({ alpha: 1.0 }, 400).call(()=>{
+                isFinish = true;
+            });
         }
         var step2 = function() {
             egret.setTimeout(()=>{
@@ -260,11 +264,13 @@ namespace Animations {
             // step3();
         }, this);
         group.addEventListener(egret.TouchEvent.TOUCH_TAP, ()=>{
-            shp.graphics.clear();
-            egret.Tween.removeTweens(group);
-            GameLayerManager.gameLayer().maskLayer.removeChildren();
-            if (func) {
-                func();
+            if (isFinish) {
+                shp.graphics.clear();
+                egret.Tween.removeTweens(group);
+                GameLayerManager.gameLayer().maskLayer.removeChildren();
+                if (func) {
+                    func();
+                }
             }
         }, this);
     }

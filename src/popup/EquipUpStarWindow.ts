@@ -100,6 +100,7 @@ class EquipUpStarWindow extends PopupWindow{
             this.equip_info.Star++;
             Animations.showTips("升星成功", 1);
             this.dispatchEventWith(modEquip.EquipSource.UPSTAR, false, 1);
+            modEquip.update(this.equip_info);
             this.Close();
         }
         else 

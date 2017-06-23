@@ -19,6 +19,10 @@ class ReadyDialog extends Base {
         this._heroArmature = new Array();
         this._selectBox = Utils.createBitmap("img_selectHero_png");
         this._createHeroIcon();
+        this.starGroup = new eui.Group();
+        this.detailGroup.addChild(this.starGroup);
+        this.starGroup.x = 26;
+        this.starGroup.y = 16;
     }
 
     private uiCompleteHandler():void {
@@ -30,31 +34,21 @@ class ReadyDialog extends Base {
         this.btn_battle.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.topBtn = [this.btn_upgrade, this.btn_skill, this.btn_detail];
         //每个人物的三个技能属性
+        let temp:any;
         for (let i = 0; i < 3; i++) {
             this._skill[i] = new Array();
             switch (i) {
                 case 0:
-                    this._skill[i][0] = this.lab_skillname1;
-                    this._skill[i][1] = this.lab_cd1;
-                    this._skill[i][2] = this.lab_detail1;
-                    this._skill[i][3] = this.img_skill1;
-                    this._skill[i][4] = this.img_skill1Bg;
+                    temp = [this.lab_skillname1, this.lab_cd1, this.lab_detail1, this.img_skill1, this.img_skill1Bg];
                 break;
                 case 1:
-                    this._skill[i][0] = this.lab_skillname2;
-                    this._skill[i][1] = this.lab_cd2;
-                    this._skill[i][2] = this.lab_detail2;
-                    this._skill[i][3] = this.img_skill2;
-                    this._skill[i][4] = this.img_skill2Bg;
+                    temp = [this.lab_skillname2, this.lab_cd2, this.lab_detail2, this.img_skill2, this.img_skill2Bg];
                 break;
                 default:
-                    this._skill[i][0] = this.lab_skillname3;
-                    this._skill[i][1] = this.lab_cd3;
-                    this._skill[i][2] = this.lab_detail3;
-                    this._skill[i][3] = this.img_skill3;
-                    this._skill[i][4] = this.img_skill3Bg;
+                    temp = [this.lab_skillname3, this.lab_cd3, this.lab_detail3, this.img_skill3, this.img_skill3Bg];
                 break;
             }
+            for(let j:number = 0; j < 5; j++) this._skill[i][j] = temp[j];
         }
     }
 
@@ -145,22 +139,51 @@ class ReadyDialog extends Base {
     }
 
     /**
+     * 更新武器信息
+     */
+    public updateEquip(equip:any):void{
+        this.starGroup.removeChildren();
+        for (let i = 0; i < equip.quality+1; i++) {
+            let img_star:egret.Bitmap = Utils.createBitmap("star_00_png");
+            img_star.x = 36 * i;
+            this.starGroup.addChild(img_star);
+        }
+        for (let i = 0; i < equip.attrType.length; i++) {
+            let imgId = 0;
+            for (let j = 0; j < modShop.affixValueRolls.length; j++) {
+                let affixInfo = modShop.affixValueRolls[j];
+                if (equip.attrType[i].Value >= affixInfo[0] && equip.attrType[i].Value <= affixInfo[1]) {
+                    imgId = j + 1;
+                    break;
+                }
+            }
+            let img_affix:egret.Bitmap = Utils.createBitmap(`star_0${imgId}_png`);
+            img_affix.x = 36 * i;
+            this.starGroup.addChild(img_affix);
+        }
+        this.lab_equipLv.visible = true;
+        this.lab_equipLv.text = `等级：${equip.lv}/100`;
+    }
+
+    /**
      * 更新界面
      */
     public updateUI(event:egret.Event):void {
         this.changeEquipPop.removeEventListener(modEquip.EquipSource.CHANGEEQUIP, this.updateUI, this);
         let id = event.data;
         let equip:any;
-        for (let i = 0; i < ConfigManager.tcEquip.length; i++) {
-            if (ConfigManager.tcEquip[i].id == id) {
-                equip = ConfigManager.tcEquip[i];
-                break;
-            }
-        }
-        this.img_equip.source = `Sequip${25-id}_png`;
-        this.lab_equipName.text = equip.name;
+        // for (let i = 0; i < ConfigManager.tcEquip.length; i++) {
+        //     if (ConfigManager.tcEquip[i].id == id) {
+        //         equip = ConfigManager.tcEquip[i];
+        //         break;
+        //     }
+        // }
+        equip = modEquip.EquipData.GetInstance().GetEquipFromId(id, 0);
+        Common.log(equip);
+        this.img_equip.source = `equip${25-id}_png`;
+        this.updateEquip(equip);
+        // this.lab_equipName.text = equip.name;
     }
-
     /**
      * 显示界面
      */
@@ -227,6 +250,10 @@ class ReadyDialog extends Base {
     }
 
     // public static instance:ReadyDialog;
+    /**武器信息组 */
+    private detailGroup:eui.Group;
+    /**星级组 */
+    private starGroup:eui.Group;
     /**替换武器弹窗 */
     private changeEquipPop:ChangeEquipPop;
     /**叠层 */

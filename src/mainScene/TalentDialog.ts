@@ -41,7 +41,8 @@ class TalentDialog extends Base {
         this.btn_certain.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
         this.btn_closeDetail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
-        this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+        this.btn_upPower.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+        this.btn_upDiamond.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
     }
 
     /**
@@ -90,18 +91,34 @@ class TalentDialog extends Base {
             break;
         }
     }
+
+    /**
+     * 解锁逻辑
+     */
+    private _unLockTalent(type:string) {
+        if (modTalent.isUnlock(this.curPage, this.curTalentId)) {
+            this.update();
+            if (type == "power") {
+
+            }else{
+
+            }
+        }else{
+            let strs = modTalent.getTips(this.curTalentId);
+            Animations.showTips(strs, 1, true);
+        }
+    }
+
     /**
      * 技能弹窗按钮回调
      */
     private onSkillPop(event:egret.TouchEvent):void {
         switch (event.currentTarget) {
-            case this.btn_upgrade:
-                if (modTalent.isUnlock(this.curPage, this.curTalentId)) {
-                    this.update();
-                }else{
-                    let strs = modTalent.getTips(this.curTalentId);
-                    Animations.showTips(strs, 1, true);
-                }
+            case this.btn_upPower:
+                this._unLockTalent("power");
+            break;
+            case this.btn_upDiamond:
+                this._unLockTalent("diamond");
             break;
             default:
                 Animations.popupIn(this.skillPopupGroup, 300, ()=>{
@@ -232,12 +249,15 @@ class TalentDialog extends Base {
             this.lab_lv.textColor = Common.TextColors.lvNotFull;
         }
 
-        let btn:any = this.btn_upgrade.getChildAt(0);
+        let btn:any = this.btn_upPower.getChildAt(0);
+        let diamondBtn:any = this.btn_upDiamond.getChildAt(0);
         if (modTalent.isUnlock(this.curPage, num)) {
             btn.source = "button_0004_png";
+            diamondBtn.source = "btn_shopGet_png";
             this.lab_condition.text = "";
         }else{
             btn.source = "button_0010_png";
+            diamondBtn.source = "button_0010_png";
             let strs = modTalent.getTips(this.curTalentId, false);
             this.lab_condition.text = strs;
         }
@@ -273,7 +293,8 @@ class TalentDialog extends Base {
 	/*******************技能升级弹窗***********************/
     private skillPopupGroup:eui.Group;
 	private btn_closeDetail:eui.Button;
-	private btn_upgrade:eui.Button;
+	private btn_upPower:eui.Button;
+    private btn_upDiamond:eui.Button;
 	private lab_name:eui.Label;
     private lab_lv:eui.Label;
     private lab_condition:eui.Label;

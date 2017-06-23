@@ -17,6 +17,7 @@ class MainScene extends Base {
         this.btn_applicate.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.createFire();
+        LeanCloud.GetInstance().InitData();
     }
 
     /**
@@ -101,13 +102,13 @@ class MainScene extends Base {
     private _btnFocus:eui.Button;
     /**准备出战 */
     private btn_ready:eui.Button;
-    private readyDialog:ReadyDialog;
+    public readyDialog:ReadyDialog;
     /**装备 */
     private btn_equip:eui.Button;
-    private equipDialog:EquipDialog;
+    public equipDialog:EquipDialog;
     /**天赋 */
     private btn_talent:eui.Button;
-    private talentDialog:TalentDialog;
+    public talentDialog:TalentDialog;
     /**设置 */
     private btn_setting:eui.Button;
     /**应用 */
