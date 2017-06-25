@@ -154,10 +154,17 @@ class Main extends eui.UILayer {
         // Common.log(nodeGame);
         SceneManager.enterGameScene = new EnterGameScene();
         GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.enterGameScene);
-        LeanCloud.GetInstance().Login("wujiangu", "112345");
+        LeanCloud.GetInstance().Login("wujiangu", "112345", this._onLogin);
         // NetConnect.send(11001, {}, ()=>{})
         // SceneManager.battleScene = new BattleScene();
         // this.addChild(SceneManager.battleScene);
+    }
+
+    /**
+     * 登陆成功
+     */
+    private _onLogin() {
+        LeanCloud.GetInstance().InitData();
     }
 
     private test():void {

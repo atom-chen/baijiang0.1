@@ -17,5 +17,15 @@ namespace modHero {
         return curIndex;
     }
 
+    /**
+     * 根据key获取id
+     */
+    export function getIdFromKey(name:string):number {
+        let id:number = 1;
+        let data = HeroData.getHeroData(name);
+        id = data.id;
+        return id;
+    }
+
     var curIndex:number = 0;
 }

@@ -33,6 +33,14 @@ class UserDataInfo{
         }
     }
 
-    public SaveData():void{
+    public SaveData(data:any):void{
+        this._userInfo = data;
     }
+
+    public getUserInfo():any {
+        return this._userInfo;
+    }
+
+    /**用户数据 */
+    private _userInfo:any;
 }

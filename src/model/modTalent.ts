@@ -28,6 +28,16 @@ namespace modTalent {
     var sumEachCount:Array<number> = [0, 0, 0];
     /**玩家解锁的天赋 */
     var talent:Array<any> = new Array();
+    /**玩家天赋页数据 */
+    var talentPage:Array<any> = new Array();
+    /**服务端获得数据 */
+    export function initData(data:Array<any>):void {
+        talentPage = data;
+    }
+    /**获取玩家天赋 */
+    export function getTalentData():Array<any> {
+        return talentPage;
+    }
     /**
      * talent状态:(设cur为玩家的天赋数据结构)
      * 1. cur = [], talent = [[1, 0], [2, 0], [8, 0], [9, 0], [15, 0], [16, 0]]

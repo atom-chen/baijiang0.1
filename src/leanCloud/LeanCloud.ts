@@ -25,11 +25,14 @@ class LeanCloud{
     }
 
      /** 登入 */
-    public Login(username:string, password:string):void{
+    public Login(username:string, password:string, callBack:Function=null):void{
          AV.User.logIn(username, password).then(function (loginedUser) {
             // 登录成功，跳转到商品 list 页面
             Common.log(JSON.stringify(loginedUser))
-            LeanCloud.ObjectId = loginedUser.id; 
+            LeanCloud.ObjectId = loginedUser.id;
+            if (callBack) {
+                callBack();
+            }
         }, function (error) {
             Common.log(JSON.stringify(error));
         });
@@ -113,10 +116,21 @@ class LeanCloud{
                 }
                 modEquip.EquipData.GetInstance().Add(info);
             }
-             Common.log(data);
-         },function(error){
-             console.log(" init euqip error ")
-         });
+        },function(error){
+            console.log(" init euqip error ")
+        });
+
+        let roleQuery = new AV.Query("RoleData");
+        roleQuery.get(LeanCloud.RoleId).then(function(todo){
+            let data = todo._serverData;
+            UserDataInfo.GetInstance().SaveData(data);
+            // Common.log("玩家数据",data);
+            let heroData = UserDataInfo.GetInstance().getUserInfo();
+            HeroData.initData(heroData.hero);
+            modTalent.initData(heroData.talentPage)
+        },function(error){
+            console.log(" init role error ")
+        });
     }
 
     /** 获得初始数据 */

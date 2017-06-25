@@ -88,7 +88,7 @@
 
 			<e:Label id="lab_equipName" text="" y="16" fontFamily="Microsoft YaHei" bold="true" textColor="0xf9eccf" horizontalCenter="-142.5" visible="false"/>
 			<e:Label id="lab_equipLv" text="等级：100/100" x="414" y="365.32" fontFamily="Microsoft YaHei" bold="true" size="24" textColor="0x8c8c8c" visible="false"/>
-			<e:Button id="btn_change" label="替换" x="16" y="408">
+			<e:Button id="btn_change" label="替换" x="16" y="408" name="btn_change">
 				<e:skinName>
 					<e:Skin states="up,down,disabled">
 					<e:Image width="100%" height="100%" source="button_0019_png"/>

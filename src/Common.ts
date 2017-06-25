@@ -13,7 +13,7 @@ namespace Common {
         "soul":0,
         "power":0,
         "talentPage":[
-            {"name":"pvp", "count":0, "talent":[[1, 10], [2, 5], [8, 4], [9, 6]]}
+            {"name":"pvp", "count":0, "talent":[]}
         ],
     };
     /**舞台的宽度 */

@@ -53,7 +53,8 @@ class ReadyDialog extends Base {
     }
 
     protected childrenCreated(): void{
-        this.showHero(Common.userData.selectHero);
+        let id = modHero.getIdFromKey(GameData.curHero);
+        this.showHero(id);
     }
 
     private topBtnListener(event:egret.TouchEvent):void {
@@ -136,6 +137,21 @@ class ReadyDialog extends Base {
                 }
             }
         }
+        //武器
+        for (let i = 0; i < this.detailGroup.numChildren; i++){
+            let obj:any = this.detailGroup.getChildAt(i);
+            obj.visible = false;
+        }
+        this.btn_change.visible = true;
+        let data = HeroData.list[GameData.curHero];
+        let equipId = data.equip;
+        if (equipId != 0){
+            let equip = modEquip.EquipData.GetInstance().GetEquipFromId(equipId, 0);
+            this.updateEquip(equip);
+            this.btn_change.label = "替换";
+        }else{
+            this.btn_change.label = "装备";
+        }
     }
 
     /**
@@ -161,8 +177,12 @@ class ReadyDialog extends Base {
             img_affix.x = 36 * i;
             this.starGroup.addChild(img_affix);
         }
+        this.btn_change.label = "替换";
         this.lab_equipLv.visible = true;
         this.lab_equipLv.text = `等级：${equip.lv}/100`;
+        this.img_equip.source = `equip${25-equip.id}_png`;
+        this.starGroup.visible = true;
+        this.img_equip.visible = true;
     }
 
     /**
@@ -171,6 +191,8 @@ class ReadyDialog extends Base {
     public updateUI(event:egret.Event):void {
         this.changeEquipPop.removeEventListener(modEquip.EquipSource.CHANGEEQUIP, this.updateUI, this);
         let id = event.data;
+        let heroData = HeroData.getHeroData(GameData.curHero);
+        heroData.equip = id;
         let equip:any;
         // for (let i = 0; i < ConfigManager.tcEquip.length; i++) {
         //     if (ConfigManager.tcEquip[i].id == id) {
@@ -180,7 +202,6 @@ class ReadyDialog extends Base {
         // }
         equip = modEquip.EquipData.GetInstance().GetEquipFromId(id, 0);
         Common.log(equip);
-        this.img_equip.source = `equip${25-id}_png`;
         this.updateEquip(equip);
         // this.lab_equipName.text = equip.name;
     }
@@ -221,13 +242,12 @@ class ReadyDialog extends Base {
     private _createHeroIcon():void {
         let group:eui.Group = new eui.Group();
         let count = 0;
-        for (var key in ConfigManager.heroConfig) {
+        for (var key in HeroData.list) {
             let tempGroup:eui.Group = new eui.Group();
             let img_head = Utils.createBitmap(`img_${key}_png`);
             tempGroup.addChild(img_head);
             tempGroup.addEventListener(egret.TouchEvent.TOUCH_TAP, this._onSelete, this);
             tempGroup.x = count * 70;
-            tempGroup["id"] = ConfigManager.heroConfig[key]["id"];
             tempGroup.name = key;
             count ++;
             group.addChild(tempGroup);
@@ -242,10 +262,9 @@ class ReadyDialog extends Base {
 
     private _onSelete(event:egret.TouchEvent):void {
         let target = event.currentTarget;
-        let id = target["id"];
-        Common.userData.selectHero = id;
-        this._selectBox.x = target.x;
         GameData.curHero = target.name;
+        this._selectBox.x = target.x;
+        let id = modHero.getIdFromKey(target.name);
         this.showHero(id);
     }
 

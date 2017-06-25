@@ -8,7 +8,9 @@ namespace modEquip {
      * 
      */
     export function update(equip:any) {
-        SceneManager.mainScene.readyDialog.updateEquip(equip);
+        if (SceneManager.mainScene.readyDialog){
+            SceneManager.mainScene.readyDialog.updateEquip(equip);
+        }
     }
 
     /**装备的通用资源 */

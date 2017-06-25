@@ -8,6 +8,10 @@ class MainScene extends Base {
         this.skinName = "resource/game_skins/mainSceneSkin.exml"
     }
 
+    protected childrenCreated(): void{
+
+    }
+
     private uiCompleteHandler():void {
         this.btn_ready.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_equip.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
@@ -17,7 +21,6 @@ class MainScene extends Base {
         this.btn_applicate.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.createFire();
-        LeanCloud.GetInstance().InitData();
     }
 
     /**

@@ -40,7 +40,7 @@ class Hero extends BaseGameObject {
         ]);
 
         /**从配置文件读取技能动画 */
-        let heroConfig = ConfigManager.heroConfig[name];
+        let heroConfig = HeroData.list[name];
         let skillArmature = `${name}_skill`;
         this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(skillArmature, skillArmature, 10), [
             Hero.Effect_Skill01,
@@ -49,7 +49,7 @@ class Hero extends BaseGameObject {
         ]);
         this.skillArmature.addFrameCallFunc(this.armatureFrame, this);
 
-        this.skill = ObjectPool.pop(heroConfig["skill1"], [this]);
+        this.skill = ObjectPool.pop(heroConfig["skill"]);
         this.skill.init();
         this.armature.scaleX = 1.5;
         this.armature.scaleY = 1.5;
@@ -61,7 +61,6 @@ class Hero extends BaseGameObject {
 
     public init(name:string) {
         super.init(name);
-        let Data = ObjectPool.pop("HeroData", name);
         this.initDragonBonesArmature(name);
         this.name = name;
         this.offset = [[1, -113], [77, -109], [121, -50], [75, 14], [0, 23]];
@@ -96,7 +95,7 @@ class Hero extends BaseGameObject {
      * 设置buff或被动技能
      */
     public setBuff():void {
-        let buff = ConfigManager.heroConfig[this.name].buff;
+        let buff = HeroData.list[this.name].buff;
         for (let i = 0; i < buff.length; i++) {
             let newBuff = ObjectPool.pop(buff[i].name);
             this.addBuff(newBuff);

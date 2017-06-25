@@ -65,7 +65,8 @@ class BattleSceneCom extends Base {
         this.lab_killCount.text = `${GameData.curStage}/5`;
         this.lab_stage.text = `第${GameData.curStage}关`;
         this.lab_stage.alpha = 0;
-        let index = modHero.getIndextFromId(Common.userData.selectHero);
+        let id = modHero.getIdFromKey(GameData.curHero)
+        let index = modHero.getIndextFromId(id);
         this.lab_name.text = ConfigManager.tcHero[index].name;
         this.img_headIcon.source = ConfigManager.tcHero[index].icon;
         Animations.fadeOutIn(this.lab_stage);

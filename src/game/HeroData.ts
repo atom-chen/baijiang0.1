@@ -1,11 +1,24 @@
+/**
+ * 英雄的数据
+ */
 class HeroData {
-    public constructor (name:string) {
-        this._name = name;
+
+    /**
+     * 从服务器获取数据
+     */
+    public static initData(hero:any):void {
+        HeroData.list = hero;
     }
 
+    /**
+     * 根据英雄的名字获取数据
+     */
+    public static getHeroData(name:string) {
+        return HeroData.list[name];
+    }
 
     /**数据表 */
-    private _list:Array<any>;
+    public static list:any;
     /**英雄的id */
     private _id:number;
     /**英雄的名字 */

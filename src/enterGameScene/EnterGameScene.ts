@@ -27,23 +27,6 @@ class EnterGameScene extends Base {
      * 进入游戏
      */
     private onEnterGame():void {
-        // var data:any = {};
-        // data.uid = 1;
-        // data.channel = 1000;
-        // data.appid = 1112169032;
-        // data.nick = "dddsf";
-        // data.avatar = "";
-        // data.sex = 1;
-        // data.time = Math.floor(new Date().getTime()/1000);
-        // data.reurl = "https://www.shandw.com";
-        // data.cburl = "https://www.shandw.com/v2/mobile/detail/";
-        // data.paydata = "succeed";
-        // let time = Math.floor(new Date().getTime()/1000);
-        // data = `channel=9166&uid=3333&nick=hello&avatar=&sex=1&time=${time}&reurl=https://www.shandw.com&cburl=https://www.shandw.com/v2/mobile/detail/`
-        // NetConnect.send(1, data, function(data) {
-
-        // })
-        // Common.kbengine.Event.fire("login", "wujiangu", "123456", "demo");
         GameLayerManager.gameLayer().sceneLayer.removeChildren();
         SceneManager.mainScene = new MainScene();
         GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.mainScene);
