@@ -17,6 +17,7 @@ class EquipDialog extends Base {
         this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchChange, this);
         this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onCloseReset, this);
+        this.img_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
         this.init();
     }
 
@@ -86,15 +87,6 @@ class EquipDialog extends Base {
         }
     }
 
-    /** 点击物品 */
-    private onTouchGoods(event:egret.TouchEvent):void{
-        let target = event.target;
-        let id = parseInt(target.name);
-        if(this.goods_index == id) return;
-
-        this.ShowGoodsInfo(id);
-    }
-
     /** 关闭洗练 */
     private onCloseReset(event:egret.TouchEvent):void{
         this.setGroupStatus(true, false, "兵器库", "down", "null");
@@ -116,14 +108,8 @@ class EquipDialog extends Base {
     }
 
     private onEquip(event:egret.TouchEvent):void {
-        let name = event.currentTarget.name;
-        Common.log(name+typeof(name));
-        if (!this.equipInfo) {
-            this.equipInfo = new EquipInfoDialog(parseInt(name));
-        }else{
-            this.equipInfo.createEquip(parseInt(name))
-        }
-        this.addChild(this.equipInfo);
+        if(this.equip_info == null) return;
+        WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
     }
 
     private onTouchClose():void{
@@ -179,11 +165,8 @@ class EquipDialog extends Base {
             {
                 this.star_list[i].texture = RES.getRes("star_00_png");
             }
-            this.star_list[i].visible = true;
-        }
-
-        for(let i:number = this.equip_info.Quality + 1; i < 6; i++){
-            this.star_list[i].visible = false;
+            if(this.equip_info.Quality >= i) this.star_list[i].visible = true;
+            else this.star_list[i].visible = false;
         }
     }
 
@@ -287,6 +270,15 @@ class EquipDialog extends Base {
         this.star_list[index].texture = RES.getRes(data.img)
     }
 
+     /** 点击物品 */
+    private onTouchGoods(event:egret.TouchEvent):void{
+        let target = event.target;
+        let id = parseInt(target.name);
+        if(this.goods_index == id) return;
+
+        this.ShowGoodsInfo(id);
+    }
+
     private createEquips():void{
         //移除所有的对象
         for(let i:number = 0; i < this.weapon_list.length; i++) this.weapon_list.pop();
@@ -310,7 +302,8 @@ class EquipDialog extends Base {
 
             //判断当前选择的物品再哪里 因为是重新创建所以要做一个判断
              if(this.equip_info){
-                if(this.equip_info.Id == equip_list[i].Id){
+                if(this.equip_info.Id == equip_list[i].Id && this.equip_info.TypeID == equip_list[i].TypeID){
+                    this.goods_index = i;
                     Common.SetXY(this.imgClick, img.x, img.y);
                 }
             }
@@ -331,11 +324,8 @@ class EquipDialog extends Base {
             {
                 this.createResetView(this.reset_list[i], i, false);
             }
-            this.reset_list[i].visible = true;
-        }
-
-        for(let i:number = this.equip_info.Quality + 1; i < 6; i++){
-            this.reset_list[i].visible = false;
+            if(this.equip_info.Quality >= i) this.reset_list[i].visible = true;
+            else this.reset_list[i].visible = false;
         }
     }
 
@@ -350,7 +340,6 @@ class EquipDialog extends Base {
         this.scrollGroup.scrollV = 0;
     }
 
-    private equipInfo:EquipInfoDialog;
     private scrollGroup:eui.Group;
     private equipGroup:eui.Group;
     private resetGroup:eui.Group;

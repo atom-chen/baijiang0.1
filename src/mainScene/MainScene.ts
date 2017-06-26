@@ -79,7 +79,8 @@ class MainScene extends Base {
                 if (!this.talentDialog) {
                     this.talentDialog = new TalentDialog();
                 }else{
-                    this.talentDialog.show(Common.userData.talentPage.length);
+                    let talentPage = modTalent.getTalentData();
+                    this.talentDialog.show(talentPage.length);
                 }
                 GameLayerManager.gameLayer().panelLayer.addChild(this.talentDialog);
 				break;

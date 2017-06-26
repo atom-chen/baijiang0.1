@@ -25,10 +25,11 @@ class TalentDialog extends Base {
     }
 
     protected childrenCreated():void {
-        for (let i = 0; i < Common.userData.talentPage.length; i++) {
+        let talentPage = modTalent.getTalentData();
+        for (let i = 0; i < talentPage.length; i++) {
             this.pages[i] = new TalentIR(i);
         }
-        this.show(Common.userData.talentPage.length);
+        this.show(talentPage.length);
         this.pageGroup.addChild(this.pages[0]);
         Utils.toggleButtonStatus(this.topBtn, 0);
         this.curPage = 0;
@@ -132,26 +133,29 @@ class TalentDialog extends Base {
      * 确定按钮方法
      */
     private onPurchass(type:number):void {
+        let talentPage = modTalent.getTalentData();
         if (type == 1) {
             //购买天赋页
             this.pageGroup.removeChildren();
             let talent = {"name":"", "count":0, "talent":[]};
-            Common.userData.talentPage.push(talent);
-            let len = Common.userData.talentPage.length;
+            talentPage.push(talent);
+            let len = talentPage.length;
             this.createToggleBtn(len-1);
             this.btn_add.x = 155 + 55 * len;
             Utils.toggleButtonStatus(this.topBtn, len - 1);
             this.curPage = len - 1;
             this.pages[len- 1] = new TalentIR(len - 1);
             this.pageGroup.addChild(this.pages[len - 1]);
+            LeanCloud.GetInstance().SaveRoleData("talentPage", talentPage);
         }else{
             //重置天赋页
-            if (Common.userData.talentPage[this.curPage].talent.length == 0) {
+            if (talentPage[this.curPage].talent.length == 0) {
                 Animations.showTips("无需重置", 1, true);
                 return;
             }
-            Common.userData.talentPage[this.curPage].talent = [];
+            talentPage[this.curPage].talent = [];
             this.pages[this.curPage].reset(this.curPage);
+            LeanCloud.GetInstance().SaveRoleData("talentPage", talentPage);
         }
     }
 

@@ -20,7 +20,13 @@ class LeanCloud{
             Common.log(JSON.stringify(User))
             LeanCloud.createRoleData(user);
         }, function (error){
-            console.log(" error ")
+            if(error.code == 202){
+                console.log(" this user readly Register")
+            }
+            else
+            {
+                Common.log(error.code)
+            }
         });
     }
 
@@ -90,10 +96,10 @@ class LeanCloud{
     }
 
     /** 保存角色数据 */
-    public SaveRoleData(tag:string, num:number):void{
+    public SaveRoleData(tag:string, value:any):void{
         let query = new AV.Query("RoleData");
         query.get(LeanCloud.RoleId).then(function(todo){
-            todo.set(tag, JSON.stringify(num));
+            todo.set(tag, value);
             todo.save();
         });
     }
@@ -102,7 +108,7 @@ class LeanCloud{
     public static InitEquipData():void{
         let query = new AV.Query("EquipData");
         query.get(LeanCloud.GoodsId).then(function(todo){
-            Common.log(todo.get("equip"));
+            // Common.log(todo.get("equip"));
             let data = JSON.parse(todo.get("equip"));
             for(let i:number = 0; i < data.length; i++){
                 let info = new modEquip.EquipInfo();
@@ -131,6 +137,15 @@ class LeanCloud{
         },function(error){
             console.log(" init role error ")
         });
+
+        let initQuery = new AV.Query("InitData");
+        Common.log(LeanCloud.InitDataId)
+        initQuery.get(LeanCloud.InitDataId).then(function(todo){
+            let data = todo._serverData;
+            GameData.saveData(data);
+        },function(error){
+            console.log(" init role error ")
+        });
     }
 
     /** 获得初始数据 */
@@ -141,6 +156,8 @@ class LeanCloud{
         query.get(LeanCloud.ObjectId).then(function(todo){
             LeanCloud.GoodsId = todo.get("goodsId");
             LeanCloud.RoleId = todo.get("roleId");
+            LeanCloud.InitDataId = todo.get("initDataId");
+            LeanCloud.NoviceId = todo.get("noviceId");
             if(LeanCloud.GoodsId.length != 0){
                 LeanCloud.InitEquipData()
             }
@@ -178,7 +195,25 @@ class LeanCloud{
         return this.roleId;
     }
 
+    public static get InitDataId(){
+        return this.initDataId;
+    }    
+
+    public static set InitDataId(val:string){
+        this.initDataId = val;
+    }
+
+    public static get NoviceId(){
+        return this.noviceId;
+    }  
+
+    public static set NoviceId(val:string){
+        this.noviceId = val;
+    }
+
     private static objectId:string;
     private static goodsId:string;
     private static roleId:string;
+    private static initDataId:string;
+    private static noviceId:string;
 }

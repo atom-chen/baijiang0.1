@@ -48,14 +48,7 @@ class shopItemIR extends Base {
         this.img_item.source = content.imgItem;
         this.lab_count.text = content.count;
         this.btn_buy.label = content.price;
-        if (type == "diamond") {
-            this.btn_buy.name = "diamond";
-            // this.img_btnBuy = this.btn_buy.getChildAt(0);
-            // this.img_btnBuy.source = "btn_shopBuy_png";
-            // this.btn_itemDetail.visible = false;
-        }else{
-            this.btn_buy.name = "other";
-        }
+        this.btn_buy.name = type;
     }
 
     /**标题 */

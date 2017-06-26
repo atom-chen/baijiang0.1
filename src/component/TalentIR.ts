@@ -69,7 +69,8 @@ class TalentIR extends Base {
      * 初始化解锁状态和天赋等级
      */
     public initUnlockAndLv(curPage:number):void {
-        let userTalent = Common.userData.talentPage[curPage].talent;
+        let talentPage = modTalent.getTalentData();
+        let userTalent = talentPage[curPage].talent;
         for (let i = 0; i < userTalent.length; i++) {
             let talent = userTalent[i];
             let id = talent[0];

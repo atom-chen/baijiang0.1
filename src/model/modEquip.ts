@@ -166,6 +166,7 @@ namespace modEquip {
         }
 
         public Add(val:EquipInfo):void{
+            val.TypeID = this.id_list[val.Id]++;
             this.equip_list.push(val);
             this.listSort();
         }
@@ -257,6 +258,7 @@ namespace modEquip {
                     }
                 }
             }
+            LeanCloud.GetInstance().SaveEquipData();
         }
 
         private equip_list:Array<EquipInfo>;

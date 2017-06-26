@@ -7,6 +7,6 @@
         {"name":"新手礼包", "type":"soul", "count":1, "price":500, "imgItem":"shop_0015_png", "detail":"礼包内有方天画戟x1、魂石x1000、经验x20000、钻石x50"}
     ],
     "heros":[
-        {"name":"赵云", "type":"soul", "count":1, "price":1280, "imgItem":"shop_0014_png", "detail":"可以获得新英雄---赵云"}
+        {"key":"zhaoyun", "name":"赵云", "type":"soul", "count":1, "price":1280, "imgItem":"shop_0014_png", "detail":"可以获得新英雄---赵云"}
     ]
 }

@@ -50,7 +50,7 @@ namespace modTalent {
      * 每种天赋的总点数
      */
     export function eaceTalentCount(curPage:number):void {
-        let curTalent = Common.userData.talentPage[curPage];
+        let curTalent = talentPage[curPage];
         sumEachCount = [0, 0, 0];
         for (let i = 0; i < curTalent.talent.length; i++) {
             let ids = curTalent.talent[i];
@@ -102,7 +102,7 @@ namespace modTalent {
     export function isTalentFull(curPage:number, talentId:number):boolean {
         let status:boolean = false;
         let isActive:boolean = false;
-        let curTalent = Common.userData.talentPage[curPage];
+        let curTalent = talentPage[curPage];
         for (let i = 0; i < curTalent.talent.length; i++) {
             if (curTalent.talent[i][0] == talentId) {
                 isActive = true;
@@ -119,7 +119,7 @@ namespace modTalent {
     export function setUnlock(curPage:number) {
         // let pos:Array<any> = findPosition(talentId);
         // getEachLineSum(curPage, pos[0], pos[1]);
-        let curTalent = Common.userData.talentPage[curPage];
+        let curTalent = talentPage[curPage];
         //每列天赋解锁的行数
         var lines = [0 ,0 ,0];
         eaceTalentCount(curPage);
@@ -169,7 +169,7 @@ namespace modTalent {
      */
     export function setData(curPage:number, talentId:number, value:number) {
         let isExist:boolean = false;
-        let curTalent = Common.userData.talentPage[curPage];
+        let curTalent = talentPage[curPage];
         for (let i = 0; i < curTalent.talent.length; i++) {
             if (curTalent.talent[i][0] == talentId) {
                 isExist = true;
@@ -177,7 +177,8 @@ namespace modTalent {
                 break;
             }
         }
-        if (!isExist) Common.userData.talentPage[curPage].talent.push([talentId, 1]);
+        if (!isExist) talentPage[curPage].talent.push([talentId, 1]);
+        LeanCloud.GetInstance().SaveRoleData("talentPage", talentPage);
         setUnlock(curPage);
     }
 
@@ -187,12 +188,12 @@ namespace modTalent {
     export function getData(curPage:number=null, talentId:number=null):any {
         let talent:any = null;
         if (!curPage && !talentId) {
-            talent = Common.userData.talentPage;
+            talent = talentPage;
         }
         else if(curPage && !talentId) {
-            talent = Common.userData.talentPage[curPage];
+            talent = talentPage[curPage];
         }else{
-            let curTalent = Common.userData.talentPage[curPage];
+            let curTalent = talentPage[curPage];
             for (let i = 0; i < curTalent.talent.length; i++) {
                 if (curTalent.talent[i][0] == talentId) {
                     talent = curTalent.talent[i];

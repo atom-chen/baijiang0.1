@@ -256,7 +256,7 @@ namespace Animations {
             egret.Tween.get(shp).to({ alpha: 1.0 }, 200).call(step2);
         }
         /*******************************************/
-        step1();
+        step2();
         GameLayerManager.gameLayer().maskLayer.addChild(group);
         //添加播放完成事件
         mc1.addEventListener(egret.Event.COMPLETE, function (){

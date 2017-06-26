@@ -2,7 +2,7 @@
     "diaochan":{
         "attr":[],
         "id":1,
-        "skill1":"Imprisoned",
+        "skill":"Imprisoned",
         "buff":[
             {"name":"Shield", "id":4},
             {"name":"SwordDance", "id":6}
@@ -11,7 +11,7 @@
     "buxiaoman":{
         "attr":[],
         "id":2,
-        "skill1":"Bristle",
+        "skill":"Bristle",
         "buff":[
             {"name":"Dodge", "id":5}
         ]
@@ -19,7 +19,7 @@
     "zhaoyun":{
         "attr":[],
         "id":3,
-        "skill1":"SevenInOut",
+        "skill":"SevenInOut",
         "buff":[
             {"name":"Stunned", "id":7},
             {"name":"AddProperty", "id":8}

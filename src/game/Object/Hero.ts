@@ -40,7 +40,8 @@ class Hero extends BaseGameObject {
         ]);
 
         /**从配置文件读取技能动画 */
-        let heroConfig = HeroData.list[name];
+        // let heroConfig = HeroData.list[name];
+        let heroConfig = ConfigManager.heroConfig[name];
         let skillArmature = `${name}_skill`;
         this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(skillArmature, skillArmature, 10), [
             Hero.Effect_Skill01,
@@ -95,7 +96,7 @@ class Hero extends BaseGameObject {
      * 设置buff或被动技能
      */
     public setBuff():void {
-        let buff = HeroData.list[this.name].buff;
+        let buff = ConfigManager.heroConfig[this.name].buff;
         for (let i = 0; i < buff.length; i++) {
             let newBuff = ObjectPool.pop(buff[i].name);
             this.addBuff(newBuff);

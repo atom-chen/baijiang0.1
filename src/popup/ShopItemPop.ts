@@ -24,14 +24,27 @@ class ShopItemPop extends Base {
         });
         switch (event.currentTarget) {
             case this.btn_buy:
-                if (this.content.type == "rmb") {
+                if (this.btn_buy.name == "diamond") {
                     Animations.showTips("无法购买，现金充值尚未开放", 1, true);
-                }else {
-                    if (Common.userData.soul < this.content.price) {
-                        Animations.showTips("您的玉魂不足", 1, true);
+                }else{
+                    // if (Common.userData.soul < this.content.price) {
+                    //     Animations.showTips("您的玉魂不足", 1, true);
+                    // }else{
+                    //     Common.userData.soul -= this.content.price;
+                    //     Animations.showTips("购买武器成功", 1);
+                    // }
+                    if (this.btn_buy.name == "packs") {
+                        Animations.showTips("购买礼包成功", 1);
                     }else{
-                        Common.userData.soul -= this.content.price;
-                        Animations.showTips("购买武器成功", 1);
+                        if (HeroData.hasHero(this.content.key)){
+                            Animations.showTips(`已有英雄${this.lab_itemName.text}`, 1);
+                        }else{
+                            Animations.showTips(`购买英雄${this.lab_itemName.text}成功`, 1);
+                            HeroData.addHeroData(this.content.key, GameData.initData["hero"]);
+                            if (SceneManager.mainScene.readyDialog){
+                                SceneManager.mainScene.readyDialog.updateList();
+                            }
+                        }
                     }
                 }
             break;
@@ -47,6 +60,7 @@ class ShopItemPop extends Base {
         this.lab_itemName.text = content.name;
         this.lab_detail.text = content.detail;
         this.btn_buy.label = content.price;
+        this.btn_buy.name = type;
         let img_diamond:any = this.btn_buy.getChildAt(1);
         if (type == "diamond") {
             img_diamond.visible = false;
