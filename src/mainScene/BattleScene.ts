@@ -8,10 +8,8 @@ class BattleScene extends Base {
         GameData.monsters = new Array();
         GameData.boss = new Array();
         this.timer = new egret.Timer(10, 0);
-        this.produceTimer = new egret.Timer(2000, 0);
         this.timer.addEventListener(egret.TimerEvent.TIMER, this.timerFunc, this);
-        this.produceTimer.addEventListener(egret.TimerEvent.TIMER, this.timerCreateMonster, this);
-        // this.initBattleDragonBones();
+        modBattle.createTimer();
     }
     protected createChildren(): void{
         this.createMap();
@@ -40,39 +38,8 @@ class BattleScene extends Base {
 
         GameData.hp = 5;
         DragonBonesFactory.getInstance().startTimer();
-        this.monsterCount = 0;
-        this.produceCount = 0;
         this.createHero();
-        this.startProduce();
-        // TimerManager.getInstance().doTimer(2000, 0, this.timerCreateMonster, this);
         Common.addEventListener(GameEvents.EVT_PRODUCEMONSTER, this.produceMonster, this);
-    }
-
-    private timerCreateMonster(event:egret.TimerEvent):void {
-        if (this.produceCount >= ConfigManager.tcStage[GameData.curStage-1].count) {
-            this.stopProduce();
-            // TimerManager.getInstance().remove(this.timerCreateMonster, this);
-        }else{
-            if (ConfigManager.tcStage[GameData.curStage-1].type != "boss") {
-                this.createSingleMonster();
-            }else{
-                this.createBoss();
-            }
-        }
-    }
-
-    /**
-     * 启动生产定时器
-     */
-    public startProduce() {
-        this.produceTimer.start();
-    }
-
-    /**
-     * 停止生产定时器
-     */
-    public stopProduce() {
-        this.produceTimer.stop();
     }
 
     private timerFunc(event:egret.TimerEvent) {
@@ -104,11 +71,6 @@ class BattleScene extends Base {
             this.hero.gotoIdle();
         }
         this.moveCount = 0;
-        
-    }
-
-    private onClick():void {
-
     }
 
     /**
@@ -162,10 +124,6 @@ class BattleScene extends Base {
             this.lastCombo = value;
             Animations.zoomIn(this.comboCount);
         }
-        // if (this.comboGroup.alpha == 0) {
-        // }else{
-        //     Animations.zoomIn(this.comboCount);
-        // }
     }
 
     /**
@@ -210,17 +168,11 @@ class BattleScene extends Base {
     }
 
     private produceMonster():void {
-        this.monsterCount --;
-        if (this.monsterCount == 0) {
-            this.startProduce();
-            this.produceCount = 0;
-            // TimerManager.getInstance().doTimer(2000, 0, this.timerCreateMonster, this);
-        }
+        
     }
 
     public removeEventListener():void {
         Common.removeEventListener(GameEvents.EVT_PRODUCEMONSTER, this.produceMonster, this);
-        // this.battleSceneCom.removeEventListener();
     }
 
     /**
@@ -229,7 +181,7 @@ class BattleScene extends Base {
     private createHero():void {
         this.hero = ObjectPool.pop("Hero");
         GameData.heros.push(this.hero);
-        this.hero.init(GameData.curHero);
+        this.hero.init([GameData.curHero, GameData.hp]);
         this.hero.x = Common.SCREEN_W/2;
         this.hero.y = Common.SCREEN_H/2;
         // this.hero.anchorOffsetY = -33;
@@ -248,16 +200,14 @@ class BattleScene extends Base {
         })
     }
 
-    public createSingleMonster():void {
+    public createSingleMonster(data:Array<any>):void {
         this.monster = ObjectPool.pop("Monster");
         GameData.monsters.push(this.monster);
-        this.monster.init(ConfigManager.tcStage[GameData.curStage-1].type);
+        this.monster.init(data);
         this.monster.x = MathUtils.getRandom(100, 1050);
         this.monster.y = MathUtils.getRandom(100, 550);
         // this.monster.anchorOffsetY = -33;
         this.monster.anchorOffsetY = -50;
-        this.monsterCount ++;
-        this.produceCount ++;
         this.battleLayer.addChild(this.monster);
     }
 
@@ -272,8 +222,6 @@ class BattleScene extends Base {
         this.boss.y = MathUtils.getRandom(100, 550);
         // this.boss.anchorOffsetY = -33;
         this.boss.anchorOffsetY = -50;
-        this.monsterCount ++;
-        this.produceCount ++;
         this.battleLayer.addChild(this.boss);
     }
 
@@ -294,36 +242,7 @@ class BattleScene extends Base {
      * 清除子对象
      */
     public cleanChildren():void {
-        let heroCount = GameData.heros.length;
-        let monsterCount = GameData.monsters.length;
-        let bossCount = GameData.boss.length;
-        ObjectPool.push("HeroData");
-        for (let i = 0; i < heroCount; i++) {
-            let hero:Hero = GameData.heros[i];
-            hero.removeComplete();
-            // hero.stopDragonBonesArmature();
-            if (hero && hero.parent && hero.parent.removeChild) hero.parent.removeChild(hero);
-            ObjectPool.push(GameData.heros[i]);
-        }
-        for (let i = 0; i < monsterCount; i++) {
-            let monster:Monster = GameData.monsters[i];
-            monster.removeComplete();
-            if (monster && monster.parent && monster.parent.removeChild) {
-                monster.parent.removeChild(monster);
-            }                  
-            ObjectPool.push(GameData.monsters[i]);
-        }
-        for (let i = 0; i < bossCount; i++) {
-            let boss:Boss = GameData.boss[i];
-            boss.removeComplete();
-            if (boss && boss.parent && boss.parent.removeChild) {
-                boss.parent.removeChild(boss);
-            }                  
-            ObjectPool.push(GameData.boss[i]);
-        }
-        for (let i = 0; i < heroCount; i++) GameData.heros.pop();
-        for (let i = 0; i < monsterCount; i++) GameData.monsters.pop();
-        for (let i = 0; i < bossCount; i++) GameData.boss.pop();
+        modBattle.recycleObject();
         this.removeEventListener();
         this.effectLayer.removeChildren();
         // GameLayerManager.gameLayer().effectLayer.removeChildren();
@@ -345,18 +264,12 @@ class BattleScene extends Base {
 
     /**场景部件 */
     public battleSceneCom:BattleSceneCom;
-    /**怪物数量 */
-    private monsterCount:number;
-    /**已经生产的数量 */
-    private produceCount:number;
     /**地图 */
     public mapBg:eui.Image;
     /**受攻击的特效背景 */
     public blood:eui.Image;
     /**定时器 */
     private timer:egret.Timer;
-    /**生产定时器 */
-    private produceTimer:egret.Timer;
     /** */
     private moveCount:number;
     /**连击显示组 */

@@ -35,12 +35,12 @@ class Monster extends Enermy {
         this.skillArmature.scaleY = 1.5;
     }
 
-    public init(name:string) {
-        super.init(name);
-        this.initDragonBonesArmature(name);
+    public init(data:Array<any>) {
+        super.init(data);
+        this.initDragonBonesArmature(data[0]);
         this.speed = 10;
         this.readyCount = 0;
-        this.hp = ConfigManager.tcStage[GameData.curStage-1].hp;
+        this.hp = data[1];
         this.skill_atkStatus = false;
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);

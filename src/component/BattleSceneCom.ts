@@ -26,7 +26,7 @@ class BattleSceneCom extends Base {
     /**暂停监听 */
     private onPause(event:egret.TouchEvent):void {
         TimerManager.getInstance().stopTimer();
-        SceneManager.battleScene.stopProduce();
+        modBattle.stop();
         let pop = WindowManager.GetInstance().GetWindow("BattlePausePop");
         pop.Show();
         Animations.fadeOut(pop);
@@ -65,7 +65,7 @@ class BattleSceneCom extends Base {
         this.lab_killCount.text = `${GameData.curStage}/5`;
         this.lab_stage.text = `第${GameData.curStage}关`;
         this.lab_stage.alpha = 0;
-        let id = modHero.getIdFromKey(GameData.curHero)
+        let id = modHero.getIdFromKey(GameData.curHero);
         let index = modHero.getIndextFromId(id);
         this.lab_name.text = ConfigManager.tcHero[index].name;
         this.img_headIcon.source = ConfigManager.tcHero[index].icon;

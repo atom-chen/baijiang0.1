@@ -1,7 +1,26 @@
 [
-    {"id":1, "count":1, "hp":5, "type":"monster03"},
-    {"id":2, "count":2, "hp":1, "type":"monster02"},
-    {"id":3, "count":3, "hp":2, "type":"monster03"},
-    {"id":4, "count":3, "hp":2, "type":"monster01"},
-    {"id":5, "count":1, "hp":5, "type":"boss"}
+    {
+        "count":10,
+        "wave":3,
+        "monster":[
+            ["monster01", 1],
+            ["monster02", 1],
+            ["monster03", 1]
+        ],
+        "boss":{
+            "monster02":5
+        }
+    },
+    {
+        "count":20,
+        "wave":4,
+        "monster":[
+            ["monster01", 1],
+            ["monster02", 1],
+            ["monster03", 2]
+        ],
+        "boss":{
+            "monster02":6
+        }
+    }
 ]

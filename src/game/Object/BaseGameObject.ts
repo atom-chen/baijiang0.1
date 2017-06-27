@@ -15,7 +15,7 @@ class BaseGameObject extends egret.DisplayObjectContainer {
         this.addChild(this.skillArmature);
     }
 
-    public init(name:string = null) {
+    public init(data:Array<any> = null) {
         TimerManager.getInstance().doFrame(1, 0, this.onFrame, this);
         this.isEnemy = true;
         this.speed = 3;

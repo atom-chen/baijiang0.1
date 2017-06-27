@@ -60,10 +60,10 @@ class Hero extends BaseGameObject {
         this.skillArmature.scaleY = 1.5;
     }
 
-    public init(name:string) {
-        super.init(name);
-        this.initDragonBonesArmature(name);
-        this.name = name;
+    public init(data:Array<any>) {
+        super.init(data);
+        this.initDragonBonesArmature(data[0]);
+        this.name = data[0];
         this.offset = [[1, -113], [77, -109], [121, -50], [75, 14], [0, 23]];
         // this.offset = [[2, -74], [49, -71], [79, -32], [50, 9], [0, 15]]
         this.speed = 40;

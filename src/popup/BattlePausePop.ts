@@ -26,7 +26,7 @@ class BattlePausePop extends PopupWindow {
         switch (event.currentTarget) {
             case this.btn_continue:
                 TimerManager.getInstance().startTimer();
-                SceneManager.battleScene.startProduce();
+                modBattle.start();
             break;
             default:
                 Animations.sceneTransition(()=>{

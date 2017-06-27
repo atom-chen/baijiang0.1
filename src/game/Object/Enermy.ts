@@ -34,17 +34,17 @@ class Enermy extends BaseGameObject {
         this.buffArmature.scaleY = 1.5;
     }
 
-    public init(name:string) {
-        super.init(name);
+    public init(data:Array<any>) {
+        super.init(data);
         this.buff = [];
         this.isEnemy = true;
         this.isSkillHurt = false;
         this.lastAnimation = "";
-        this.atk_distance = ConfigManager.enermyConfig[name].mov;
-        this.away_distance = ConfigManager.enermyConfig[name].away;
-        this.atk_timer.repeatCount = ConfigManager.enermyConfig[name].cd;
+        this.atk_distance = ConfigManager.enermyConfig[data[0]].mov;
+        this.away_distance = ConfigManager.enermyConfig[data[0]].away;
+        this.atk_timer.repeatCount = ConfigManager.enermyConfig[data[0]].cd;
         this.isComplete = true;
-        this.isRemote = ConfigManager.enermyConfig[name].isRemote;
+        this.isRemote = ConfigManager.enermyConfig[data[0]].isRemote;
         // this.maskImprisoned.mask = this;
     }
 
