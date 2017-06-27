@@ -243,4 +243,25 @@ namespace MathUtils {
        }
        return arr;
    }
+
+   /**
+    * 随机count次数值，所有数值之和为sum，每次数值至少为1
+    */
+    export function randomStage(sum:number, count:number) {
+        let array:Array<number> = new Array();
+        let tempSum:number = 0;
+        for (let i = 0; i < count; i++) {
+            if (i == count - 1) {
+                array.push(sum - tempSum - array[i-1]);
+                break;
+            }
+            if (array.length > 0) {
+                tempSum += array[i-1];
+            }
+            let maxValue:number = sum - tempSum - (count - (i+1));
+            let data:number = getRandom(1, maxValue);
+            array.push(data);
+        }
+        return array;
+    }
 }

@@ -53,7 +53,7 @@ class BattleScene extends Base {
             this.stopProduce();
             // TimerManager.getInstance().remove(this.timerCreateMonster, this);
         }else{
-            if (ConfigManager.tcStage[GameData.curStage-1].type == "monster01") {
+            if (ConfigManager.tcStage[GameData.curStage-1].type != "boss") {
                 this.createSingleMonster();
             }else{
                 this.createBoss();

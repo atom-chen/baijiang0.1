@@ -8,7 +8,7 @@ class Monster extends Enermy {
 
     public initDragonBonesArmature(name:string):void {
         super.initDragonBonesArmature(name);
-        this.armature.register(DragonBonesFactory.getInstance().makeArmature(name, name, 2.0), [
+        this.armature.register(DragonBonesFactory.getInstance().makeArmature(name, name, 2), [
             BaseGameObject.Action_Idle,
             BaseGameObject.Action_Hurt,
             BaseGameObject.Action_Attack01,
@@ -21,24 +21,69 @@ class Monster extends Enermy {
             Monster.Action_Ready01,
             Monster.Action_Ready02
         ]);
+        //释放主动技能动画
+        let status = this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(`${name}_skill`, `${name}_skill`, 10), [
+            "skill01_01",
+            "skill01_02"
+        ]);
+        if (status) this.skillArmature.addFrameCallFunc(this.skillArmatureFrame, this);
         //增加动画帧执行函数
         this.armature.addFrameCallFunc(this.armatureFrame, this);
         this.armature.scaleX = 1.5;
         this.armature.scaleY = 1.5;
+        this.skillArmature.scaleX = 1.5;
+        this.skillArmature.scaleY = 1.5;
     }
 
     public init(name:string) {
         super.init(name);
         this.initDragonBonesArmature(name);
         this.speed = 10;
-        this.atk_range = 100;
-        this.atk_speed = 30;
         this.readyCount = 0;
         this.hp = ConfigManager.tcStage[GameData.curStage-1].hp;
+        this.skill_atkStatus = false;
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
         this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
         this.gotoEnter();
+    }
+
+    /**
+     * 到达边缘
+     */
+    private _bound():void {
+        this.skillArmature.play("skill01_01", 1);
+        this.deltaX = 0;
+        this.deltaY = 0;
+        this._remote = false;
+    }
+
+    /**
+     * 技能释放或远程攻击状态
+     */
+    public skillFly() {
+        this.skillArmature.x += this._deltaX;
+        this.skillArmature.y += this._deltaY;
+        //初始点的对角点
+        let skillPoint = this.skillArmature.localToGlobal();
+        if (!this.skill_atkStatus) {
+            let dis = MathUtils.getDistance(skillPoint.x, skillPoint.y, GameData.heros[0].x, GameData.heros[0].y);
+            if (dis <= 30) {
+                GameData.heros[0].gotoHurt();
+                this.skill_atkStatus = true;
+            }
+        }
+        if (skillPoint.x < 20) this._bound();
+        if (skillPoint.y < 20) this._bound();
+        if (skillPoint.x > Common.SCREEN_W - 20) this._bound();
+        if (skillPoint.y > Common.SCREEN_H - 20) this._bound();
+    }
+
+    public update(time:number):void {
+        super.update(time);
+        if (this._remote) {
+            this.skillFly();
+        }
     }
 
     /**
@@ -81,20 +126,29 @@ class Monster extends Enermy {
                 return;
             }
             this.gotoRun();
+            this.isComplete = false;
+            this.atk_timer.start();
             //怪物到英雄的距离
-            var dis = MathUtils.getDistance(this.centerX, this.centerY, GameData.heros[0].x, GameData.heros[0].y);
-            var dx = dis*Math.cos(this.heroRadian);
-            var dy = dis*Math.sin(this.heroRadian);
-            if ((Math.abs(dx) <= this.atk_range/2) && (Math.abs(dy) <= 33)) {
-                GameData.heros[0].gotoHurt();
-            }else{
-            }
+            // var dis = MathUtils.getDistance(this.centerX, this.centerY, GameData.heros[0].x, GameData.heros[0].y);
+            // var dx = dis*Math.cos(this.heroRadian);
+            // var dy = dis*Math.sin(this.heroRadian);
+            // if ((Math.abs(dx) <= this.atk_distance/2) && (Math.abs(dy) <= 33)) {
+            //     GameData.heros[0].gotoHurt();
+            // }else{
+            // }
         }
 
         this.x = this.x + this.deltaX;
         this.y = this.y + this.deltaY;
         this.sumDeltaX = this.sumDeltaX + this.deltaX;
         this.sumDeltaY = this.sumDeltaY + this.deltaY;
+        if (!this.skill_atkStatus) {
+            var dis = MathUtils.getDistance(this.x, this.y, GameData.heros[0].x, GameData.heros[0].y);
+            if (dis < 33) {
+                GameData.heros[0].gotoHurt();
+                this.skill_atkStatus = true;
+            }
+        }
     }
 
     /**
@@ -110,16 +164,40 @@ class Monster extends Enermy {
         super.gotoRun();
     }
 
+    /**
+     * 技能
+     */
+    public gotoSkill() {
+        this.curState = "skill";
+        let useSpeed = this.atk_distance * 0.02;
+        this.originX = this.x;
+        this.originY = this.y;
+        /**攻击的弧度 */
+        this.radian = MathUtils.getRadian2(this.originX, this.originY, GameData.heros[0].x, GameData.heros[0].y);
+        this._deltaX = Math.cos(this.radian) * useSpeed;
+        this._deltaY = Math.sin(this.radian) * useSpeed;
+        this.skillArmature.rotation = MathUtils.radianToAngle(this.radian);
+        this.skillArmature.visible = true;
+        this.skillArmature.x = 0;
+        this.skillArmature.y = -50;
+        SceneManager.battleScene.effectLayer.addChild(this.skillArmature);
+        this.skillArmature.x = this.x;
+        this.skillArmature.y = this.y;
+        this.skillArmature.play("skill01_02", 0);
+        this._remote = true;
+        this.skill_atkStatus = false;
+    }
+
     /**攻击 */
     public gotoAttack() {
         super.gotoAttack();
         this.sumDeltaX = 0;
         this.sumDeltaY = 0;
-        let useSpeed = this.atk_speed * 0.5;
+        let useSpeed = this.atk_distance * 0.05;
 
         let animation = this.getWalkPosition("attack", this.radian);
-        let dx = Math.cos(this.radian) * this.atk_range;
-        let dy = Math.sin(this.radian) * this.atk_range;
+        let dx = Math.cos(this.radian) * this.atk_distance;
+        let dy = Math.sin(this.radian) * this.atk_distance;
         this.atk_rangeX = Math.abs(dx);
         this.atk_rangeY = Math.abs(dy);
         /**中心点 */
@@ -130,6 +208,7 @@ class Monster extends Enermy {
         this.deltaX = Math.cos(this.radian) * useSpeed;
         this.deltaY = Math.sin(this.radian) * useSpeed;
         this.armature.play(animation, 0);
+        this.skill_atkStatus = false;
     }
 
     /**受到攻击 */
@@ -181,6 +260,15 @@ class Monster extends Enermy {
         super.effectArmaturePlayEnd();
     }
 
+    public skillArmatureFrame(event:dragonBones.FrameEvent):void {
+        let evt:string = event.frameLabel;
+        if (evt == "evtFracture") {
+            this.skillArmature.visible = false;
+            this._remote = false;
+            this.addChild(this.skillArmature);
+        }
+    }
+
     /**
      * 动画播放完成函数
      */
@@ -190,7 +278,14 @@ class Monster extends Enermy {
             case Monster.Action_Ready01:
                 this.readyCount ++;
                 if (this.readyCount == 3) {
-                    this.gotoAttack();
+                    if (this.isRemote){
+                        this.gotoSkill();
+                        this.isComplete = false;
+                        this.atk_timer.start();
+                        this.gotoRun();
+                    }else{
+                        this.gotoAttack();
+                    }
                 }
             break;
         }
@@ -222,7 +317,12 @@ class Monster extends Enermy {
     public isSkillHurt:boolean;
     private readyCount:number;
     private heroRadian:number;
-
+    /**远程攻击标志 */
+    private _remote:boolean;
+    private _deltaX:number;
+    private _deltaY:number;
+    /**远程攻击击中 */
+    private skill_atkStatus:boolean;
     /*************英雄的动作***************/
     private static Action_Ready01:string = "xuli01";
     private static Action_Ready02:string = "xuli02";

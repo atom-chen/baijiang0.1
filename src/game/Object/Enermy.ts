@@ -3,6 +3,9 @@ class Enermy extends BaseGameObject {
         super();
     this.colorFlilter = new egret.ColorMatrixFilter(this.colorMatrix);
     this.defaultFlilter = new egret.ColorMatrixFilter(this.defaultMatrix);
+    this.atk_timer = new egret.Timer(1000);
+    this.atk_timer.stop();
+    this.atk_timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onComplete, this);
     // this.filters = [this.colorFlilter];
     }
 
@@ -37,6 +40,11 @@ class Enermy extends BaseGameObject {
         this.isEnemy = true;
         this.isSkillHurt = false;
         this.lastAnimation = "";
+        this.atk_distance = ConfigManager.enermyConfig[name].mov;
+        this.away_distance = ConfigManager.enermyConfig[name].away;
+        this.atk_timer.repeatCount = ConfigManager.enermyConfig[name].cd;
+        this.isComplete = true;
+        this.isRemote = ConfigManager.enermyConfig[name].isRemote;
         // this.maskImprisoned.mask = this;
     }
 
@@ -87,12 +95,14 @@ class Enermy extends BaseGameObject {
                 this.lastAnimation = animation;
                 this.armature.play(animation, 0);
             }
-            let dis:number = MathUtils.getDistance(GameData.heros[0].x, GameData.heros[0].y, this.x, this.y);
-            if (dis <= 100) {
-                this.gotoReady();
-            }
-            else if ((dis > 100) && (dis <= 200)) {
-                this.gotoSkill();
+            if (this.isComplete == true) {
+                let dis:number = MathUtils.getDistance(GameData.heros[0].x, GameData.heros[0].y, this.x, this.y);
+                if (dis <= this.atk_distance) {
+                    this.gotoReady();
+                }
+                else if ((dis > 100) && (dis <= 200) && this.isRemote) {
+                    this.gotoSkill();
+                }
             }
         });
     }
@@ -183,6 +193,13 @@ class Enermy extends BaseGameObject {
 
     /***********************其他函数**********************/
     /**
+     * 攻击cd结束
+     */
+    public onComplete():void {
+        this.atk_timer.reset();
+        this.isComplete = true;
+    }
+    /**
      * 设置状态
      */
     public setCurState(state:string):void {
@@ -254,6 +271,16 @@ class Enermy extends BaseGameObject {
     public defaultFlilter:egret.ColorMatrixFilter;
     /**受到的伤害是否为技能伤害 */
     public isSkillHurt:boolean;
+    /**是否远程攻击 */
+    public isRemote:boolean;
+    /**攻击距离 */
+    public atk_distance:number;
+    /**逃离距离 */
+    public away_distance:number;
+    /**攻击间隔计数器 */
+    public atk_timer:egret.Timer;
+    /**攻击cd结束标志 */
+    public isComplete:boolean;
 
     /*************敌方的状态***************/
     public static Action_Run01:string = "run01";

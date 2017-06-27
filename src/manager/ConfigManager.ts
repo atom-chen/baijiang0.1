@@ -34,7 +34,8 @@ namespace ConfigManager {
      */
     function initBattleDragonBones():void {
         let arr:Array<string> = ["daoguang_effect", "diaochan", "monster01", "enter_monster_01", "Boss01",
-        "Boss01_effect01", "blood_die", "diaochan_skill", "zhaoyun", "zhaoyun_skill", "buxiaoman", "buxiaoman_skill", "buff"];
+        "Boss01_effect01", "blood_die", "diaochan_skill", "zhaoyun", "zhaoyun_skill", "buxiaoman", "buxiaoman_skill", "buff",
+        "monster03", "monster02", "monster02_skill"];
         for (let i = 0; i < arr.length; i++) {
             let name:string = arr[i];
             let skeletonData = RES.getRes(name+"_ske_json");
