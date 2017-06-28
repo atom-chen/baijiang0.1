@@ -20,6 +20,7 @@ class MainScene extends Base {
         this.btn_shop.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_applicate.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+        this.btn_pvp.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.createFire();
     }
 
@@ -74,6 +75,10 @@ class MainScene extends Base {
                 }
                 GameLayerManager.gameLayer().panelLayer.addChild(this.equipDialog);
 				break;
+            case this.btn_pvp:
+				GameLayerManager.gameLayer().panelLayer.removeChildren();
+                WindowManager.GetInstance().GetWindow("PVPWindow").Show();
+                break;
 			case this.btn_talent:
 				GameLayerManager.gameLayer().panelLayer.removeChildren();
                 if (!this.talentDialog) {
@@ -122,6 +127,9 @@ class MainScene extends Base {
     private shopDialog:ShopDialog;
     /**退出弹窗 */
     private btn_close:eui.Button;
+
+    private btn_pvp:eui.Button;
+
     /**设置弹出 */
     private popupGroup:eui.Group;
 }

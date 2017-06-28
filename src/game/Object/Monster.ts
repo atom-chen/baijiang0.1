@@ -22,11 +22,13 @@ class Monster extends Enermy {
             Monster.Action_Ready02
         ]);
         //释放主动技能动画
-        let status = this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(`${name}_skill`, `${name}_skill`, 10), [
-            "skill01_01",
-            "skill01_02"
-        ]);
-        if (status) this.skillArmature.addFrameCallFunc(this.skillArmatureFrame, this);
+        if (ConfigManager.isInArmatures(`${name}_skill`)) {
+            this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(`${name}_skill`, `${name}_skill`, 10), [
+                "skill01_01",
+                "skill01_02"
+            ]);
+            this.skillArmature.addFrameCallFunc(this.skillArmatureFrame, this);
+        }
         //增加动画帧执行函数
         this.armature.addFrameCallFunc(this.armatureFrame, this);
         this.armature.scaleX = 1.5;

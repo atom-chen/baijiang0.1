@@ -35,11 +35,10 @@ class BattleScene extends Base {
             this.comboGroup.visible = false;
             this.effectLayer.addChild(this.comboGroup);
         }
-
-        GameData.hp = 5;
+        modBattle.init();
+        GameData.hp = 10;
         DragonBonesFactory.getInstance().startTimer();
         this.createHero();
-        Common.addEventListener(GameEvents.EVT_PRODUCEMONSTER, this.produceMonster, this);
     }
 
     private timerFunc(event:egret.TimerEvent) {
@@ -167,14 +166,6 @@ class BattleScene extends Base {
         this.addChild(this.blood);
     }
 
-    private produceMonster():void {
-        
-    }
-
-    public removeEventListener():void {
-        Common.removeEventListener(GameEvents.EVT_PRODUCEMONSTER, this.produceMonster, this);
-    }
-
     /**
      * 创建英雄
      */
@@ -214,10 +205,10 @@ class BattleScene extends Base {
     /**
      * 创建Boss
      */
-    private createBoss():void {
+    public createBoss():void {
         this.boss = ObjectPool.pop("Boss");
         GameData.boss.push(this.boss);
-        this.boss.init("Boss01");
+        this.boss.init(["Boss01", 5]);
         this.boss.x = MathUtils.getRandom(100, 1050);
         this.boss.y = MathUtils.getRandom(100, 550);
         // this.boss.anchorOffsetY = -33;
@@ -243,7 +234,6 @@ class BattleScene extends Base {
      */
     public cleanChildren():void {
         modBattle.recycleObject();
-        this.removeEventListener();
         this.effectLayer.removeChildren();
         // GameLayerManager.gameLayer().effectLayer.removeChildren();
         GameLayerManager.gameLayer().sceneLayer.removeChild(this);

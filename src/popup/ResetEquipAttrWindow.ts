@@ -41,7 +41,7 @@ class ResetEqiopAttrWindow extends PopupWindow{
 
         let rand = Math.floor((Math.random() % 100 * 100));
         let type = rand % 5 == 0 ? 5:rand % 5;
-        let value = rand % 100;
+        let value = rand % 100 == 0 ? 1 : rand % 100;
         if(modEquip.EquipData.GetInstance().Lucky == 100){
             modEquip.EquipData.GetInstance().Lucky = 0;
             value = 100;

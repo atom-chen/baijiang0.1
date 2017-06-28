@@ -9,8 +9,6 @@ class GameData {
         GameData.initData = data;
     }
 
-    /**杀敌总数 */
-    public static killCount:number = 0;
     /**英雄 */
     public static heros:Array<Hero>;
     /**血量 */

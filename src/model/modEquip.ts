@@ -313,6 +313,27 @@ namespace modEquip {
         private tcStar:any;
     }
 
+    export class TcLevel{
+
+        public constructor(){
+            this._data = [[30, 30,0,0,0],[50, 50,20,0,0],[80, 80, 50, 1,0],
+                          [150, 150, 80, 3, 3],[200, 200, 150, 5, 5]];
+        }
+
+        public static Instance:TcLevel;
+        public static GetInstance():TcLevel{
+            if(this.Instance == null) this.Instance = new TcLevel();
+            return this.Instance;
+        }
+
+        public GetDataFromQuality(quality:number):any{
+            if(quality < 0 || quality > 4) return;
+            return this._data[quality];
+        }
+
+        private _data:any;
+    }
+
     /** 根据对应的类型和值 来获得对应的字符信息 */
     export function GetAttrInfo(type:number, value:number):string{
         if(type == AttrType.ATTACK) return "攻击+" + value + "%";
@@ -327,7 +348,7 @@ namespace modEquip {
         if(value == 0) return {color:0x858685,img:"star_00_png"};
 
         if(value < 20){
-            return {color:0xffffff,img:"star_01_png"};
+            return {color:0x858685,img:"star_01_png"};
         }
         else if(value >= 20 && value < 40)
         {

@@ -10,6 +10,7 @@ class BattleSceneCom extends Base {
         this.img_killCount = Utils.createBitmap("battle_0010_png");
         this.img_killCount.x = 350;
         this.img_killCount.y = 594;
+        this.img_killCount.width = 414;
         this.addChild(this.img_killCount);
         this.tcStage = RES.getRes("TcStage_json");
     }
@@ -45,13 +46,10 @@ class BattleSceneCom extends Base {
     /**设置弹出的内容显示 */
     public show():void {
         //测试
-        GameData.killCount = 0;
-        if (GameData.curStage == 5) GameData.curStage = 1;
-        for (let i= 0; i < GameData.curStage - 1; i++) {
-            GameData.killCount += this.tcStage[i].count;
-        }
+        if (GameData.curStage == ConfigManager.tcStage.length) GameData.curStage = 1;
+        let tcStage = ConfigManager.tcStage[GameData.curStage-1];
         this.img_skillMask.visible = false;
-        this.img_killCount.scaleX = GameData.killCount/10.0;
+        this.img_killCount.scaleX = 0;
         this.img_skillBg.source = `${GameData.curHero}_skillBg_png`;
         let object:any = this.btn_skill.getChildAt(0);
         let skill = this._getActSkill();
@@ -59,10 +57,9 @@ class BattleSceneCom extends Base {
         this.img_hp.scaleX = 1.0;
         this.money = Common.userData.money;
         this.soul = Common.userData.soul;
-        this.count = 0;
         this.cd_time = 0;
         this.lab_cdTime.visible = false;
-        this.lab_killCount.text = `${GameData.curStage}/5`;
+        this.lab_killCount.text = `0/${tcStage.count}`;
         this.lab_stage.text = `第${GameData.curStage}关`;
         this.lab_stage.alpha = 0;
         let id = modHero.getIdFromKey(GameData.curHero);
@@ -73,25 +70,22 @@ class BattleSceneCom extends Base {
     }
 
     /**更新界面 */
-    public update():void {
-        this.count ++;
-        GameData.killCount ++;
-        Common.userData.money += MathUtils.getRandom(100, 200);
-        Common.userData.soul += MathUtils.getRandom(10, 100);
-        this.img_killCount.scaleX = GameData.killCount/10.0;
-        if ( this.count >= this.tcStage[GameData.curStage-1].count) {
-            this.count = 0;
-            GameData.curStage ++;
-            if (GameData.curStage == 6) {
-                GameData.curStage = 1;
-                GameData.killCount = 0;
-                this.img_killCount.scaleX = 0;
+    public update(num:number, sum:number, isBoss:boolean=false):void {
+        if (!isBoss) {
+            this.img_killCount.scaleX = num/sum;
+        }else{
+            this.img_killCount.scaleX = 0;
+            num = 0;
+            let curStage = GameData.curStage + 1;
+            if (GameData.curStage == ConfigManager.tcStage.length){
+                curStage = 1;
             }
-            this.lab_killCount.text = `${GameData.curStage}/5`;
-            this.lab_stage.text = `第${GameData.curStage}关`;
+            sum = ConfigManager.tcStage[curStage-1].count;
+            this.lab_stage.text = `第${curStage}关`;
             this.lab_stage.alpha = 0;
             Animations.fadeOutIn(this.lab_stage);
         }
+        this.lab_killCount.text = `${num}/${sum}`;
     }
 
     /**技能cd */
@@ -114,7 +108,7 @@ class BattleSceneCom extends Base {
 
     /**受伤 */
     public onHurt():void {
-        this.img_hp.scaleX = GameData.hp/5;
+        this.img_hp.scaleX = GameData.hp/10;
     }
 
     public removeEventListener():void {
@@ -143,7 +137,6 @@ class BattleSceneCom extends Base {
     private money:number;
     private soul:number;
     private stage_count:number;
-    private count:number;
     private cd_time:number;
 
     /*******************图片和文字************************/

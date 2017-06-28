@@ -38,16 +38,16 @@ class Boss extends Enermy {
         // this.skillArmature.scaleY = 1.5;
     }
 
-    public init(name:string) {
-        super.init(name);
-        this.initDragonBonesArmature(name);
+    public init(data:Array<any>) {
+        super.init(data);
+        this.initDragonBonesArmature(data[0]);
         this.skillPoint = new egret.Point();
         this.offset = [[50, -25], [25, -25], [0, 0], [-50, 0], [-50, -25]]
         this.speed = 10;
         this.atk_range = 200;
         this.atk_speed = 50;
         this.skill_status = 0;
-        this.hp = 5;
+        this.hp = data[1];
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
         this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);

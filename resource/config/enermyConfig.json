@@ -17,7 +17,7 @@
         "away":0,
         "cd":2
     },
-    "boss":{
+    "Boss01":{
         "isRemote":true,
         "mov":250,
         "away":0,

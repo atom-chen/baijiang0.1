@@ -13,6 +13,11 @@ class BaseGameObject extends egret.DisplayObjectContainer {
         this.addChild(this.effectArmature);
         this.addChild(this.buffArmature);
         this.addChild(this.skillArmature);
+        this.shadow = Utils.createBitmap("shadow_png");
+        this.shadow.y = -this.shadow.height/2;
+        this.shadow.scaleX = 1.5;
+        this.shadow.anchorOffsetX = this.shadow.width/2;
+        this.addChild(this.shadow);
     }
 
     public init(data:Array<any> = null) {
@@ -170,6 +175,8 @@ class BaseGameObject extends egret.DisplayObjectContainer {
     public static Action_Attack05:string = "attack05";
     public static Action_Hurt:string = "hurt";
 
+    /**阴影 */
+    public shadow:egret.Bitmap;
     /**当前人物运动状态 */
     public curState:string;
     /**上一次状态的动画 */

@@ -136,6 +136,10 @@ class TalentDialog extends Base {
         let talentPage = modTalent.getTalentData();
         if (type == 1) {
             //购买天赋页
+            if (talentPage.length == 5) {
+                Animations.showTips("天赋页已满", 1, true);
+                return;
+            }
             this.pageGroup.removeChildren();
             let talent = {"name":"", "count":0, "talent":[]};
             talentPage.push(talent);

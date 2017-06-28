@@ -15,6 +15,10 @@ namespace ConfigManager {
     export var tcHero:any;
     /**技能配置文件 */
     export var tcSkill:any;
+    /**骨架数据 */
+    export var armatures:Array<string> = ["daoguang_effect", "diaochan", "monster01", "enter_monster_01", "Boss01",
+        "Boss01_effect01", "blood_die", "diaochan_skill", "zhaoyun", "zhaoyun_skill", "buxiaoman", "buxiaoman_skill", "buff",
+        "monster03", "monster02", "monster02_skill"];
     /**
      * 加载配置文件
      */
@@ -29,15 +33,23 @@ namespace ConfigManager {
         initBattleDragonBones();
     }
 
+    export function isInArmatures(name:string):boolean {
+        let status:boolean = false;
+        for (let i = 0; i < armatures.length; i++) {
+            if (armatures[i] == name) {
+                status = true;
+                break;
+            }
+        }
+        return status;
+    }
+
     /**
      * 初始化骨骼的动画数据
      */
     function initBattleDragonBones():void {
-        let arr:Array<string> = ["daoguang_effect", "diaochan", "monster01", "enter_monster_01", "Boss01",
-        "Boss01_effect01", "blood_die", "diaochan_skill", "zhaoyun", "zhaoyun_skill", "buxiaoman", "buxiaoman_skill", "buff",
-        "monster03", "monster02", "monster02_skill"];
-        for (let i = 0; i < arr.length; i++) {
-            let name:string = arr[i];
+        for (let i = 0; i < armatures.length; i++) {
+            let name:string = armatures[i];
             let skeletonData = RES.getRes(name+"_ske_json");
             let textureData = RES.getRes(name+"_tex_json");
             let texture = RES.getRes(name+"_tex_png");

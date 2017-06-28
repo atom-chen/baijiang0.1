@@ -1,12 +1,11 @@
 class Enermy extends BaseGameObject {
     public constructor() {
         super();
-    this.colorFlilter = new egret.ColorMatrixFilter(this.colorMatrix);
-    this.defaultFlilter = new egret.ColorMatrixFilter(this.defaultMatrix);
-    this.atk_timer = new egret.Timer(1000);
-    this.atk_timer.stop();
-    this.atk_timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onComplete, this);
-    // this.filters = [this.colorFlilter];
+        this.colorFlilter = new egret.ColorMatrixFilter(this.colorMatrix);
+        this.defaultFlilter = new egret.ColorMatrixFilter(this.defaultMatrix);
+        this.atk_timer = new egret.Timer(1000);
+        this.atk_timer.stop();
+        this.atk_timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onComplete, this);
     }
 
     public initDragonBonesArmature(name:string):void {
@@ -184,7 +183,6 @@ class Enermy extends BaseGameObject {
         this.curState = Enermy.Action_Dead;
         this.armature.play(Enermy.Action_Dead, 1);
         Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER);
-        SceneManager.battleScene.battleSceneCom.update();
         //隐藏buff动画
         this.buffArmature.visible = false;
         TimerManager.getInstance().doTimer(5000, 0, this.disappear, this);

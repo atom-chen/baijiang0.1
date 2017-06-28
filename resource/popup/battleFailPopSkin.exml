@@ -14,10 +14,11 @@
 	<e:Button id="btn_reavival" label="复活" x="605.33" y="413.24" height="76" width="168">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0004_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-8" bold="true" fontFamily="Microsoft YaHei" textColor="0xfde286" size="28" size.down="25"/>
+			<e:Image width="100%" height="100%" source="button_0024_png"/>
+			<e:Label id="labelDisplay" horizontalCenter="0" verticalCenter="-8" bold="true" fontFamily="Microsoft YaHei" size="28" size.down="25" textColor="0x260909"/>
 			</e:Skin>
 		</e:skinName>
+
 	</e:Button>
 	<e:Label text="获得物品：" x="240" y="276" fontFamily="Microsoft YaHei" bold="true" size="24" textColor="0x9e9e9e" visible="false"/>
 	<e:Group id="itemGroup" width="550" height="110" x="240" y="316" anchorOffsetY="0" anchorOffsetX="0" visible="false">

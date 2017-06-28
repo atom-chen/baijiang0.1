@@ -296,7 +296,7 @@ class EquipDialog extends Base {
             this.equipGroup.addChild(img); 
             img.name = i + "";
             img.x = 4 +104*col;
-            img.y = 4 +104*raw;
+            img.y = 8 +104*raw;
             img.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchGoods, this);
             this.weapon_list.push(img);
 

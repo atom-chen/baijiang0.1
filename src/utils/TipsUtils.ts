@@ -29,6 +29,7 @@ module TipsUtils {
         effectTips.x = bg.width/2 - effectTips.width/2;        
         effectTips.stroke  = 2;
         effectTips.bold = true;
+        effectTips.fontFamily = "Microsoft YaHei";
         effectTips.textAlign = egret.HorizontalAlign.CENTER;
         tipsGroup.addChild(effectTips);
         tipsGroup.y = Common.curHeight()/2;

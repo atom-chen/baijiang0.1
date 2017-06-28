@@ -59,12 +59,15 @@ class EquipUpWindow extends PopupWindow{
 
         this.hide_attr_info(0, true);
         this.equip_info = equip_info;
+
         let equip_data = modEquip.TcEquipData.GetInstance().GetEquipInfoFromId(this.equip_info.Id);
         this.img_weapon.source = RES.getRes(`Sequip${25-this.equip_info.Id}_png`)
         this.txt_weapon.text   = equip_data.name;
-        this.hide_attr_info(this.equip_info.Quality + 1, false);
 
         let attr:any = this.equip_info.GetEquipAttr();
+        this.quality_attr_list = modEquip.TcLevel.GetInstance().GetDataFromQuality(this.equip_info.Quality - 1);
+        
+        this.hide_attr_info(this.equip_info.Quality + 1, false);
         this.showUpgradeInfo(attr);
         this.showStar();
     }
@@ -91,7 +94,7 @@ class EquipUpWindow extends PopupWindow{
         
         let attr:any = this.equip_info.GetEquipAttr();
         this.equip_info.Lv = this.equip_info.Lv + 1;
-        for(let i:number = 0; i < attr.length; i++) attr[i] += 50;
+        for(let i:number = 0; i < attr.length; i++) attr[i] += this.quality_attr_list[i];
         this.equip_info.SetEquipAttr(attr);
         this.showUpgradeInfo(attr);
         Animations.showTips("升级成功", 1);
@@ -110,7 +113,7 @@ class EquipUpWindow extends PopupWindow{
         let num = quality >= 5 ? 5 : quality;
         for(let i:number = 0; i < num; i++){
             this.txt_front_list[i].text = attr[i];
-            this.txt_rear_list[i].text = attr[i] + 50;
+            this.txt_rear_list[i].text = attr[i] + this.quality_attr_list[i];
         }
     }
 
@@ -157,6 +160,7 @@ class EquipUpWindow extends PopupWindow{
     private group_list:Array<eui.Group>;
     private imgStar_list:Array<egret.Bitmap>;
     private starGroup:eui.Group;
+    private quality_attr_list:any;
 
     /** */
     private btn_close:eui.Button;

@@ -80,19 +80,20 @@
 			<e:Image id="img_skill1" x="63.12" y="34.33" source="skill_16_png"/>
 			<e:Image id="img_skill2" x="257" y="34.33" source="skill_17_png"/>
 			<e:Image id="img_skill3" x="449.88" y="34.33" source="skill_18_png"/>
-			<e:Label id="lab_skillname1" text="技能" y="153.32" fontFamily="Microsoft YaHei" anchorOffsetX="0" textAlign="center" horizontalCenter="-192" size="26" bold="true" textColor="0xb5b5b5"/>
+			<e:Label id="lab_skillname1" text="技能" y="153.32" fontFamily="Microsoft YaHei" anchorOffsetX="0" textAlign="center" horizontalCenter="-194" size="26" bold="true" textColor="0xb5b5b5"/>
 			<e:Label id="lab_skillname2" text="技能" y="153.32" fontFamily="Microsoft YaHei" horizontalCenter="2" size="26" bold="true" textColor="0xb5b5b5"/>
-			<e:Label id="lab_skillname3" text="技能" y="153.32" fontFamily="Microsoft YaHei" horizontalCenter="193" size="26" bold="true" textColor="0xb5b5b5"/>
-			<e:Label id="lab_cd3" text="主动" y="194.23" fontFamily="Microsoft YaHei" size="20" horizontalCenter="192" bold="true" textColor="0x8d805a"/>
+			<e:Label id="lab_skillname3" text="技能" y="153.32" fontFamily="Microsoft YaHei" horizontalCenter="195" size="26" bold="true" textColor="0xb5b5b5"/>
+			<e:Label id="lab_cd3" text="主动" y="194.23" fontFamily="Microsoft YaHei" size="20" horizontalCenter="195" bold="true" textColor="0x8d805a"/>
 			<e:Label id="lab_cd2" text="被动" y="194.23" fontFamily="Microsoft YaHei" size="20" horizontalCenter="3" bold="true" textColor="0x8d805a"/>
-			<e:Label id="lab_cd1" text="被动" y="194.23" fontFamily="Microsoft YaHei" size="20" horizontalCenter="-192" bold="true" textColor="0x8d805a"/>
-			<e:Label id="lab_detail1" text="" x="36.68" y="225.29" size="20" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
+			<e:Label id="lab_cd1" text="被动" y="194.23" fontFamily="Microsoft YaHei" size="20" horizontalCenter="-194" bold="true" textColor="0x8d805a"/>
+			<e:Label id="lab_detail1" text="" x="32.68" y="225.29" size="20" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
 			<e:Label id="lab_detail2" text="" x="231.55" y="225.29" size="20" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
-			<e:Label id="lab_detail3" text="" x="423.07" y="225.29" size="20" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
+			<e:Label id="lab_detail3" text="" x="427.07" y="225.29" size="20" anchorOffsetX="0" width="155" anchorOffsetY="0" height="160" fontFamily="Microsoft YaHei" lineSpacing="5" textColor="0x676767" bold="true"/>
+			<e:Image source="hero_0006_png" x="201.01" y="14.5" anchorOffsetY="0" height="382.5"/>
 		</e:Group>
 		<e:Group id="detailGroup" width="620" height="402" x="0" y="0" anchorOffsetY="0" visible="false">
 
-			<e:Image id="img_equip" x="68" y="16" width="468" height="384" source=""/>
+			<e:Image id="img_equip" x="68" y="13.34" width="468" height="384" source=""/>
 
 
 			<e:Label id="lab_equipName" text="" y="16" fontFamily="Microsoft YaHei" bold="true" textColor="0xf9eccf" horizontalCenter="-142.5" visible="false"/>
@@ -129,6 +130,6 @@
 	<e:Scroller id="_scrollHero" width="492" height="70" x="11" y="557" anchorOffsetY="0" anchorOffsetX="0">
 	</e:Scroller>
 	<e:Image source="img_nameBox_png" x="12" y="106"/>
-	<e:Label id="lab_heroName" text="英雄名称" y="120" anchorOffsetX="0" textAlign="center" fontFamily="Microsoft YaHei" size="28" bold="true" anchorOffsetY="0" verticalAlign="middle" textColor="0x260909" horizontalCenter="-460"/>
+	<e:Label id="lab_heroName" text="英雄名称" y="116.01" anchorOffsetX="0" textAlign="center" fontFamily="Microsoft YaHei" size="32" bold="true" anchorOffsetY="0" verticalAlign="middle" textColor="0x260909" horizontalCenter="-460"/>
 
 </e:Skin>

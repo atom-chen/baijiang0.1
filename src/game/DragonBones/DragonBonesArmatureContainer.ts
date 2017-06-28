@@ -16,13 +16,11 @@ class DragonBonesArmatureContainer extends egret.DisplayObjectContainer {
     /**
      * 注册需要的DragonBonesArmature
      */
-    public register(dragonBonesArmature:DragonBonesArmature, actions:Array<string>):boolean {
-        if (!dragonBonesArmature) return false;
+    public register(dragonBonesArmature:DragonBonesArmature, actions:Array<string>):void {
         this.armatures.push(dragonBonesArmature);
         for (let i = 0; i < actions.length; i++) {
             this.actions[actions[i]] = this.armatures.length - 1;
         }
-        return true;
     }
 
     /**

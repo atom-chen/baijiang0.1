@@ -8,11 +8,6 @@ class Hero extends BaseGameObject {
         this.comboTimer.stop();
         this.comboTimer.addEventListener(egret.TimerEvent.TIMER, this.onCombo, this);
         this.comboTimer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onComboComplete, this);
-        this.shadow = Utils.createBitmap("shadow_png");
-        this.shadow.y = -this.shadow.height/2;
-        this.shadow.scaleX = 1.5;
-        this.shadow.anchorOffsetX = this.shadow.width/2;
-        this.addChild(this.shadow);
     }
 
     private initDragonBonesArmature(name:string):void {
@@ -40,8 +35,8 @@ class Hero extends BaseGameObject {
         ]);
 
         /**从配置文件读取技能动画 */
-        // let heroConfig = HeroData.list[name];
-        let heroConfig = ConfigManager.heroConfig[name];
+        let heroConfig = HeroData.list[name];
+        // let heroConfig = ConfigManager.heroConfig[name];
         let skillArmature = `${name}_skill`;
         this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(skillArmature, skillArmature, 10), [
             Hero.Effect_Skill01,
@@ -96,7 +91,8 @@ class Hero extends BaseGameObject {
      * 设置buff或被动技能
      */
     public setBuff():void {
-        let buff = ConfigManager.heroConfig[this.name].buff;
+        let buff = HeroData.list[this.name].buff;
+        // let buff = ConfigManager.heroConfig[this.name].buff;
         for (let i = 0; i < buff.length; i++) {
             let newBuff = ObjectPool.pop(buff[i].name);
             this.addBuff(newBuff);
@@ -526,9 +522,6 @@ class Hero extends BaseGameObject {
 
     private atk_radian:number;
 
-
-    /**阴影 */
-    private shadow:egret.Bitmap;
     /**技能 */
     private skill:any;
     /**技能范围 */

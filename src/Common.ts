@@ -162,4 +162,16 @@ namespace Common {
         obj.x = x;
         obj.y = y;
     }
+
+    export function CreateText(name:string, size:number = 30, textColor:number = 0xffffff, isBold:boolean = false, fontFamily:string = "Arial", textAlign:string = "left"):egret.TextField{
+        let txt:egret.TextField = new egret.TextField();
+        txt.text = name;
+        txt.size = size;
+        txt.textColor = textColor;
+        txt.bold = isBold;
+        txt.fontFamily = fontFamily;
+        txt.textAlign = textAlign;
+
+        return txt;
+    }
 }

@@ -8,13 +8,10 @@
 	<e:Image x="13" y="14" anchorOffsetX="0" width="196" anchorOffsetY="0" height="52" rotation="360" source="battle_0003_png"/>
 
 	<e:Image id="img_hp" x="69" y="54.18" anchorOffsetX="0" width="128" anchorOffsetY="0" height="8" rotation="360" source="battle_0011_png"/>
-	<e:Image id="img_killCount1" scale9Grid="80,0,565,16" x="349.5" y="594.26" anchorOffsetX="0" width="456" anchorOffsetY="0" height="16" source="battle_0010_png" visible="false"/>
+
 	<e:Image source="battle_0005_png" x="761.5" y="582.26" anchorOffsetX="0" width="44" anchorOffsetY="0" height="40" rotation="360"/>
 	<e:Image id="img_skillBg" x="1021" y="525" anchorOffsetX="0" width="100" anchorOffsetY="0" height="100" source="buxiaoman_skillBg_png"/>
 	<e:Label id="lab_killCount" text="50/50" x="536.5" y="566.5" fontFamily="Microsoft YaHei" size="24" bold="true" textColor="0xfcf5e8"/>
-
-
-
 	<e:Button id="btn_pause" label="" x="1062.1" y="8.2" width="60" height="68">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
