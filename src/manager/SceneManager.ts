@@ -8,4 +8,8 @@ class SceneManager {
 	public static mainScene:MainScene;
     /**战斗场景 */
     public static battleScene:BattleScene;
+	/**PVP战斗场景 */
+	public static pvpScene:PVPScene;
+	/**当前场景 */
+	public static curScene:any;
 }

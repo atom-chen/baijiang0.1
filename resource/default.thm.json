@@ -41,6 +41,7 @@
     "resource/game_skins/equipWindowSkin.exml",
     "resource/game_skins/loading.exml",
     "resource/game_skins/mainSceneSkin.exml",
+    "resource/game_skins/pvpSceneSkin.exml",
     "resource/game_skins/readyWindowSkin.exml",
     "resource/game_skins/shopItemIRSkin.exml",
     "resource/game_skins/shopSkin.exml",

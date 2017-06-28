@@ -35,8 +35,8 @@ class Hero extends BaseGameObject {
         ]);
 
         /**从配置文件读取技能动画 */
-        let heroConfig = HeroData.list[name];
-        // let heroConfig = ConfigManager.heroConfig[name];
+        // let heroConfig = HeroData.list[name];
+        let heroConfig = ConfigManager.heroConfig[name];
         let skillArmature = `${name}_skill`;
         this.skillArmature.register(DragonBonesFactory.getInstance().makeArmature(skillArmature, skillArmature, 10), [
             Hero.Effect_Skill01,
@@ -55,7 +55,7 @@ class Hero extends BaseGameObject {
         this.skillArmature.scaleY = 1.5;
     }
 
-    public init(data:Array<any>) {
+    public init(data:Array<any>, isPVP:boolean=false) {
         super.init(data);
         this.initDragonBonesArmature(data[0]);
         this.name = data[0];
@@ -68,6 +68,7 @@ class Hero extends BaseGameObject {
         this.isEnemy = false;
         this.isPlay = false;
         this.isAttack = false;
+        this._isPVP = isPVP;
         this.monsterRadian =[];
         this.enermy = [];
         this.buff = [];
@@ -428,7 +429,7 @@ class Hero extends BaseGameObject {
         let evt:string = event.frameLabel;
         switch (evt) {
             case "shake":
-                ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
+                ShakeTool.getInstance().shakeObj(SceneManager.curScene, 1, 5, 5);
             break;
             case "idleEnd":
                 this.armature.visible = false;
@@ -463,8 +464,12 @@ class Hero extends BaseGameObject {
                 this.skill.end();
             break;
             case BaseGameObject.Action_Enter:
-                this.gotoIdle();
-                this.setBuff();
+                if (!this._isPVP) {
+                    this.gotoIdle();
+                    this.setBuff();
+                }else{
+                    this.gotoIdle();
+                }
                 this.shadow.visible = true;
             break;
         }
@@ -504,6 +509,7 @@ class Hero extends BaseGameObject {
 
     private isPlay:boolean;
     private isAttack:boolean;
+    private _isPVP:boolean;
     private monsterRadian:Array<number>;
     private enermy:Array<any>;
 

@@ -72,7 +72,7 @@ class Imprisoned extends SkillBase {
      */
     private _createGroup():void {
         this._effectGroup = new egret.DisplayObjectContainer();
-        SceneManager.battleScene.addChild(this._effectGroup);
+        SceneManager.curScene.addChild(this._effectGroup);
         let mask:egret.Bitmap = Utils.createBitmap("imprisoned02_png");
         mask.width = Common.SCREEN_W;
         mask.height = Common.SCREEN_H;
