@@ -6,7 +6,7 @@ namespace modPVP {
      * 创建一个刷新木桩的定时器
      */
     export function createTimer():void{
-        timer = new egret.Timer(5000, 1);
+        timer = new egret.Timer(15000, 0);
         timer.stop();
         timer.addEventListener(egret.TimerEvent.TIMER, onTimeUp, modPVP);
         timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, update, modPVP);
@@ -56,6 +56,13 @@ namespace modPVP {
      * 定时结束回调函数
      */
     function update():void{
+
+    }
+
+    /**
+     * 定时时间到达监听
+     */
+    function onTimeUp():void {
         Common.log("木桩全部消失", GameData.stakes);
         let len:number = GameData.stakes.length;
         for (let i = 0; i < GameData.stakes.length; i++) {
@@ -64,18 +71,8 @@ namespace modPVP {
         for (let i = 0; i < len; i++) {
             GameData.stakes.pop();
         }
-        timer.reset();
-        // onEnermyDead();
-        // timer.start();
-        // production();
-    }
-
-    /**
-     * 定时时间到达监听
-     */
-    function onTimeUp():void {
-        // Common.log("生产木桩")
-        // production();
+        curWave ++;
+        productRule();
     }
 
     /**
@@ -102,8 +99,11 @@ namespace modPVP {
     function onEnermyDead():void {
         getSurviveCount();
         if (surviveCount <= 0) {
+            timer.reset();
             curWave ++;
             productRule();
+        }else{
+            timer.start();
         }
     }
 
@@ -122,7 +122,7 @@ namespace modPVP {
      * 刷新下一波
      */
     function updateNextWave():void {
-        
+
     }
 
     /**

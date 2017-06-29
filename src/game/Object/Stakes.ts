@@ -17,7 +17,7 @@ class Stakes extends egret.DisplayObjectContainer {
     }
 
     public init() {
-        this.hp = 3;
+        this.hp = 5;
         this.buff = [];
         //buff动画
         this.buffArmature.register(DragonBonesFactory.getInstance().makeArmature("buff", "buff", 10), [
@@ -38,14 +38,14 @@ class Stakes extends egret.DisplayObjectContainer {
     public gotoDead():void {
         this.clearObject();
         this.clearList();
-        // Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER);
+        Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER);
     }
 
     public clearObject():void {
         this.buffArmature.visible = false;
         ObjectPool.push(this);
         if (this.parent && this.parent.removeChild) this.parent.removeChild(this);
-        Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER);
+        // Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER);
     }
 
     public clearList():void {
