@@ -19,8 +19,10 @@ class GameData {
     public static monsters:Array<Monster>;
     /**Boss */
     public static boss:Array<Boss>;
+    /**木桩 */
+    public static stakes:Array<Stakes>;
     /**当前英雄 */
-    public static curHero:string = "diaochan";
+    public static curHero:string = "zhaoyun";
     /**存储一些游戏的初始数据 */
     public static initData:any = null;
 }

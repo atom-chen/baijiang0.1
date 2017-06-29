@@ -157,7 +157,7 @@ class Main extends eui.UILayer {
         // LeanCloud.GetInstance().Login("wujiangu", "112345", this._onLogin);
         // NetConnect.send(11001, {}, ()=>{})
         // SceneManager.battleScene = new BattleScene();
-        // SceneManager.curScene = SceneManager.pvpScene;
+        // SceneManager.curScene = SceneManager.battleScene;
         // this.addChild(SceneManager.battleScene);
         SceneManager.pvpScene = new PVPScene();
         SceneManager.curScene = SceneManager.pvpScene;

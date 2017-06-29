@@ -25,6 +25,7 @@ class Imprisoned extends SkillBase {
         this._effectGroup.alpha = 1;
         this._effectFunc();
         egret.Tween.get(this._effectGroup).to({alpha:0}, 3000);
+        if (target.isPVP) return;
         for (let i = 0; i < enermy.length; i++) {
             if (enermy[i].isSkillHurt) return;
             enermy[i].isSkillHurt = true;

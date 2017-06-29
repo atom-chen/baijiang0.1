@@ -14,10 +14,10 @@ class SevenInOut extends SkillBase {
         this.mask.width = Common.SCREEN_W;
         this.mask.height = Common.SCREEN_H;
         this.mask.alpha = 0;
-        SceneManager.battleScene.addChild(this.mask);
+        SceneManager.curScene.addChild(this.mask);
         for (let i = 0; i < 6; i++) {
             let sevenInOut:DragonBonesArmatureContainer = new DragonBonesArmatureContainer();
-            SceneManager.battleScene.addChild(sevenInOut);
+            SceneManager.curScene.addChild(sevenInOut);
             sevenInOut.register(DragonBonesFactory.getInstance().makeArmature("zhaoyun_skill", "zhaoyun_skill", 10), [
                 "skill01"
             ]);
@@ -39,7 +39,7 @@ class SevenInOut extends SkillBase {
         this.target = target;
         target.gotoIdle();
         target.skillArmature.play(animation, 1);
-        SceneManager.battleScene.addChild(target.skillArmature);
+        SceneManager.curScene.addChild(target.skillArmature);
         target.skillArmature.x = 600;
         target.skillArmature.y = 200;
         target.skillArmature.rotation = 200;
@@ -61,7 +61,7 @@ class SevenInOut extends SkillBase {
         target.setEnermy();
         let enermy = target.getEnermy();
         for (let i = 0; i < enermy.length; i++) {
-            enermy[i].removeActComplete();
+            if (!this.target.isPVP) enermy[i].removeActComplete();
             if (enermy[i].hp > 0) {
                 enermy[i].setCurState("none");
             }

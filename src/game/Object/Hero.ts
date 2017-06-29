@@ -68,7 +68,7 @@ class Hero extends BaseGameObject {
         this.isEnemy = false;
         this.isPlay = false;
         this.isAttack = false;
-        this._isPVP = isPVP;
+        this.isPVP = isPVP;
         this.monsterRadian =[];
         this.enermy = [];
         this.buff = [];
@@ -92,8 +92,8 @@ class Hero extends BaseGameObject {
      * 设置buff或被动技能
      */
     public setBuff():void {
-        let buff = HeroData.list[this.name].buff;
-        // let buff = ConfigManager.heroConfig[this.name].buff;
+        // let buff = HeroData.list[this.name].buff;
+        let buff = ConfigManager.heroConfig[this.name].buff;
         for (let i = 0; i < buff.length; i++) {
             let newBuff = ObjectPool.pop(buff[i].name);
             this.addBuff(newBuff);
@@ -112,11 +112,17 @@ class Hero extends BaseGameObject {
      */
     public setEnermy():void {
         this.enermy = [];
-        for (let i = 0; i < GameData.boss.length; i++) {
-            this.enermy.push(GameData.boss[i]);
-        }
-        for (let i = 0; i < GameData.monsters.length; i++) {
-            this.enermy.push(GameData.monsters[i]);
+        if (!this.isPVP) {
+            for (let i = 0; i < GameData.boss.length; i++) {
+                this.enermy.push(GameData.boss[i]);
+            }
+            for (let i = 0; i < GameData.monsters.length; i++) {
+                this.enermy.push(GameData.monsters[i]);
+            }
+        }else{
+            for (let i = 0; i < GameData.stakes.length; i++) {
+                this.enermy.push(GameData.stakes[i]);
+            }
         }
     }
 
@@ -209,9 +215,11 @@ class Hero extends BaseGameObject {
             //     }else{
             //     }
             // }
-            if (this.combo >= 1) {
-                if (!this.comboTimer.running) this.comboTimer.start();
-                if (this.combo >= 2) SceneManager.battleScene.update(this.combo);
+            if (!this.isPVP){
+                if (this.combo >= 1) {
+                    if (!this.comboTimer.running) this.comboTimer.start();
+                    if (this.combo >= 2) SceneManager.battleScene.update(this.combo);
+                }
             }
             egret.setTimeout(()=>{this.isAttack = false}, this, 100);
             return;
@@ -222,21 +230,26 @@ class Hero extends BaseGameObject {
         this.sumDeltaY = this.sumDeltaY + this.deltaY;
         this.img_swordLight.x = this.offset[this.offsetIndex][0];
         this.img_swordLight.y = this.offset[this.offsetIndex][1];
-        this.setEnermy();
-        //怪物到中点的距离
-        for (let i = 0; i < this.enermy.length; i++) {
-            let dis = MathUtils.getDistance(this.x, this.y, this.enermy[i].x, this.enermy[i].y);
-            if (dis < 33) {
-                if (this.enermy[i].curState != Enermy.Action_Dead && this.enermy[i].curState != BaseGameObject.Action_Hurt) {
-                    this.isHit = true;
-                    this.combo ++;
+        // if (!this._isPVP) {
+            this.setEnermy();
+            //怪物到中点的距离
+            for (let i = 0; i < this.enermy.length; i++) {
+                let dis = MathUtils.getDistance(this.x, this.y, this.enermy[i].x, this.enermy[i].y);
+                let range:number = (this.isPVP) ? 50:33;
+                if (dis < range) {
+                    if (!this.isPVP) {
+                        if (this.enermy[i].curState != Enermy.Action_Dead && this.enermy[i].curState != BaseGameObject.Action_Hurt) {
+                            this.isHit = true;
+                            this.combo ++;
+                        }
+                        if (this.isAttackBuff(this.enermy[i])) {
+                            // Common.log("击晕了");
+                        }
+                    }
+                    this.enermy[i].gotoHurt();
                 }
-                if (this.isAttackBuff(this.enermy[i])) {
-                    // Common.log("击晕了");
-                }
-                this.enermy[i].gotoHurt();
             }
-        }
+        // }
     }
     /**
      * 收到攻击状态
@@ -411,7 +424,11 @@ class Hero extends BaseGameObject {
         this.skillArmature.visible = true;
         this.curState = Hero.Action_Skill;
         this.skill.start(Hero.Effect_Skill01, this);
-        SceneManager.battleScene.battleSceneCom.onCDTime();
+        if (this.isPVP){
+            SceneManager.pvpScene.onCDTime();
+        }else{
+            SceneManager.battleScene.battleSceneCom.onCDTime();
+        }
     }
 
     /**
@@ -435,7 +452,6 @@ class Hero extends BaseGameObject {
                 this.armature.visible = false;
             break;
             case "disappear":
-                Common.log("disappear")
                 this.visible = false;
             case "evtStart":
                 this.skill.update(this);
@@ -464,13 +480,10 @@ class Hero extends BaseGameObject {
                 this.skill.end();
             break;
             case BaseGameObject.Action_Enter:
-                if (!this._isPVP) {
-                    this.gotoIdle();
-                    this.setBuff();
-                }else{
-                    this.gotoIdle();
-                }
+                this.gotoIdle();
+                this.setBuff();
                 this.shadow.visible = true;
+                if (this.isPVP) SceneManager.pvpScene.createCountDown();
             break;
         }
     }
@@ -509,7 +522,7 @@ class Hero extends BaseGameObject {
 
     private isPlay:boolean;
     private isAttack:boolean;
-    private _isPVP:boolean;
+    public  isPVP:boolean;
     private monsterRadian:Array<number>;
     private enermy:Array<any>;
 

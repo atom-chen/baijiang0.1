@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
-	<e:Image source="map1_png" x="0" y="-64" width="1136" height="768" locked="true"/>
+	<e:Image id="img_map" source="map1_png" x="0" y="-64" width="1136" height="768" locked="true"/>
+	<e:Image source="bg_pvp01_png" x="432" y="1.2" touchEnabled="false"/>
     <e:Image id="img_skillBg" x="1021" y="525" anchorOffsetX="0" width="100" anchorOffsetY="0" height="100" source="buxiaoman_skillBg_png"/>
 	<e:Button id="btn_pause" label="" x="1062.1" y="8.2" width="60" height="68">
 		<e:skinName>
@@ -20,7 +21,7 @@
 	</e:Button>
 	<e:Image id="img_skillMask" x="1021.25" y="524.5" width="100" height="100" source="skill_mask_png"/>
 	<e:Label id="lab_cdSkill" text="1" y="555" horizontalCenter="502.5" fontFamily="Microsoft YaHei" bold="true" size="40"/>
-	<e:Label id="lab_cdTime" text="90" y="15" horizontalCenter="0" fontFamily="Microsoft YaHei" bold="true" size="40"/>
-	<e:Label text="伤害量：" x="470" y="67" fontFamily="Microsoft YaHei" size="25" textColor="0x806e4d" bold="true"/>
-	<e:Label id="lab_value" text="2000" y="67" fontFamily="Microsoft YaHei" size="25" textColor="0x806E4D" bold="true" left="571"/>
+	<e:Label id="lab_cdTime" text="90" y="15" horizontalCenter="0" fontFamily="Microsoft YaHei" bold="true" size="40" touchEnabled="false"/>
+	<e:Label text="伤害量：" x="470" y="67" fontFamily="Microsoft YaHei" size="25" textColor="0x806e4d" bold="true" touchEnabled="false"/>
+	<e:Label id="lab_value" text="2000" y="67" fontFamily="Microsoft YaHei" size="25" textColor="0x806E4D" bold="true" left="571" touchEnabled="false"/>
 </e:Skin>

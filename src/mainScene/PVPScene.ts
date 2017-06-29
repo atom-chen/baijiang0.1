@@ -5,7 +5,11 @@ class PVPScene extends Base {
     public constructor() {
         super();
         GameData.heros = new Array();
-        this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this)
+        GameData.stakes = new Array();
+        this.timer = new egret.Timer(10, 0);
+        this.timer.addEventListener(egret.TimerEvent.TIMER, this._timerFunc, this);
+        this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this);
+        modPVP.createTimer();
         this.skinName = "resource/game_skins/pvpSceneSkin.exml"
     }
     protected createChildren(): void{
@@ -18,10 +22,21 @@ class PVPScene extends Base {
 
     public init():void {
         TimerManager.getInstance().startTimer();
+        this._curValue = 0;
         this._cdTime = 90;
+        this.lab_cdSkill.visible = false;
         this.lab_cdTime.text = `${this._cdTime}`;
+        this.lab_value.text = `${this._curValue}`;
         this._createHero();
         DragonBonesFactory.getInstance().startTimer();
+    }
+
+    /**
+     * 创建PVP倒计时
+     */
+    public createCountDown():void {
+        modPVP.init();
+        this.onCDTime();
         TimerManager.getInstance().doTimer(1000, this._cdTime, this._onTimeCD, this, this._onTimeComplete, this);
     }
 
@@ -32,9 +47,92 @@ class PVPScene extends Base {
         TimerManager.getInstance().stopTimer();
     }
 
-    private uiCompleteHandler():void {
+    /**
+     * 创建单个木桩
+     */
+    public createSingleStake():void {
+        this._stake = ObjectPool.pop("Stakes");
+        GameData.stakes.push(this._stake);
+        Common.log(GameData.stakes)
+        this._stake.init();
+        this._stake.x = MathUtils.getRandom(100, 1050);
+        this._stake.y = MathUtils.getRandom(100, 550);
+        this._stake.anchorOffsetX = this._stake.width/2;
+        this._stake.anchorOffsetY = this._stake.height/2;
+        this.battleLayer.addChild(this._stake);
     }
 
+    /**
+     * 更新伤害值
+     */
+    public updateValue():void {
+        this._curValue += MathUtils.getRandom(100, 200);
+        this.lab_value.text = `${this._curValue}`;
+    }
+
+    /**技能cd */
+    public onCDTime():void {
+        this.cd_time = 5;
+        this.lab_cdSkill.text = `${this.cd_time}`;
+        this.lab_cdSkill.visible = true;
+        this.img_skillMask.visible = true;
+        TimerManager.getInstance().doTimer(1000, 0, this.timerCD, this);
+    }
+    private timerCD():void {
+        if (this.cd_time == 0) return;
+        this.cd_time --;
+        this.lab_cdSkill.text = `${this.cd_time}`;
+        if (this.cd_time == 0) {
+            this.lab_cdSkill.visible = false;
+            this.img_skillMask.visible = false;
+        }
+    }
+
+    private uiCompleteHandler():void {
+        this.btn_pause.addEventListener(egret.TouchEvent.TOUCH_TAP, this._onPause, this);
+        this.btn_skill.addEventListener(egret.TouchEvent.TOUCH_TAP, ()=>{
+            if (this.cd_time == 0) {
+                GameData.heros[0].gotoSkill();
+            }
+        }, this);
+    }
+
+    /**
+     * 暂停
+     */
+    private _onPause():void {
+
+    }
+
+    private _timerFunc(event:egret.TimerEvent) {
+        this.moveCount = (<egret.Timer>event.target).currentCount;
+    }
+    /**按下监听 */
+    private onTouchBin(event:egret.TouchEvent):void {
+        this.timer.start();
+    }
+    /**拖动监听 */
+    private onTouchMove(event:egret.TouchEvent):void {
+        this._mouseX = event.stageX;
+        this._mouseY = event.stageY;
+        if (this.moveCount > 10) {
+            this._hero.moveToTarget(this._mouseX, this._mouseY, ()=>{
+                this._hero.gotoRun();
+            });
+        }
+    }
+    /**放开监听 */
+    private onTouchEnd(event:egret.TouchEvent):void {
+        this.timer.reset();
+        if (this.moveCount <= 10) {
+            this._hero.moveToTarget(event.stageX, event.stageY, ()=>{
+                this._hero.gotoAttack();
+           });
+        }else{
+            this._hero.gotoIdle();
+        }
+        this.moveCount = 0;
+    }
     /**
      * 对象回收
      */
@@ -48,7 +146,7 @@ class PVPScene extends Base {
     }
 
     private _onTimeComplete():void {
-        this.stopTimer();
+        // this.stopTimer();
     }
 
     /**
@@ -62,27 +160,51 @@ class PVPScene extends Base {
         this._hero.y = Common.SCREEN_H/2;
         // this.hero.anchorOffsetY = -33;
         this._hero.anchorOffsetY = -50;
-        this.addChild(this._hero);
+        this.battleLayer.addChild(this._hero);
     }
 
     /**
      * 创建地图
      */
     private _createMap():void {
+        this.battleLayer = new egret.DisplayObjectContainer();
         this._effectLayer = new egret.DisplayObjectContainer();
+        this.img_map.addEventListener(egret.TouchEvent.TOUCH_BEGIN, this.onTouchBin, this);
+        this.img_map.addEventListener(egret.TouchEvent.TOUCH_MOVE, this.onTouchMove, this);
+        this.img_map.addEventListener(egret.TouchEvent.TOUCH_END, this.onTouchEnd, this);
+        this.addChild(this.battleLayer);
+        this.setChildIndex(this.battleLayer, 1);
         this.addChild(this._effectLayer);
     }
 
+    /**英雄和怪物层 */
+    public battleLayer:egret.DisplayObjectContainer;
+
+    /**鼠标或者点击的位置 */
+    private _mouseX:number;
+    private _mouseY:number;
+    /**当前的伤害 */
+    private _curValue:number;
     /**特效层（包括技能/buff等） */
     private _effectLayer:egret.DisplayObjectContainer;
     /**倒计时长 */
     private _cdTime:number;
+    /**技能倒计时 */
+    private cd_time:number;
     /**英雄 */
     private _hero:Hero;
+    /**木桩 */
+    private _stake:Stakes;
+    /**定时器 */
+    private timer:egret.Timer;
+    /** */
+    private moveCount:number;
     /**暂停按钮 */
     private btn_pause:eui.Button;
     /**技能释放按钮 */
     private btn_skill:eui.Button;
+    /**背景 */
+    private img_map:eui.Image;
     /**技能背景 */
     private img_skillBg:eui.Image;
     /**技能cd时的遮罩 */

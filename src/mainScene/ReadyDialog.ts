@@ -145,6 +145,7 @@ class ReadyDialog extends Base {
                     }else{
                         SceneManager.battleScene.init();
                     }
+                    SceneManager.curScene = SceneManager.battleScene;
                     GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.battleScene);
                 });
             break;

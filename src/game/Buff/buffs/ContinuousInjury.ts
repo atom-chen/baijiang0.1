@@ -26,14 +26,14 @@ class ContinuousInjury extends BuffBase {
 
     /**开始 */
     public buffStart(target:any) {
-        target.gotoRun();
+        if (!target.isPVP) target.gotoRun();
         this.AddEffect(target);
         TimerManager.getInstance().doTimer(1000, this.buffData.duration, this.update, this, this.buffEnd, this);
     }
 
     /**持续过程 */
     public buffEnd() {
-        this.target.isSkillHurt = false;
+        if (!this.target.isPVP) this.target.isSkillHurt = false;
         this.HideEffect();
         let index = this.target.buff.indexOf(this.buffData.id);
         this.target.buff.splice(index, 1);
@@ -64,7 +64,9 @@ class ContinuousInjury extends BuffBase {
     /**刷新数据 */
     public update() {
         if (this.target.hp > 0) {
-            this.target.gotoRun();
+            if (!this.target.isPVP && this.target.curState != "xuli01"){
+                this.target.gotoRun();
+            }
             this.bloodEffect();
         }
     }
@@ -86,6 +88,10 @@ class ContinuousInjury extends BuffBase {
             case PostionType.PostionType_Body:
                 target.buffArmature.x = 0;
                 target.buffArmature.y = 0;
+                if (target.isPVP){
+                     target.buffArmature.x = target.width/2 - 25;
+                     target.buffArmature.y = target.height/2;
+                }
             break;
         }
     }

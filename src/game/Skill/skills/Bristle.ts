@@ -22,9 +22,9 @@ class Bristle extends SkillBase {
         target.setEnermy();
         let enermy = target.getEnermy();
         for (let i = 0; i < enermy.length; i++) {
-            if (enermy[i].isSkillHurt) return;
-            enermy[i].isSkillHurt = true;
-            enermy[i].removeActComplete();
+            // if (enermy[i].isSkillHurt) return;
+            // enermy[i].isSkillHurt = true;
+            if (!target.isPVP) enermy[i].removeActComplete();
             this.buff = ObjectPool.pop("ContinuousInjury");
             switch (this.buffIndex) {
                 //烧伤
