@@ -1,7 +1,7 @@
 /**
  * 准备界面
  */
-class ReadyDialog extends Base {
+class ReadyDialog extends PopupWindow {
     public name = 'ReadyDialog'
     public constructor() {
         super();
@@ -12,7 +12,7 @@ class ReadyDialog extends Base {
     }
 
     protected createChildren(): void{
-        this.show();
+        this.Reset();
         this.starGroup = new eui.Group();
         this.detailGroup.addChild(this.starGroup);
         this.starGroup.x = 26;
@@ -140,13 +140,22 @@ class ReadyDialog extends Base {
                 Animations.sceneTransition(()=>{
                     GameLayerManager.gameLayer().sceneLayer.removeChildren();
                     GameLayerManager.gameLayer().panelLayer.removeChildren();
-                    if (!SceneManager.battleScene) {
-                        SceneManager.battleScene = new BattleScene();
+                    if (SceneManager.nextScene == "battleScene") {
+                        if (!SceneManager.battleScene) {
+                            SceneManager.battleScene = new BattleScene();
+                        }else{
+                            SceneManager.battleScene.init();
+                        }
+                        SceneManager.curScene = SceneManager.battleScene;
                     }else{
-                        SceneManager.battleScene.init();
+                        if (!SceneManager.pvpScene) {
+                            SceneManager.pvpScene = new PVPScene();
+                        }else{
+                            SceneManager.pvpScene.init();
+                        }
+                        SceneManager.curScene = SceneManager.pvpScene;
                     }
-                    SceneManager.curScene = SceneManager.battleScene;
-                    GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.battleScene);
+                    GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.curScene);
                 });
             break;
             case this.btn_change:
@@ -280,7 +289,7 @@ class ReadyDialog extends Base {
     /**
      * 显示界面
      */
-    public show():void {
+    public Reset(){
         this._startTimer();
     }
 
@@ -348,6 +357,7 @@ class ReadyDialog extends Base {
     }
 
     // public static instance:ReadyDialog;
+    private _isPVP:boolean;
     private _curAttr:Array<eui.Label>;
     private _lastAttr:Array<eui.Label>;
     /**属性组 */

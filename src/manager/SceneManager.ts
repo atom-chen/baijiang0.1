@@ -12,4 +12,6 @@ class SceneManager {
 	public static pvpScene:PVPScene;
 	/**当前场景 */
 	public static curScene:any;
+	/**下一个场景 */
+	public static nextScene:any;
 }

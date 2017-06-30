@@ -57,6 +57,8 @@ class EquipUpWindow extends PopupWindow{
     public Show(equip_info:modEquip.EquipInfo):void{
         super.Show();
 
+        Animations.PopupBackOut(this, 500);
+
         this.hide_attr_info(0, true);
         this.equip_info = equip_info;
 
@@ -67,6 +69,7 @@ class EquipUpWindow extends PopupWindow{
         let attr:any = this.equip_info.GetEquipAttr();
         this.quality_attr_list = modEquip.TcLevel.GetInstance().GetDataFromQuality(this.equip_info.Quality - 1);
         
+        this.set_label_text();
         this.hide_attr_info(this.equip_info.Quality + 1, false);
         this.showUpgradeInfo(attr);
         this.showStar();
@@ -78,7 +81,9 @@ class EquipUpWindow extends PopupWindow{
     }
 
     public Close():void{
-        super.Close();
+        Animations.PopupBackIn(this, 350,  ()=>{
+            super.Close();
+        });
 
         this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
         this.btn_upLevel.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
@@ -98,14 +103,27 @@ class EquipUpWindow extends PopupWindow{
         this.equip_info.SetEquipAttr(attr);
         this.showUpgradeInfo(attr);
         Animations.showTips("升级成功", 1);
-        this.curr_lv.text = "Lv." + this.equip_info.Lv;
-        this.next_lv.text = "Lv." + (this.equip_info.Lv + 1);
-        Common.log(JSON.stringify(this.equip_info));
-        //更新武将的武器
-        let data = HeroData.list[GameData.curHero];
-        let equipId = data.equip;
-        if (equipId != 0 && equipId == this.equip_info.Id) modEquip.update(this.equip_info);
-        this.dispatchEventWith(modEquip.EquipSource.UPGRADE, false, this.equip_info.Lv);
+        let upData:any = modEquip.TcEquipUp.GetInstance().GetDataFromLv(this.equip_info.Lv);
+        if(UserDataInfo.GetInstance().GetBasicData("exp") >= upData.exp && UserDataInfo.GetInstance().GetBasicData("soul") >= upData.soul){
+            UserDataInfo.GetInstance().SetBasicData("exp", UserDataInfo.GetInstance().GetBasicData("exp") - upData.exp);
+            UserDataInfo.GetInstance().SetBasicData("soul", UserDataInfo.GetInstance().GetBasicData("soul") - upData.soul);
+            this.set_label_text(upData);
+            Common.log(JSON.stringify(this.equip_info));
+            //更新武将的武器
+            let data = HeroData.list[GameData.curHero];
+            let equipId = data.equip;
+            if (equipId != 0 && equipId == this.equip_info.Id) modEquip.update(this.equip_info);
+            this.dispatchEventWith(modEquip.EquipSource.UPGRADE, false, this.equip_info.Lv);
+        }
+        else
+        {
+            if(UserDataInfo.GetInstance().GetBasicData("exp") < upData.exp){
+                Animations.showTips("经验不足无法升级");
+            }
+            else if(UserDataInfo.GetInstance().GetBasicData("soul") < upData.soul){
+                Animations.showTips("灵魂石不足无法升级");
+            }
+        }
     }
 
     private showUpgradeInfo(attr:any):void{
@@ -142,6 +160,13 @@ class EquipUpWindow extends PopupWindow{
         }
         this.starGroup.width = this.equip_info.Quality * 32;
         Common.SetXY(this.starGroup, this.img_weapon.x + (this.img_weapon.width - this.starGroup.width) / 2 - 20, this.img_weapon.y - 45);
+    }
+
+    private set_label_text(upData:any = modEquip.TcEquipUp.GetInstance().GetDataFromLv(this.equip_info.Lv)):void{
+        this.txt_exp.text = upData.exp;
+        this.txt_sole.text = upData.soul;
+        this.curr_lv.text = "Lv." + this.equip_info.Lv;
+        this.next_lv.text = "Lv." + (this.equip_info.Lv + 1);
     }
    
    /**  */

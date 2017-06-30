@@ -55,16 +55,17 @@ namespace modBattle {
         let heroCount = GameData.heros.length;
         let monsterCount = GameData.monsters.length;
         let bossCount = GameData.boss.length;
-        ObjectPool.push("HeroData");
         for (let i = 0; i < heroCount; i++) {
             let hero:Hero = GameData.heros[i];
             hero.removeComplete();
+            hero.recycleSkill();
             // hero.stopDragonBonesArmature();
             if (hero && hero.parent && hero.parent.removeChild) hero.parent.removeChild(hero);
             ObjectPool.push(GameData.heros[i]);
         }
         for (let i = 0; i < monsterCount; i++) {
             let monster:Monster = GameData.monsters[i];
+            monster.recycle();
             monster.removeComplete();
             if (monster && monster.parent && monster.parent.removeChild) {
                 monster.parent.removeChild(monster);
@@ -73,6 +74,7 @@ namespace modBattle {
         }
         for (let i = 0; i < bossCount; i++) {
             let boss:Boss = GameData.boss[i];
+            boss.recycle();
             boss.removeComplete();
             if (boss && boss.parent && boss.parent.removeChild) {
                 boss.parent.removeChild(boss);

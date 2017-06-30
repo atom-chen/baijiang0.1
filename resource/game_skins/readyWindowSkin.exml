@@ -126,7 +126,7 @@
 		</e:skinName>
 
 	</e:Button>
-	<e:Image source="title_0001_png" x="141.5" y="8"/>
+	<e:Image x="141.5" y="8" source="title_00012_png"/>
 	<e:Scroller id="_scrollHero" width="492" height="70" x="11" y="557" anchorOffsetY="0" anchorOffsetX="0">
 	</e:Scroller>
 	<e:Image source="img_nameBox_png" x="12" y="106"/>

@@ -15,7 +15,7 @@ namespace modEquip {
 
     /**装备的通用资源 */
     export class EquipSource{
-        public static EQUIPLV:number = 10;
+        public static EQUIPLV:number = 100;
         public static RESETATTR:string = "RESETATTR";
         public static UPSTAR:string = "UPSTAR";
         public static UPGRADE:string = "UPGRADE";
@@ -60,7 +60,7 @@ namespace modEquip {
 
        public constructor(){
            this.id   = 0;
-           this.lv   = 0;
+           this.lv   = 1;
            this.star = 0;
            this.quality = 0;
            this.typeID = 0;
@@ -311,6 +311,30 @@ namespace modEquip {
         }
 
         private tcStar:any;
+    }
+
+    export class TcEquipUp{
+        public constructor(){
+            this.data_list = RES.getRes("TcEquipUp_json");
+        }
+
+        public static Instance:TcEquipUp;
+        public static GetInstance():TcEquipUp{
+            if(this.Instance == null){
+                this.Instance = new TcEquipUp();
+            }
+            return this.Instance;
+        }
+
+        public GetDataFromLv(lv:number):any{
+            for(let i:number = 0; i < this.data_list.length; i++){
+                if(lv == this.data_list[i].lv){
+                    return this.data_list[i];
+                }
+            }
+        }
+
+        private data_list:any;
     }
 
     export class TcLevel{

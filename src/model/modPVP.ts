@@ -49,6 +49,26 @@ namespace modPVP {
      * 对象（战斗对象）回收
      */
     export function recycleObject():void {
+        let heroCount = GameData.heros.length;
+        let stakeCount = GameData.stakes.length;
+        for (let i = 0; i < heroCount; i++) {
+            let hero:Hero = GameData.heros[i];
+            hero.removeComplete();
+            hero.recycleSkill();
+            // hero.stopDragonBonesArmature();
+            if (hero && hero.parent && hero.parent.removeChild) hero.parent.removeChild(hero);
+            ObjectPool.push(GameData.heros[i]);
+        }
+        for (let i = 0; i < stakeCount; i++) {
+            let stakes:Stakes = GameData.stakes[i];
+            stakes.recycle();
+            if (stakes && stakes.parent && stakes.parent.removeChild) {
+                stakes.parent.removeChild(stakes);
+            }
+            ObjectPool.push(GameData.stakes[i]);
+        }
+        for (let i = 0; i < heroCount; i++) GameData.heros.pop();
+        for (let i = 0; i < stakeCount; i++) GameData.stakes.pop();
         Common.removeEventListener(GameEvents.EVT_PRODUCEMONSTER, onEnermyDead, modPVP);
     }
 
@@ -63,7 +83,6 @@ namespace modPVP {
      * 定时时间到达监听
      */
     function onTimeUp():void {
-        Common.log("木桩全部消失", GameData.stakes);
         let len:number = GameData.stakes.length;
         for (let i = 0; i < GameData.stakes.length; i++) {
             GameData.stakes[i].clearObject();

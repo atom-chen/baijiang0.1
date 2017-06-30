@@ -26,11 +26,12 @@ class BattlePausePop extends PopupWindow {
         switch (event.currentTarget) {
             case this.btn_continue:
                 TimerManager.getInstance().startTimer();
-                modBattle.start();
+                if (this.popType == 1) modBattle.start();
+                else modPVP.start();
             break;
             default:
                 Animations.sceneTransition(()=>{
-                    SceneManager.battleScene.cleanChildren();
+                    SceneManager.curScene.cleanChildren();
                     DragonBonesFactory.getInstance().removeTimer();
                     GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.mainScene);
                 });
@@ -41,6 +42,15 @@ class BattlePausePop extends PopupWindow {
     /**设置弹出的内容显示 */
     public Show():void {
         super.Show();
+        if (SceneManager.curScene == SceneManager.battleScene){
+            this.popType = 1;
+            this.img_battlePause.visible = true;
+            this.popupGroup.visible = false;
+        }else{
+            this.popType = 2;
+            this.img_battlePause.visible = false;
+            this.popupGroup.visible = true;
+        }
     }
 
     public Reset():void{
@@ -60,6 +70,12 @@ class BattlePausePop extends PopupWindow {
     /**继续 */
     private btn_continue:eui.Button;
 
+    /**暂停背景 */
+    private img_battlePause:eui.Image;
+    /**PVP暂停弹窗 */
+    private popupGroup:eui.Group;
+    /**popup类型 */
+    private popType:number;
     /*******************图片和文字************************/
     
 }

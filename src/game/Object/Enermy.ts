@@ -26,7 +26,7 @@ class Enermy extends BaseGameObject {
         this.buffArmature.register(DragonBonesFactory.getInstance().makeArmature("buff", "buff", 10), [
             "Burning"
         ]);
-
+        this.buffArmature.visible = false;
         this.effectArmature.scaleX = 1.5;
         this.effectArmature.scaleY = 1.5;
         this.buffArmature.scaleX = 1.5;
@@ -250,6 +250,14 @@ class Enermy extends BaseGameObject {
     public removeComplete():void {
         this.armature.removeCompleteCallFunc(this.armaturePlayEnd, this);
         this.effectArmature.removeCompleteCallFunc(this.effectArmaturePlayEnd, this);
+    }
+    /**回收技能和buff */
+    public recycle():void {
+        for (let i = 0; i < this.buff.length; i++) {
+            if (this.buff[i].buffData.className) {
+                this.buff[i].recycleBuff();
+            }
+        }
     }
     /****************************************************/
 

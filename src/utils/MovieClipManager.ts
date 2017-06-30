@@ -1,0 +1,30 @@
+class MovieClipManager extends egret.DisplayObjectContainer{
+    public constructor(name:string){
+        super();
+        let data = RES.getRes(name + "_json");
+        let texture = RES.getRes(name + "_png");
+        this._mcData = new egret.MovieClipDataFactory(data, texture);
+        this._mc = new egret.MovieClip();
+        this.addChild(this._mc);
+    }
+
+    public Wait():void{
+        this._mc.movieClipData = this._mcData.generateMovieClipData("wait");
+    }
+
+    public Action(action:string = "action", playTime:number = 1):void{
+        this._mc.movieClipData = this._mcData.generateMovieClipData(action)
+        this._mc.gotoAndPlay(1, playTime);
+        if(playTime != -1) {
+            this._mc.addEventListener(egret.Event.COMPLETE, this.onEvent, this);
+        }
+    }
+
+    private onEvent(){
+        this._mc.removeEventListener(egret.Event.COMPLETE, this.onEvent, this);
+        this.Wait();
+    }
+
+    private _mc:egret.MovieClip;
+    private _mcData:egret.MovieClipDataFactory;
+}

@@ -26,5 +26,5 @@
 
 	</e:Button>
 
-	<e:Image source="title_00012_png" x="496" y="82"/>
+	<e:Image x="496" y="82" source="title_0001_png"/>
 </e:Skin>

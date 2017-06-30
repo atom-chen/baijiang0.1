@@ -24,6 +24,13 @@ class TimerManager {
     /**启动计时器 */
     public startTimer():void {
         egret.startTick(this.onFrame, this);
+        for (let i = 0; i < this._handlers.length; i++) {
+            let handler:TimerHandler = this._handlers[i];
+            if (!handler.isFrame) {
+                handler.exeTime = handler.delay + egret.getTimer();
+                handler.dealTime = egret.getTimer();
+            }
+        }
     }
 
     /**对象排序，并重新设置层级 */

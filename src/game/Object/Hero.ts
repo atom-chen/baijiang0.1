@@ -107,6 +107,16 @@ class Hero extends BaseGameObject {
         buff.buffStart(this);
     }
 
+    /**回收技能类 */
+    public recycleSkill():void {
+        this.skill.end();
+        for (let i = 0; i < this.buff.length; i++) {
+            if (this.buff[i].buffData.className) {
+                this.buff[i].recycleBuff();
+            }
+        }
+    }
+
     /**
      * 设置敌人(当英雄进行攻击、释放技能时，判断受到影响的敌人)
      */

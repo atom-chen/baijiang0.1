@@ -39,6 +39,7 @@
     <!--这个标签为不通过egret提供的第三方库的方式使用的 javascript 文件，请将这些文件放在libs下，但不要放在modules下面。-->
     <!--other_libs_files_start-->
     <script egret="lib" src="polyfill/promise.js" src-release="polyfill/promise.min.js"></script>
+    <script egret="lib" src="libs/av/av.js" src-release="libs/av/av-min.js"></script>
     <!--other_libs_files_end-->
 
     <!--这个标签会被替换为项目中所有的 javascript 文件。删除 game_files 标签后，项目文件加载列表将不会变化，请谨慎操作！-->
@@ -50,7 +51,7 @@
 	<script egret="game" src="bin-debug/game/Object/Enermy.js"></script>
 	<script egret="game" src="bin-debug/game/Skill/SkillBase.js"></script>
 	<script egret="game" src="bin-debug/popup/PopupWindow.js"></script>
-	<script egret="game" src="bin-debug/mainScene/equipInfoDialog.js"></script>
+	<script egret="game" src="bin-debug/mainScene/MainScene.js"></script>
 	<script egret="game" src="bin-debug/enterGameScene/EnterGameScene.js"></script>
 	<script egret="game" src="bin-debug/AssetAdapter.js"></script>
 	<script egret="game" src="bin-debug/game/Buff/BuffData.js"></script>
@@ -89,8 +90,8 @@
 	<script egret="game" src="bin-debug/Main.js"></script>
 	<script egret="game" src="bin-debug/mainScene/BattleScene.js"></script>
 	<script egret="game" src="bin-debug/mainScene/equipDialog.js"></script>
-	<script egret="game" src="bin-debug/utils/utilsClass/ShakeTools.js"></script>
-	<script egret="game" src="bin-debug/mainScene/MainScene.js"></script>
+	<script egret="game" src="bin-debug/mainScene/equipInfoDialog.js"></script>
+	<script egret="game" src="bin-debug/component/shopItemIR.js"></script>
 	<script egret="game" src="bin-debug/mainScene/PVPScene.js"></script>
 	<script egret="game" src="bin-debug/mainScene/ReadyDialog.js"></script>
 	<script egret="game" src="bin-debug/mainScene/ShopDialog.js"></script>
@@ -110,6 +111,7 @@
 	<script egret="game" src="bin-debug/model/modPVP.js"></script>
 	<script egret="game" src="bin-debug/model/modShop.js"></script>
 	<script egret="game" src="bin-debug/model/modTalent.js"></script>
+	<script egret="game" src="bin-debug/model/RankData.js"></script>
 	<script egret="game" src="bin-debug/model/UserDataInfo.js"></script>
 	<script egret="game" src="bin-debug/net/NetConnect.js"></script>
 	<script egret="game" src="bin-debug/net/NetUI.js"></script>
@@ -127,6 +129,7 @@
 	<script egret="game" src="bin-debug/ThemeAdapter.js"></script>
 	<script egret="game" src="bin-debug/utils/Animations.js"></script>
 	<script egret="game" src="bin-debug/utils/MathUtils.js"></script>
+	<script egret="game" src="bin-debug/utils/MovieClipManager.js"></script>
 	<script egret="game" src="bin-debug/utils/NativeApi.js"></script>
 	<script egret="game" src="bin-debug/utils/sensitiveWords/Dictionary.js"></script>
 	<script egret="game" src="bin-debug/utils/sensitiveWords/SensitiveWordFilter.js"></script>
@@ -135,12 +138,12 @@
 	<script egret="game" src="bin-debug/utils/Utils.js"></script>
 	<script egret="game" src="bin-debug/utils/utilsClass/LEvent.js"></script>
 	<script egret="game" src="bin-debug/utils/utilsClass/LListener.js"></script>
-	<script egret="game" src="bin-debug/component/shopItemIR.js"></script>
+	<script egret="game" src="bin-debug/utils/utilsClass/ShakeTools.js"></script>
 	<!--game_files_end-->
 	<!--<script src="https://rawgit.com/kawanet/msgpack-lite/master/dist/msgpack.min.js"></script>-->
 	<script src="http://api.egret-labs.org/games/www/static/egreth5sdk.js"></script>
 	<!-- 存储服务 -->
-	<script src="//cdn1.lncld.net/static/js/3.0.0/av-min.js"></script>
+	<!--/*<script src="//cdn1.lncld.net/static/js/3.0.0/av-min.js"></script>*/-->
 </head>
 <body>
 
@@ -172,13 +175,13 @@
         //  }
 		var isDebug = false;
 		var RESOURCE = "";
-		var AV = AV || {};
-		var APP_ID = 'onCULkQ8rWJmAJtnjfxtxrkr-gzGzoHsz';
-		var APP_KEY = 'FGupyEUQyuw4kKkvrU7ohM06';
-		AV.init({
-		appId: APP_ID,
-		appKey: APP_KEY
-		});
+		// var AV = AV || {};
+		// var APP_ID = 'onCULkQ8rWJmAJtnjfxtxrkr-gzGzoHsz';
+		// var APP_KEY = 'FGupyEUQyuw4kKkvrU7ohM06';
+		// AV.init({
+		// appId: APP_ID,
+		// appKey: APP_KEY
+		// });
         egret.runEgret({renderMode:"canvas", audioType:0});
     </script>
 </body>

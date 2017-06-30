@@ -1,7 +1,7 @@
 /**
  * 商城
  */
-class ShopDialog extends Base {
+class ShopDialog extends PopupWindow {
     public constructor() {
         super();
         this.addEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
@@ -36,6 +36,15 @@ class ShopDialog extends Base {
         this.btn_top = [this.btn_soul, this.btn_equip, this.btn_reward, this.btn_hero];
     }
 
+    public Init():void{
+        this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
+        this.lab_money.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
+    }
+
+    public Reset(){
+        
+    }
+
     private onButtonHandler(event:egret.TouchEvent) {
         let target = event.currentTarget;
         switch (target) {
@@ -52,35 +61,41 @@ class ShopDialog extends Base {
                 Utils.viewStackStatus(this.stack_shop, this.btn_top, 3);
             break;
             case this.btn_oneDraw:
-                this.cards = [];
-                let cardInfo = modShop.drawOnce();
-                this.cards.push(cardInfo);
-                Common.log(JSON.stringify(this.cards));
-                Animations.drawCard(cardInfo, ()=>{
-                    this.createEquipPop(this.cards, "once")
-                });
+                if(this.haveEnoughDiamond(1)){
+                    this.cards = [];
+                    let cardInfo = modShop.drawOnce();
+                    this.cards.push(cardInfo);
+                    Common.log(JSON.stringify(this.cards));
+                    Animations.drawCard(cardInfo, ()=>{
+                        this.createEquipPop(this.cards, "once")
+                    });
+                }
             break;
             case this.btn_tenDraw:
-                this.cards = [];
-                this.cards = modShop.drawTen();
-                let startLen = 0;
-                var popFunc = function() {
-                    if (startLen >= 10) {
-                        this.createEquipPop(this.cards, "ten");
-                    }else{
-                        Animations.drawCard(this.cards[startLen.toString()], ()=>{
-                            startLen ++;
-                            popFunc();
-                        });
-                    }
-                }.bind(this);
+              if(this.haveEnoughDiamond(10)){
+                    this.cards = [];
+                    this.cards = modShop.drawTen();
+                    let startLen = 0;
+                    var popFunc = function() {
+                        if (startLen >= 10) {
+                            this.createEquipPop(this.cards, "ten");
+                        }else{
+                            Animations.drawCard(this.cards[startLen.toString()], ()=>{
+                                startLen ++;
+                                popFunc();
+                            });
+                        }
+                    }.bind(this);
 
-                popFunc();
+                    popFunc();
+              }
             break;
             case this.btn_closeDetail:
                 this.detailGroup.visible = false;
             break;
             default:
+                LeanCloud.GetInstance().SaveRoleBasicData();
+                GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
                 GameLayerManager.gameLayer().panelLayer.removeChildren();
             break;
         }
@@ -98,6 +113,17 @@ class ShopDialog extends Base {
             group.addChild(panel);
         }
         scroller.viewport = group;
+    }
+
+    private haveEnoughDiamond(num:number):boolean{
+        if(UserDataInfo.GetInstance().GetBasicData("diamond") < num * 220){
+            Animations.showTips("钻石不足，无法开启");
+            return false;
+        }
+
+        UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - num * 220);
+        this.lab_money.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
+        return true;
     }
 
     /**
@@ -145,5 +171,4 @@ class ShopDialog extends Base {
     private btn_tenDraw:eui.Button;
     /**卡组 */
     private cards:Array<any>;
-   
 }

@@ -57,7 +57,7 @@ class PVPWindow extends PopupWindow{
         if(UserData.challengeNum == 0) this.show_and_hide_btn(true, false);
         else this.show_and_hide_btn(false, true);
 
-        this.DataSort();
+        this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
         this.showRankInfo();
         this.upDataTime();
         this._time.start();
@@ -84,13 +84,24 @@ class PVPWindow extends PopupWindow{
     private onTouchButton(event:egret.TouchEvent):void{
         let target = event.target;
         if(target == this.btn_start){
-            UserData.challengeNum++;
             this.Close();
+            SceneManager.nextScene = "pvpScene";
+            WindowManager.GetInstance().GetWindow("ReadyDialog").Show();
+            UserData.challengeNum++;
         }
         else if(target == this.btn_buy){
-
+            if(UserDataInfo.GetInstance().GetBasicData("diamond") < 200){
+                Animations.showTips("钻石不足，无法挑战");
+            }
+            else
+            {
+                this.Close();
+                UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 200);
+                SceneManager.nextScene = "pvpScene";
+                WindowManager.GetInstance().GetWindow("ReadyDialog").Show();
+                GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
+            }
         }
-
     }
 
     /** 时间定时器 */
@@ -120,44 +131,29 @@ class PVPWindow extends PopupWindow{
 
     /** 显示排名的奖励 */
     private showRankInfo():void{
-        let rankNum = this.searchDamageRank();
+        let data_list = RankData.GetInstance().GetDataList();
+        let rankNum = this.searchDamageRank(data_list);
         let strRank = "(当前没有排名)";
-        if(rankNum != -1) strRank = "(第" + (rankNum + 1) + "名)";
+        if(rankNum != -1) strRank = "(第" + rankNum + "名)";
         this.txt_self.textFlow = <Array<egret.ITextElement>>[{text:"我    "},{text:strRank, style:{"textColor":0x252525}}];
+        this.txt_damage.text = UserData.rankDamage + "";
 
         let tempData:any = [];
-        for(let i:number = 0; i < this.damage_data.length; i++){
+        for(let i:number = 0; i < data_list.length; i++){
             tempData[i] = {};
-            tempData[i]["name"] = this.damage_data[i].name;
-            tempData[i]["damage"] = this.damage_data[i].damage;
+            tempData[i]["name"] = data_list[i]["name"];
+            tempData[i]["damage"] = data_list[i]["damage"];
             tempData[i]["num"] = i + 1;
         }
         this.damageList.dataProvider = new eui.ArrayCollection(tempData);
         tempData = [];
     }
 
-    /** 进行数据的排序 从大到小 用的是插入排序 */
-    private DataSort():void{
-        for(let i:number = 1; i < this.damage_data.length; i++){
-            let j = i;
-            let damage:number = this.damage_data[i].damage;
-            let name:string   = this.damage_data[i].name;
-            while(j > 0 && this.damage_data[j - 1].damage < damage){
-                this.damage_data[j].damage = this.damage_data[j - 1].damage;
-                this.damage_data[j].name   = this.damage_data[j - 1].name;
-                j--;
-            }
-            this.damage_data[j].damage = damage;
-            this.damage_data[j].name = name;
-        }
-       
-    }
-
     /** 寻找自己再第几名 如果结果为-1则没有排名 */
-    private searchDamageRank():number{
-        for(let i:number = 0; i < this.damage_data.length; i++){
-            if(this.damage_data[i].name == UserData.RoleName){
-                return i;
+    private searchDamageRank(data_list:any):number{
+        for(let i:number = 0; i < data_list.length; i++){
+            if(data_list[i].damage == UserData.rankDamage){
+                return i + 1;
             }
         }
 
@@ -182,10 +178,7 @@ class PVPWindow extends PopupWindow{
     private txt_damage:egret.TextField;
     private txt_damage_info:egret.TextField;
     private _time:egret.Timer;
-
-    private damage_data:any = [{name:"wushuang",damage:12500},{name:"lisi",damage:2150},{name:"wangwu",damage:560},{name:"liuliu",damage:150880},
-                               {name:"shiqi",damage:5600},{name:"zhousan",damage:1544},{name:"wufeiiad",damage:26500},{name:"qwaf", damage:51155},
-                               {name:"asad", damage:5546},{name:"qweqafffa",damage:4421}];
+    private lab_soul:eui.Label;
 }
 
 class DamageList extends eui.ItemRenderer{

@@ -29,11 +29,13 @@ class EquipUpStarWindow extends PopupWindow{
         }
 
         this.lab_sole.text = "";
-        this.lab_lucky.textFlow = <Array<egret.ITextElement>>[{text:"当前幸运值: "}, {text:modEquip.EquipData.GetInstance().Lucky + "%", style:{"size":45}}];
+        this.showEquipSusscess(this.equip_info, 0)
     }
 
     public Show(equip_info:modEquip.EquipInfo):void{
         super.Show();
+
+        Animations.PopupBackOut(this, 500);
 
         this.equip_info = equip_info;
         this.initData();
@@ -49,8 +51,10 @@ class EquipUpStarWindow extends PopupWindow{
     }
 
     public Close():void{
-        super.Close();
-
+        Animations.PopupBackIn(this, 350,  ()=>{
+            super.Close();
+        });
+        
         this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
         this.btn_upStar.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpStar, this);
 
@@ -71,18 +75,23 @@ class EquipUpStarWindow extends PopupWindow{
             return;
         }
 
+        if(UserDataInfo.GetInstance().GetBasicData("soul") < 1000){
+            Animations.showTips("魂石不足，无法升星");
+            return;
+        }
+
+        UserDataInfo.GetInstance().SetBasicData("soul", UserDataInfo.GetInstance().GetBasicData("soul") - 1000);
+
         //移除所有的监听 防止去除后又重复监听
         for(let i:number = 0; i < this.equip_list.length; i++){
             this.equip_list[i].removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
         }
 
-        let rate:number = 0;
         let equipData:Array<modEquip.EquipInfo> = [];
         for(let i:number = 0; i < this.click_list.length; i++){
             if(this.click_list[i] != 0){                //得到填入的装备槽的装备
                 let info:modEquip.EquipInfo = modEquip.EquipData.GetInstance().GetEquipFromIndex(parseInt(this.source_list[i].name));
                 equipData.push(info);
-                rate += modEquip.GetSuccessGoodsLv(this.equip_info, info);
             }  
         }
        
@@ -91,12 +100,12 @@ class EquipUpStarWindow extends PopupWindow{
         }
 
         //判断是否升星成功
-        if(this.isUpStar(rate)){
+        if(this.isUpStar(this.successNum)){
             let rand = Math.floor(((Math.random() % 100) * 100))
             let type = rand % 5 == 0 ? 5 : rand % 5; 
             let attrType:modEquip.AttrType = new modEquip.AttrType(type, rand % 100);
             this.equip_info.InsertAttrType(attrType);
-            this.equip_info.Lv = 0;
+            this.equip_info.Lv = 1;
             this.equip_info.Star++;
             Animations.showTips("升星成功", 1);
             this.dispatchEventWith(modEquip.EquipSource.UPSTAR, false, 1);
@@ -116,14 +125,15 @@ class EquipUpStarWindow extends PopupWindow{
     }
 
     private onTouchSource(event:egret.TouchEvent):void{
-        let target = event.target;
-
+        let name = event.target.name;
         for(let i:number = 0; i < this.source_list.length; i++){
-            if(target.name == this.source_list[i].name){
+            if(name == this.source_list[i].name){
                 this.set_obj_attr(i, false, 0,"-1", "");
+                this.showEquipSusscess(modEquip.EquipData.GetInstance().GetEquipFromIndex(parseInt(name)), -1, true)
                 break;
             }
         }
+
         if(!this.isHaveEquip()) this.lab_sole.text = "";
     }
 
@@ -166,6 +176,7 @@ class EquipUpStarWindow extends PopupWindow{
             if(target.name == this.source_list[i].name){
                 isSame = true;
                 this.set_obj_attr(i, false, 0,"-1", "");
+                this.showEquipSusscess(modEquip.EquipData.GetInstance().GetEquipFromIndex(parseInt(target.name)), -1, true)
                 break;
             }
         }
@@ -186,8 +197,9 @@ class EquipUpStarWindow extends PopupWindow{
         this.icon_list[index].visible = true;
         Common.SetXY(this.icon_list[index], target.x, target.y);
         this.changeObjectStatus(this.source_list[index], target.name, target.source);
+        this.showEquipSusscess(modEquip.EquipData.GetInstance().GetEquipFromIndex(parseInt(target.name)), 1, true)
 
-        if(this.isHaveEquip()) this.lab_sole.text = "10000";
+        if(this.isHaveEquip()) this.lab_sole.text = "1000";
     }
 
     /** 获得当前没满的索引  */
@@ -233,6 +245,24 @@ class EquipUpStarWindow extends PopupWindow{
         return isSuccess;
     }
 
+    private showEquipSusscess(info:modEquip.EquipInfo, num:number, isClick:boolean = false):void{
+        if(num == 0) this.successNum = 0;
+        else this.successNum += modEquip.GetSuccessGoodsLv(this.equip_info, info) * num;
+
+        let actual = this.successNum;
+        if(actual > 100) actual = 100;
+        else if(actual < 0) actual = 0;
+        
+        if(isClick && actual == 0){
+            for(let i:number = 0; i < this.click_list.length; i++){
+                if(this.click_list[i] != 0){
+                    actual = 1;
+                }
+            }
+        }
+
+        this.lab_lucky.textFlow = <Array<egret.ITextElement>>[{text:"当前成功率: "}, {text:actual + "%", style:{"size":45}}];
+    }
 
     private img_source1:eui.Image;
     private img_source2:eui.Image;
@@ -248,6 +278,7 @@ class EquipUpStarWindow extends PopupWindow{
     private icon_list:Array<egret.Bitmap>;
     private click_list:Array<number>;
     private source_list:any;
+    private successNum:number;
     
     private equip_info:modEquip.EquipInfo;
 }

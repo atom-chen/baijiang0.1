@@ -150,6 +150,29 @@ namespace Animations {
         });
     }
 
+    /** 窗口类型弹窗 大图类型
+     * @param obj 对象数据
+     * @param time 缓动时间
+     * @param func 回调函数
+     */
+    export function PopupBackOut(obj:any, time:number, func?):void{
+        obj.scaleX = 0,obj.scaleY = 0;
+        obj.x = obj.width / 2;
+        obj.y = obj.height / 2;
+        egret.Tween.get(obj).to({scaleX:1,scaleY:1,x:0,y:0},time, egret.Ease.backOut).call(()=>{
+            egret.Tween.removeTweens(obj);
+            if(func) func();
+        },this);
+    }
+
+    /** 窗口类型缩小效果 */
+    export function PopupBackIn(obj:any, time:number, func?){
+        egret.Tween.get(obj).to({scaleX:0,scaleY:0,x:obj.width / 2,y:obj.height / 2},time, egret.Ease.backIn).call(()=>{
+            egret.Tween.removeTweens(obj);
+            if(func) func();
+        },this);
+    }
+
     /**
      * 抽卡动画
      * 星级分布:

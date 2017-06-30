@@ -53,7 +53,6 @@ class PVPScene extends Base {
     public createSingleStake():void {
         this._stake = ObjectPool.pop("Stakes");
         GameData.stakes.push(this._stake);
-        Common.log(GameData.stakes)
         this._stake.init();
         this._stake.x = MathUtils.getRandom(100, 1050);
         this._stake.y = MathUtils.getRandom(100, 550);
@@ -78,6 +77,21 @@ class PVPScene extends Base {
         this.img_skillMask.visible = true;
         TimerManager.getInstance().doTimer(1000, 0, this.timerCD, this);
     }
+
+    /**
+     * 清除子对象
+     */
+    public cleanChildren():void {
+        RankData.GetInstance().InsertData(this._curValue);
+        modPVP.recycleObject();
+        TimerManager.getInstance().remove(this.timerCD, this);
+        TimerManager.getInstance().remove(this._onTimeCD, this);
+        TimerManager.getInstance().removeComplete(this._onTimeComplete, this);
+        this._effectLayer.removeChildren();
+        // GameLayerManager.gameLayer().effectLayer.removeChildren();
+        GameLayerManager.gameLayer().sceneLayer.removeChild(this);
+    }
+
     private timerCD():void {
         if (this.cd_time == 0) return;
         this.cd_time --;
@@ -101,7 +115,11 @@ class PVPScene extends Base {
      * 暂停
      */
     private _onPause():void {
-
+        TimerManager.getInstance().stopTimer();
+        modPVP.stop();
+        let pop = WindowManager.GetInstance().GetWindow("BattlePausePop");
+        pop.Show();
+        Animations.fadeOut(pop);
     }
 
     private _timerFunc(event:egret.TimerEvent) {
@@ -179,6 +197,8 @@ class PVPScene extends Base {
 
     /**英雄和怪物层 */
     public battleLayer:egret.DisplayObjectContainer;
+    private _timer:egret.Timer;
+    private _skillTimer:egret.Timer;
 
     /**鼠标或者点击的位置 */
     private _mouseX:number;

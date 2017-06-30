@@ -17,6 +17,8 @@ class ResetEqiopAttrWindow extends PopupWindow{
     public Show(equipInfo:modEquip.EquipInfo, index:number):void{
         super.Show();
 
+        Animations.PopupBackOut(this, 500);
+
         this._index = index;
         this.equip_info = equipInfo;
         let attrType = this.equip_info.GetPointTypeFromIndex(index);
@@ -29,7 +31,9 @@ class ResetEqiopAttrWindow extends PopupWindow{
     }
 
     public Close():void{
-        super.Close();
+        Animations.PopupBackIn(this, 350,  ()=>{
+            super.Close();
+        });
 
         this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
         this.btn_reset.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchReset, this);
@@ -39,12 +43,22 @@ class ResetEqiopAttrWindow extends PopupWindow{
 
     private onTouchReset(event:egret.TouchEvent):void{
 
+        if(UserDataInfo.GetInstance().GetBasicData("diamond") < 50){
+            Animations.showTips("钻石不足，无法洗练");
+            return;
+        }
+
+        UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 50);
         let rand = Math.floor((Math.random() % 100 * 100));
         let type = rand % 5 == 0 ? 5:rand % 5;
         let value = rand % 100 == 0 ? 1 : rand % 100;
         if(modEquip.EquipData.GetInstance().Lucky == 100){
             modEquip.EquipData.GetInstance().Lucky = 0;
             value = 100;
+        }
+        else
+        {
+            modEquip.EquipData.GetInstance().Lucky += 2;
         } 
         this.equip_info.ChangeAttrType(this._index, type, value);
         this.changeAttrInfo(type, value);

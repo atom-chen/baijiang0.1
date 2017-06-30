@@ -23,6 +23,7 @@ class Stakes extends egret.DisplayObjectContainer {
         this.buffArmature.register(DragonBonesFactory.getInstance().makeArmature("buff", "buff", 10), [
             "Burning"
         ]);
+        this.buffArmature.visible = false;
         this.buffArmature.scaleX = 1.5;
         this.buffArmature.scaleY = 1.5;
     }
@@ -77,6 +78,15 @@ class Stakes extends egret.DisplayObjectContainer {
      */
     public setCurState(state:string):void {
         this.curState = state;
+    }
+
+    /**回收技能和buff */
+    public recycle():void {
+        for (let i = 0; i < this.buff.length; i++) {
+            if (this.buff[i].buffData.className) {
+                this.buff[i].recycleBuff();
+            }
+        }
     }
 
     /**

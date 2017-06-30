@@ -55,6 +55,11 @@ class BuffBase {
 
     }
 
+    /**回收buff类 */
+    public recycleBuff() {
+        ObjectPool.push(this);
+    }
+
     /*****************特效相关*******************/
     public effectName:string;
 }

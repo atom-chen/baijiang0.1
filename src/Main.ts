@@ -26,6 +26,9 @@
 //  EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //////////////////////////////////////////////////////////////////////////////////////
+declare var AV;
+var APP_ID = 'onCULkQ8rWJmAJtnjfxtxrkr-gzGzoHsz';
+var APP_KEY = 'FGupyEUQyuw4kKkvrU7ohM06';
 class Main extends eui.UILayer {
     /**
      * 加载进度界面
@@ -51,6 +54,10 @@ class Main extends eui.UILayer {
         Common.mainStage = this;
         Common.SCREEN_W = this.stage.stageWidth;
         Common.SCREEN_H = this.stage.stageHeight;
+		AV.init({
+		appId: APP_ID,
+		appKey: APP_KEY
+		});
     }
     /**
      * 配置文件加载完成,开始预加载皮肤主题资源和preload资源组。
@@ -152,16 +159,16 @@ class Main extends eui.UILayer {
         // this.test();
         // var nodeGame = document.getElementById("game");
         // Common.log(nodeGame);
-        // SceneManager.enterGameScene = new EnterGameScene();
-        // GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.enterGameScene);
-        // LeanCloud.GetInstance().Login("wujiangu", "112345", this._onLogin);
+        SceneManager.enterGameScene = new EnterGameScene();
+        GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.enterGameScene);
+        LeanCloud.GetInstance().Login("wujiangu", "112345", this._onLogin);
         // NetConnect.send(11001, {}, ()=>{})
         // SceneManager.battleScene = new BattleScene();
         // SceneManager.curScene = SceneManager.battleScene;
         // this.addChild(SceneManager.battleScene);
-        SceneManager.pvpScene = new PVPScene();
-        SceneManager.curScene = SceneManager.pvpScene;
-        this.addChild(SceneManager.pvpScene);
+        // SceneManager.pvpScene = new PVPScene();
+        // SceneManager.curScene = SceneManager.pvpScene;
+        // this.addChild(SceneManager.pvpScene);
     }
 
     /**

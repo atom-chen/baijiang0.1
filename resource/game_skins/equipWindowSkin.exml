@@ -56,9 +56,9 @@
 	<e:Image source="sole_0001_png" x="785.98" y="42.4"/>
 	<e:Image source="power_0001_png" x="418.64" y="42.4" visible="false"/>
 	<e:Image source="exp_0001_png" x="604.16" y="42.4"/>
-	<e:Label id="lab_soul0" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="1032.08" textColor="0x2D6EA6" bold="true"/>
-	<e:Label id="lab_soul1" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="858.86" bold="true" textColor="0x8B2EA5"/>
-	<e:Label id="lab_soul" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="676.56" bold="true" textColor="0xBC822B"/>
+	<e:Label id="lab_diamond" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="996.08" textColor="0x2D6EA6" bold="true" anchorOffsetX="0" width="114" textAlign="right"/>
+	<e:Label id="lab_soul" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="828.86" bold="true" textColor="0x8B2EA5" anchorOffsetX="0" width="108" textAlign="right"/>
+	<e:Label id="lab_exp" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="642.56" bold="true" textColor="0xBC822B" anchorOffsetX="0" width="112" textAlign="right"/>
 	<e:Label id="lab_soul2" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="490.01" bold="true" textColor="0xC1A77C" visible="false"/>
 
 </e:Skin>

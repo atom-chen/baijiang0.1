@@ -1,19 +1,19 @@
 /**
  * 天赋界面
  */
-class TalentDialog extends Base {
+class TalentDialog extends PopupWindow {
     public constructor() {
         super();
         this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this);
         this.skinName = "resource/game_skins/talentWindowSkin.exml";
         this.tcTalent = RES.getRes("TcTalent_json");
         TalentDialog.instance = this;
-    }
-
-    protected createChildren(): void{
         this.topBtnSkin = [];
         this.topBtn = [];
         this.pages = [];
+    }
+
+    protected createChildren(): void{
         this.popupGroup.anchorOffsetX = Common.SCREEN_W/2;
         this.popupGroup.anchorOffsetY = Common.SCREEN_H/2;
         this.popupGroup.x = Common.SCREEN_W/2;
@@ -29,7 +29,7 @@ class TalentDialog extends Base {
         for (let i = 0; i < talentPage.length; i++) {
             this.pages[i] = new TalentIR(i);
         }
-        this.show(talentPage.length);
+        this.Reset();
         this.pageGroup.addChild(this.pages[0]);
         Utils.toggleButtonStatus(this.topBtn, 0);
         this.curPage = 0;
@@ -274,7 +274,9 @@ class TalentDialog extends Base {
     /**
      * 界面显示
      */
-    public show(pages:number):void {
+    public Reset():void {
+        super.Reset();
+        let pages = modTalent.getTalentData().length;
         for (let i = 0; i < pages; i++) {
             if (!this.topBtnSkin[i]) {
                 this.createToggleBtn(i);

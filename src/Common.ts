@@ -174,4 +174,15 @@ namespace Common {
 
         return txt;
     }
+
+    export function TranslateDigit(val:number):string{
+        if(val > 100000000){
+            return Math.floor(val / 100000000) + "亿";
+        }
+        else if(val > 10000){
+            return  Math.floor(val / 10000) + "万";
+        }
+        else
+            return `${val}`;;
+    }
 }

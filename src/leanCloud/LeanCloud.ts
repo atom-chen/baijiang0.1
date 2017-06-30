@@ -1,4 +1,4 @@
-const AV = window["AV"];
+// const AV = window["AV"];
 class LeanCloud{
     public constructor(){
     }
@@ -34,30 +34,34 @@ class LeanCloud{
     public Login(username:string, password:string, callBack:Function=null):void{
          AV.User.logIn(username, password).then(function (loginedUser) {
             // 登录成功，跳转到商品 list 页面
-            Common.log(JSON.stringify(loginedUser))
+            // Common.log(JSON.stringify(loginedUser))
             LeanCloud.ObjectId = loginedUser.id;
             if (callBack) {
                 callBack();
             }
         }, function (error) {
-            Common.log(JSON.stringify(error));
+            if(error == 210){
+                console.log(" password input error ");
+            }
+            else
+                Common.log(JSON.stringify(error));
         });
     }
 
     /** 创建角色数据 */
     public static createRoleData(user:any):void{
-        console.log(" enter create role");
         let RoleData = AV.Object.extend("RoleData");
         let rd = new RoleData();
-        rd.set("lv", "1");
-        rd.set("gold", "1000");
-        rd.set("silver", "1000");
-        rd.set("sole", "1000");
+        rd.set("lv", 1);
+        rd.set("gold", 1000);
+        rd.set("soul", 1000);
         rd.save().then(function(todo){
             user.set("roleId", todo.id);
             user.set("goodsId", "");
+            user.set("roleName","jane");
             user.save();
         },function(error){
+            console.log(error);
             console.log(" create roledata error")
         })
     }
@@ -158,6 +162,10 @@ class LeanCloud{
             LeanCloud.RoleId = todo.get("roleId");
             LeanCloud.InitDataId = todo.get("initDataId");
             LeanCloud.NoviceId = todo.get("noviceId");
+            UserData.RoleName  = todo.get("roleName");
+            UserData.rankDamage = todo.get("damage");
+            RankData.GetInstance().InitDataList(JSON.parse(todo.get("rankData")));
+            LeanCloud.GetInstance().InitRoleData();
             if(LeanCloud.GoodsId.length != 0){
                 LeanCloud.InitEquipData()
             }
@@ -167,8 +175,43 @@ class LeanCloud{
         })
     }
 
-    public UpObjectData(objName:string):void{
+    public SaveRankData():any{
+     
+        let query = new AV.Query("_User");
+        query.get(LeanCloud.ObjectId).then(function(todo){
+            todo.set("rankData", JSON.stringify(RankData.GetInstance().GetDataList()));
+            todo.set("damage", UserData.rankDamage);
+            todo.set("name", UserData.RoleName);
+            todo.save();
+        },
+        function(error){
+            Common.log(error);
+        })
+        
+    }
 
+    public InitRoleData():void{
+        let query = new AV.Query("RoleData");
+        query.get(LeanCloud.RoleId).then(function(todo){
+            UserDataInfo.GetInstance().SetBasicData("exp", todo.get("exp"));
+            UserDataInfo.GetInstance().SetBasicData("diamond", todo.get("diamond"));
+            UserDataInfo.GetInstance().SetBasicData("soul", todo.get("soul"));
+            UserDataInfo.GetInstance().SetBasicData("power", todo.get("power"));
+        },
+        function(error){
+            Common.log(error);
+        })
+    }
+
+    public SaveRoleBasicData():void{
+        let query = new AV.Query("RoleData");
+        query.get(LeanCloud.RoleId).then(function(todo){
+            todo.set("exp", UserDataInfo.GetInstance().GetBasicData("exp"));
+            todo.set("soul", UserDataInfo.GetInstance().GetBasicData("soul"));
+            todo.set("diamond", UserDataInfo.GetInstance().GetBasicData("diamond"));
+            todo.get("power", UserDataInfo.GetInstance().GetBasicData("power"));
+            todo.save();
+        });
     }
 
     public static set ObjectId(val:string){

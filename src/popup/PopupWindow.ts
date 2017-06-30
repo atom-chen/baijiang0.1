@@ -10,7 +10,7 @@ class PopupWindow extends Base{
         GameLayerManager.gameLayer().panelLayer.addChild(this);
     }
 
-    public Reset():void{
+    public Reset(...arg):void{
 
     }
 

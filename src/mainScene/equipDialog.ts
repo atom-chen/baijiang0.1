@@ -1,39 +1,34 @@
 /**
  * 武器库
  */
-class EquipDialog extends Base {
+class EquipDialog extends PopupWindow {
     public constructor() {
         super();
-        this.weapon_list = [];
-        this.star_list   = [];
-        this.goods_index = 0;
         this.addEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
         this.skinName = "resource/game_skins/equipWindowSkin.exml";
     }
 
     private onComplete():void {
-        this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchClose, this);
-        this.btn_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchWeapon, this);
-        this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchChange, this);
-        this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
-        this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onCloseReset, this);
-        this.img_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
-        this.init();
+        this.removeEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
     }
 
     /** 初始化数据 */
-    private init():void{
+    public Init():void{
+
+        this.weapon_list = [];
+        this.star_list   = [];
+        this.reset_list = [];
+        this.reset_btn_list = [];
+        this.img_star_list = [];
+        this.txt_attr_list = [];
+        this.goods_index = 0;
 
         this.equipGroup = new eui.Group();
         this.scrollGroup.addChild(this.equipGroup);
 
         this.resetGroup = new eui.Group();
         this.scrollGroup.addChild(this.resetGroup);
-
-        this.reset_list = [];
-        this.reset_btn_list = [];
-        this.img_star_list = [];
-        this.txt_attr_list = [];
+       
         for(let i:number = 0; i < 6; i++){
             this.reset_list[i] = new eui.Group();
             this.resetGroup.addChild(this.reset_list[i]);
@@ -54,11 +49,6 @@ class EquipDialog extends Base {
         }
 
         this.imgClick = new egret.Bitmap( RES.getRes("equip_0009_png"));
-        this.btn_weapon.currentState = "down";
-        this.btn_close.visible = false;
-
-        this.Show();
-        
     }
 
     /** 点击升级按钮 */    
@@ -77,9 +67,10 @@ class EquipDialog extends Base {
         }
         else
         {
+            this.show_label_data();
             this.lab_lv.textFlow = <Array<egret.ITextElement>>[
                 {text:"等级: " + event.data + "/", style:{"textColor":0x727272}},
-                {text:"100", style:{"textColor":0xf28b01}}
+                {text:modEquip.EquipSource.EQUIPLV + "", style:{"textColor":0xf28b01}}
             ]
             if(event.data == modEquip.EquipSource.EQUIPLV){
                 if(this.btn_change.currentState == "down") this.showResetGroup();
@@ -112,15 +103,13 @@ class EquipDialog extends Base {
         WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
     }
 
-    private onTouchClose():void{
-        this.setGroupStatus(true, false, "兵器库", "down", "null");
-        GameLayerManager.gameLayer().panelLayer.removeChildren();
-        LeanCloud.GetInstance().SaveEquipData();
-    }
-
     /** 创建物品信息 */
     public Show():void{
 
+        super.Show();
+
+        this.setGroupStatus(true, false, "兵器库", "down", "null");
+        this.show_label_data();
         this.createEquips();
 
         let len = modEquip.EquipData.GetInstance().GetEquipNum();
@@ -137,6 +126,36 @@ class EquipDialog extends Base {
         } 
     }
 
+    public Reset():void{
+        this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
+        this.btn_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchWeapon, this);
+        this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchChange, this);
+        this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
+        this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onCloseReset, this);
+        this.img_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
+    }
+
+    public Close():void{
+        super.Close();
+
+        GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
+        LeanCloud.GetInstance().SaveEquipData();
+        LeanCloud.GetInstance().SaveRoleBasicData();
+
+        this.btn_back.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
+        this.btn_weapon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchWeapon, this);
+        this.btn_change.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchChange, this);
+        this.btn_upgrade.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
+        this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onCloseReset, this);
+        this.img_weapon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
+    }
+
+    private show_label_data():void{
+        this.lab_exp.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("exp"));
+        this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
+        this.lab_diamond.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
+    }
+
     /** 显示物品信息 */
     public ShowGoodsInfo(index:number){
         this.goods_index = index;
@@ -146,7 +165,7 @@ class EquipDialog extends Base {
         this.img_weapon.source = RES.getRes(`equip${25-this.equip_info.Id}_png`);
         this.lab_lv.textFlow = <Array<egret.ITextElement>>[
             {text:"等级: " + this.equip_info.Lv + "/", style:{"textColor":0x727272}},
-            {text:"100", style:{"textColor":0xf28b01}}
+            {text:"" + modEquip.EquipSource.EQUIPLV, style:{"textColor":0xf28b01}}
         ]
 
         Common.SetXY(this.imgClick, this.weapon_list[index].x, this.weapon_list[index].y);
@@ -246,13 +265,13 @@ class EquipDialog extends Base {
 
         if(event.data == 1){
             let starIndex = this.equip_info.Star - 1;
-            this.lab_lv.textFlow = <Array<egret.ITextElement>>[{text:"等级: 0/", style:{"textColor":0x727272}},{text:"100", style:{"textColor":0xf28b01}}]
+            this.lab_lv.textFlow = <Array<egret.ITextElement>>[{text:"等级: 1/", style:{"textColor":0x727272}},{text:"" + modEquip.EquipSource.EQUIPLV, style:{"textColor":0xf28b01}}]
             this.star_list[starIndex].texture = RES.getRes(modEquip.GetEquipLvFromValue(this.equip_info.GetPointTypeFromIndex(starIndex).Value).img);
             this.showResetGroup();
         }
 
         this.createEquips();
-        
+        this.show_label_data();
     }
 
     private onResetEquipAttr(event:egret.Event):void{
@@ -268,6 +287,7 @@ class EquipDialog extends Base {
         this.txt_attr_list[index].textColor = data.color;
         this.img_star_list[index].texture = RES.getRes(data.img);
         this.star_list[index].texture = RES.getRes(data.img)
+        this.show_label_data();
     }
 
      /** 点击物品 */
@@ -358,6 +378,9 @@ class EquipDialog extends Base {
     private lab_name:eui.Label;
     private lab_lv:eui.Label;
     private lab_title:eui.Label;
+    private lab_exp:eui.Label;
+    private lab_soul:eui.Label;
+    private lab_diamond:eui.Label;
 
     /** 列表数据 */
     private weapon_list:Array<eui.Image>;

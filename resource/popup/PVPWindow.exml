@@ -2,7 +2,7 @@
 <e:Skin height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" width="1136">
 	<e:Image source="pvp_0001_png" horizontalCenter="0" verticalCenter="0"/>
 	<e:Image source="crystal_0001_png" x="959.65" y="45.14"/>
-	<e:Label id="lab_soul0" text="99999" y="55.66" size="25" fontFamily="Microsoft YaHei" x="1032.08" textColor="0x2D6EA6" bold="true"/>
+	<e:Label id="lab_soul" text="99999" y="55.66" size="25" fontFamily="Microsoft YaHei" x="993.08" textColor="0x2D6EA6" bold="true" anchorOffsetX="0" width="117" textAlign="right"/>
 	<e:Image id="btn_close" source="button_0005_png" x="24.25" y="16"/>
 	<e:Button id="btn_start" label="挑战" x="764" y="561">
 		<e:skinName>
