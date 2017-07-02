@@ -21,6 +21,7 @@
         "isRemote":true,
         "mov":250,
         "away":0,
-        "cd":2
+        "cd":2,
+        "skill":{"name":"Summon", "cd":10}
     }
 }

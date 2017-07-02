@@ -1,14 +1,14 @@
 [
     {
-        "count":10,
-        "wave":3,
+        "count":2,
+        "wave":2,
         "monster":[
             ["monster01", 1],
             ["monster02", 1],
             ["monster03", 1]
         ],
         "boss":[
-            ["monster01", 5]
+            ["boss", 5]
         ]
     },
     {

@@ -23,7 +23,7 @@ class PVPScene extends Base {
     public init():void {
         TimerManager.getInstance().startTimer();
         this._curValue = 0;
-        this._cdTime = 90;
+        this._cdTime = 20;
         this.lab_cdSkill.visible = false;
         this.lab_cdTime.text = `${this._cdTime}`;
         this.lab_value.text = `${this._curValue}`;
@@ -164,7 +164,11 @@ class PVPScene extends Base {
     }
 
     private _onTimeComplete():void {
-        // this.stopTimer();
+        TimerManager.getInstance().stopTimer();
+        modPVP.stop();
+        let pop = WindowManager.GetInstance().GetWindow("BattleWinPop");
+        pop.Show();
+        Animations.fadeOut(pop);
     }
 
     /**

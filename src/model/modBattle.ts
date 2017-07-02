@@ -119,9 +119,13 @@ namespace modBattle {
     function getSurviveCount():void{
         //地图上的敌人数量
         let count:number = GameData.monsters.length;
+        let bossCount:number = GameData.boss.length;
         surviveCount = 0;
         for (let i = 0; i < count; i++) {
             if (GameData.monsters[i].hp > 0) surviveCount ++;
+        }
+        for (let i = 0; i < bossCount; i++) {
+            if (GameData.boss[i].hp > 0) surviveCount ++;
         }
         timer.reset();
         productRule();
@@ -177,6 +181,8 @@ namespace modBattle {
      */
     function updateNextWave():void {
         if (isBoss) {
+            Common.log("存活", surviveCount)
+            if (surviveCount > 0) return;
             GameData.curStage ++;
             if (GameData.curStage > ConfigManager.tcStage.length) GameData.curStage = 1;
             getEnermyDistribute(GameData.curStage);

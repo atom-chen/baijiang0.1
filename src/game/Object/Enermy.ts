@@ -73,7 +73,7 @@ class Enermy extends BaseGameObject {
 
     /**攻击状态 */
     public state_attack(time:number):void {
-        
+
     }
 
     /**
@@ -195,6 +195,7 @@ class Enermy extends BaseGameObject {
      */
     public onComplete():void {
         this.atk_timer.reset();
+        Common.log("攻击结束")
         this.isComplete = true;
     }
     /**
