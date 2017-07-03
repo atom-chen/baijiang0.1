@@ -40,6 +40,7 @@ class Enermy extends BaseGameObject {
         this.isSummon = false;
         this.isBoss = false;
         this.isSkillHurt = false;
+        this.isReadSkill = false;
         this.lastAnimation = "";
         this.atk_distance = ConfigManager.enermyConfig[data[0]].mov;
         this.away_distance = ConfigManager.enermyConfig[data[0]].away;
@@ -294,6 +295,8 @@ class Enermy extends BaseGameObject {
     public isSummon:boolean;
     /**是否为boss */
     public isBoss:boolean;
+    /**是否技能准备 */
+    public isReadSkill:boolean;
 
     /*************敌方的状态***************/
     public static Action_Run01:string = "run01";

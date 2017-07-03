@@ -248,7 +248,8 @@ class Hero extends BaseGameObject {
                 let range:number = (this.isPVP) ? 50:33;
                 if (dis < range) {
                     if (!this.isPVP) {
-                        if (this.enermy[i].curState != Enermy.Action_Dead && this.enermy[i].curState != BaseGameObject.Action_Hurt) {
+                        let state = this.enermy[i].curState;
+                        if (state != Enermy.Action_Dead && state != BaseGameObject.Action_Hurt && !this.enermy[i].isReadSkill) {
                             this.isHit = true;
                             this.combo ++;
                         }

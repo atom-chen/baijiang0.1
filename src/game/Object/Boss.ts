@@ -70,37 +70,7 @@ class Boss extends Enermy {
     public update(time:number):void {
         super.update(time);
         if (this._remote) {
-            this.skillArmature.x = this.skillArmature.x + this._deltaX;
-            this.skillArmature.y = this.skillArmature.y + this._deltaY;
-            //人物到技能的坐标
-            let dx = 82 * Math.cos(this.radian+Math.PI/2);
-            let dy = 82 * Math.sin(this.radian+Math.PI/2);
-            //初始点的对角点
-            this.skillPoint = this.skillArmature.localToGlobal();
-            let beginX = this.skillPoint.x;
-            let beginY = this.skillPoint.y;
-            let x1;
-            let y1;
-            if (this.scaleX == -1) {
-                x1 = beginX + this.skillArmature.width * Math.cos(this.radian) + dx;
-                y1 = beginY + this.skillArmature.width * Math.sin(this.radian) + dy;
-            }else{
-                x1 = beginX + this.skillArmature.width * Math.cos(this.radian) - dx;
-                y1 = beginY + this.skillArmature.width * Math.sin(this.radian) - dy;
-            }
-            let centerX = (beginX + x1)/2;
-            let centerY = (beginY + y1)/2;
-            let dis = MathUtils.getDistance(centerX, centerY, GameData.heros[0].x, GameData.heros[0].y);
-            let tempRadian = MathUtils.getRadian2(centerX, centerY, GameData.heros[0].x, GameData.heros[0].y);
-            let angle = Math.abs(tempRadian - this.radian);
-            let deltax = dis*Math.cos(angle);
-            let deltay = dis*Math.sin(angle);
-            if ((Math.abs(deltax) <= 45) && (Math.abs(deltay) <= 43)) {
-                if (!this.skill_atkStatus) {
-                    this.skill_atkStatus = true;
-                    GameData.heros[0].gotoHurt();
-                }
-            }
+            this._skill[1].update(this._deltaX, this._deltaY);
         }
     }
 
@@ -155,14 +125,22 @@ class Boss extends Enermy {
      * 受伤
      */
     public gotoHurt(isSkillHurt:boolean = false) {
-        if (!this.skill_atkStatus) {
+        if (!this.isReadSkill) {
             if (this.curState == Boss.Action_Skill02 || this.curState == "skill01") {
-                ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
-                this.skill_atkStatus = true;
+                this.isReadSkill = true;
                 this.hp --;
+                ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
+                if (this.hp <= 0){
+                    this.curState = BaseGameObject.Action_Hurt;
+                    this.armature.play(this.curState, 0);
+                    this.effectArmature.visible = true;
+                    this.effectArmature.play(Enermy.Action_HurtDie, 1);
+                    this.effectArmature.x = 0;
+                    this.effectArmature.y = 0;
+                }
             }else{
                 super.gotoHurt();
-            }   
+            }
         }
         // this.filters = [this.defaultFlilter];
         this.skillArmature.visible = false;
@@ -287,8 +265,7 @@ class Boss extends Enermy {
 
     public skillArmaturePlayEnd():void {
         if (this.curState == "skill01") {
-            // this.skillArmature.visible = false;
-            // this.skill_status = 0;
+            this.isReadSkill = false;
             this.gotoRun();
         }
     }
@@ -316,7 +293,7 @@ class Boss extends Enermy {
             break;
             case Boss.Action_Skill02:
                 this.gotoRun();
-                this.skill_atkStatus = false;
+                this.isReadSkill = false;
             break;
         }
     }
@@ -354,10 +331,8 @@ class Boss extends Enermy {
     private static Action_Idle01:string = "idle01";
 
     private atk_direction:string;
-    /**技能状态 0:没有释放 1:开始释放 */
-    private skill_status:number;
     /**技能攻击状态 0:没有攻击到 1:已经攻击到 */
-    private skill_atkStatus:boolean;
+    public skill_atkStatus:boolean;
     /************************************/
 
     private offset:any[];
