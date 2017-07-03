@@ -5,6 +5,7 @@
 class Boss extends Enermy {
     public constructor() {
         super();
+        this._skill = new Array();
     }
 
     public initDragonBonesArmature(name:string):void {
@@ -33,9 +34,13 @@ class Boss extends Enermy {
         ]);
 
         //boss技能
+        this._skill = [];
         let bossConfig = ConfigManager.enermyConfig[name];
-        this._skill = ObjectPool.pop(bossConfig.skill.name);
-        this._skill.init(this);
+        for (let i = 0; i < bossConfig.skill.length; i++) {
+            let skillConfig = bossConfig.skill[i];
+            this._skill[i] = ObjectPool.pop(skillConfig.name);
+            this._skill[i].init(this);
+        }
 
         this.armature.scaleX = 1.5;
         this.armature.scaleY = 1.5;
@@ -47,11 +52,13 @@ class Boss extends Enermy {
         super.init(data);
         this.initDragonBonesArmature(data[0]);
         this.skillPoint = new egret.Point();
+        this.isBoss = true;
         this.offset = [[50, -25], [25, -25], [0, 0], [-50, 0], [-50, -25]]
         this.speed = 10;
         this.atk_range = 200;
-        this.atk_speed = 50;
-        this.skill_status = 0;
+        this.atk_speed = 75;
+        this._remote = false;
+        this.skill_atkStatus = false;
         this.hp = data[1];
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
@@ -60,20 +67,11 @@ class Boss extends Enermy {
         this.gotoEnter();
     }
 
-    /**
-     * 待机状态
-     */
-    public state_idle(time:number):void {
-
-    }
-
-    /**
-     * 释放技能
-     */
-    public state_skill01(time:number):void {
-        if (this.skill_status == 1) {
-            this.skillArmature.x = this.skillArmature.x + this.deltaX;
-            this.skillArmature.y = this.skillArmature.y + this.deltaY;
+    public update(time:number):void {
+        super.update(time);
+        if (this._remote) {
+            this.skillArmature.x = this.skillArmature.x + this._deltaX;
+            this.skillArmature.y = this.skillArmature.y + this._deltaY;
             //人物到技能的坐标
             let dx = 82 * Math.cos(this.radian+Math.PI/2);
             let dy = 82 * Math.sin(this.radian+Math.PI/2);
@@ -104,6 +102,20 @@ class Boss extends Enermy {
                 }
             }
         }
+    }
+
+    /**
+     * 待机状态
+     */
+    public state_idle(time:number):void {
+
+    }
+
+    /**
+     * 释放技能
+     */
+    public state_skill01(time:number):void {
+
     }
 
     /**
@@ -143,7 +155,15 @@ class Boss extends Enermy {
      * 受伤
      */
     public gotoHurt(isSkillHurt:boolean = false) {
-        super.gotoHurt();
+        if (!this.skill_atkStatus) {
+            if (this.curState == Boss.Action_Skill02 || this.curState == "skill01") {
+                ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
+                this.skill_atkStatus = true;
+                this.hp --;
+            }else{
+                super.gotoHurt();
+            }   
+        }
         // this.filters = [this.defaultFlilter];
         this.skillArmature.visible = false;
     }
@@ -198,20 +218,18 @@ class Boss extends Enermy {
         let animation = this.getAttackPosition(this.radian);
         this.offsetIndex = animation["id"];
 
-        this.deltaX = Math.cos(this.radian) * useSpeed;
-        this.deltaY = Math.sin(this.radian) * useSpeed;
+        this._deltaX = Math.cos(this.radian) * useSpeed;
+        this._deltaY = Math.sin(this.radian) * useSpeed;
 
         this.skillArmature.scaleX = 1;
         this.skillArmature.scaleY = 1;
         this.skillArmature.rotation = MathUtils.getAngle(this.radian) + 360;
+        SceneManager.battleScene.effectLayer.addChild(this.skillArmature);
+        this.skillArmature.x = this.x;
+        this.skillArmature.y = this.y + 50;
         if (this.reverse(this, this.radian)) {
-            this.skillArmature.scaleX = -1;
-            this.skillArmature.scaleY = -1;
-            this.skillArmature.rotation = 360 - MathUtils.getAngle(this.radian);
-            this.deltaX = -this.deltaX;
+            this.skillArmature.y = this.y;
         }
-        this.skillArmature.x = this.offset[this.offsetIndex][0];
-        this.skillArmature.y = this.offset[this.offsetIndex][1];
         let dx = Math.cos(this.radian) * this.atk_range;
         let dy = Math.sin(this.radian) * this.atk_range;
         this.atk_rangeX = Math.abs(dx);
@@ -230,6 +248,11 @@ class Boss extends Enermy {
     /**死亡 */
     public gotoDead() {
         super.gotoDead();
+        if (this._skill) {
+            for (let i = 0; i < this._skill.length; i++) {
+                this._skill[i].end();
+            }
+        }
     }
     /**消失 */
     public disappear():void {
@@ -247,7 +270,7 @@ class Boss extends Enermy {
             this.skill_atkStatus = false;
             this.skillRadian();
             this.skillArmature.play(this.curState, 1);
-            this.skill_status = 1;
+            this._remote = true;
         }
         else if (evt == "attack") {
             //怪物到英雄的距离
@@ -257,15 +280,15 @@ class Boss extends Enermy {
             this.skill_atkStatus = false;
         }
         else if (evt == "call") {
-            this._skill.update();
+            this._skill[0].update();
         }
     }
 
 
     public skillArmaturePlayEnd():void {
         if (this.curState == "skill01") {
-            this.skillArmature.visible = false;
-            this.skill_status = 0;
+            // this.skillArmature.visible = false;
+            // this.skill_status = 0;
             this.gotoRun();
         }
     }
@@ -280,12 +303,20 @@ class Boss extends Enermy {
         super.armaturePlayEnd();
         switch (this.curState) {
             case BaseGameObject.Action_Enter:
-                this.gotoRun();
+                if (this._skill[0].name == "Summon") {
+                    egret.setTimeout(()=>{this._skill[0].call();}, this, 50);
+                }else{
+                    this.gotoRun();
+                }
             break;
             case "attack":
                 this.gotoRun();
                 this.isComplete = false;
                 this.atk_timer.start();
+            break;
+            case Boss.Action_Skill02:
+                this.gotoRun();
+                this.skill_atkStatus = false;
             break;
         }
     }
@@ -306,8 +337,12 @@ class Boss extends Enermy {
 
 
     /**技能 */
-    private _skill:any;
+    private _skill:Array<any>;
     public isSkillHurt:boolean;
+    /**远程技能位移 */
+    private _remote:boolean;
+    private _deltaX:number;
+    private _deltaY:number;
     /**技能的坐标 */
     private skillPoint:egret.Point;
 

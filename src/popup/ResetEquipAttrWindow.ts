@@ -17,12 +17,12 @@ class ResetEqiopAttrWindow extends PopupWindow{
     public Show(equipInfo:modEquip.EquipInfo, index:number):void{
         super.Show();
 
-        Animations.PopupBackOut(this, 500);
-
         this._index = index;
         this.equip_info = equipInfo;
         let attrType = this.equip_info.GetPointTypeFromIndex(index);
         this.changeAttrInfo(attrType.Type, attrType.Value);
+
+        Animations.PopupBackOut(this, 350);
     }
 
     public Reset():void{

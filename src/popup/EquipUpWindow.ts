@@ -22,23 +22,21 @@ class EquipUpWindow extends PopupWindow{
             this.addChild(this.group_list[i]);
             Common.SetXY(this.group_list[i], this.curr_lv.x + 10, this.curr_lv.y + this.curr_lv.height + 18 + i * (35));
 
-            this.txt_front_title[i] = this.createLabel(txt_list[i]);
+            this.txt_front_title[i] = Common.CreateText(txt_list[i],24, 0x858685,true,"Microsoft YaHei");
             this.group_list[i].addChild(this.txt_front_title[i]);
 
-            this.txt_front_list[i] = this.createLabel("400");
+            this.txt_front_list[i] = Common.CreateText("400",24, 0x858685,true,"Microsoft YaHei", "right");
             this.group_list[i].addChild(this.txt_front_list[i]);
             this.txt_front_list[i].width = 170;
-            this.txt_front_list[i].textAlign = "right";
             Common.SetXY(this.txt_front_list[i], this.txt_front_title[i].x + this.txt_front_title[i].width, 0);
 
-            this.txt_rear_title[i] = this.createLabel(txt_list[i]);
+            this.txt_rear_title[i] = Common.CreateText(txt_list[i],24, 0x858685,true,"Microsoft YaHei");
             this.group_list[i].addChild(this.txt_rear_title[i]);
             Common.SetXY(this.txt_rear_title[i], this.txt_front_list[i].x + this.txt_front_list[i].width + 55, 0);
 
-            this.txt_rear_list[i] = this.createLabel("400");
+            this.txt_rear_list[i] = Common.CreateText("400",24, 0x858685,true,"Microsoft YaHei","right");
             this.group_list[i].addChild(this.txt_rear_list[i]);
             this.txt_rear_list[i].width = 170;
-            this.txt_rear_list[i].textAlign = "right";
             Common.SetXY(this.txt_rear_list[i], this.txt_rear_title[i].x + this.txt_rear_title[i].width, 0);
         }
 
@@ -57,22 +55,22 @@ class EquipUpWindow extends PopupWindow{
     public Show(equip_info:modEquip.EquipInfo):void{
         super.Show();
 
-        Animations.PopupBackOut(this, 500);
-
         this.hide_attr_info(0, true);
         this.equip_info = equip_info;
 
-        let equip_data = modEquip.TcEquipData.GetInstance().GetEquipInfoFromId(this.equip_info.Id);
+        let equip_data = TcManager.GetInstance().GetTcEquipData(this.equip_info.Id);
         this.img_weapon.source = RES.getRes(`Sequip${25-this.equip_info.Id}_png`)
         this.txt_weapon.text   = equip_data.name;
 
         let attr:any = this.equip_info.GetEquipAttr();
-        this.quality_attr_list = modEquip.TcLevel.GetInstance().GetDataFromQuality(this.equip_info.Quality - 1);
+        this.quality_attr_list = TcManager.GetInstance().GetDataFromQuality(this.equip_info.Quality - 1);
         
         this.set_label_text();
         this.hide_attr_info(this.equip_info.Quality + 1, false);
         this.showUpgradeInfo(attr);
         this.showStar();
+
+        Animations.PopupBackOut(this, 350);
     }
 
     public Reset():void{
@@ -97,17 +95,20 @@ class EquipUpWindow extends PopupWindow{
             return;
         }
         
-        let attr:any = this.equip_info.GetEquipAttr();
-        this.equip_info.Lv = this.equip_info.Lv + 1;
-        for(let i:number = 0; i < attr.length; i++) attr[i] += this.quality_attr_list[i];
-        this.equip_info.SetEquipAttr(attr);
-        this.showUpgradeInfo(attr);
-        Animations.showTips("升级成功", 1);
-        let upData:any = modEquip.TcEquipUp.GetInstance().GetDataFromLv(this.equip_info.Lv);
+        let upData:any = TcManager.GetInstance().GetTcEquipUpData(this.equip_info.Lv);
         if(UserDataInfo.GetInstance().GetBasicData("exp") >= upData.exp && UserDataInfo.GetInstance().GetBasicData("soul") >= upData.soul){
+
             UserDataInfo.GetInstance().SetBasicData("exp", UserDataInfo.GetInstance().GetBasicData("exp") - upData.exp);
             UserDataInfo.GetInstance().SetBasicData("soul", UserDataInfo.GetInstance().GetBasicData("soul") - upData.soul);
-            this.set_label_text(upData);
+
+            let attr:any = this.equip_info.GetEquipAttr();
+            this.equip_info.Lv = this.equip_info.Lv + 1;
+            for(let i:number = 0; i < attr.length; i++) attr[i] += this.quality_attr_list[i];
+            this.equip_info.SetEquipAttr(attr);
+            this.showUpgradeInfo(attr);
+            Animations.showTips("升级成功", 1);
+           
+            this.set_label_text();
             Common.log(JSON.stringify(this.equip_info));
             //更新武将的武器
             let data = HeroData.list[GameData.curHero];
@@ -135,16 +136,6 @@ class EquipUpWindow extends PopupWindow{
         }
     }
 
-    private createLabel(name:string):eui.Label{
-        let txt:eui.Label = new eui.Label;
-        txt.fontFamily = "Microsoft YaHei";
-        txt.size = 24;
-        txt.bold = true;
-        txt.textColor = 0x858685;
-        txt.text = name;
-        return txt;
-    }
-
     private showStar():void{
         this.starGroup.removeChildren();
         let value:number;
@@ -162,7 +153,7 @@ class EquipUpWindow extends PopupWindow{
         Common.SetXY(this.starGroup, this.img_weapon.x + (this.img_weapon.width - this.starGroup.width) / 2 - 20, this.img_weapon.y - 45);
     }
 
-    private set_label_text(upData:any = modEquip.TcEquipUp.GetInstance().GetDataFromLv(this.equip_info.Lv)):void{
+    private set_label_text(upData:any = TcManager.GetInstance().GetTcEquipUpData(this.equip_info.Lv)):void{
         this.txt_exp.text = upData.exp;
         this.txt_sole.text = upData.soul;
         this.curr_lv.text = "Lv." + this.equip_info.Lv;
@@ -178,10 +169,10 @@ class EquipUpWindow extends PopupWindow{
     private txt_sole:eui.Label;
     private curr_lv:eui.Label;
     private next_lv:eui.Label;
-    private txt_front_list:Array<eui.Label>;
-    private txt_rear_list:Array<eui.Label>;
-    private txt_front_title:Array<eui.Label>;
-    private txt_rear_title:Array<eui.Label>;
+    private txt_front_list:Array<egret.TextField>;
+    private txt_rear_list:Array<egret.TextField>;
+    private txt_front_title:Array<egret.TextField>;
+    private txt_rear_title:Array<egret.TextField>;
     private group_list:Array<eui.Group>;
     private imgStar_list:Array<egret.Bitmap>;
     private starGroup:eui.Group;

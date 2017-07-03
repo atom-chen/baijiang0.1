@@ -2,7 +2,7 @@
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing" xmlns:ns1="*">
 	<e:Image source="tianfu_0001_png" x="0" y="0" width="1136" height="640"/>
 	<e:Image x="950" y="40" width="160" height="44" source="crystal_0001_png"/>
-	<e:Label id="lab_soul" text="99999" y="50" size="25" fontFamily="Microsoft YaHei" bold="true" x="1020" textColor="0x2D6EA6"/>
+	<e:Label id="lab_soul" text="99999" y="50" size="25" fontFamily="Microsoft YaHei" bold="true" x="978" textColor="0x2D6EA6" anchorOffsetX="0" width="120" textAlign="right"/>
 	<e:Image source="tianfu_0002_png" x="127.66" y="8.5"/>
 	<e:Label text="天赋页" x="23" y="106.5" fontFamily="Microsoft YaHei" bold="true" size="35" textColor="0x0c0c0c"/>
 	<e:Button id="btn_add" label="" x="210" y="100" width="48" height="48">
@@ -23,7 +23,7 @@
 	</e:Button>
 	<e:Image source="power_0001_png" x="780" y="40"/>
 
-	<e:Label id="lab_power" text="99999" y="50" fontFamily="Microsoft YaHei" textColor="0xffd375" size="25" bold="true" x="850" textAlign="left"/>
+	<e:Label id="lab_power" text="99999" y="50" fontFamily="Microsoft YaHei" textColor="0xffd375" size="25" bold="true" x="815" textAlign="right" anchorOffsetX="0" width="113"/>
 	<e:Button id="btn_back" label="" x="14" y="14" width="104" height="68">
 		<e:skinName>
 		<e:Skin states="up,down,disabled">

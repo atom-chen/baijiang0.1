@@ -18,7 +18,7 @@ class EquipInfoDialog extends PopupWindow {
 
     public Show(info:modEquip.EquipInfo):void{
         super.Show();
-        this.lab_name.text = modEquip.TcEquipData.GetInstance().GetEquipInfoFromId(info.Id).name;
+        this.lab_name.text = TcManager.GetInstance().GetTcEquipData(info.Id).name;
         this.lab_lv.text   = info.Lv + "/100";
         this.lab_attr1.text = "+ " + info.GetEquipAttr()[1] + "攻击";
         this.lab_attr2.text = "+ " + info.GetEquipAttr()[0] + "生命";

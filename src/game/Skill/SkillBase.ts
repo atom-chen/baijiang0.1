@@ -46,4 +46,6 @@ class SkillBase {
     public HideEffect() {
 
     }
+
+    public name:string;
 }

@@ -98,11 +98,21 @@ class TalentDialog extends PopupWindow {
      */
     private _unLockTalent(type:string) {
         if (modTalent.isUnlock(this.curPage, this.curTalentId)) {
-            this.update();
             if (type == "power") {
-
-            }else{
-
+                if(UserDataInfo.GetInstance().GetBasicData("power") >= 1000){
+                    this.update();
+                    UserDataInfo.GetInstance().SetBasicData("power", UserDataInfo.GetInstance().GetBasicData("power") - 1000);
+                    this.show_lab_text();
+                }
+                else Animations.showTips("能力不足，不能升级天赋");
+            }else if(type == "diamond")
+            {
+                if(UserDataInfo.GetInstance().GetBasicData("diamond") >= 50){
+                    this.update();
+                    UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 50);
+                    this.show_lab_text();
+                }
+                else Animations.showTips("钻石不足，不能升级天赋");
             }
         }else{
             let strs = modTalent.getTips(this.curTalentId);
@@ -123,6 +133,7 @@ class TalentDialog extends PopupWindow {
             break;
             default:
                 Animations.popupIn(this.skillPopupGroup, 300, ()=>{
+                    GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
                     GameLayerManager.gameLayer().maskLayer.removeChildren();
                 });
             break;
@@ -284,7 +295,12 @@ class TalentDialog extends PopupWindow {
             this.addChild(this.topBtnSkin[i]);
         }
         this.btn_add.x = 155 + 55 * pages;
-        this.lab_power.text = `${Common.userData.power}`;
+        this.show_lab_text();
+    }
+
+    private show_lab_text():void{
+        this.lab_power.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("power"));
+        this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
     }
 
     public static instance:TalentDialog;
@@ -320,6 +336,9 @@ class TalentDialog extends PopupWindow {
     private btn_add:eui.Button;
     /**能量点 */
     private lab_power:eui.Label;
+
+    private lab_soul:eui.Label;
+
     /**天赋面板 */
     private pageGroup:eui.Group;
     /**弹出 */

@@ -8,7 +8,8 @@ class Summon extends SkillBase {
 
     public init(target:any = null) {
         super.init();
-        TimerManager.getInstance().doTimer(10000, 0, this._onCall, this);
+        this.name = "Summon";
+        TimerManager.getInstance().doTimer(13000, 0, this._onCall, this);
         this.target = target;
     }
 
@@ -17,7 +18,7 @@ class Summon extends SkillBase {
         this.target = target;
     }
 
-    public update(target:any) {
+    public update(target:any=null) {
         //每次生产的数量
         let count:number = MathUtils.getRandom(1, 2);
         for (let i = 0; i < count; i++){
@@ -25,7 +26,7 @@ class Summon extends SkillBase {
             let index:number = MathUtils.getRandom(2);
             //生产的敌人数据
             let data:Array<any> = this._summon[index];
-            SceneManager.battleScene.createSingleMonster(data);
+            SceneManager.battleScene.createSingleMonster(data, true);
         }
     }
 
@@ -38,9 +39,17 @@ class Summon extends SkillBase {
     /**
      * 召唤
      */
-    private _onCall():void {
+    public call():void {
+        if (this.target.curState == "skill01" || this.target.curState == "attack") return;
         Common.log("召唤小兵");
+        this.target.curState = "skill02";
         this.target.armature.play("skill02", 1);
+    }
+
+
+    private _onCall():void {
+        Common.log("开始召唤")
+        this.call();
     }
 
     private target:any;

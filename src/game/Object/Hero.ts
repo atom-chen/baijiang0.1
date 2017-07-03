@@ -69,7 +69,7 @@ class Hero extends BaseGameObject {
         this.isPlay = false;
         this.isAttack = false;
         this.isPVP = isPVP;
-        this.monsterRadian =[];
+        this.skill_status = false;
         this.enermy = [];
         this.buff = [];
         this.lastAnimation = "";
@@ -343,12 +343,14 @@ class Hero extends BaseGameObject {
     public gotoHurt() {
         if (this.curState == BaseGameObject.Action_Hurt) return;
         if (this.isImmuneBuff()) return;
-        this.curState = BaseGameObject.Action_Hurt;
-        this.img_swordLight.visible = false;
-        this.armature.play(this.curState, 0);
-        this.effectArmature.play(BaseGameObject.Action_Hurt, 1);
-        this.effectArmature.visible = true;
-        this.effectArmature.x = -15;
+        if (!this.skill_status) {
+            this.curState = BaseGameObject.Action_Hurt;
+            this.img_swordLight.visible = false;
+            this.armature.play(this.curState, 0);
+            this.effectArmature.play(BaseGameObject.Action_Hurt, 1);
+            this.effectArmature.visible = true;
+            this.effectArmature.x = -15;
+        }
         GameData.hp --;
         SceneManager.battleScene.bloodTween();
         if (GameData.hp <= 0) {
@@ -433,6 +435,7 @@ class Hero extends BaseGameObject {
         if (this.curState != BaseGameObject.Action_Idle) return;
         this.skillArmature.visible = true;
         this.curState = Hero.Action_Skill;
+        this.skill_status = true;
         this.skill.start(Hero.Effect_Skill01, this);
         if (this.isPVP){
             SceneManager.pvpScene.onCDTime();
@@ -499,6 +502,7 @@ class Hero extends BaseGameObject {
     }
 
     private skillArmaturePlayEnd():void {
+        this.skill_status = false;
         this.skillArmature.visible = false;
         this.armature.visible = true;
         this.gotoIdle();
@@ -532,8 +536,9 @@ class Hero extends BaseGameObject {
 
     private isPlay:boolean;
     private isAttack:boolean;
+    /**技能状态 0:没有释放 1:开始释放 */
+    private skill_status:boolean;
     public  isPVP:boolean;
-    private monsterRadian:Array<number>;
     private enermy:Array<any>;
 
     public name:string;

@@ -37,9 +37,10 @@ class Monster extends Enermy {
         this.skillArmature.scaleY = 1.5;
     }
 
-    public init(data:Array<any>) {
+    public init(data:Array<any>, isSummon:boolean = false) {
         super.init(data);
         this.initDragonBonesArmature(data[0]);
+        this.isSummon = isSummon;
         this.speed = 10;
         this.readyCount = 0;
         this.hp = data[1];

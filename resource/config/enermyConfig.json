@@ -22,6 +22,9 @@
         "mov":250,
         "away":0,
         "cd":2,
-        "skill":{"name":"Summon", "cd":10}
+        "skill":[
+            {"name":"Summon", "cd":10},
+            {"name":"SolaCut", "cd":5}
+        ]
     }
 }

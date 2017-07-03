@@ -204,7 +204,7 @@ namespace modEquip {
             let info:EquipInfo = new EquipInfo();
             info.Id = equipInfo.id;
             info.Star = equipInfo.star;
-            info.Quality = TcEquipData.GetInstance().GetEquipInfoFromId(equipInfo.id).grade;
+            info.Quality = TcManager.GetInstance().GetTcEquipData(equipInfo.id).grade;
             for(let i:number = 0; i < equipInfo.affix.length; i++){
                 let attrType = new AttrType(equipInfo.affix[i].type, equipInfo.affix[i].value);
                 info.InsertAttrType(attrType);
@@ -266,98 +266,6 @@ namespace modEquip {
         private id_list:Array<number>;
     }
 
-    export class TcEquipData{
-        public constructor(){
-            this.tcEquip = RES.getRes("TcEquip_json");
-        }
-
-        public static instance:TcEquipData;
-        public static GetInstance():TcEquipData{
-            if(this.instance == null){
-                this.instance = new TcEquipData();
-            }
-
-            return this.instance;
-        }
-
-        public GetEquipInfoFromId(id:number):any{
-            for(let i:number = 0; i < this.tcEquip.length; i++){
-                if(id == this.tcEquip[i].id) return this.tcEquip[i];
-            }
-
-            return null;
-        }
-
-        private tcEquip:any;
-    }
-
-    /** 获得升星槽 锁需要的表格 */
-    export class TcUpStar{
-        
-        public constructor(){
-            this.tcStar = RES.getRes("TcUpStar_json");
-        }
-
-        public static instance:TcUpStar;
-        public static GetInstance():TcUpStar{
-            if(this.instance == null){
-                this.instance = new TcUpStar();
-            }
-            return this.instance;
-        }
-
-        public GetConsumeFromGrade(grade:number):void{
-            return this.tcStar[grade - 1];
-        }
-
-        private tcStar:any;
-    }
-
-    export class TcEquipUp{
-        public constructor(){
-            this.data_list = RES.getRes("TcEquipUp_json");
-        }
-
-        public static Instance:TcEquipUp;
-        public static GetInstance():TcEquipUp{
-            if(this.Instance == null){
-                this.Instance = new TcEquipUp();
-            }
-            return this.Instance;
-        }
-
-        public GetDataFromLv(lv:number):any{
-            for(let i:number = 0; i < this.data_list.length; i++){
-                if(lv == this.data_list[i].lv){
-                    return this.data_list[i];
-                }
-            }
-        }
-
-        private data_list:any;
-    }
-
-    export class TcLevel{
-
-        public constructor(){
-            this._data = [[30, 30,0,0,0],[50, 50,20,0,0],[80, 80, 50, 1,0],
-                          [150, 150, 80, 3, 3],[200, 200, 150, 5, 5]];
-        }
-
-        public static Instance:TcLevel;
-        public static GetInstance():TcLevel{
-            if(this.Instance == null) this.Instance = new TcLevel();
-            return this.Instance;
-        }
-
-        public GetDataFromQuality(quality:number):any{
-            if(quality < 0 || quality > 4) return;
-            return this._data[quality];
-        }
-
-        private _data:any;
-    }
-
     /** 根据对应的类型和值 来获得对应的字符信息 */
     export function GetAttrInfo(type:number, value:number):string{
         if(type == AttrType.ATTACK) return "攻击+" + value + "%";
@@ -395,9 +303,9 @@ namespace modEquip {
     /** 计算升级成功的概率 */
     export function GetSuccessGoodsLv(upInfo:EquipInfo, consumeInfo:EquipInfo):number{
         let successRate:number;
-        let consumeData:any = TcUpStar.GetInstance().GetConsumeFromGrade(consumeInfo.Quality);
-        let upData:any = TcUpStar.GetInstance().GetConsumeFromGrade(upInfo.Quality);
-        successRate = Math.floor((consumeData.skill / upData.star[upInfo.Star]) * 100 )
+        let consumeData:any = TcManager.GetInstance().GetTcEquipStarUpData(consumeInfo.Quality, consumeInfo.Star);
+        let upData:any = TcManager.GetInstance().GetTcEquipStarUpData(upInfo.Quality, upInfo.Star);
+        successRate = Math.floor((consumeData.bassValue / upData.needValue) * 100 );
 
         return successRate;
     }

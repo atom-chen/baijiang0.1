@@ -30,19 +30,14 @@ class EquipDialog extends PopupWindow {
         this.scrollGroup.addChild(this.resetGroup);
        
         for(let i:number = 0; i < 6; i++){
-            this.reset_list[i] = new eui.Group();
+            this.reset_list[i] = new eui.Group();                   
             this.resetGroup.addChild(this.reset_list[i]);
             Common.SetXY(this.reset_list[i], 0, 105 * i)
 
-            this.reset_btn_list[i] = new eui.Image();
+            this.reset_btn_list[i] = new eui.Image();               
             this.img_star_list[i] = new egret.Bitmap();
-            this.txt_attr_list[i] = new egret.TextField();
-            this.txt_attr_list[i].bold = true;
-            this.txt_attr_list[i].size = 25;
-            this.txt_attr_list[i].fontFamily = "Microsoft YaHei";
-        }
+            this.txt_attr_list[i] = Common.CreateText("", 25, 0xffffff, true, "Microsoft YaHei");
 
-        for(let i:number = 0; i < 6; i++){
             this.star_list[i] = new egret.Bitmap(RES.getRes("star_00_png"));
             this.addChild(this.star_list[i]);
             Common.SetXY(this.star_list[i], i * 32 + 20, this.btn_back.y + this.btn_back.height + 30)
@@ -78,31 +73,6 @@ class EquipDialog extends PopupWindow {
         }
     }
 
-    /** 关闭洗练 */
-    private onCloseReset(event:egret.TouchEvent):void{
-        this.setGroupStatus(true, false, "兵器库", "down", "null");
-    }
-
-    /** 点击兵器库 */
-    private onTouchWeapon(event:egret.TouchEvent):void{
-        if(this.btn_weapon.currentState == "down") return;
-        this.setGroupStatus(true, false, "兵器库", "down", "null");
-    }
-
-    /** 点击关闭洗练 */
-    private onTouchChange(event:egret.TouchEvent):void{
-        if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
-
-        if(this.btn_change.currentState == "down") return;
-        this.setGroupStatus(false, true, "洗练", "null", "down");
-        this.showResetGroup();
-    }
-
-    private onEquip(event:egret.TouchEvent):void {
-        if(this.equip_info == null) return;
-        WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
-    }
-
     /** 创建物品信息 */
     public Show():void{
 
@@ -128,10 +98,10 @@ class EquipDialog extends PopupWindow {
 
     public Reset():void{
         this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
-        this.btn_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchWeapon, this);
-        this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchChange, this);
+        this.btn_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
+        this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
         this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
-        this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onCloseReset, this);
+        this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
         this.img_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
     }
 
@@ -143,11 +113,32 @@ class EquipDialog extends PopupWindow {
         LeanCloud.GetInstance().SaveRoleBasicData();
 
         this.btn_back.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
-        this.btn_weapon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchWeapon, this);
-        this.btn_change.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchChange, this);
+        this.btn_weapon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
+        this.btn_change.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
         this.btn_upgrade.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
-        this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onCloseReset, this);
+        this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
         this.img_weapon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
+    }
+
+    private onEquip(event:egret.TouchEvent):void {
+        if(this.equip_info == null) return;
+        WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
+    }
+
+    private onTouchBtn(event:egret.TouchEvent):void{
+        let target = event.target;
+        if(target.currentState == "down") return;
+
+        switch(target){
+            case this.btn_change:
+                if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
+                this.setGroupStatus(false, true, "洗练", "null", "down");
+                this.showResetGroup();
+            break;
+            default:
+                this.setGroupStatus(true, false, "兵器库", "down", "null");
+            break;
+        }
     }
 
     private show_label_data():void{
@@ -160,7 +151,7 @@ class EquipDialog extends PopupWindow {
     public ShowGoodsInfo(index:number){
         this.goods_index = index;
         this.equip_info = modEquip.EquipData.GetInstance().GetEquipFromIndex(index);
-        let equip_data = modEquip.TcEquipData.GetInstance().GetEquipInfoFromId(this.equip_info.Id);
+        let equip_data = TcManager.GetInstance().GetTcEquipData(this.equip_info.Id);
         this.lab_name.text = equip_data.name;
         this.img_weapon.source = RES.getRes(`equip${25-this.equip_info.Id}_png`);
         this.lab_lv.textFlow = <Array<egret.ITextElement>>[
@@ -237,6 +228,7 @@ class EquipDialog extends PopupWindow {
         let target = event.target;
         let index:number = parseInt(target.name);
         
+        /** 如果当前的星级大于点击的索引 则显示洗练的窗口 否则显示升星的按钮 */
         if(this.equip_info.Star > index){
 
             let pop:PopupWindow = WindowManager.GetInstance().GetWindow("ResetEqiopAttrWindow");
@@ -257,6 +249,7 @@ class EquipDialog extends PopupWindow {
         }
     }
 
+    /** 监听点击升星按钮后的事件 */
     private onUpStar(event:egret.Event):void{
         if(event.data == -1){
             event.target.removeEventListener(modEquip.EquipSource.UPSTAR, this.onUpStar, this);
@@ -274,6 +267,7 @@ class EquipDialog extends PopupWindow {
         this.show_label_data();
     }
 
+    /** 监听洗练的事件 */
     private onResetEquipAttr(event:egret.Event):void{
         if(event.data == -1){
             event.target.removeEventListener(modEquip.EquipSource.RESETATTR, this.onResetEquipAttr, this);

@@ -191,10 +191,10 @@ class BattleScene extends Base {
         })
     }
 
-    public createSingleMonster(data:Array<any>):void {
+    public createSingleMonster(data:Array<any>, isSummon:boolean = false):void {
         this.monster = ObjectPool.pop("Monster");
         GameData.monsters.push(this.monster);
-        this.monster.init(data);
+        this.monster.init(data, isSummon);
         this.monster.x = MathUtils.getRandom(100, 1050);
         this.monster.y = MathUtils.getRandom(100, 550);
         // this.monster.anchorOffsetY = -33;
@@ -210,7 +210,7 @@ class BattleScene extends Base {
         GameData.boss.push(this.boss);
         this.boss.init(["Boss01", 5]);
         this.boss.x = MathUtils.getRandom(100, 1050);
-        this.boss.y = MathUtils.getRandom(100, 550);
+        this.boss.y = MathUtils.getRandom(100, 550); 
         // this.boss.anchorOffsetY = -33;
         this.boss.anchorOffsetY = -50;
         this.battleLayer.addChild(this.boss);

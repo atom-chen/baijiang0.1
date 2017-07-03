@@ -114,7 +114,7 @@ namespace Common {
 	//派发事件
 	export function dispatchEvent(type:string, obj:Object = null, bubbles:boolean = false, cancelable:boolean = false):void
 	{ 	
-		var event = new lcp.LEvent(type,obj,bubbles,cancelable);
+		var event = new lcp.LEvent(type, obj, bubbles, cancelable);
 		lcp.LListener.getInstance().dispatchEvent(event);
 	}
 

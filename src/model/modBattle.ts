@@ -127,22 +127,26 @@ namespace modBattle {
         for (let i = 0; i < bossCount; i++) {
             if (GameData.boss[i].hp > 0) surviveCount ++;
         }
-        timer.reset();
-        productRule();
         // SceneManager.battleScene.battleSceneCom.update();
     }
 
     /**
      * 敌方死亡函数监听
      */
-    function onEnermyDead():void {
+    function onEnermyDead(event:lcp.LEvent):void {
+        let obj:any = event.param;
+        getSurviveCount();
+        if (obj.isSummon && surviveCount > 0) return;
+        if (obj.isBoss && surviveCount > 0) return;
         sumDead ++;
         if (sumDead <= tcStage.count){
             SceneManager.battleScene.battleSceneCom.update(sumDead, tcStage.count);
         }else{
+            if (obj.isSummon && surviveCount == 0) sumDead = 0;
             SceneManager.battleScene.battleSceneCom.update(sumDead, tcStage.count, true);
         }
-        getSurviveCount();
+        timer.reset();
+        productRule();
     }
 
     /**
@@ -161,6 +165,8 @@ namespace modBattle {
             productCount ++;
         }
         getSurviveCount();
+        timer.reset();
+        productRule();
     }
 
     /**

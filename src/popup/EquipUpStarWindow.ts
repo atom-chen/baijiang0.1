@@ -34,12 +34,12 @@ class EquipUpStarWindow extends PopupWindow{
 
     public Show(equip_info:modEquip.EquipInfo):void{
         super.Show();
-
-        Animations.PopupBackOut(this, 500);
-
+        
         this.equip_info = equip_info;
         this.initData();
         this.showGoodsView();
+
+        Animations.PopupBackOut(this, 350);
     }
 
     public Reset():void{

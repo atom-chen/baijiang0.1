@@ -37,6 +37,8 @@ class Enermy extends BaseGameObject {
         super.init(data);
         this.buff = [];
         this.isEnemy = true;
+        this.isSummon = false;
+        this.isBoss = false;
         this.isSkillHurt = false;
         this.lastAnimation = "";
         this.atk_distance = ConfigManager.enermyConfig[data[0]].mov;
@@ -99,9 +101,9 @@ class Enermy extends BaseGameObject {
                 if (dis <= this.atk_distance) {
                     this.gotoReady();
                 }
-                else if ((dis > 100) && (dis <= 200) && this.isRemote) {
-                    this.gotoSkill();
-                }
+                // else if ((dis > 100) && (dis <= 200) && this.isRemote) {
+                //     this.gotoSkill();
+                // }
             }
         });
     }
@@ -182,7 +184,7 @@ class Enermy extends BaseGameObject {
     public gotoDead() {
         this.curState = Enermy.Action_Dead;
         this.armature.play(Enermy.Action_Dead, 1);
-        Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER);
+        Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER, this);
         //隐藏buff动画
         this.buffArmature.visible = false;
         TimerManager.getInstance().doTimer(5000, 0, this.disappear, this);
@@ -288,6 +290,10 @@ class Enermy extends BaseGameObject {
     public atk_timer:egret.Timer;
     /**攻击cd结束标志 */
     public isComplete:boolean;
+    /**是否为召唤兵 */
+    public isSummon:boolean;
+    /**是否为boss */
+    public isBoss:boolean;
 
     /*************敌方的状态***************/
     public static Action_Run01:string = "run01";

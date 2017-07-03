@@ -4,7 +4,7 @@
 	<e:Image source="equip_0004_png" horizontalCenter="0" verticalCenter="0"/>
 	<e:Label text="升级需要消耗" x="342.32" y="425" anchorOffsetX="0" width="185" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24"/>
 	<e:Image id="img_weapon" source="Sequip1_png" x="242" y="282"/>
-	<e:Label id="txt_weapon" text="武器名称" x="223.5" y="180.48" size="28" textAlign="center" anchorOffsetX="0" width="131" bold="true" fontFamily="Microsoft YaHei" textColor="0xb39e70"/>
+	<e:Label id="txt_weapon" text="武器名称" x="132.5" y="180.48" size="28" anchorOffsetX="0" width="312" bold="true" fontFamily="Microsoft YaHei" textColor="0xb39e70" textAlign="center"/>
 	<e:Image id="btn_close" source="button_0009_png" x="980" y="79.99"/>
 	<e:Label id="curr_lv" text="Lv.1" x="472" y="179.66" anchorOffsetX="0" width="236" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24" textAlign="center"/>
 	<e:Label id="next_lv" text="Lv.2" x="747.16" y="179.66" anchorOffsetX="0" width="230" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24" textAlign="center"/>
