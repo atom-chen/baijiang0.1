@@ -87,10 +87,10 @@ class ContinuousInjury extends BuffBase {
             break;
             case PostionType.PostionType_Body:
                 target.buffArmature.x = 0;
-                target.buffArmature.y = 0;
+                target.buffArmature.y = -50;
                 if (target.isPVP){
                      target.buffArmature.x = target.width/2 - 25;
-                     target.buffArmature.y = target.height/2;
+                     target.buffArmature.y = target.height/2 - 50;
                 }
             break;
         }

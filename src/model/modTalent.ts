@@ -23,7 +23,7 @@ namespace modTalent {
         "4":[[7], [14], [21]]
     }
     /**解锁的最小点数需求 */
-    var unlockCondition = [10, 30, 60];
+    var unlockCondition = [10, 28, 48];
     /**每种天赋的总点数 */
     var sumEachCount:Array<number> = [0, 0, 0];
     /**玩家解锁的天赋 */
@@ -64,7 +64,7 @@ namespace modTalent {
                 sumEachCount[2] += ids[1];
             }
         }
-        Common.log(JSON.stringify(sumEachCount));
+        // Common.log(JSON.stringify(sumEachCount));
     }
 
     /**
@@ -161,7 +161,7 @@ namespace modTalent {
                 }
             }
         }
-        Common.log(JSON.stringify(talent));
+        // Common.log(JSON.stringify(talent));
     }
 
     /**
@@ -178,6 +178,7 @@ namespace modTalent {
             }
         }
         if (!isExist) talentPage[curPage].talent.push([talentId, 1]);
+        curTalent.count ++;
         LeanCloud.GetInstance().SaveRoleData("talentPage", talentPage);
         setUnlock(curPage);
     }
@@ -215,6 +216,20 @@ namespace modTalent {
     }
 
     /**
+     * 根据id获取索引值
+     */
+    export function getIndexFromId(talentId:number):number {
+        let index:number = 0;
+        for (let obj = 0; obj < 21; obj++) {
+            if (ConfigManager.tcTalent[obj].id == talentId) {
+                index = obj;
+                break;
+            }
+        }
+        return index;
+    }
+
+    /**
      * 获取每行天赋的等级总和
      */
     function getEachLineSum(curPage:number, line:number, row:number) {
@@ -224,7 +239,7 @@ namespace modTalent {
             let talent = getData(curPage, ids[i]);
             sumLv += talent[1];
         }
-        Common.log(sumLv);
+        // Common.log(sumLv);
     }
 
     /**

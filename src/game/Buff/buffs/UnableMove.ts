@@ -50,29 +50,43 @@ class UnableMove extends BuffBase {
     public AddEffect(target:any) {
         this.target = target;
         this.ShowEffect();
-        // target.buffArmature.play(this.effectName, 0);
+        if (this.buffData.id != 1) target.buffArmature.play(this.effectName, 0);
         switch (this.buffData.postionType) {
             case PostionType.PostionType_Foot:
                 // target.buffArmature.x = 0;
                 // target.buffArmature.y = 0;
             break;
             case PostionType.PostionType_Head:
-                // target.buffArmature.x = 0;
-                // target.buffArmature.y = -90;
+                target.buffArmature.x = -10;
+                target.buffArmature.y = -90;
             break
         }
     }
 
     /**显示特效 */
     public ShowEffect() {
-        this.target.armature.filters = [this.target.colorFlilter];
-        // this.target.buffArmature.visible = true;
+        switch(this.buffData.id) {
+            case 1:
+                //禁锢
+                this.target.armature.filters = [this.target.colorFlilter];
+            break;
+            case 2:
+                this.target.buffArmature.visible = true;
+            break;
+        }
     }
 
     /**隐藏特效 */
     public HideEffect() {
-        this.target.armature.filters = [this.target.defaultFlilter];
-        // this.target.buffArmature.visible = false;
+        switch(this.buffData.id) {
+            case 1:
+                //禁锢
+                this.target.armature.filters = [this.target.defaultFlilter];
+            break;
+            case 2:
+                this.target.buffArmature.visible = false;
+            break;
+        }
     }
 
     private target:any;

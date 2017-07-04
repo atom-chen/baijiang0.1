@@ -1,7 +1,7 @@
 class TcManager{
     public constructor(){
         //(0)装备表 (1)升星配置表 (2)升级配置表
-        let str_list:Array<string> = ["TcEquip_json","TcEquipStarUp_json","TcEquipUp_json"];
+        let str_list:Array<string> = ["TcEquip_json","TcEquipStarUp_json","TcEquipUp_json", "TcTalentUp_json"];
         this.tc_list = [];
         for(let i:number = 0; i < str_list.length; i++){
             this.tc_list[i] = RES.getRes(str_list[i]);
@@ -35,9 +35,10 @@ class TcManager{
         return null;
     }
 
-    public GetTcEquipUpData(lv:number):any{
-        let list = this.tc_list[2];
-        for(let i:number = 0; i < list.length; i++){
+    /** 根据等级来获得对应的数据 (2)装备升级配置 (3)天赋升级配置 */
+    public GetDataFromLv(index:number, lv:number):any{
+         let list = this.tc_list[index];
+          for(let i:number = 0; i < list.length; i++){
             if(lv == list[i].lv){
                 return list[i];
             }
@@ -49,6 +50,7 @@ class TcManager{
         if(quality < 0 || quality > 4) return;
         return this.damage_list[quality];
     }
+
 
     private tc_list:any;
     private damage_list:any = [[30, 30,0,0,0],[50, 50,20,0,0],[80, 80, 50, 1,0],

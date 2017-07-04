@@ -98,6 +98,8 @@ class BattleScene extends Base {
         this.comboCount.x = 100;
         this.comboCount.y = 30;
         this.comboCount.text = "0";
+        this.comboCount.letterSpacing = 1;
+        this.comboCount.textAlign = "left";
         this.comboGroup.addChild(this.comboCount);
         this.comboGroup.visible = false;
         this.comboStatus = false;

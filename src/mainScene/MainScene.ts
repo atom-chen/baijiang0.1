@@ -32,6 +32,8 @@ class MainScene extends Base {
     }
 
     private onChangeData():void{
+        LeanCloud.GetInstance().SaveRoleBasicData();
+
         this.lab_exp.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("exp"));
         this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
         this.lab_diamond.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));

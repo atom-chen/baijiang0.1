@@ -28,6 +28,7 @@ class BattleWinPop extends PopupWindow {
                 if (this.popType == 1) {
 
                 }else{
+                    this.parent.removeChildren();
                     Animations.sceneTransition(()=>{
                         SceneManager.curScene.cleanChildren();
                         DragonBonesFactory.getInstance().removeTimer();

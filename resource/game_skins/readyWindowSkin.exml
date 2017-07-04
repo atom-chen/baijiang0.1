@@ -4,9 +4,9 @@
 	<e:Image source="crystal_0001_png" x="959.65" y="45.14"/>
 	<e:Image source="sole_0001_png" x="785.98" y="45.14"/>
 	<e:Image source="exp_0001_png" x="604.16" y="45.14"/>
-	<e:Label id="lab_soul0" text="99999" y="55.66" size="25" fontFamily="Microsoft YaHei" x="1032.08" textColor="0x2D6EA6" bold="true"/>
-	<e:Label id="lab_soul1" text="99999" y="55.66" size="25" fontFamily="Microsoft YaHei" x="858.86" bold="true" textColor="0x8B2EA5"/>
-	<e:Label id="lab_soul" text="99999" y="55.66" size="25" fontFamily="Microsoft YaHei" x="676.56" bold="true" textColor="0xBC822B"/>
+	<e:Label id="lab_diamond" text="99999" y="55.66" size="25" fontFamily="Microsoft YaHei" x="987.08" textColor="0x2D6EA6" bold="true" anchorOffsetX="0" width="123" textAlign="right"/>
+	<e:Label id="lab_soul" text="99999" y="55.66" size="25" fontFamily="Microsoft YaHei" x="816.86" bold="true" textColor="0x8B2EA5" anchorOffsetX="0" width="120" textAlign="right"/>
+	<e:Label id="lab_exp" text="99999" y="55.66" size="25" fontFamily="Microsoft YaHei" x="635.56" bold="true" textColor="0xBC822B" anchorOffsetX="0" width="119" textAlign="right"/>
 	<e:Image source="hero_0005_png" x="-0.4" y="93.6"/>
 	<e:Button id="btn_back" label="" x="14" y="14" width="104" height="68">
 		<e:skinName>
@@ -46,16 +46,17 @@
 
 	<e:ViewStack id="viewStack" width="613" height="401" x="522" y="147.33" anchorOffsetX="0" anchorOffsetY="0" selectedIndex="2">
 		<e:Group id="biographyGroup" anchorOffsetX="0" width="612" anchorOffsetY="0" height="399" y="0.67" x="-1" visible="false">
+			<e:Image source="readDialog_png" x="15" y="21"/>
 			<e:Label text="升级需要消耗" x="70.23" y="361.67" anchorOffsetX="0" width="185" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24"/>
 			<e:Image source="exp_0002_png" x="219.91" y="352.67"/>
-			<e:Label id="txt_exp" text="100" y="362" anchorOffsetX="0" size="25" textAlign="right" textColor="0xF28B09" rotation="0.1" bold="true" fontFamily="Microsoft YaHei" right="252"/>
-			<e:Label id="txt_sole" text="100" y="362" anchorOffsetX="0" size="25" textAlign="right" rotation="0.1" bold="true" textColor="0xC91EBB" fontFamily="Microsoft YaHei" right="94"/>
+			<e:Label id="txt_exp" text="100" y="361.9" anchorOffsetX="0" size="25" textAlign="right" textColor="0xF28B09" rotation="0.1" bold="true" fontFamily="Microsoft YaHei" right="252" width="104"/>
+			<e:Label id="txt_sole" text="100" y="361.9" anchorOffsetX="0" size="25" textAlign="right" rotation="0.1" bold="true" textColor="0xC91EBB" fontFamily="Microsoft YaHei" right="94" width="105.99"/>
 			<e:Image source="sole_0002_png" x="372.91" y="352.67"/>
-			<e:Image source="bg_readyAttr_png" x="329.63" y="60.68"/>
-			<e:Label id="curr_lv0" text="Lv.1" y="26" anchorOffsetX="0" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24" textAlign="center" horizontalCenter="-149.5"/>
-			<e:Label id="curr_lv" text="Lv.2" y="26" anchorOffsetX="0" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" size="24" textAlign="center" horizontalCenter="156.5"/>
-			<e:Image source="bg_readyAttr_png" x="26.18" y="60"/>
-			<e:Image source="shop_0011_png" x="291.67" y="194"/>
+
+			<e:Label id="lab_lv" text="当前等级: Lv.1" y="30" anchorOffsetX="0" bold="true" fontFamily="Microsoft YaHei" textColor="0x515151" textAlign="center" horizontalCenter="-0.5" width="533" size="25" verticalAlign="middle"/>
+
+
+
 			<e:Button id="btn_up" label="升级" x="16" y="408" name="btn_change" scaleX="1" scaleY="1">
 				<e:skinName>
 					<e:Skin states="up,down,disabled">
@@ -107,7 +108,7 @@
 				</e:skinName>
 
 			</e:Button>
-			<e:Button id="btn_change0" label="洗练" x="168" y="408" name="btn_change">
+			<e:Button id="btn_change0" label="洗练" x="178.64" y="408" name="btn_change">
 				<e:skinName>
 					<e:Skin states="up,down,disabled">
 					<e:Image width="100%" height="100%" source="button_0013_png"/>
@@ -117,7 +118,7 @@
 			</e:Button>
 		</e:Group>
 	</e:ViewStack>
-	<e:Button id="btn_battle" label="开始战斗" x="867.5" y="557" height="76" width="260">
+	<e:Button id="btn_battle" label="开始战斗" x="862.18" y="555.67" height="76" width="260">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0012_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>

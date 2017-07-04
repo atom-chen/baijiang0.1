@@ -12,7 +12,6 @@ class ReadyDialog extends PopupWindow {
     }
 
     protected createChildren(): void{
-        this.Reset();
         this.starGroup = new eui.Group();
         this.detailGroup.addChild(this.starGroup);
         this.starGroup.x = 26;
@@ -23,10 +22,16 @@ class ReadyDialog extends PopupWindow {
         this._armatureGroup.y = 460;
         this._heroArmature = new Array();
         this._curAttr = new Array();
-        this._lastAttr = new Array();
+        this._tempAttr = new Array();
         this._selectBox = Utils.createBitmap("img_selectHero_png");
         this._createAttr();
         this._createHeroIcon();
+    }
+
+    public Init():void{
+        this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
+        this.lab_diamond.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
+        this.lab_exp.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("exp"));
     }
 
     /**
@@ -34,60 +39,65 @@ class ReadyDialog extends PopupWindow {
      */
     private _createAttr():void {
         let attr = ["生命", "攻击", "护甲", "闪避", "暴击", "攻速"];
-        let heroAttr = HeroData.getHeroData(GameData.curHero).attr;
+        let hero:any = HeroData.getHeroData(GameData.curHero);
+
         for (let i = 0; i < attr.length; i++) {
-            let leftText = this._createLabel(attr[i]);
-            leftText.left = 35;
-            leftText.y = 70 + 40 * i;
+            let leftText  = Common.CreateText(attr[i], 24, 0x858685, true, "Microsoft YaHei");
+            this.biographyGroup.addChild(leftText);
+            Common.SetXY(leftText, 45, 85 + 40 * i);
 
-            let rightText = this._createLabel(attr[i]);
-            rightText.left = 340;
-            rightText.y = leftText.y;
-
-            let curAttr = this._createLabel();
-            curAttr.textFlow = <Array<egret.ITextElement>>[
-                {text:heroAttr[i], style:{"textColor":0x858685}},
-                {text:"+0", style:{"textColor":Common.TextColors.green}}
-            ];
-            curAttr.right = 345;
-            curAttr.y = leftText.y;
+            let curAttr = Common.CreateText(hero.attr[i], 24, 0x858685, true, "Microsoft YaHei","center"); 
+            this.biographyGroup.addChild(curAttr);
             this._curAttr.push(curAttr);
+            Common.SetXY(curAttr, leftText.x + leftText.width + 100, leftText.y);
+            curAttr.width = 200;
 
-            let lastAttr = this._createLabel(`${heroAttr[i]+1}`);
-            lastAttr.right = 40;
-            lastAttr.y = rightText.y;
-            this._lastAttr.push(lastAttr);
+            this._tempAttr[i] = Common.CreateText("+1", 24, Common.TextColors.green, true, "Microsoft YaHei","right");
+            this.biographyGroup.addChild(this._tempAttr[i]);
+            Common.SetXY(this._tempAttr[i], this.biographyGroup.width - 200, curAttr.y);
+            this._tempAttr[i].width = 160;
         }
+
+        this.set_label_text(hero);
     }
 
     /**
      * 更新属性值
      */
     public updateAttr(isUpgrade:boolean=false):void {
-        let heroAttr = HeroData.getHeroData(GameData.curHero).attr;
+        let hero = HeroData.getHeroData(GameData.curHero);
+        if(isUpgrade){
+            if(UserDataInfo.GetInstance().GetBasicData("exp") >= hero["lv"] * 100 && UserDataInfo.GetInstance().GetBasicData("soul") >= hero["lv"] * 100){
+                if(hero["lv"] >= 100){
+                     Animations.showTips("当前角色等级已满");
+                     return;
+                } 
+
+                hero["lv"]++;
+                UserDataInfo.GetInstance().SetBasicData("exp", UserDataInfo.GetInstance().GetBasicData("exp") - hero["lv"] * 100);
+                UserDataInfo.GetInstance().SetBasicData("soul", UserDataInfo.GetInstance().GetBasicData("soul") - hero["lv"] * 100);
+                this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
+                this.lab_exp.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("exp"));
+                Animations.showTips("升级成功", 1);
+            }
+            else 
+            {
+                if(UserDataInfo.GetInstance().GetBasicData("exp") < hero["lv"] * 100) Animations.showTips("经验不足，无法升级");
+                else if(UserDataInfo.GetInstance().GetBasicData("soul") < hero["lv"] * 100) Animations.showTips("魂力不足，无法升级");
+                return;
+            }
+        }
+
         for (let i = 0; i < 6; i++) {
             if (isUpgrade) {
-                heroAttr[i] ++;
+                hero.attr[i] ++;
             }
-            let attr = heroAttr[i];
-            this._curAttr[i].textFlow = [
-                {text:attr, style:{"textColor":0x858685}},
-                {text:"+0", style:{"textColor":Common.TextColors.green}}
-            ];
-            this._lastAttr[i].text = `${attr+1}`;
+            let attr = hero.attr[i];
+            this._curAttr[i].text = attr
         }
-        if (isUpgrade) HeroData.update();
-    }
 
-    private _createLabel(str:string = null):eui.Label {
-        let text:eui.Label = new eui.Label();
-        text.bold = true;
-        text.fontFamily = "Microsoft YaHei";
-        text.size = 24;
-        text.text = str;
-        text.textColor = 0x858685;
-        this.biographyGroup.addChild(text);
-        return text;
+        this.set_label_text(hero);
+        if (isUpgrade) HeroData.update();
     }
 
     private uiCompleteHandler():void {
@@ -176,6 +186,7 @@ class ReadyDialog extends PopupWindow {
             break;
             default:
                 this._stopTimer();
+                GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
                 GameLayerManager.gameLayer().panelLayer.removeChild(this);
             break;
         }
@@ -356,10 +367,16 @@ class ReadyDialog extends PopupWindow {
         this.showHero(id);
     }
 
+    private set_label_text(hero:any):void{
+        this.lab_lv.text = "当前等级: Lv." + hero["lv"];
+        this.txt_exp.text = hero["lv"] * 100 + "";
+        this.txt_sole.text = hero["lv"] * 100 + "";
+    }
+
     // public static instance:ReadyDialog;
     private _isPVP:boolean;
-    private _curAttr:Array<eui.Label>;
-    private _lastAttr:Array<eui.Label>;
+    private _curAttr:Array<egret.TextField>;
+    private _tempAttr:Array<egret.TextField>;
     /**属性组 */
     private biographyGroup:eui.Group;
     /**武器信息组 */
@@ -425,4 +442,11 @@ class ReadyDialog extends PopupWindow {
     private lab_equipLv:eui.Label;
     private img_equip:eui.Image;
 	/*************************************************/
+
+    private lab_soul:eui.Label;
+    private lab_diamond:eui.Label;
+    private lab_exp:eui.Label;
+    private lab_lv:eui.Label;
+    private txt_exp:eui.Label;
+    private txt_sole:eui.Label;
 }

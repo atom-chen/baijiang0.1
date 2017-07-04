@@ -3,41 +3,41 @@
         "count":2,
         "wave":2,
         "monster":[
-            ["monster01", 1],
-            ["monster02", 1],
-            ["monster03", 1]
+            ["monster01", 10],
+            ["monster02", 10],
+            ["monster03", 10]
         ],
         "boss":[
             ["boss", 5]
         ]
     },
     {
-        "count":10,
-        "wave":4,
+        "count":2,
+        "wave":2,
         "monster":[
             ["monster01", 1],
             ["monster02", 1],
             ["monster03", 2]
         ],
         "boss":[
-            ["monster02", 6]
+            ["boss", 6]
         ]
     },
     {
-        "count":15,
-        "wave":4,
+        "count":2,
+        "wave":2,
         "monster":[
             ["monster01", 2],
             ["monster02", 3],
             ["monster03", 4]
         ],
         "boss":[
-            ["monster03", 10]
+            ["boss", 10]
         ]
     },
     {
-        "count":15,
-        "wave":3,
+        "count":2,
+        "wave":2,
         "monster":[
             ["monster01", 2],
             ["monster02", 3],

@@ -8,6 +8,12 @@ class TalentIR extends Base {
     protected createChildren(): void{
         this.iconGroup = new Array();
         this.lvGroup = new Array();
+        this._maxLv = new Array();
+        for (let i = 0; i < ConfigManager.tcTalent.length; i++) {
+            let talentConf:any = ConfigManager.tcTalent[i];
+            let maxLv:number = talentConf.value.length;
+            this._maxLv.push(maxLv);
+        }
     }
 
     protected childrenCreated():void {
@@ -28,7 +34,7 @@ class TalentIR extends Base {
                 //等级
                 this.lvGroup[id-1] = new eui.Label();
                 this.lvGroup[id-1].textColor = 0x6f685d;
-                this.lvGroup[id-1].text = "0/10";
+                this.lvGroup[id-1].text = `0/${this._maxLv[id-1]}`;
                 this.lvGroup[id-1].fontFamily = "Microsoft YaHei";
                 this.lvGroup[id-1].right = 4;
                 this.lvGroup[id-1].size = 18;
@@ -62,7 +68,7 @@ class TalentIR extends Base {
     private onIconListener(event:egret.TouchEvent):void {
         let id = event.currentTarget.name;
         this.curTalentId = parseInt(id);
-        TalentDialog.instance.showPopup(parseInt(id), parseInt(event.currentTarget["lv"]))
+        TalentDialog.instance.showPopup(this.curTalentId, parseInt(event.currentTarget["lv"]), this._maxLv[this.curTalentId-1])
     }
 
     /**
@@ -76,8 +82,8 @@ class TalentIR extends Base {
             let id = talent[0];
             this.iconGroup[id-1]["Mask"].visible = false;
             this.iconGroup[id-1]["lv"] = talent[1];
-            this.lvGroup[id-1].text = `${talent[1]}/10`;
-            if (talent[1] == 10) this.lvGroup[id-1].textColor = 0x91bd32;
+            this.lvGroup[id-1].text = `${talent[1]}/${this._maxLv[id-1]}`;
+            if (talent[1] == this._maxLv[id-1]) this.lvGroup[id-1].textColor = 0x91bd32;
         }
         modTalent.setUnlock(curPage);
     }
@@ -90,7 +96,7 @@ class TalentIR extends Base {
         for (let i = 0; i < modTalent.talentCount; i++) {
             this.iconGroup[i]["Mask"].visible = true;
             this.iconGroup[i]["lv"] = 0;
-            this.lvGroup[i].text = `0/10`;
+            this.lvGroup[i].text = `0/${this._maxLv[i]}`;
             this.lvGroup[i].textColor = Common.TextColors.lvNotFull;
         }
     }
@@ -108,8 +114,8 @@ class TalentIR extends Base {
     public setTalentLv():void {
         this.iconGroup[this.curTalentId-1]["lv"] ++;
         let level = this.iconGroup[this.curTalentId-1]["lv"];
-        this.lvGroup[this.curTalentId-1].text = `${level}/10`;
-        if (level == 10) this.lvGroup[this.curTalentId-1].textColor = 0x91bd32;
+        this.lvGroup[this.curTalentId-1].text = `${level}/${this._maxLv[this.curTalentId-1]}`;
+        if (level == this._maxLv[this.curTalentId-1]) this.lvGroup[this.curTalentId-1].textColor = 0x91bd32;
     }
 
     public setTalentDetail(pageCount:number):void {
@@ -135,4 +141,6 @@ class TalentIR extends Base {
     private iconGroup:Array<eui.Group>;
     /**等级 */
     private lvGroup:Array<eui.Label>;
+    /**最大等级 */
+    private _maxLv:Array<number>;
 }

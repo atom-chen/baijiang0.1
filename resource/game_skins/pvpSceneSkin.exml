@@ -20,8 +20,8 @@
 		</e:skinName>
 	</e:Button>
 	<e:Image id="img_skillMask" x="1021.25" y="524.5" width="100" height="100" source="skill_mask_png"/>
-	<e:Label id="lab_cdSkill" text="1" y="555" horizontalCenter="502.5" fontFamily="Microsoft YaHei" bold="true" size="40"/>
-	<e:Label id="lab_cdTime" text="90" y="15" horizontalCenter="0" fontFamily="Microsoft YaHei" bold="true" size="40" touchEnabled="false"/>
-	<e:Label text="伤害量：" x="470" y="67" fontFamily="Microsoft YaHei" size="25" textColor="0x806e4d" bold="true" touchEnabled="false"/>
-	<e:Label id="lab_value" text="2000" y="67" fontFamily="Microsoft YaHei" size="25" textColor="0x806E4D" bold="true" left="571" touchEnabled="false"/>
+	<e:Label id="lab_cdSkill" text="1" y="555" horizontalCenter="502.5" fontFamily="Microsoft YaHei" bold="true" size="40" textColor="0xdbd6c9"/>
+	<e:Label id="lab_cdTime" text="90" y="15" horizontalCenter="0" fontFamily="Microsoft YaHei" bold="true" size="60" touchEnabled="false" textColor="0xf4e3be"/>
+	<e:Label text="伤害量：" x="477.07" y="87" fontFamily="Microsoft YaHei" size="25" bold="true" touchEnabled="false" textColor="0xaa894e"/>
+	<e:Label id="lab_value" text="2000" y="87" fontFamily="Microsoft YaHei" size="25" bold="true" left="559" touchEnabled="false" textColor="0xaa894e" anchorOffsetX="0" width="124.8" textAlign="center"/>
 </e:Skin>

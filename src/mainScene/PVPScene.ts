@@ -23,7 +23,7 @@ class PVPScene extends Base {
     public init():void {
         TimerManager.getInstance().startTimer();
         this._curValue = 0;
-        this._cdTime = 20;
+        this._cdTime = 90;
         this.lab_cdSkill.visible = false;
         this.lab_cdTime.text = `${this._cdTime}`;
         this.lab_value.text = `${this._curValue}`;

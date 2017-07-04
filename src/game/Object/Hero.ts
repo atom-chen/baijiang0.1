@@ -310,7 +310,7 @@ class Hero extends BaseGameObject {
     }
 
     /**
-     * 检测是否有免疫伤害的buff
+     * 检测是否有免疫伤害的buff或者反弹伤害的buff
      */
     public isImmuneBuff():boolean {
         for (let i = 0; i < this.buff.length; i++) {
@@ -343,8 +343,8 @@ class Hero extends BaseGameObject {
      */
     public gotoHurt() {
         if (this.curState == BaseGameObject.Action_Hurt) return;
-        if (this.isImmuneBuff()) return;
         if (!this.skill_status) {
+            if (this.isImmuneBuff()) return;
             this.curState = BaseGameObject.Action_Hurt;
             this.img_swordLight.visible = false;
             this.armature.play(this.curState, 0);

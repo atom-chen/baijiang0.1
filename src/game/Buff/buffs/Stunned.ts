@@ -12,7 +12,7 @@ class Stunned extends BuffBase {
     public buffInit() {
         super.buffInit();
         this.buffData.className = "Stunned";
-        this.buffData.probability = 10;
+        this.buffData.probability = 90;
         this.buffData.superpositionType = SuperpositionType.SuperpositionType_None;
         this.buffData.buffType = BuffType.BuffType_DeBuff;
         this.buffData.disperseType = DisperseType.DisperseType_NoClear;
@@ -35,9 +35,9 @@ class Stunned extends BuffBase {
     public update(target:any, callBack:Function = null) {
         this._extraBuff = ObjectPool.pop("UnableMove");
         //特效名字
-        this._extraBuff.effectName = "skill01";
+        this._extraBuff.effectName = "xuanyun";
         //id
-        this._extraBuff.buffData.id = 1;
+        this._extraBuff.buffData.id = 2;
         //持续时间
         this._extraBuff.buffData.duration = 1.5;
         //作用点

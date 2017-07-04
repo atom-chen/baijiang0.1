@@ -12,7 +12,7 @@ class WindowManager{
         return this.Instance;
     }
 
-    private getObjFromStr(strName:string):any{
+    public getObjFromStr(strName:string):any{
         for(let i:number = 0; i < this.obj_list.length; i++){
             if(this.obj_list[i].str == strName) return this.obj_list[i].obj;
         }

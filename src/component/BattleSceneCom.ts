@@ -12,7 +12,6 @@ class BattleSceneCom extends Base {
         this.img_killCount.y = 594;
         this.img_killCount.width = 414;
         this.addChild(this.img_killCount);
-        this.tcStage = RES.getRes("TcStage_json");
     }
 
     private onComplete():void {
@@ -133,7 +132,6 @@ class BattleSceneCom extends Base {
     private btn_pause:eui.Button;
     private btn_skill:eui.Button;
     private battleFailPop:BattleFailPop;
-    private tcStage:any;
     private money:number;
     private soul:number;
     private stage_count:number;

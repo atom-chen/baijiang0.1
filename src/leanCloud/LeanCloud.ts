@@ -197,6 +197,7 @@ class LeanCloud{
             UserDataInfo.GetInstance().SetBasicData("diamond", todo.get("diamond"));
             UserDataInfo.GetInstance().SetBasicData("soul", todo.get("soul"));
             UserDataInfo.GetInstance().SetBasicData("power", todo.get("power"));
+            UserDataInfo.GetInstance().SetBasicData("curTalentPage", todo.get("curTalentPage"));
         },
         function(error){
             Common.log(error);

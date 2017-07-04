@@ -95,7 +95,7 @@ class EquipUpWindow extends PopupWindow{
             return;
         }
         
-        let upData:any = TcManager.GetInstance().GetTcEquipUpData(this.equip_info.Lv);
+        let upData:any = TcManager.GetInstance().GetDataFromLv(2, this.equip_info.Lv);
         if(UserDataInfo.GetInstance().GetBasicData("exp") >= upData.exp && UserDataInfo.GetInstance().GetBasicData("soul") >= upData.soul){
 
             UserDataInfo.GetInstance().SetBasicData("exp", UserDataInfo.GetInstance().GetBasicData("exp") - upData.exp);
@@ -153,7 +153,7 @@ class EquipUpWindow extends PopupWindow{
         Common.SetXY(this.starGroup, this.img_weapon.x + (this.img_weapon.width - this.starGroup.width) / 2 - 20, this.img_weapon.y - 45);
     }
 
-    private set_label_text(upData:any = TcManager.GetInstance().GetTcEquipUpData(this.equip_info.Lv)):void{
+    private set_label_text(upData:any = TcManager.GetInstance().GetDataFromLv(2, this.equip_info.Lv)):void{
         this.txt_exp.text = upData.exp;
         this.txt_sole.text = upData.soul;
         this.curr_lv.text = "Lv." + this.equip_info.Lv;

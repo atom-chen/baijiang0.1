@@ -29,6 +29,7 @@ class HeroData {
     public static addHeroData(name:string, data:any) {
         let hero = data[name];
         HeroData.list[name] = hero;
+        HeroData.list[name]["lv"] = 1;        
         this.update();
     }
 

@@ -15,6 +15,12 @@ namespace ConfigManager {
     export var tcHero:any;
     /**技能配置文件 */
     export var tcSkill:any;
+    /**天赋配置文件 */
+    export var tcTalent:any;
+    /**天赋消耗配置文件 */
+    export var tcTalentUp:any;
+    /**解锁天赋页配置文件 */
+    export var tcUnlockTalentPage:any;
     /**骨架数据 */
     export var armatures:Array<string> = ["daoguang_effect", "diaochan", "monster01", "enter_monster_01", "Boss01",
         "Boss01_effect01", "blood_die", "diaochan_skill", "zhaoyun", "zhaoyun_skill", "buxiaoman", "buxiaoman_skill", "buff",
@@ -30,6 +36,9 @@ namespace ConfigManager {
         tcEquip = RES.getRes("TcEquip_json");
         tcHero = RES.getRes("TcHero_json");
         tcSkill = RES.getRes("TcSkill_json");
+        tcTalent = RES.getRes("TcTalent_json");
+        tcTalentUp = RES.getRes("TcTalentUp_json");
+        tcUnlockTalentPage = RES.getRes("TcUnlockTalentPage_json");
         initBattleDragonBones();
     }
 

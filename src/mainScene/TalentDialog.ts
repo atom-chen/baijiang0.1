@@ -25,14 +25,14 @@ class TalentDialog extends PopupWindow {
     }
 
     protected childrenCreated():void {
+        this.curPage = UserDataInfo.GetInstance().GetBasicData("curTalentPage") - 1;
         let talentPage = modTalent.getTalentData();
         for (let i = 0; i < talentPage.length; i++) {
             this.pages[i] = new TalentIR(i);
         }
-        this.Reset();
-        this.pageGroup.addChild(this.pages[0]);
-        Utils.toggleButtonStatus(this.topBtn, 0);
-        this.curPage = 0;
+        this.pageGroup.addChild(this.pages[this.curPage]);
+        Utils.toggleButtonStatus(this.topBtn, this.curPage);
+        this.allLv = talentPage[this.curPage].count == null ? 1 : talentPage[this.curPage].count;
     }
 
     private uiCompleteHandler():void {
@@ -44,6 +44,9 @@ class TalentDialog extends PopupWindow {
         this.btn_closeDetail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
         this.btn_upPower.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
         this.btn_upDiamond.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+    }
+
+    public Init():void{
     }
 
     /**
@@ -62,7 +65,7 @@ class TalentDialog extends PopupWindow {
             break;
             case this.btn_reset:
                 this.lab_title.text = "重置天赋";
-                this.lab_detail.text = "重置天赋需要花费5000金币";
+                this.lab_detail.textFlow = <Array<egret.TextField>>[{text:"重置天赋需要花费"},{text:"50钻石",style:{"textColor":0xffff00}}];
                 this.purchassType = 2;
                 Animations.popupOut(this.popupGroup, 500);
                 this.popupGroup.visible = true;
@@ -70,6 +73,7 @@ class TalentDialog extends PopupWindow {
             break;
             default:
                 GameLayerManager.gameLayer().panelLayer.removeChildren();
+                GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
             break;
         }
     }
@@ -99,17 +103,17 @@ class TalentDialog extends PopupWindow {
     private _unLockTalent(type:string) {
         if (modTalent.isUnlock(this.curPage, this.curTalentId)) {
             if (type == "power") {
-                if(UserDataInfo.GetInstance().GetBasicData("power") >= 1000){
+                if(UserDataInfo.GetInstance().GetBasicData("power") >= TcManager.GetInstance().GetDataFromLv(3, this.allLv).power){
                     this.update();
-                    UserDataInfo.GetInstance().SetBasicData("power", UserDataInfo.GetInstance().GetBasicData("power") - 1000);
+                    UserDataInfo.GetInstance().SetBasicData("power", UserDataInfo.GetInstance().GetBasicData("power") - TcManager.GetInstance().GetDataFromLv(3, this.allLv).power);
                     this.show_lab_text();
                 }
                 else Animations.showTips("能力不足，不能升级天赋");
             }else if(type == "diamond")
             {
-                if(UserDataInfo.GetInstance().GetBasicData("diamond") >= 50){
+                if(UserDataInfo.GetInstance().GetBasicData("diamond") >= TcManager.GetInstance().GetDataFromLv(3, this.allLv).diamond){
                     this.update();
-                    UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 50);
+                    UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - TcManager.GetInstance().GetDataFromLv(3, this.allLv).diamond);
                     this.show_lab_text();
                 }
                 else Animations.showTips("钻石不足，不能升级天赋");
@@ -133,7 +137,6 @@ class TalentDialog extends PopupWindow {
             break;
             default:
                 Animations.popupIn(this.skillPopupGroup, 300, ()=>{
-                    GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
                     GameLayerManager.gameLayer().maskLayer.removeChildren();
                 });
             break;
@@ -151,8 +154,16 @@ class TalentDialog extends PopupWindow {
                 Animations.showTips("天赋页已满", 1, true);
                 return;
             }
+
+            if(UserDataInfo.GetInstance().GetBasicData("diamond") < 50){
+                Animations.showTips("钻石不足，无法购买天赋页");
+                return;
+            }
+
+            UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 50);
+
             this.pageGroup.removeChildren();
-            let talent = {"name":"", "count":0, "talent":[]};
+            let talent = {"name":"", "count":1, "talent":[]};
             talentPage.push(talent);
             let len = talentPage.length;
             this.createToggleBtn(len-1);
@@ -162,15 +173,27 @@ class TalentDialog extends PopupWindow {
             this.pages[len- 1] = new TalentIR(len - 1);
             this.pageGroup.addChild(this.pages[len - 1]);
             LeanCloud.GetInstance().SaveRoleData("talentPage", talentPage);
+            LeanCloud.GetInstance().SaveRoleData("curTalentPage", this.curPage + 1);
         }else{
             //重置天赋页
             if (talentPage[this.curPage].talent.length == 0) {
                 Animations.showTips("无需重置", 1, true);
                 return;
             }
+
+            if(UserDataInfo.GetInstance().GetBasicData("diamond") <= 50){
+                Animations.showTips("钻石不足，无法重置", 1, true);
+                return;
+            }
+
+            this.allLv = 1;
             talentPage[this.curPage].talent = [];
+            talentPage[this.curPage]["count"] = this.allLv;
             this.pages[this.curPage].reset(this.curPage);
             LeanCloud.GetInstance().SaveRoleData("talentPage", talentPage);
+
+            UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 50);
+            this.show_lab_text();
         }
     }
 
@@ -180,9 +203,11 @@ class TalentDialog extends PopupWindow {
     private pageBtnListener(event:egret.TouchEvent):void {
         let target = event.currentTarget;
         this.curPage = target.id;
+        LeanCloud.GetInstance().SaveRoleData("curTalentPage", this.curPage + 1);
         // Common.log(target);
         modTalent.setUnlock(this.curPage);
         this.createTalentPage(target.id);
+        this.allLv = modTalent.getTalentData()[target.id]["count"] == null ? 1 : modTalent.getTalentData()[target.id]["count"];
     }
 
     /**
@@ -224,7 +249,7 @@ class TalentDialog extends PopupWindow {
      * 更新升级弹窗
      */
     private update():void {
-        if (this.curLevel >= 10) {
+        if (this.curLevel >= this._curMaxLv) {
             Animations.showTips("此天赋已满", 1, true);
             return;
         }
@@ -232,37 +257,38 @@ class TalentDialog extends PopupWindow {
             Animations.showTips("天赋已点满", 1, true);
             return;
         }
+
+        this.allLv++;
         this.curLevel ++;
-        this.lab_lv.text = `${this.curLevel}/10`;
-        if (this.curLevel == 10) this.lab_lv.textColor = Common.TextColors.lvFull;
+        this.lab_lv.text = `${this.curLevel}/${this._curMaxLv}`;
+        let index:number = modTalent.getIndexFromId(this.curTalentId);
+        this._updateTalentDesc(index, this.curLevel);
+        if (this.curLevel == this._curMaxLv) this.lab_lv.textColor = Common.TextColors.lvFull;
         //更新能量点
         // this.lab_power
         this.pages[this.curPage].setTalentLv();
         this.pages[this.curPage].setUnlock(this.curTalentId);
         modTalent.setData(this.curPage, this.curTalentId, this.curLevel);
         Animations.showTips("天赋升级成功", 1);
+        this.show_btn_text();
     }
 
     /**
      * 升级天赋弹窗
      */
-    public showPopup(num:number, lv:number):void {
+    public showPopup(num:number, lv:number, maxLv:number):void {
+
         this.skillPopupGroup.visible = true;
         this.curLevel = lv;
+        this._curMaxLv = maxLv;
         this.curTalentId = num;
         GameLayerManager.gameLayer().maskLayer.addChild(this.skillPopupGroup);
         Animations.popupOut(this.skillPopupGroup, 500);
-        let id:number = 0;
-        for (let obj = 0; obj < 21; obj++) {
-            if (this.tcTalent[obj].id == num) {
-                id = obj;
-                break;
-            }
-        }
+        let id:number = modTalent.getIndexFromId(num);
         this.lab_name.text = this.tcTalent[id].name;
-        this.lab_skillDetail.text = this.tcTalent[id].content;
-        this.lab_lv.text = `${lv}/10`;
-        if (this.curLevel == 10) {
+        this._updateTalentDesc(id, lv);
+        this.lab_lv.text = `${lv}/${this._curMaxLv}`;
+        if (this.curLevel == this._curMaxLv) {
             this.lab_lv.textColor = Common.TextColors.lvFull;
         }else{
             this.lab_lv.textColor = Common.TextColors.lvNotFull;
@@ -280,6 +306,18 @@ class TalentDialog extends PopupWindow {
             let strs = modTalent.getTips(this.curTalentId, false);
             this.lab_condition.text = strs;
         }
+        this.show_btn_text();
+    }
+
+    /**
+     * 更新天赋说明内容
+     */
+    private _updateTalentDesc(index:number, lv:number) {
+        let desc:string = this.tcTalent[index].desc;
+        let value:number = 0;
+        if (lv == 0) value = this.tcTalent[index].value[0];
+        else value = this.tcTalent[index].value[lv-1];
+        this.lab_skillDetail.text = desc.replace(/n/, value.toString());
     }
 
     /**
@@ -303,12 +341,20 @@ class TalentDialog extends PopupWindow {
         this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
     }
 
+    private show_btn_text():void{
+        let data:any = TcManager.GetInstance().GetDataFromLv(3,this.allLv);
+        this.btn_upPower.label = data.power;
+        this.btn_upDiamond.label = data.diamond;
+    }
+
     public static instance:TalentDialog;
     /**天赋的配置文件 */
     private tcTalent:any;
     /**当前的天赋等级 */
     private curLevel:number;
-    /**当前的天赋页 */
+	private allLv:number;    /**当前的天赋页 */
+    /**当前天赋最多等级 */
+    private _curMaxLv:number;
     private curPage:number;
     /**当前的天赋Id */
     private curTalentId:number;

@@ -24,6 +24,6 @@
 		</e:skinName>
 	</e:Button>
 	<e:Image id="btn_close" source="button_0009_png" x="985.66" y="82.33"/>
-	<e:Image source="equip_0010_png" x="590" y="398"/>
+	<e:Image source="equip_0010_png" x="590" y="418" height="44"/>
 	<e:Image source="title_0010_png" x="483" y="82.33"/>
 </e:Skin>

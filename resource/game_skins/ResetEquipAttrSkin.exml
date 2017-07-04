@@ -17,6 +17,6 @@
 	<e:Image id="imgStar" source="star_05_png" x="294.27" y="340.68"/>
 	<e:Label id="lab_attr" text="攻击力+20%" x="369.33" y="342.48" anchorOffsetX="0" width="382.82" size="25" fontFamily="Microsoft YaHei" anchorOffsetY="0" height="33" verticalAlign="middle" textAlign="center" bold="true" textColor="0xea7c23"/>
 	<e:Image id="btn_close" source="button_0009_png" x="988.48" y="81.56"/>
-	<e:Label text="每次洗练可获得2点幸运值，当幸运值达到100时，下次洗练必得金色星阶属性" x="111.83" y="430.68" anchorOffsetX="0" width="907" textAlign="center" fontFamily="Microsoft YaHei" size="23" bold="true" textColor="0x6d6d6d"/>
+	<e:Label text="每次洗练可获得2点幸运值，当幸运值达到100时，下次洗练必得金色星阶属性" x="111.83" y="430.68" anchorOffsetX="0" width="907" textAlign="center" fontFamily="Microsoft YaHei" size="23" bold="true" textColor="0x4f4f4f"/>
 	<e:Image source="title_0006_png" x="481" y="79.96"/>
 </e:Skin>

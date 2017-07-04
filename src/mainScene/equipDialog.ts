@@ -46,33 +46,6 @@ class EquipDialog extends PopupWindow {
         this.imgClick = new egret.Bitmap( RES.getRes("equip_0009_png"));
     }
 
-    /** 点击升级按钮 */    
-    private onTouchUpGrade(event:egret.TouchEvent):void{
-        if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
-
-        let pop:PopupWindow = WindowManager.GetInstance().GetWindow("EquipUpWindow");
-        pop.Show(this.equip_info);
-        pop.addEventListener(modEquip.EquipSource.UPGRADE, this.upGradeGoodsInfo, this);
-    }
-
-    /** 升级按钮的事件监听 */
-    private upGradeGoodsInfo(event:egret.Event):void{
-        if(event.data == -1){
-            event.target.removeEventListener(modEquip.EquipSource.UPGRADE, this.upGradeGoodsInfo, this);
-        }
-        else
-        {
-            this.show_label_data();
-            this.lab_lv.textFlow = <Array<egret.ITextElement>>[
-                {text:"等级: " + event.data + "/", style:{"textColor":0x727272}},
-                {text:modEquip.EquipSource.EQUIPLV + "", style:{"textColor":0xf28b01}}
-            ]
-            if(event.data == modEquip.EquipSource.EQUIPLV){
-                if(this.btn_change.currentState == "down") this.showResetGroup();
-            } 
-        }
-    }
-
     /** 创建物品信息 */
     public Show():void{
 
@@ -110,7 +83,6 @@ class EquipDialog extends PopupWindow {
 
         GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
         LeanCloud.GetInstance().SaveEquipData();
-        LeanCloud.GetInstance().SaveRoleBasicData();
 
         this.btn_back.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
         this.btn_weapon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
@@ -118,6 +90,33 @@ class EquipDialog extends PopupWindow {
         this.btn_upgrade.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
         this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
         this.img_weapon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
+    }
+
+     /** 点击升级按钮 */    
+    private onTouchUpGrade(event:egret.TouchEvent):void{
+        if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
+
+        let pop:PopupWindow = WindowManager.GetInstance().GetWindow("EquipUpWindow");
+        pop.Show(this.equip_info);
+        pop.addEventListener(modEquip.EquipSource.UPGRADE, this.upGradeGoodsInfo, this);
+    }
+
+    /** 升级按钮的事件监听 */
+    private upGradeGoodsInfo(event:egret.Event):void{
+        if(event.data == -1){
+            event.target.removeEventListener(modEquip.EquipSource.UPGRADE, this.upGradeGoodsInfo, this);
+        }
+        else
+        {
+            this.show_label_data();
+            this.lab_lv.textFlow = <Array<egret.ITextElement>>[
+                {text:"等级: " + event.data + "/", style:{"textColor":0x727272}},
+                {text:modEquip.EquipSource.EQUIPLV + "", style:{"textColor":0xf28b01}}
+            ]
+            if(event.data == modEquip.EquipSource.EQUIPLV){
+                if(this.btn_change.currentState == "down") this.showResetGroup();
+            } 
+        }
     }
 
     private onEquip(event:egret.TouchEvent):void {

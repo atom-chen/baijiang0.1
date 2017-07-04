@@ -24,7 +24,8 @@ class Enermy extends BaseGameObject {
 
         //buff动画
         this.buffArmature.register(DragonBonesFactory.getInstance().makeArmature("buff", "buff", 10), [
-            "Burning"
+            "Burning",
+            "xuanyun"
         ]);
         this.buffArmature.visible = false;
         this.effectArmature.scaleX = 1.5;

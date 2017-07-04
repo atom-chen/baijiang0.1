@@ -34,16 +34,24 @@ class ShopItemPop extends Base {
                     //     Animations.showTips("购买武器成功", 1);
                     // }
                     if (this.btn_buy.name == "packs") {
-                        Animations.showTips("购买礼包成功", 1);
+                        if(UserDataInfo.GetInstance().GetBasicData("diamond") >= 500){
+                            UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 500);
+                            Animations.showTips("购买礼包成功", 1);
+                        }
+                        else Animations.showTips("钻石不足，无法购买", 1);
                     }else{
                         if (HeroData.hasHero(this.content.key)){
                             Animations.showTips(`已有英雄${this.lab_itemName.text}`, 1);
                         }else{
-                            Animations.showTips(`购买英雄${this.lab_itemName.text}成功`, 1);
-                            HeroData.addHeroData(this.content.key, GameData.initData["hero"]);
-                            if (SceneManager.mainScene.readyDialog){
-                                SceneManager.mainScene.readyDialog.updateList();
+                            if(UserDataInfo.GetInstance().GetBasicData("diamond") >= 1280){
+                                UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 1280);
+                                Animations.showTips(`购买英雄${this.lab_itemName.text}成功`, 1);
+                                HeroData.addHeroData(this.content.key, GameData.initData["hero"]);
+                                if (WindowManager.GetInstance().getObjFromStr("ReadyDialog")) {
+                                    WindowManager.GetInstance().getObjFromStr("ReadyDialog").updateList();
+                                }
                             }
+                            else Animations.showTips("钻石不足，无法购买", 1);
                         }
                     }
                 }

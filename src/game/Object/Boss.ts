@@ -66,11 +66,25 @@ class Boss extends Enermy {
         this.skillArmature.addCompleteCallFunc(this.skillArmaturePlayEnd, this);
         this.gotoEnter();
     }
+    /**
+     * 到达边缘
+     */
+    private _bound():void {
+        this._deltaX = 0;
+        this._deltaY = 0;
+        this._remote = false;
+        this.skillArmature.visible = false;
+    }
 
     public update(time:number):void {
         super.update(time);
         if (this._remote) {
             this._skill[1].update(this._deltaX, this._deltaY);
+            let skillPoint = this.skillArmature.localToGlobal();
+            if (skillPoint.x < 20) this._bound();
+            if (skillPoint.y < 20) this._bound();
+            if (skillPoint.x > Common.SCREEN_W - 20) this._bound();
+            if (skillPoint.y > Common.SCREEN_H - 20) this._bound();
         }
     }
 
@@ -179,8 +193,8 @@ class Boss extends Enermy {
      * 进场
      */
     public gotoEnter() {
-        super.gotoEnter();
         this.armature.play(Boss.Action_Idle01, 0);
+        super.gotoEnter();
     }
 
     /**
@@ -208,10 +222,10 @@ class Boss extends Enermy {
         if (this.reverse(this, this.radian)) {
             this.skillArmature.y = this.y;
         }
-        let dx = Math.cos(this.radian) * this.atk_range;
-        let dy = Math.sin(this.radian) * this.atk_range;
-        this.atk_rangeX = Math.abs(dx);
-        this.atk_rangeY = Math.abs(dy);
+        // let dx = Math.cos(this.radian) * this.atk_range;
+        // let dy = Math.sin(this.radian) * this.atk_range;
+        // this.atk_rangeX = Math.abs(dx);
+        // this.atk_rangeY = Math.abs(dy);
     }
 
     /**增加buff */
@@ -273,19 +287,32 @@ class Boss extends Enermy {
      * 特效动画播放完成函数
      */
     public effectArmaturePlayEnd():void {
+        if (this.curState == BaseGameObject.Action_Enter) {
+             this.effectArmature.visible = false;
+             egret.setTimeout(()=>{this._skill[0].call();}, this, 50);
+             return;
+        }
         super.effectArmaturePlayEnd();
+        // Common.log("effection----->", this.curState)
+        // if (this.curState == BaseGameObject.Action_Enter) {
+        //     if (this._skill[0].name == "Summon") {
+        //         egret.setTimeout(()=>{this._skill[0].call();}, this, 50);
+        //     }else{
+        //         this.gotoRun();
+        //     }
+        // }
     }
 
     public armaturePlayEnd():void {
         super.armaturePlayEnd();
         switch (this.curState) {
-            case BaseGameObject.Action_Enter:
-                if (this._skill[0].name == "Summon") {
-                    egret.setTimeout(()=>{this._skill[0].call();}, this, 50);
-                }else{
-                    this.gotoRun();
-                }
-            break;
+            // case BaseGameObject.Action_Enter:
+            //     if (this._skill[0].name == "Summon") {
+            //         egret.setTimeout(()=>{this._skill[0].call();}, this, 50);
+            //     }else{
+            //         this.gotoRun();
+            //     }
+            // break;
             case "attack":
                 this.gotoRun();
                 this.isComplete = false;

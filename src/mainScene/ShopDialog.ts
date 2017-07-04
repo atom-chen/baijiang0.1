@@ -94,7 +94,6 @@ class ShopDialog extends PopupWindow {
                 this.detailGroup.visible = false;
             break;
             default:
-                LeanCloud.GetInstance().SaveRoleBasicData();
                 GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
                 GameLayerManager.gameLayer().panelLayer.removeChildren();
             break;
