@@ -3,9 +3,9 @@
         "count":2,
         "wave":2,
         "monster":[
-            ["monster01", 10],
-            ["monster02", 10],
-            ["monster03", 10]
+            ["monster01", 1],
+            ["monster02", 1],
+            ["monster03", 1]
         ],
         "boss":[
             ["boss", 5]

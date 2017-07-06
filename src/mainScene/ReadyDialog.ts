@@ -32,6 +32,8 @@ class ReadyDialog extends PopupWindow {
         this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
         this.lab_diamond.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
         this.lab_exp.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("exp"));
+        this.equipId = -1;
+        this.equipTypeId = 0;
     }
 
     /**
@@ -108,6 +110,7 @@ class ReadyDialog extends PopupWindow {
         this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_battle.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
         this.btn_up.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
+        this.img_equip.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
         this.topBtn = [this.btn_upgrade, this.btn_skill, this.btn_detail];
         //每个人物的三个技能属性
         let temp:any;
@@ -131,6 +134,13 @@ class ReadyDialog extends PopupWindow {
     protected childrenCreated(): void{
         let id = modHero.getIdFromKey(GameData.curHero);
         this.showHero(id);
+    }
+
+    private onTouchEquip(event:egret.TouchEvent):void{
+        if(this.equipId == -1) return;
+
+        let info = modEquip.EquipData.GetInstance().GetEquipFromId(this.equipId, this.equipTypeId);
+        WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(info, GameData.curHero);
     }
 
     private topBtnListener(event:egret.TouchEvent):void {
@@ -173,13 +183,10 @@ class ReadyDialog extends PopupWindow {
                     Animations.showTips("没有可以更换的武器", 1, true);
                     return;
                 }
-                if (!this.changeEquipPop) {
-                    this.changeEquipPop = new ChangeEquipPop();
-                }else{
-                    this.changeEquipPop.show();
-                }
-                this.changeEquipPop.addEventListener(modEquip.EquipSource.CHANGEEQUIP, this.updateUI, this);
-                this.addChild(this.changeEquipPop);
+
+                let pop = WindowManager.GetInstance().GetWindow("ChangeEquipPop");
+                pop.Show(this.equipId, this.equipTypeId);
+                pop.addEventListener(modEquip.EquipSource.CHANGEEQUIP, this.updateUI, this);
             break;
             case this.btn_up:
                 this.updateAttr(true);
@@ -187,7 +194,6 @@ class ReadyDialog extends PopupWindow {
             default:
                 this._stopTimer();
                 GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
-                GameLayerManager.gameLayer().panelLayer.removeChild(this);
             break;
         }
     }
@@ -273,6 +279,7 @@ class ReadyDialog extends PopupWindow {
         this.lab_equipLv.visible = true;
         this.lab_equipLv.text = `等级：${equip.lv}/100`;
         this.img_equip.source = `equip${25-equip.id}_png`;
+        this.equipId = equip.id;
         this.starGroup.visible = true;
         this.img_equip.visible = true;
     }
@@ -281,21 +288,17 @@ class ReadyDialog extends PopupWindow {
      * 更新界面
      */
     public updateUI(event:egret.Event):void {
-        this.changeEquipPop.removeEventListener(modEquip.EquipSource.CHANGEEQUIP, this.updateUI, this);
-        let id = event.data;
+        event.target.removeEventListener(modEquip.EquipSource.CHANGEEQUIP, this.updateUI, this);
+
+        this.equipId = event.data[0];
+        this.equipTypeId = event.data[1];
+
         let heroData = HeroData.getHeroData(GameData.curHero);
-        heroData.equip = id;
+        heroData.equip = this.equipId ;
         HeroData.update();
-        let equip:any;
-        // for (let i = 0; i < ConfigManager.tcEquip.length; i++) {
-        //     if (ConfigManager.tcEquip[i].id == id) {
-        //         equip = ConfigManager.tcEquip[i];
-        //         break;
-        //     }
-        // }
-        equip = modEquip.EquipData.GetInstance().GetEquipFromId(id, 0);
+
+        let equip:any = modEquip.EquipData.GetInstance().GetEquipFromId(this.equipId, this.equipTypeId);
         this.updateEquip(equip);
-        // this.lab_equipName.text = equip.name;
     }
     /**
      * 显示界面
@@ -449,4 +452,6 @@ class ReadyDialog extends PopupWindow {
     private lab_lv:eui.Label;
     private txt_exp:eui.Label;
     private txt_sole:eui.Label;
+    private equipId:number;
+    private equipTypeId:number;
 }

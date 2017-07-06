@@ -226,6 +226,21 @@ namespace modEquip {
                 }
             }
             this.equip_list.pop();
+            this.changeIdListNumber(info);
+        }
+
+        private changeIdListNumber(info:EquipInfo):void{
+            let info_list:Array<EquipInfo> = [];
+            for(let i in this.equip_list){
+                if(this.equip_list[i].Id == info.Id){
+                    info_list.push(this.equip_list[i]);
+                } 
+            }
+            this.id_list[info.Id] = info_list.length;
+            for(let i:number = 0; i < this.id_list[info.Id]; i++){
+                info_list[i].TypeID = i;
+            }
+            info_list = [];
         }
 
         public RemoveEquipFromIndex(index:number):void{
@@ -305,7 +320,8 @@ namespace modEquip {
         let successRate:number;
         let consumeData:any = TcManager.GetInstance().GetTcEquipStarUpData(consumeInfo.Quality, consumeInfo.Star);
         let upData:any = TcManager.GetInstance().GetTcEquipStarUpData(upInfo.Quality, upInfo.Star);
-        successRate = Math.floor((consumeData.bassValue / upData.needValue) * 100 );
+        if(upData.needValue == 0) successRate = 100; 
+        else successRate = Math.floor((consumeData.bassValue / upData.needValue) * 100 );
 
         return successRate;
     }

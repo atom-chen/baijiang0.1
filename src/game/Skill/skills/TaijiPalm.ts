@@ -10,6 +10,7 @@ class TaijiPalm extends SkillBase {
     public init() {
         super.init();
         this.push_range = 100;
+        this.cd = 300;
     }
 
     public start(animation:string, target:any) {

@@ -17,6 +17,7 @@ class Stakes extends egret.DisplayObjectContainer {
     }
 
     public init() {
+        this.alpha = 1.0;
         this.hp = 5;
         this.buff = [];
         //buff动画
@@ -29,6 +30,7 @@ class Stakes extends egret.DisplayObjectContainer {
     }
 
     public gotoHurt():void {
+        if (this.hp <= 0) return;
         if (this.curState == "hurt") return;
         ShakeTool.getInstance().shakeObj(SceneManager.pvpScene, 1, 5, 5);
         this.curState = "hurt";
@@ -38,15 +40,16 @@ class Stakes extends egret.DisplayObjectContainer {
     }
     public gotoDead():void {
         this.clearObject();
-        this.clearList();
         Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER);
     }
 
     public clearObject():void {
         this.buffArmature.visible = false;
-        ObjectPool.push(this);
-        if (this.parent && this.parent.removeChild) this.parent.removeChild(this);
-        // Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER);
+        Animations.fadeIn(this, 500, ()=>{
+            ObjectPool.push(this);
+            if (this.parent && this.parent.removeChild) this.parent.removeChild(this);
+            this.clearList();
+        })
     }
 
     public clearList():void {

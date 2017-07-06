@@ -210,7 +210,7 @@ class LeanCloud{
             todo.set("exp", UserDataInfo.GetInstance().GetBasicData("exp"));
             todo.set("soul", UserDataInfo.GetInstance().GetBasicData("soul"));
             todo.set("diamond", UserDataInfo.GetInstance().GetBasicData("diamond"));
-            todo.get("power", UserDataInfo.GetInstance().GetBasicData("power"));
+            todo.set("power", UserDataInfo.GetInstance().GetBasicData("power"));
             todo.save();
         });
     }

@@ -99,7 +99,6 @@ class BattleScene extends Base {
         this.comboCount.y = 30;
         this.comboCount.text = "0";
         this.comboCount.letterSpacing = 1;
-        this.comboCount.textAlign = "left";
         this.comboGroup.addChild(this.comboCount);
         this.comboGroup.visible = false;
         this.comboStatus = false;
@@ -110,8 +109,8 @@ class BattleScene extends Base {
      */
     public update(value:number) {
         this.comboGroup.visible = true;
+        if (value >= 10) this.comboCount.x = 90;
         let str:string = value.toString();
-        this.comboCount.anchorOffsetX = this.comboCount.width/2;
         this.comboCount.anchorOffsetY = this.comboCount.height/2;
         this.comboCount.text = str;
         if (this.lastCombo == value) return;

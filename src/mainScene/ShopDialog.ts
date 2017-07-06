@@ -95,7 +95,6 @@ class ShopDialog extends PopupWindow {
             break;
             default:
                 GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
-                GameLayerManager.gameLayer().panelLayer.removeChildren();
             break;
         }
     }
@@ -115,14 +114,12 @@ class ShopDialog extends PopupWindow {
     }
 
     private haveEnoughDiamond(num:number):boolean{
-        if(UserDataInfo.GetInstance().GetBasicData("diamond") < num * 220){
-            Animations.showTips("钻石不足，无法开启");
-            return false;
+        if(UserDataInfo.GetInstance().IsHaveGoods("diamond", num * 220)){
+            this.lab_money.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
+            return true;
         }
-
-        UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - num * 220);
-        this.lab_money.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
-        return true;
+        else Animations.showTips("钻石不足，无法开启", 1, true);
+        return false;
     }
 
     /**

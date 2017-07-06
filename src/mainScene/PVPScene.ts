@@ -36,7 +36,7 @@ class PVPScene extends Base {
      */
     public createCountDown():void {
         modPVP.init();
-        this.onCDTime();
+        this.onCDTime(300);
         TimerManager.getInstance().doTimer(1000, this._cdTime, this._onTimeCD, this, this._onTimeComplete, this);
     }
 
@@ -65,13 +65,15 @@ class PVPScene extends Base {
      * 更新伤害值
      */
     public updateValue():void {
+        this.cd_time -= 5;
+        this.lab_cdTime.text = `${this._cdTime}`;
         this._curValue += MathUtils.getRandom(100, 200);
         this.lab_value.text = `${this._curValue}`;
     }
 
     /**技能cd */
-    public onCDTime():void {
-        this.cd_time = 5;
+    public onCDTime(cd:number):void {
+        this.cd_time = cd;
         this.lab_cdSkill.text = `${this.cd_time}`;
         this.lab_cdSkill.visible = true;
         this.img_skillMask.visible = true;
@@ -96,7 +98,8 @@ class PVPScene extends Base {
         if (this.cd_time == 0) return;
         this.cd_time --;
         this.lab_cdSkill.text = `${this.cd_time}`;
-        if (this.cd_time == 0) {
+        if (this.cd_time <= 0) {
+            TimerManager.getInstance().remove(this.timerCD, this);
             this.lab_cdSkill.visible = false;
             this.img_skillMask.visible = false;
         }
@@ -105,7 +108,7 @@ class PVPScene extends Base {
     private uiCompleteHandler():void {
         this.btn_pause.addEventListener(egret.TouchEvent.TOUCH_TAP, this._onPause, this);
         this.btn_skill.addEventListener(egret.TouchEvent.TOUCH_TAP, ()=>{
-            if (this.cd_time == 0) {
+            if (this.cd_time <= 0) {
                 GameData.heros[0].gotoSkill();
             }
         }, this);

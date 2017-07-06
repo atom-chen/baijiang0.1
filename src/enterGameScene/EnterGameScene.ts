@@ -9,9 +9,15 @@ class EnterGameScene extends Base {
     }
 
     private uiCompleteHandler():void {
-        // Common.kbengine.Event.register("onConnectionState", this, "onConnectionState");
-        this.btn_begin.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEnterGame, this);
-        this.btn_rank.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onRank, this);
+        this.removeEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this)
+        this.lab_enter.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEnterGame, this);
+        this.objFadeEffect();
+    }
+
+    private objFadeEffect():void{
+        egret.Tween.get(this.lab_enter).to({alpha:0.2},1000,egret.Ease.circIn).call(()=>{
+            egret.Tween.get(this.lab_enter).to({alpha:1},1000).call(this.objFadeEffect, this);
+        },this)
     }
 
     protected createChildren(): void{
@@ -27,7 +33,9 @@ class EnterGameScene extends Base {
      * 进入游戏
      */
     private onEnterGame():void {
+        egret.Tween.removeTweens(this.lab_enter);
         GameLayerManager.gameLayer().sceneLayer.removeChildren();
+
         SceneManager.mainScene = new MainScene();
         GameLayerManager.gameLayer().sceneLayer.addChild(SceneManager.mainScene);
     }
@@ -38,15 +46,7 @@ class EnterGameScene extends Base {
             Common.log("faild");
         }
     }
-    /**
-     * 排行榜
-     */
-    private onRank():void {
-
-    }
 
     /**开始游戏按钮 */
-    private btn_begin:eui.Button;
-    /**排行榜按钮 */
-    private btn_rank:eui.Button;
+    private lab_enter:eui.Label;
 }

@@ -29,13 +29,14 @@ class EquipUpStarWindow extends PopupWindow{
         }
 
         this.lab_sole.text = "";
-        this.showEquipSusscess(this.equip_info, 0)
+        this.showEquipSusscess()
     }
 
     public Show(equip_info:modEquip.EquipInfo):void{
         super.Show();
         
         this.equip_info = equip_info;
+        
         this.initData();
         this.showGoodsView();
 
@@ -75,12 +76,10 @@ class EquipUpStarWindow extends PopupWindow{
             return;
         }
 
-        if(UserDataInfo.GetInstance().GetBasicData("soul") < 1000){
-            Animations.showTips("魂石不足，无法升星");
-            return;
-        }
-
-        UserDataInfo.GetInstance().SetBasicData("soul", UserDataInfo.GetInstance().GetBasicData("soul") - 1000);
+        if(!UserDataInfo.GetInstance().IsHaveGoods("soul",1000)){
+             Animations.showTips("魂石不足，无法升星");
+             return;
+        } 
 
         //移除所有的监听 防止去除后又重复监听
         for(let i:number = 0; i < this.equip_list.length; i++){
@@ -148,7 +147,7 @@ class EquipUpStarWindow extends PopupWindow{
         let raw:number, col:number;
         let list:any = modEquip.EquipData.GetInstance().GetEquipList();
         for(let i:number = 0; i < list.length; i++){
-            if( (list[i].id == this.equip_info.Id && list[i].TypeID != this.equip_info.TypeID) || list[i].Id != this.equip_info.Id){
+            if( (list[i].Id == this.equip_info.Id && list[i].TypeID != this.equip_info.TypeID) || list[i].Id != this.equip_info.Id){
                 raw = Math.floor(index / 4);
                 col = index % 4;
                 let img:eui.Image = new eui.Image();
@@ -245,7 +244,8 @@ class EquipUpStarWindow extends PopupWindow{
         return isSuccess;
     }
 
-    private showEquipSusscess(info:modEquip.EquipInfo, num:number, isClick:boolean = false):void{
+    private showEquipSusscess(info:modEquip.EquipInfo = null, num:number = 0, isClick:boolean = false):void{
+
         if(num == 0) this.successNum = 0;
         else this.successNum += modEquip.GetSuccessGoodsLv(this.equip_info, info) * num;
 

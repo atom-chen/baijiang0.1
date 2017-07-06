@@ -88,8 +88,8 @@ class BattleSceneCom extends Base {
     }
 
     /**技能cd */
-    public onCDTime():void {
-        this.cd_time = 5;
+    public onCDTime(cd:number):void {
+        this.cd_time = cd;
         this.lab_cdTime.text = `${this.cd_time}`;
         this.lab_cdTime.visible = true;
         this.img_skillMask.visible = true;

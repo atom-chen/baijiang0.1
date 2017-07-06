@@ -175,6 +175,14 @@ namespace Common {
         return txt;
     }
 
+    export function CreateShape(x,y,width,height):egret.Shape{
+        let shape = new egret.Shape();
+        shape.graphics.beginFill(0x000000, 1);
+        shape.graphics.drawRect(x,y,width,height);
+        shape.graphics.endFill();
+        return shape;
+    }
+
     export function TranslateDigit(val:number):string{
         if(val > 100000000){
             return Math.floor(val / 100000000) + "亿";

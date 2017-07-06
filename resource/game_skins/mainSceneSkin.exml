@@ -93,6 +93,6 @@
 		</e:skinName>
 	</e:Button>
 
-	<e:Image source="0_0021_kaorou_png" x="455.01" y="407" scaleX="4" scaleY="4"/>
+	<e:Image source="0_0021_kaorou_png" x="455.01" y="407" scaleX="1" scaleY="1"/>
 	<e:Image id="img_light" source="0_0022_huoguang01_png" x="470.01" y="517" scaleY="1" scaleX="1" anchorOffsetX="63" anchorOffsetY="63"/>
 </e:Skin>

@@ -79,8 +79,6 @@ class EquipDialog extends PopupWindow {
     }
 
     public Close():void{
-        super.Close();
-
         GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
         LeanCloud.GetInstance().SaveEquipData();
 
@@ -113,7 +111,7 @@ class EquipDialog extends PopupWindow {
                 {text:"等级: " + event.data + "/", style:{"textColor":0x727272}},
                 {text:modEquip.EquipSource.EQUIPLV + "", style:{"textColor":0xf28b01}}
             ]
-            if(event.data == modEquip.EquipSource.EQUIPLV){
+            if(event.data >= modEquip.EquipSource.EQUIPLV){
                 if(this.btn_change.currentState == "down") this.showResetGroup();
             } 
         }
@@ -192,7 +190,7 @@ class EquipDialog extends PopupWindow {
         }
         else
         {
-            if(this.equip_info.Lv == modEquip.EquipSource.EQUIPLV){
+            if(this.equip_info.Lv >= modEquip.EquipSource.EQUIPLV){
                 strType = "可升星";
                 strImg = "button_0017_png";
             }

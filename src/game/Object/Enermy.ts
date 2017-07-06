@@ -3,6 +3,7 @@ class Enermy extends BaseGameObject {
         super();
         this.colorFlilter = new egret.ColorMatrixFilter(this.colorMatrix);
         this.defaultFlilter = new egret.ColorMatrixFilter(this.defaultMatrix);
+        this.createExpAndSoul();
         this.atk_timer = new egret.Timer(1000);
         this.atk_timer.stop();
         this.atk_timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onComplete, this);
@@ -32,6 +33,7 @@ class Enermy extends BaseGameObject {
         this.effectArmature.scaleY = 1.5;
         this.buffArmature.scaleX = 1.5;
         this.buffArmature.scaleY = 1.5;
+        this.armature.filters = [this.defaultFlilter];
     }
 
     public init(data:Array<any>) {
@@ -53,6 +55,8 @@ class Enermy extends BaseGameObject {
 
     public update(time:number):void {
         super.update(time);
+        if (this.isMovExp) this.gainExpAndSoul(this.img_exp, 1, 16, -10);
+        if (this.isMovSoul) this.gainExpAndSoul(this.img_soul, 2, 14, 10);
     }
 
     /*******************状态的帧回调**********************/
@@ -103,9 +107,6 @@ class Enermy extends BaseGameObject {
                 if (dis <= this.atk_distance) {
                     this.gotoReady();
                 }
-                // else if ((dis > 100) && (dis <= 200) && this.isRemote) {
-                //     this.gotoSkill();
-                // }
             }
         });
     }
@@ -156,6 +157,7 @@ class Enermy extends BaseGameObject {
 
     /**受到攻击 */
     public gotoHurt(isSkillHurt:boolean = false) {
+        if (this.hp <= 0) return;
         if ((this.curState == Enermy.Action_Dead) || (this.curState == BaseGameObject.Action_Hurt)) return;
         ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
         this.curState = BaseGameObject.Action_Hurt;
@@ -189,6 +191,7 @@ class Enermy extends BaseGameObject {
         Common.dispatchEvent(GameEvents.EVT_PRODUCEMONSTER, this);
         //隐藏buff动画
         this.buffArmature.visible = false;
+        this.fallExpAndSoul();
         TimerManager.getInstance().doTimer(5000, 0, this.disappear, this);
     }
     /****************************************************/
@@ -264,6 +267,69 @@ class Enermy extends BaseGameObject {
             }
         }
     }
+
+    /**
+     * 经验和魂石出现
+     */
+    public fallExpAndSoul():void {
+        Animations.fadeOut(this.img_exp, 1000, null, ()=>{
+            this.moveExpAndSoul(this.img_exp, 1);
+        })
+        let probability:number = MathUtils.getRandom(1, 10000);
+        if (probability <= 9000) {
+            Animations.fadeOut(this.img_soul, 1000, null, ()=>{
+                this.moveExpAndSoul(this.img_soul, 2);
+            })
+        }
+    }
+
+    /**
+     * 经验和魂石漂移
+     */
+    public moveExpAndSoul(target:any, type:number):void {
+        if (type == 1) this.isMovExp = true;
+        else if (type == 2) this.isMovSoul = true;
+        let point = target.localToGlobal();
+        target.x = this.x;
+        target.y = this.y + 20;
+        SceneManager.battleScene.effectLayer.addChild(target);
+    }
+
+    /**
+     * 收货经验和魂石
+     */
+    public gainExpAndSoul(target:any, type:number, spd:number, originx:number) {
+        let tempRadian = MathUtils.getRadian2(target.x, target.y, GameData.heros[0].x, GameData.heros[0].y);
+        let deltax = Math.cos(tempRadian) * spd;
+        let deltay = Math.sin(tempRadian) * spd;
+        target.x += deltax;
+        target.y += deltay;
+        var dis = MathUtils.getDistance(target.x, target.y, GameData.heros[0].x, GameData.heros[0].y);
+        if (dis < 10) {
+            if (type == 1) this.isMovExp = false;
+            else if (type == 2) this.isMovSoul = false;
+            target.x = originx;
+            target.y = -20;
+            target.alpha = 0;
+            this.addChild(target);
+        }
+    }
+
+    /**
+     * 创建经验和魂石的图片
+     */
+    public createExpAndSoul():void {
+        this.img_exp = Utils.createBitmap("img_fallExp_png");
+        this.img_exp.x = -10;
+        this.img_exp.y = -20;
+        this.img_exp.alpha = 0;
+        this.addChild(this.img_exp);
+        this.img_soul = Utils.createBitmap("img_fallSoul_png");
+        this.img_soul.x = 10;
+        this.img_soul.y = -20;
+        this.img_soul.alpha = 0;
+        this.addChild(this.img_soul);
+    }
     /****************************************************/
 
     public colorMatrix = [
@@ -298,6 +364,13 @@ class Enermy extends BaseGameObject {
     public isBoss:boolean;
     /**是否技能准备 */
     public isReadSkill:boolean;
+    /**经验图片 */
+    public img_exp:egret.Bitmap;
+    /**魂石图片 */
+    public img_soul:egret.Bitmap;
+    /**经验和魂石的移动 */
+    public isMovExp:boolean;
+    public isMovSoul:boolean;
 
     /*************敌方的状态***************/
     public static Action_Run01:string = "run01";

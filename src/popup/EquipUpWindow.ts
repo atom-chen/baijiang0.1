@@ -96,11 +96,7 @@ class EquipUpWindow extends PopupWindow{
         }
         
         let upData:any = TcManager.GetInstance().GetDataFromLv(2, this.equip_info.Lv);
-        if(UserDataInfo.GetInstance().GetBasicData("exp") >= upData.exp && UserDataInfo.GetInstance().GetBasicData("soul") >= upData.soul){
-
-            UserDataInfo.GetInstance().SetBasicData("exp", UserDataInfo.GetInstance().GetBasicData("exp") - upData.exp);
-            UserDataInfo.GetInstance().SetBasicData("soul", UserDataInfo.GetInstance().GetBasicData("soul") - upData.soul);
-
+        if(UserDataInfo.GetInstance().IsHaveOhterGoods("exp", upData.exp, "soul", upData.soul)){
             let attr:any = this.equip_info.GetEquipAttr();
             this.equip_info.Lv = this.equip_info.Lv + 1;
             for(let i:number = 0; i < attr.length; i++) attr[i] += this.quality_attr_list[i];
@@ -118,12 +114,8 @@ class EquipUpWindow extends PopupWindow{
         }
         else
         {
-            if(UserDataInfo.GetInstance().GetBasicData("exp") < upData.exp){
-                Animations.showTips("经验不足无法升级");
-            }
-            else if(UserDataInfo.GetInstance().GetBasicData("soul") < upData.soul){
-                Animations.showTips("灵魂石不足无法升级");
-            }
+            if(!UserDataInfo.GetInstance().IsHaveGoods("exp", upData.exp)) Animations.showTips("经验不足无法升级",1,true);
+            else if(!UserDataInfo.GetInstance().IsHaveGoods("soul", upData.soul)) Animations.showTips("灵魂石不足无法升级",1,true);
         }
     }
 

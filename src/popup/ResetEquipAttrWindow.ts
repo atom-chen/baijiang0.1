@@ -43,12 +43,11 @@ class ResetEqiopAttrWindow extends PopupWindow{
 
     private onTouchReset(event:egret.TouchEvent):void{
 
-        if(UserDataInfo.GetInstance().GetBasicData("diamond") < 50){
-            Animations.showTips("钻石不足，无法洗练");
+        if(!UserDataInfo.GetInstance().IsHaveGoods("diamond", 50)){
+            Animations.showTips("钻石不足，无法洗练", 1, true);
             return;
         }
 
-        UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 50);
         let rand = Math.floor((Math.random() % 100 * 100));
         let type = rand % 5 == 0 ? 5:rand % 5;
         let value = rand % 100 == 0 ? 1 : rand % 100;

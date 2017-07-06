@@ -30,9 +30,15 @@ class shopItemIR extends Base {
             case this.btn_itemDetail:
             break;
             case this.btn_buy:
-                GameLayerManager.gameLayer().maskLayer.addChild(this.shopItemPop);
-                this.shopItemPop.show(this.content, this.btn_buy.name);
-                Animations.popupOut(this.shopItemPop, 500);
+                if(this.btn_buy.name == "diamond"){
+                    Animations.showTips("无法购买，现金充值尚未开放", 1, true);
+                }
+                else
+                {
+                    GameLayerManager.gameLayer().maskLayer.addChild(this.shopItemPop);
+                    this.shopItemPop.show(this.content, this.btn_buy.name);
+                    Animations.popupOut(this.shopItemPop, 500);
+                }
             break;
             default:
             break;
@@ -47,8 +53,16 @@ class shopItemIR extends Base {
         this.lab_name.text = content.name;
         this.img_item.source = content.imgItem;
         this.lab_count.text = content.count;
-        this.btn_buy.label = content.price;
         this.btn_buy.name = type;
+        
+        if(type == "diamond") this.set_label_Text("",content.price, false);
+        else this.set_label_Text(content.price,"", true);
+    }
+
+    private set_label_Text(strBtn:string, strMoney:string, isVisible:boolean):void{
+        this.btn_buy.label = strBtn;
+        this.lab_money.text = strMoney;
+        this.img_diamond.visible = isVisible;
     }
 
     /**标题 */
@@ -67,6 +81,8 @@ class shopItemIR extends Base {
     private img_btnBuy:any;
     /**内容 */
     private content:any;
+    private img_diamond:eui.Image;
+    private lab_money:eui.Label;
 
     /*******************弹窗********************/
     private shopItemPop:ShopItemPop;

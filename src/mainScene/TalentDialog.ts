@@ -56,23 +56,12 @@ class TalentDialog extends PopupWindow {
         this._focusBtn = event.currentTarget;
         switch (this._focusBtn) {
             case this.btn_add:
-                this.lab_title.text = "购买天赋";
-                this.lab_detail.text = "购买天赋需要花费50玉石";
-                this.purchassType = 1;
-                Animations.popupOut(this.popupGroup, 500);
-                this.popupGroup.visible = true;
-                GameLayerManager.gameLayer().maskLayer.addChild(this.popupGroup);
+                this.show_pop_view("购买天赋", "title_0008_png",1);
             break;
             case this.btn_reset:
-                this.lab_title.text = "重置天赋";
-                this.lab_detail.textFlow = <Array<egret.TextField>>[{text:"重置天赋需要花费"},{text:"50钻石",style:{"textColor":0xffff00}}];
-                this.purchassType = 2;
-                Animations.popupOut(this.popupGroup, 500);
-                this.popupGroup.visible = true;
-                GameLayerManager.gameLayer().maskLayer.addChild(this.popupGroup);
+                this.show_pop_view("重置天赋", "title_0009_png",2);
             break;
             default:
-                GameLayerManager.gameLayer().panelLayer.removeChildren();
                 GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
             break;
         }
@@ -82,19 +71,10 @@ class TalentDialog extends PopupWindow {
      * 弹窗按钮回调
      */
     private onPopupBtn(event:egret.TouchEvent):void {
-        switch (event.currentTarget) {
-            case this.btn_certain:
-                Animations.popupIn(this.popupGroup, 300, ()=>{
-                    GameLayerManager.gameLayer().maskLayer.removeChildren();
-                    this.onPurchass(this.purchassType);
-                });
-            break;
-            default:
-            Animations.popupIn(this.popupGroup, 300, ()=>{
-                GameLayerManager.gameLayer().maskLayer.removeChildren();
-            });
-            break;
-        }
+        Animations.popupIn(this.popupGroup, 300, ()=>{
+            GameLayerManager.gameLayer().maskLayer.removeChildren();
+            if(event.currentTarget == this.btn_certain) this.onPurchass(this.purchassType);
+        });
     }
 
     /**
@@ -102,22 +82,24 @@ class TalentDialog extends PopupWindow {
      */
     private _unLockTalent(type:string) {
         if (modTalent.isUnlock(this.curPage, this.curTalentId)) {
+            if (this.curLevel >= this._curMaxLv) {
+                Animations.showTips("此天赋已满", 1, true);
+                return;
+            }
+            if (modTalent.isTalentFull(this.curPage, this.curTalentId)) {
+                Animations.showTips("天赋已点满", 1, true);
+                return;
+            }
+
             if (type == "power") {
-                if(UserDataInfo.GetInstance().GetBasicData("power") >= TcManager.GetInstance().GetDataFromLv(3, this.allLv).power){
-                    this.update();
-                    UserDataInfo.GetInstance().SetBasicData("power", UserDataInfo.GetInstance().GetBasicData("power") - TcManager.GetInstance().GetDataFromLv(3, this.allLv).power);
-                    this.show_lab_text();
-                }
-                else Animations.showTips("能力不足，不能升级天赋");
+                if(UserDataInfo.GetInstance().IsHaveGoods("power", TcManager.GetInstance().GetDataFromLv(3, this.allLv).power)) this.update();
+                else Animations.showTips("能力不足，不能升级天赋",1,true);
             }else if(type == "diamond")
             {
-                if(UserDataInfo.GetInstance().GetBasicData("diamond") >= TcManager.GetInstance().GetDataFromLv(3, this.allLv).diamond){
-                    this.update();
-                    UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - TcManager.GetInstance().GetDataFromLv(3, this.allLv).diamond);
-                    this.show_lab_text();
-                }
-                else Animations.showTips("钻石不足，不能升级天赋");
+                if(UserDataInfo.GetInstance().IsHaveGoods("diamond", TcManager.GetInstance().GetDataFromLv(3, this.allLv).diamond)) this.update();
+                else Animations.showTips("钻石不足，不能升级天赋",1,true);
             }
+
         }else{
             let strs = modTalent.getTips(this.curTalentId);
             Animations.showTips(strs, 1, true);
@@ -156,7 +138,7 @@ class TalentDialog extends PopupWindow {
             }
 
             if(UserDataInfo.GetInstance().GetBasicData("diamond") < 50){
-                Animations.showTips("钻石不足，无法购买天赋页");
+                Animations.showTips("钻石不足，无法购买天赋页", 1, true);
                 return;
             }
 
@@ -249,14 +231,8 @@ class TalentDialog extends PopupWindow {
      * 更新升级弹窗
      */
     private update():void {
-        if (this.curLevel >= this._curMaxLv) {
-            Animations.showTips("此天赋已满", 1, true);
-            return;
-        }
-        if (modTalent.isTalentFull(this.curPage, this.curTalentId)) {
-            Animations.showTips("天赋已点满", 1, true);
-            return;
-        }
+
+        this.show_lab_text();
 
         this.allLv++;
         this.curLevel ++;
@@ -347,6 +323,16 @@ class TalentDialog extends PopupWindow {
         this.btn_upDiamond.label = data.diamond;
     }
 
+    private show_pop_view(strName:string,imgPath:string,type:number):void{
+        this.lab_title.text = strName;
+        this.img_title.source = RES.getRes(imgPath);
+        this.lab_detail.textFlow = <Array<egret.TextField>>[{text:strName + "需要花费"},{text:"50钻石",style:{"textColor":0x2d6ea6}}];
+        this.purchassType = type;
+        Animations.popupOut(this.popupGroup, 500);
+        this.popupGroup.visible = true;
+        GameLayerManager.gameLayer().maskLayer.addChild(this.popupGroup);
+    }
+
     public static instance:TalentDialog;
     /**天赋的配置文件 */
     private tcTalent:any;
@@ -400,4 +386,5 @@ class TalentDialog extends PopupWindow {
     /**购买类型 */
     private purchassType:number;
     private pages:Array<TalentIR>;
+    private img_title:eui.Image;
 }

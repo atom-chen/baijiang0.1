@@ -439,9 +439,9 @@ class Hero extends BaseGameObject {
         this.skill_status = true;
         this.skill.start(Hero.Effect_Skill01, this);
         if (this.isPVP){
-            SceneManager.pvpScene.onCDTime();
+            SceneManager.pvpScene.onCDTime(this.skill.cd);
         }else{
-            SceneManager.battleScene.battleSceneCom.onCDTime();
+            SceneManager.battleScene.battleSceneCom.onCDTime(this.skill.cd);
         }
     }
 

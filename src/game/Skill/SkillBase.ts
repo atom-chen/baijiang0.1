@@ -48,4 +48,6 @@ class SkillBase {
     }
 
     public name:string;
+    /**冷却时间 */
+    public cd:number;
 }

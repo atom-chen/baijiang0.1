@@ -33,6 +33,27 @@
 		</e:skinName>
 	</e:Button>
 	<e:Group id="pageGroup" width="1136" height="485" x="0" y="154">
+		<e:Image source="talent1_1_png" x="48" y="62.17" visible="false"/>
+		<e:Image source="talent1_1_png" x="48" y="198" visible="false"/>
+		<e:Image source="talent1_1_png" x="160" y="130" visible="false"/>
+		<e:Image source="talent1_1_png" x="160" y="246" visible="false"/>
+		<e:Image source="talent1_1_png" x="160" y="366" visible="false"/>
+		<e:Image source="talent1_1_png" x="272" y="198" visible="false"/>
+		<e:Image source="talent1_1_png" x="272" y="62" visible="false"/>
+		<e:Image source="talent1_1_png" x="406" y="62" visible="false"/>
+		<e:Image source="talent1_1_png" x="407" y="198" visible="false"/>
+		<e:Image source="talent1_1_png" x="520" y="130" visible="false"/>
+		<e:Image source="talent1_1_png" x="520" y="246" visible="false"/>
+		<e:Image source="talent1_1_png" x="520" y="366" visible="false"/>
+		<e:Image source="talent1_1_png" x="631" y="198" visible="false"/>
+		<e:Image source="talent1_1_png" x="630" y="62" visible="false"/>
+		<e:Image source="talent1_1_png" x="768" y="62" visible="false"/>
+		<e:Image source="talent1_1_png" x="768.01" y="198" visible="false"/>
+		<e:Image source="talent1_1_png" x="880" y="130" visible="false"/>
+		<e:Image source="talent1_1_png" x="880" y="246" visible="false"/>
+		<e:Image source="talent1_1_png" x="880" y="366" visible="false"/>
+		<e:Image source="talent1_1_png" x="992" y="198" visible="false"/>
+		<e:Image source="talent1_1_png" x="992" y="62" visible="false"/>
 	</e:Group>
 	<e:Group id="popupGroup" width="1136" height="640" x="0" y="0" visible="false">
 		<e:Image source="mask_png" width="5680" height="3200" x="-2272" y="-1280"/>
@@ -56,7 +77,7 @@
 		</e:Button>
 		<e:Label id="lab_detail" text="购买天赋需要花费50钻石" horizontalCenter="0" verticalCenter="-37.5" size="25" fontFamily="Microsoft YaHei" bold="true" textColor="0x6b6b6b"/>
 		<e:Label text="是否继续？" horizontalCenter="-0.5" verticalCenter="-2.5" size="25" fontFamily="Microsoft YaHei" bold="true" textColor="0x6b6b6b"/>
-		<e:Image source="title_0008_png" x="463.99" y="149.5"/>
+		<e:Image id="img_title" source="title_0008_png" y="149.5" horizontalCenter="0"/>
 	</e:Group>
 	<e:Group id="skillPopupGroup" width="1136" height="640" x="1" y="1" anchorOffsetX="0" anchorOffsetY="0" visible="false">
 		<e:Image source="mask_png" width="5680" height="3200" x="-2272" y="-1280"/>

@@ -71,7 +71,7 @@ class PVPWindow extends PopupWindow{
     }
 
     public Close():void{
-        super.Close();  
+        GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
 
         this._time.stop();
         this._time.removeEventListener(egret.TimerEvent.TIMER, this.onTimer, this);
@@ -90,16 +90,14 @@ class PVPWindow extends PopupWindow{
             UserData.challengeNum++;
         }
         else if(target == this.btn_buy){
-            if(UserDataInfo.GetInstance().GetBasicData("diamond") < 200){
-                Animations.showTips("钻石不足，无法挑战");
+            if(UserDataInfo.GetInstance().IsHaveGoods("diamond", 200)){
+                this.Close();
+                SceneManager.nextScene = "pvpScene";
+                WindowManager.GetInstance().GetWindow("ReadyDialog").Show();
             }
             else
             {
-                this.Close();
-                UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 200);
-                SceneManager.nextScene = "pvpScene";
-                WindowManager.GetInstance().GetWindow("ReadyDialog").Show();
-                GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
+                Animations.showTips("钻石不足，无法挑战", 1, true);
             }
         }
     }
@@ -165,7 +163,7 @@ class PVPWindow extends PopupWindow{
         this.btn_buy.visible = buyStatus;
     }
 
-    private btn_close:eui.Image;
+    private btn_close:eui.Button;
     private btn_start:eui.Button;
     private btn_buy:eui.Button;
 

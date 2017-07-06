@@ -10,6 +10,7 @@ class Bristle extends SkillBase {
         super.init();
         this.buffIndex = 1;
         this.push_range = 200;
+        this.cd = 300;
     }
 
     public start(animation:string, target:any) {

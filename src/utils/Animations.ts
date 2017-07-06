@@ -75,9 +75,13 @@ namespace Animations {
     }
 
     /**放大后缩小 */
-    export function zoomIn(target:any):void {
+    export function zoomIn(target:any, func:Function = null):void {
         egret.Tween.get(target).to({scaleX:6, scaleY:6}, 100, egret.Ease.circOut).call(()=>{
-            egret.Tween.get(target).to({scaleX:3, scaleY:3}, 100, egret.Ease.circIn);
+            egret.Tween.get(target).to({scaleX:3, scaleY:3}, 100, egret.Ease.circIn).call(()=>{
+                if (func) {
+                    func();
+                }
+            });
         })
     }
 
