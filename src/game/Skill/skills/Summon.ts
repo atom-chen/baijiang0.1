@@ -48,6 +48,7 @@ class Summon extends SkillBase {
 
 
     private _onCall():void {
+        if (this.target.hp <= 0) return;
         Common.log("开始召唤")
         this.call();
     }

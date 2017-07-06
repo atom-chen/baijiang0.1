@@ -19,7 +19,7 @@ class ObjectPool {
             let argsLen:number = args.length;
             if (argsLen == 0) {
                 item = new cls();
-                Common.log("创建", name);
+                // Common.log("创建", name);
             }
             else if (argsLen == 1) {
                 item = new cls(args[0]);
@@ -38,7 +38,7 @@ class ObjectPool {
     public static push(obj:any) {
         if (!obj) return;
         let name:string = obj.ObjectKey;
-        Common.log("回收", name);
+        // Common.log("回收", name);
         if (!ObjectPool._poolData[name]) return;
         ObjectPool._poolData[name].push(obj);
     }

@@ -51,7 +51,13 @@ class TalentIR extends Base {
                 this.iconGroup[id-1]["lv"] = 0;
                 this.iconGroup[id-1].addChild(mask);
 
-                this.iconGroup[id-1].x = this.position[j][0] + (i-1)*357;
+                //外框
+                let box = Utils.createBitmap("talentMaxBox_png");
+                this.iconGroup[id-1]["box"] = box;
+                box.visible = false;
+                this.iconGroup[id-1].addChild(box);
+
+                this.iconGroup[id-1].x = this.position[j][0] + (i-1)*360;
                 this.iconGroup[id-1].y = this.position[j][1];
                 this.iconGroup[id-1].name = `${id}`;
                 this.iconGroup[id-1].addEventListener(egret.TouchEvent.TOUCH_TAP, this.onIconListener, this)
@@ -83,7 +89,10 @@ class TalentIR extends Base {
             this.iconGroup[id-1]["Mask"].visible = false;
             this.iconGroup[id-1]["lv"] = talent[1];
             this.lvGroup[id-1].text = `${talent[1]}/${this._maxLv[id-1]}`;
-            if (talent[1] == this._maxLv[id-1]) this.lvGroup[id-1].textColor = 0x91bd32;
+            if (talent[1] == this._maxLv[id-1]){
+                this.iconGroup[id-1]["box"].visible = true;
+                this.lvGroup[id-1].textColor = 0x91bd32;
+            }
         }
         modTalent.setUnlock(curPage);
     }
@@ -115,7 +124,10 @@ class TalentIR extends Base {
         this.iconGroup[this.curTalentId-1]["lv"] ++;
         let level = this.iconGroup[this.curTalentId-1]["lv"];
         this.lvGroup[this.curTalentId-1].text = `${level}/${this._maxLv[this.curTalentId-1]}`;
-        if (level == this._maxLv[this.curTalentId-1]) this.lvGroup[this.curTalentId-1].textColor = 0x91bd32;
+        if (level == this._maxLv[this.curTalentId-1]){
+            this.iconGroup[this.curTalentId-1]["box"].visible = true;
+            this.lvGroup[this.curTalentId-1].textColor = 0x91bd32;
+        }
     }
 
     public setTalentDetail(pageCount:number):void {
@@ -136,7 +148,7 @@ class TalentIR extends Base {
     /**页数 */
     public page:number;
     /**位置 */
-    private position = [[60,14],[267,14],[109,118],[219,118],[59,222],[268,222],[163,329]];
+    private position = [[48,62],[272,62],[160,130],[48,198],[272,198],[160,246],[160,366]];
     /**天赋组 */
     private iconGroup:Array<eui.Group>;
     /**等级 */
