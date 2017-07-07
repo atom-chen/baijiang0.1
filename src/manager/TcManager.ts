@@ -46,13 +46,5 @@ class TcManager{
         return null;
     }
 
-    public GetDataFromQuality(quality:number):any{
-        if(quality < 0 || quality > 4) return;
-        return this.damage_list[quality];
-    }
-
-
     private tc_list:any;
-    private damage_list:any = [[30, 30,0,0,0],[50, 50,20,0,0],[80, 80, 50, 1,0],
-                          [150, 150, 80, 3, 3],[200, 200, 150, 5, 5]];
 }

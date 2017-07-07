@@ -40,7 +40,7 @@ class EquipInfoDialog extends PopupWindow {
         let str_list:any = ["攻击: ", "生命: ", "护甲: ", "暴击: "];
 
         for(let i in this.self_attr_list){
-            this.self_attr_list[i].text = str_list[i] + info.GetEquipAttr()[i];
+            this.self_attr_list[i].text = str_list[i] + Math.floor(info.GetEquipAttr()[i]);
         }
 
        let attrData = info.GetAttrType();

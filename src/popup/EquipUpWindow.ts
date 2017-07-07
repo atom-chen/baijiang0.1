@@ -63,7 +63,7 @@ class EquipUpWindow extends PopupWindow{
         this.txt_weapon.text   = equip_data.name;
 
         let attr:any = this.equip_info.GetEquipAttr();
-        this.quality_attr_list = TcManager.GetInstance().GetDataFromQuality(this.equip_info.Quality - 1);
+        this.quality_attr_list = equip_info.GetOriginAttr();
         
         this.set_label_text();
         this.hide_attr_info(this.equip_info.Quality + 1, false);
@@ -123,8 +123,8 @@ class EquipUpWindow extends PopupWindow{
         let quality:number = this.equip_info.Quality + 1;
         let num = quality >= 5 ? 5 : quality;
         for(let i:number = 0; i < num; i++){
-            this.txt_front_list[i].text = attr[i];
-            this.txt_rear_list[i].text = attr[i] + this.quality_attr_list[i];
+            this.txt_front_list[i].text = `${Math.floor(attr[i])}`;
+            this.txt_rear_list[i].text = `${Math.floor(attr[i] + this.quality_attr_list[i])}`;
         }
     }
 

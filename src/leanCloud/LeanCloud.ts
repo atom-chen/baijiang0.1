@@ -115,11 +115,7 @@ class LeanCloud{
             // Common.log(todo.get("equip"));
             let data = JSON.parse(todo.get("equip"));
             for(let i:number = 0; i < data.length; i++){
-                let info = new modEquip.EquipInfo();
-                info.Id = data[i].id;
-                info.Lv = data[i].lv;
-                info.Quality = data[i].quality;
-                info.Star    = data[i].star;
+                let info = new modEquip.EquipInfo(data[i].id, data[i].star, data[i].quality, data[i].lv);
                 info.SetEquipAttr(data[i].attr_list);
                 for(let j in data[i].attrType){
                     info.InsertAttrType(new modEquip.AttrType(data[i].attrType[j].type, data[i].attrType[j].value));

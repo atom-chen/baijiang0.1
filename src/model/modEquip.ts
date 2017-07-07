@@ -58,15 +58,31 @@ namespace modEquip {
     /** 装备信息 */
    export class EquipInfo{
 
-       public constructor(){
-           this.id   = 0;
-           this.lv   = 1;
-           this.star = 0;
-           this.quality = 0;
+       public constructor(id:number, star:number, quality:number, lv:number = 1){
+           this.id   = id;
+           this.star = star;
+           this.quality = quality;
+           this.lv   = lv;
            this.typeID = 0;
            this.attrType = [];
            this.attr_list = [];
-           for(let i:number = 0; i < 5; i++) this.attr_list[i] = 50;
+           this.origin_attr_list = [];
+
+           for(let i:number = 0; i < 5; i++){
+               if(this.quality >= i){
+                   if(i >= 3) this.set_attr(i, this.quality * 20);
+                   else this.set_attr(i, this.quality * 100);
+               }
+               else
+               {
+                   this.set_attr(i, 0);
+               }
+            }
+       }
+
+       private set_attr(i:number, val:number):void{
+           this.attr_list[i] = val;
+           this.origin_attr_list[i] = val / 100;
        }
 
         public set Id(val:number){
@@ -109,10 +125,6 @@ namespace modEquip {
             return this.typeID;
         }
 
-        public GetEquipAttr():any{
-            return this.attr_list;
-        }
-
         public InsertAttrType(attrType:AttrType):void{
             this.attrType.push(attrType);
         }
@@ -132,10 +144,18 @@ namespace modEquip {
             return this.attrType[index];
         }
 
+         public GetEquipAttr():any{
+            return this.attr_list;
+        }
+
         public SetEquipAttr(attrList:Array<number>):void{
             for(let i:number = 0; i < 5; i++){
                 this.attr_list[i] = attrList[i];
             }
+        }
+
+        public GetOriginAttr():any{
+            return this.origin_attr_list;
         }
 
         private id:number;                      //装备id
@@ -144,6 +164,7 @@ namespace modEquip {
         private quality:number;                 //装备的品质
         private typeID:number;                  //装备的类型id 主要是区别id一样的时候不同的typeid
         private attr_list:Array<number>;        //[1]生命[2]攻击[3]护甲[4]暴击[5]闪避
+        private origin_attr_list:Array<number>;    //源氏的数据列表
         private attrType:Array<AttrType>;       //属性类型
     }
 
@@ -201,10 +222,7 @@ namespace modEquip {
 
         /** 插入装备信息 */
         public InsertEquipInfo(equipInfo:any):void{
-            let info:EquipInfo = new EquipInfo();
-            info.Id = equipInfo.id;
-            info.Star = equipInfo.star;
-            info.Quality = TcManager.GetInstance().GetTcEquipData(equipInfo.id).grade;
+            let info:EquipInfo = new EquipInfo(equipInfo.id, equipInfo.star, TcManager.GetInstance().GetTcEquipData(equipInfo.id).grade);
             for(let i:number = 0; i < equipInfo.affix.length; i++){
                 let attrType = new AttrType(equipInfo.affix[i].type, equipInfo.affix[i].value);
                 info.InsertAttrType(attrType);

@@ -83,7 +83,7 @@ class ChangeEquipPop extends PopupWindow {
         this.scrollGroup.addChild(this.img_selectBox);
 
         if (equipData.GetEquipNum() >= 1) {
-            if(id == 0){
+            if(id == -1){
                 this.select_list[0] = this.img_list[0]["id"];
                 this.select_list[1] = this.img_list[0]["typeId"];
                 Common.SetXY(this.img_selectBox, 15, 4);
