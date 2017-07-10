@@ -7,6 +7,8 @@ class Enermy extends BaseGameObject {
         this.atk_timer = new egret.Timer(1000);
         this.atk_timer.stop();
         this.atk_timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onComplete, this);
+        this.hurtText = Utils.createBitmapText("hurtFnt_fnt", this);
+        this.hurtText.x = -10;
     }
 
     public initDragonBonesArmature(name:string):void {
@@ -177,6 +179,7 @@ class Enermy extends BaseGameObject {
             this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
         }
         this.hp --;
+        this.hurtAnimate();
     }
 
     /**蓄力 */
@@ -192,11 +195,24 @@ class Enermy extends BaseGameObject {
         //隐藏buff动画
         this.buffArmature.visible = false;
         this.fallExpAndSoul();
+        GameData.heros[0].killBuff();
         TimerManager.getInstance().doTimer(5000, 0, this.disappear, this);
     }
     /****************************************************/
 
     /***********************其他函数**********************/
+    /**
+     * 受伤表现
+     */
+    public hurtAnimate():void {
+        let hurtValue = MathUtils.getRandom(100, 2000);
+        this.hurtText.text = `-${hurtValue.toString()}`;
+        this.hurtText.anchorOffsetX = this.hurtText.width/2;
+        this.hurtText.y = -40;
+        this.hurtText.scaleX = 1;
+        if (this.isReverse) this.hurtText.scaleX = -1;
+        Animations.hurtTips(this.hurtText);
+    }
     /**
      * 攻击cd结束
      */
@@ -371,6 +387,8 @@ class Enermy extends BaseGameObject {
     /**经验和魂石的移动 */
     public isMovExp:boolean;
     public isMovSoul:boolean;
+    /**伤害位图 */
+    public hurtText:egret.BitmapText;
 
     /*************敌方的状态***************/
     public static Action_Run01:string = "run01";

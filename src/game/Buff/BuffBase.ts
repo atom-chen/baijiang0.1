@@ -9,7 +9,7 @@ class BuffBase {
     public buffData:BuffData;
 
     /**初始化 */
-    public buffInit() {
+    public buffInit(options:any = null) {
         this.buffData.id = 1;
         this.buffData.name = "";
         this.buffData.lv = 1;
@@ -59,6 +59,8 @@ class BuffBase {
     public recycleBuff() {
         ObjectPool.push(this);
     }
+
+    public options:any;
 
     /*****************特效相关*******************/
     public effectName:string;

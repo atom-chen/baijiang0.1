@@ -2,10 +2,10 @@
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
 	<e:Image source="shop_0001_png" x="0" y="0" height="640"/>
 	<e:Image source="shop_0005_png" x="144.47" y="8.84"/>
-	<e:Image x="780" y="40" width="160" height="44" source="sole_0001_png"/>
-	<e:Image x="950" y="40" width="160" height="44" source="crystal_0001_png"/>
-	<e:Label id="lab_soul" text="99999" y="50" size="25" fontFamily="Microsoft YaHei" bold="true" x="816.65" textColor="0x851a9b" anchorOffsetX="0" width="113" textAlign="right"/>
-	<e:Label id="lab_money" text="99999" y="50.66" size="25" fontFamily="Microsoft YaHei" bold="true" x="977" textColor="0x2d6ea6" anchorOffsetX="0" width="121" textAlign="right"/>
+	<e:Image x="790.64" y="40" width="160" height="44" source="sole_0001_png"/>
+	<e:Image x="960.64" y="40" width="160" height="44" source="crystal_0001_png"/>
+	<e:Label id="lab_soul" text="99999" y="50" size="25" fontFamily="Microsoft YaHei" bold="true" x="827.29" textColor="0x851a9b" anchorOffsetX="0" width="113" textAlign="right"/>
+	<e:Label id="lab_money" text="99999" y="50.66" size="25" fontFamily="Microsoft YaHei" bold="true" x="987.64" textColor="0x2d6ea6" anchorOffsetX="0" width="121" textAlign="right"/>
 	<e:Button id="btn_back" label="" x="14" y="14" width="104" height="68">
 		<e:skinName>
 		<e:Skin states="up,down,disabled" xmlns:w="http://ns.egret.com/wing">

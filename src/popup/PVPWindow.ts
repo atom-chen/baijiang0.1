@@ -90,7 +90,7 @@ class PVPWindow extends PopupWindow{
             UserData.challengeNum++;
         }
         else if(target == this.btn_buy){
-            if(UserDataInfo.GetInstance().IsHaveGoods("diamond", 200)){
+            if(UserDataInfo.GetInstance().IsHaveGoods("diamond", 100)){
                 this.Close();
                 SceneManager.nextScene = "pvpScene";
                 WindowManager.GetInstance().GetWindow("ReadyDialog").Show();

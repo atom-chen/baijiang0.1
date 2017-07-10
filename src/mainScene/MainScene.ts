@@ -4,7 +4,7 @@
 class MainScene extends Base {
     public constructor() {
         super();
-        this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this)
+        this.addEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this);
         this.skinName = "resource/game_skins/mainSceneSkin.exml"
     }
 
@@ -13,6 +13,8 @@ class MainScene extends Base {
     }
 
     private uiCompleteHandler():void {
+        this.removeEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this)
+
         let event_list:any = [this.btn_ready,this.btn_equip,this.btn_talent,this.btn_setting,this.btn_shop,this.btn_applicate,this.btn_close,this.btn_pvp];
         for(let i in event_list) event_list[i].addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         GameLayerManager.gameLayer().addEventListener(UserData.CHANGEDATA, this.onChangeData, this);
@@ -21,16 +23,7 @@ class MainScene extends Base {
         this.show_label_text();      
     }
 
-    private createMovie(name:string,x:number,y:number,index:number = -1):MovieClipManager{
-        let movie = new MovieClipManager(name);
-        Common.SetXY(movie, x, y);
-        if(index != -1){
-            this.addChildAt(movie, index);
-        }
-        else this.addChild(movie);
-        return movie;
-    }
-
+    /** 对象渐变效果 */
     private objFadeEffect(obj:any):void{
         let randTime:number = Math.floor((Math.random() % 10) * 1000);
         randTime = randTime < 100 ? 100 : randTime;
@@ -42,9 +35,22 @@ class MainScene extends Base {
         },this);
     }
 
+    /** 创建精灵 */
+    private createMovie(name:string,x:number,y:number,index:number = -1):MovieClipManager{
+        let movie = new MovieClipManager(name);
+        Common.SetXY(movie, x, y);
+        if(index != -1){
+            this.addChildAt(movie, index);
+        }
+        else this.addChild(movie);
+        return movie;
+    }
+
+    /***  创建主场景的精灵动画 包含人物动作 火光 猩猩 */
     private createMainScene():void{
-        this.star_list = [];
-        let starPosition = [[54,174],[75,42],[242,39],[622,80],[738,69],[958,110],[550,170],[1060,122],[1058,335],[1072,412]]
+        //星星列表
+        this.star_list = [];                                                                                                        
+        let starPosition = [[54,174],[75,42],[242,39],[622,80],[738,69],[958,110],[550,170],[1060,122],[1058,335],[1072,412]];
         let star_scale_list = [3, 2, 3, 2, 1, 2, 3, 2, 1, 1];
         for(let i:number = 0; i < 10; i++){
             this.star_list[i] = new egret.Bitmap(RES.getRes("0_0000_yinghuochongda01_png"));
@@ -55,6 +61,7 @@ class MainScene extends Base {
             this.objFadeEffect(this.star_list[i]);
         }
         
+        //精灵列表
         let fire = this.createMovie("fire", 382, 384, 2);
         let zhaoyun = this.createMovie("zhaoyun", 424, 207, 1); 
         let hair = this.createMovie("hair", 593, 133); 
@@ -64,6 +71,7 @@ class MainScene extends Base {
         let guanyu = this.createMovie("guanyu", 185, 9);
         let sunluban = this.createMovie("sunluban", 11, 242);
         
+        //精灵动作
         fire.Action("fire", -1);
         zhaoyun.Wait();
         hair.Action("hair", -1);
@@ -76,6 +84,7 @@ class MainScene extends Base {
         this._shape = Common.CreateShape(0, 0, this.width, this.height);
         this.setChildIndex(this.img_light, 100);
 
+        //定时器
         let timeNum = 100, lightNum = 0, scaleNum = 0.1;
         let time = new egret.Timer(100);
         this.img_light.scaleX = 3.6, this.img_light.scaleY = 3.6;
@@ -99,30 +108,6 @@ class MainScene extends Base {
             }
         }, this);
         time.start();        
-    }
-
-    /**
-     * 创建火光
-     */
-    private createFire():void {
-        let bg:egret.Bitmap = Utils.createBitmap("firePot_png");
-        this.addChild(bg);
-        bg.x = 392;
-        bg.y = 368;
-        //获取纹理
-        var texture = RES.getRes("ballParticle_png");
-        //获取配置
-        var config = RES.getRes("ballParticle_json");
-        //创建 GravityParticleSystem
-        var system = new particle.GravityParticleSystem(texture, config);
-        //启动粒子库
-        system.start();
-        system.x = bg.x + 70;
-        system.y = bg.y + 170;
-        system.emitterX = 0;
-        system.emitterY = 0;
-        system.scaleX = system.scaleY = 1.5;
-        this.addChild(system);
     }
 
     /**

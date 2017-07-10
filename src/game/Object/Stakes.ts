@@ -12,6 +12,8 @@ class Stakes extends egret.DisplayObjectContainer {
         this._mc = new egret.MovieClip(mcData.generateMovieClipData("stakes"));
         this.addChild(this._mc);
         this.addChild(this.buffArmature);
+        this.hurtText = Utils.createBitmapText("hurtFnt_fnt", this);
+        this.hurtText.x = 60;
        //添加播放完成事件
         this._mc.addEventListener(egret.Event.COMPLETE, this._onClipComplete, this);
     }
@@ -32,11 +34,16 @@ class Stakes extends egret.DisplayObjectContainer {
     public gotoHurt():void {
         if (this.hp <= 0) return;
         if (this.curState == "hurt") return;
-        ShakeTool.getInstance().shakeObj(SceneManager.pvpScene, 1, 5, 5);
+        // ShakeTool.getInstance().shakeObj(SceneManager.pvpScene, 1, 5, 5);
         this.curState = "hurt";
         this._mc.gotoAndPlay("stakes", 1);
         this.hp --;
-        SceneManager.pvpScene.updateValue();
+        let hurtValue = MathUtils.getRandom(100, 2000);
+        this.hurtText.text = `-${hurtValue.toString()}`;
+        this.hurtText.anchorOffsetX = this.hurtText.width/2;
+        this.hurtText.y = 50;
+        Animations.hurtTips(this.hurtText);
+        SceneManager.pvpScene.updateValue(hurtValue);
     }
     public gotoDead():void {
         this.clearObject();
@@ -44,7 +51,9 @@ class Stakes extends egret.DisplayObjectContainer {
     }
 
     public clearObject():void {
+        this.curState = "hurt";
         this.buffArmature.visible = false;
+        Common.log("木桩", GameData.stakes.length);
         Animations.fadeIn(this, 500, ()=>{
             ObjectPool.push(this);
             if (this.parent && this.parent.removeChild) this.parent.removeChild(this);
@@ -115,4 +124,6 @@ class Stakes extends egret.DisplayObjectContainer {
     public buff:any[];
     /**角色受到buff影响的骨架 */
     public buffArmature:DragonBonesArmatureContainer;
+    /**伤害位图 */
+    public hurtText:egret.BitmapText;
 }

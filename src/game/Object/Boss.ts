@@ -153,6 +153,7 @@ class Boss extends Enermy {
                     this.effectArmature.x = 0;
                     this.effectArmature.y = 0;
                 }
+                this.hurtAnimate();
             }else{
                 super.gotoHurt();
             }

@@ -110,6 +110,14 @@ class BattleSceneCom extends Base {
         this.img_hp.scaleX = GameData.hp/10;
     }
 
+    /**复活 */
+    public onRevive():void {
+        this.img_hp.scaleX = 1.0;
+        this.cd_time = 0;
+        this.lab_cdTime.visible = false;
+        this.img_skillMask.visible = false;
+    }
+
     public removeEventListener():void {
         Common.removeEventListener(GameEvents.EVT_PRODUCEMONSTER, this.update, this);
         Common.removeEventListener(GameEvents.EVT_SKILL, this.onCDTime, this);

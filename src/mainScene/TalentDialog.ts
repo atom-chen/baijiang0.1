@@ -73,7 +73,7 @@ class TalentDialog extends PopupWindow {
     private onPopupBtn(event:egret.TouchEvent):void {
         Animations.popupIn(this.popupGroup, 300, ()=>{
             GameLayerManager.gameLayer().maskLayer.removeChildren();
-            if(event.currentTarget == this.btn_certain) this.onPurchass(this.purchassType);
+            this.onPurchass(this.purchassType);
         });
     }
 
@@ -163,7 +163,7 @@ class TalentDialog extends PopupWindow {
                 return;
             }
 
-            if(UserDataInfo.GetInstance().GetBasicData("diamond") <= 50){
+            if(!UserDataInfo.GetInstance().IsHaveGoods("diamond", 50)){
                 Animations.showTips("钻石不足，无法重置", 1, true);
                 return;
             }
@@ -174,7 +174,6 @@ class TalentDialog extends PopupWindow {
             this.pages[this.curPage].reset(this.curPage);
             LeanCloud.GetInstance().SaveRoleData("talentPage", talentPage);
 
-            UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 50);
             this.show_lab_text();
         }
     }
@@ -246,7 +245,7 @@ class TalentDialog extends PopupWindow {
         this.pages[this.curPage].setUnlock(this.curTalentId);
         modTalent.setData(this.curPage, this.curTalentId, this.curLevel);
         Animations.showTips("天赋升级成功", 1);
-        this.show_btn_text();
+        this.show_btn_text(true);
     }
 
     /**
@@ -273,16 +272,16 @@ class TalentDialog extends PopupWindow {
         let btn:any = this.btn_upPower.getChildAt(0);
         let diamondBtn:any = this.btn_upDiamond.getChildAt(0);
         if (modTalent.isUnlock(this.curPage, num)) {
-            btn.source = "button_0004_png";
             diamondBtn.source = "btn_shopGet_png";
             this.lab_condition.text = "";
+            this.show_btn_text(true);
+            
         }else{
-            btn.source = "button_0010_png";
+            this.show_btn_text(false);
             diamondBtn.source = "button_0010_png";
             let strs = modTalent.getTips(this.curTalentId, false);
             this.lab_condition.text = strs;
         }
-        this.show_btn_text();
     }
 
     /**
@@ -317,10 +316,22 @@ class TalentDialog extends PopupWindow {
         this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
     }
 
-    private show_btn_text():void{
+    private show_btn_text(isVisible:boolean):void{
         let data:any = TcManager.GetInstance().GetDataFromLv(3,this.allLv);
-        this.btn_upPower.label = data.power;
-        this.btn_upDiamond.label = data.diamond;
+        if(data == null) return;
+
+        if(!isVisible){
+            this.btn_upPower.label = "";
+            this.btn_upDiamond.label = "未解锁";
+        } 
+        else{
+            this.btn_upPower.label = data.power;
+            this.btn_upDiamond.label = data.diamond;
+        }  
+
+        this.btn_upPower.visible = isVisible;
+        this.btn_upPower.enabled = isVisible;
+        this.img_diamond.visible = isVisible;
     }
 
     private show_pop_view(strName:string,imgPath:string,type:number):void{
@@ -387,4 +398,5 @@ class TalentDialog extends PopupWindow {
     private purchassType:number;
     private pages:Array<TalentIR>;
     private img_title:eui.Image;
+    private img_diamond:eui.Image;
 }

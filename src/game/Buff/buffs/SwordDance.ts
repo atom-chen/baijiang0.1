@@ -5,20 +5,21 @@
 class SwordDance extends BuffBase {
     public constructor() {
         super();
-        this.buffInit();
+        // this.buffInit();
     }
 
     /**初始化 */
-    public buffInit() {
+    public buffInit(options:any) {
         super.buffInit();
+        this.options = options;
         this.buffData.className = "SwordDance";
         this.buffData.superpositionType = SuperpositionType.SuperpositionType_None;
         this.buffData.buffType = BuffType.BuffType_DeBuff;
         this.buffData.disperseType = DisperseType.DisperseType_NoClear;
         this.buffData.controlType = ControlType.NO;
         this.buffData.postionType = PostionType.PostionType_Body;
-        this.buffData.cd = 30;
-        this.buffData.id = 6;
+        this.buffData.cd = options.cd;
+        this.buffData.id = options.id;
         this.effectName = "skill02";
         this.isTimeOut = true;
     }
@@ -51,6 +52,7 @@ class SwordDance extends BuffBase {
     public buffEnd() {
         this.isTimeOut = true;
         let newBuff = ObjectPool.pop(this.buffData.className);
+        newBuff.buffInit(this.options);
         this.target.addBuff(newBuff);
         // this.target.playMultiBuff();
         TimerManager.getInstance().remove(this.buffEnd, this);

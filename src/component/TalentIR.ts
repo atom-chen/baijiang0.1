@@ -74,6 +74,7 @@ class TalentIR extends Base {
     private onIconListener(event:egret.TouchEvent):void {
         let id = event.currentTarget.name;
         this.curTalentId = parseInt(id);
+        Common.log(JSON.stringify(modTalent.getUnlockTalent()));
         TalentDialog.instance.showPopup(this.curTalentId, parseInt(event.currentTarget["lv"]), this._maxLv[this.curTalentId-1])
     }
 

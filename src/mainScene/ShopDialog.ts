@@ -22,6 +22,8 @@ class ShopDialog extends PopupWindow {
     }
 
     private onComplete():void {
+        this.removeEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
+
         this.btn_soul.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_equip.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_reward.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
@@ -36,13 +38,18 @@ class ShopDialog extends PopupWindow {
         this.btn_top = [this.btn_soul, this.btn_equip, this.btn_reward, this.btn_hero];
     }
 
+    public onPurchaseData(event:egret.Event):void{
+        this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
+        this.lab_money.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
+    }
+
     public Init():void{
         this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
         this.lab_money.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
     }
 
     public Reset(){
-        
+        GameLayerManager.gameLayer().addEventListener(UserData.PURCHASEDATA, this.onPurchaseData, this);
     }
 
     private onButtonHandler(event:egret.TouchEvent) {
@@ -94,6 +101,7 @@ class ShopDialog extends PopupWindow {
                 this.detailGroup.visible = false;
             break;
             default:
+                GameLayerManager.gameLayer().removeEventListener(UserData.PURCHASEDATA, this.onPurchaseData, this);
                 GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
             break;
         }

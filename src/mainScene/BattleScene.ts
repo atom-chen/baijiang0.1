@@ -170,7 +170,7 @@ class BattleScene extends Base {
     /**
      * 创建英雄
      */
-    private createHero():void {
+    public createHero():void {
         this.hero = ObjectPool.pop("Hero");
         GameData.heros.push(this.hero);
         this.hero.init([GameData.curHero, GameData.hp]);

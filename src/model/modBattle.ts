@@ -52,17 +52,9 @@ namespace modBattle {
      * 对象（战斗对象）回收
      */
     export function recycleObject():void {
-        let heroCount = GameData.heros.length;
         let monsterCount = GameData.monsters.length;
         let bossCount = GameData.boss.length;
-        for (let i = 0; i < heroCount; i++) {
-            let hero:Hero = GameData.heros[i];
-            hero.removeComplete();
-            hero.recycleSkill();
-            // hero.stopDragonBonesArmature();
-            if (hero && hero.parent && hero.parent.removeChild) hero.parent.removeChild(hero);
-            ObjectPool.push(GameData.heros[i]);
-        }
+        recycleHero();
         for (let i = 0; i < monsterCount; i++) {
             let monster:Monster = GameData.monsters[i];
             monster.recycle();
@@ -81,10 +73,25 @@ namespace modBattle {
             }                  
             ObjectPool.push(GameData.boss[i]);
         }
-        for (let i = 0; i < heroCount; i++) GameData.heros.pop();
         for (let i = 0; i < monsterCount; i++) GameData.monsters.pop();
         for (let i = 0; i < bossCount; i++) GameData.boss.pop();
         Common.removeEventListener(GameEvents.EVT_PRODUCEMONSTER, onEnermyDead, modBattle);
+    }
+
+    /**
+     * 回收英雄
+     */
+    export function recycleHero() {
+        let heroCount = GameData.heros.length;
+        for (let i = 0; i < heroCount; i++) {
+            let hero:Hero = GameData.heros[i];
+            hero.removeComplete();
+            hero.recycleSkill();
+            // hero.stopDragonBonesArmature();
+            if (hero && hero.parent && hero.parent.removeChild) hero.parent.removeChild(hero);
+            ObjectPool.push(GameData.heros[i]);
+        }
+        for (let i = 0; i < heroCount; i++) GameData.heros.pop();
     }
 
     /**

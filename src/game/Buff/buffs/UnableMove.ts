@@ -4,17 +4,20 @@
 class UnableMove extends BuffBase {
     public constructor() {
         super();
-        this.buffInit();
+        // this.buffInit();
     }
 
     /**初始化 */
-    public buffInit() {
+    public buffInit(options:any) {
         super.buffInit();
+        this.options = options;
         this.buffData.className = "UnableMove";
         this.buffData.superpositionType = SuperpositionType.SuperpositionType_None;
         this.buffData.buffType = BuffType.BuffType_DeBuff;
         this.buffData.disperseType = DisperseType.DisperseType_NoClear;
         this.buffData.controlType = ControlType.YES;
+        this.buffData.id = options.id;
+        this.buffData.duration = options.duration;
     }
 
     /**开始 */

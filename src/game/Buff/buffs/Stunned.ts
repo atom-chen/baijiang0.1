@@ -5,12 +5,13 @@
 class Stunned extends BuffBase {
     public constructor() {
         super();
-        this.buffInit();
+        // this.buffInit();
     }
 
     /**初始化 */
-    public buffInit() {
+    public buffInit(options:any) {
         super.buffInit();
+        this.options = options;
         this.buffData.className = "Stunned";
         this.buffData.probability = 90;
         this.buffData.superpositionType = SuperpositionType.SuperpositionType_None;
@@ -33,13 +34,16 @@ class Stunned extends BuffBase {
 
     /**刷新数据 */
     public update(target:any, callBack:Function = null) {
-        this._extraBuff = ObjectPool.pop("UnableMove");
+        let buffConfig = modBuff.getBuff(2);
+
+        this._extraBuff = ObjectPool.pop(buffConfig.className);
+        this._extraBuff.buffInit(buffConfig);
         //特效名字
         this._extraBuff.effectName = "xuanyun";
         //id
-        this._extraBuff.buffData.id = 2;
+        this._extraBuff.buffData.id = buffConfig.id;
         //持续时间
-        this._extraBuff.buffData.duration = 1.5;
+        this._extraBuff.buffData.duration = buffConfig.duration;
         //作用点
         this._extraBuff.buffData.postionType = PostionType.PostionType_Head;
         if (target.hp > 1) target.addBuff(this._extraBuff);

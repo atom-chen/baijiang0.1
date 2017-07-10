@@ -34,6 +34,7 @@ class BaseGameObject extends egret.DisplayObjectContainer {
         this.sumDeltaX = 0;
         this.sumDeltaY = 0;
         this.canMove = true;
+        this.isReverse = false;
     }
 
     /**
@@ -147,9 +148,11 @@ class BaseGameObject extends egret.DisplayObjectContainer {
     public reverse(target:any, radian:number):boolean {
         if ((radian > -Math.PI/2) && (radian < Math.PI/2)) {
             target.scaleX = 1;
+            this.isReverse = false;
             return false;
         }else{
             target.scaleX = -1;
+            this.isReverse = true;
             return true;
         }
     }
@@ -181,6 +184,8 @@ class BaseGameObject extends egret.DisplayObjectContainer {
     public curState:string;
     /**上一次状态的动画 */
     public lastAnimation:string;
+    /**是否反向 */
+    public isReverse:boolean;
     
     /**初始位置 */
     public originX:number = 0;

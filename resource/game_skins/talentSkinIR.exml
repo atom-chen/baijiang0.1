@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="485" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
 	<e:Group id="talentGroup" width="1136" height="485" x="0" y="0">
-		<e:Label text="浩劫" x="53" y="439" textColor="0x545454" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
-		<e:Label text="风行" x="407" y="439" textColor="0x545454" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
-		<e:Label text="回复" x="777" y="439" textColor="0x545454" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1"/>
+		<e:Label text="浩劫" x="180.28" y="13.28" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0x692c2c"/>
+		<e:Label text="风行" x="538" y="13.28" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0x2b3c5e"/>
+		<e:Label text="回复" x="899.78" y="13.28" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" anchorOffsetY="0" scaleX="1" scaleY="1" textColor="0x3b4a25"/>
         <!--<e:Image id="blood1" source="talent_kuangfeng_png" x="48" y="14"/>
         <e:Image id="blood2" source="talent_xieneng_png" x="252" y="14"/>
         <e:Image id="blood3" source="talent_mengji_png" x="93" y="119"/>

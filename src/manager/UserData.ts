@@ -17,4 +17,5 @@ namespace UserData {
     export var challengeNum:number;            //挑战次数
     export var rankDamage:number;              //排位伤害
     export var CHANGEDATA:string = "CHANGEDATA";
+    export var PURCHASEDATA:string = "PURCHASEDATA";
 }

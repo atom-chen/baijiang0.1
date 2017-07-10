@@ -25,7 +25,7 @@ namespace modTalent {
         "5":[[7], [14], [21]]
     }
     /**解锁的最小点数需求 */
-    var unlockCondition = [10, 28, 48, 60];
+    var unlockCondition = [10, 25, 33, 44];
     /**每种天赋的总点数 */
     var sumEachCount:Array<number> = [0, 0, 0];
     /**玩家解锁的天赋 */

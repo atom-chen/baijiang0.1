@@ -64,10 +64,10 @@ class PVPScene extends Base {
     /**
      * 更新伤害值
      */
-    public updateValue():void {
+    public updateValue(value:number):void {
         this.cd_time -= 5;
         this.lab_cdTime.text = `${this._cdTime}`;
-        this._curValue += MathUtils.getRandom(100, 200);
+        this._curValue += value;
         this.lab_value.text = `${this._curValue}`;
     }
 

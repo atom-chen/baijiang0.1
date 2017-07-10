@@ -8,6 +8,8 @@ namespace ConfigManager {
     export var heroConfig:any;
     /**敌方配置文件 */
     export var enermyConfig:any;
+    /**buff配置文件 */
+    export var buffConfig:any;
 
     /**装备配置文件 */
     export var tcEquip:any;
@@ -32,6 +34,7 @@ namespace ConfigManager {
         tcStage = RES.getRes("TcStage_json");
         heroConfig = RES.getRes("heroConfig_json");
         enermyConfig = RES.getRes("enermyConfig_json");
+        buffConfig = RES.getRes("buffConfig_json");
 
         tcEquip = RES.getRes("TcEquip_json");
         tcHero = RES.getRes("TcHero_json");

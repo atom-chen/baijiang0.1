@@ -335,11 +335,9 @@ namespace modEquip {
 
     /** 计算升级成功的概率 */
     export function GetSuccessGoodsLv(upInfo:EquipInfo, consumeInfo:EquipInfo):number{
-        let successRate:number;
         let consumeData:any = TcManager.GetInstance().GetTcEquipStarUpData(consumeInfo.Quality, consumeInfo.Star);
-        let upData:any = TcManager.GetInstance().GetTcEquipStarUpData(upInfo.Quality, upInfo.Star);
-        if(upData.needValue == 0) successRate = 100; 
-        else successRate = Math.floor((consumeData.bassValue / upData.needValue) * 100 );
+        let upData:any = TcManager.GetInstance().GetTcEquipStarUpData(upInfo.Quality, upInfo.Star + 1);
+        let successRate:number = Math.floor((consumeData.bassValue / upData.needValue) * 100 );
 
         return successRate;
     }

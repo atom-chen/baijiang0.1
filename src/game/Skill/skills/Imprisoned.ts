@@ -31,16 +31,14 @@ class Imprisoned extends SkillBase {
             if (enermy[i].isSkillHurt) return;
             enermy[i].isSkillHurt = true;
             enermy[i].removeActComplete();
-            this.buff = ObjectPool.pop("UnableMove");
+            let buffCofig = modBuff.getBuff(1);
+            this.buff = ObjectPool.pop(buffCofig.className);
+            this.buff.buffInit(buffCofig);
             switch (this.buffIndex) {
                 //禁锢
                 case 1:
                     //特效名字
                     this.buff.effectName = "skill01";
-                    //id
-                    this.buff.buffData.id = 1;
-                    //持续时间
-                    this.buff.buffData.duration = 3;
                     //作用点
                     this.buff.buffData.postionType = PostionType.PostionType_Foot;
                 break;

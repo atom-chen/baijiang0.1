@@ -301,4 +301,23 @@ namespace Animations {
             }
         }, this);
     }
+
+    /**
+     * 伤害弹出并消失
+     */
+    export function hurtTips(target:any, offset:number = 50) {
+        target.alpha = 0;
+        // if (target.parent.contains(target)) {
+        //     target.parent.removeChild(target);
+        //     egret.Tween.removeTweens(obj);
+        // }
+        var step2:Function = function() {
+            target = null;
+        }
+
+        var step1:Function = function() {
+            egret.Tween.get(target).to({alpha:0},500).call(step2);
+        }
+        egret.Tween.get(target).to({y:target.y - offset,alpha:1},500,egret.Ease.backOut).call(step1);
+    }
 }

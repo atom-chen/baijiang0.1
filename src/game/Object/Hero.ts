@@ -93,9 +93,11 @@ class Hero extends BaseGameObject {
      */
     public setBuff():void {
         // let buff = HeroData.list[this.name].buff;
-        let buff = ConfigManager.heroConfig[this.name].buff;
+        let buff:Array<number> = ConfigManager.heroConfig[this.name].buff;
         for (let i = 0; i < buff.length; i++) {
-            let newBuff = ObjectPool.pop(buff[i].name);
+            let buffConfig = modBuff.getBuff(buff[i]);
+            let newBuff = ObjectPool.pop(buffConfig.className);
+            newBuff.buffInit(buffConfig)
             this.addBuff(newBuff);
         }
     }
@@ -103,6 +105,7 @@ class Hero extends BaseGameObject {
     /**增加buff */
     public addBuff(buff:any):void {
         if (this.isExistBuff(buff) && (buff.buffData.controlType == ControlType.YES) && (buff.buffData.superpositionType == SuperpositionType.SuperpositionType_None)) return;
+        Common.log("增加buff----->", buff.buffData.className);
         this.buff.push(buff);
         buff.buffStart(this);
     }
@@ -240,27 +243,26 @@ class Hero extends BaseGameObject {
         this.sumDeltaY = this.sumDeltaY + this.deltaY;
         this.img_swordLight.x = this.offset[this.offsetIndex][0];
         this.img_swordLight.y = this.offset[this.offsetIndex][1];
-        // if (!this._isPVP) {
-            this.setEnermy();
-            //怪物到中点的距离
-            for (let i = 0; i < this.enermy.length; i++) {
-                let dis = MathUtils.getDistance(this.x, this.y, this.enermy[i].x, this.enermy[i].y);
-                let range:number = (this.isPVP) ? 50:33;
-                if (dis < range) {
-                    if (!this.isPVP) {
-                        let state = this.enermy[i].curState;
-                        if (state != Enermy.Action_Dead && state != BaseGameObject.Action_Hurt && !this.enermy[i].isReadSkill) {
-                            this.isHit = true;
-                            this.combo ++;
-                        }
-                        if (this.isAttackBuff(this.enermy[i])) {
-                            // Common.log("击晕了");
-                        }
+
+        this.setEnermy();
+        //怪物到中点的距离
+        for (let i = 0; i < this.enermy.length; i++) {
+            let dis = MathUtils.getDistance(this.x, this.y, this.enermy[i].x, this.enermy[i].y);
+            let range:number = (this.isPVP) ? 50:33;
+            if (dis < range) {
+                if (!this.isPVP) {
+                    let state = this.enermy[i].curState;
+                    if (state != Enermy.Action_Dead && state != BaseGameObject.Action_Hurt && !this.enermy[i].isReadSkill) {
+                        this.isHit = true;
+                        this.combo ++;
                     }
-                    this.enermy[i].gotoHurt();
+                    if (this.isAttackBuff(this.enermy[i])) {
+                        // Common.log("击晕了");
+                    }
                 }
+                this.enermy[i].gotoHurt();
             }
-        // }
+        }
     }
     /**
      * 收到攻击状态
@@ -298,8 +300,10 @@ class Hero extends BaseGameObject {
         let useSpeed:number = this.speed * 0.1;
         this.radian = MathUtils.getRadian2(this.x, this.y, this.endX, this.endY);
         let animation = this.getWalkPosition("run", this.radian);
-        this.deltaX = Math.cos(this.radian) * useSpeed;
-        this.deltaY = Math.sin(this.radian) * useSpeed;
+        let tempX = Math.cos(this.radian) * useSpeed;
+        let tempY = Math.sin(this.radian) * useSpeed;
+        this.deltaX = parseFloat(tempX.toFixed(2));
+        this.deltaY = parseFloat(tempY.toFixed(2));
         this.reverse(this, this.radian);
         if (!this.isPlay || this.lastAnimation != animation) {
             this.lastAnimation = animation;
@@ -323,7 +327,7 @@ class Hero extends BaseGameObject {
             //回避伤害(以40%概率测试)
             else if (this.buff[i].buffData.id == 5) {
                 let random = MathUtils.getRandom(1, 100);
-                if (random <= 90) {
+                if (random <= 10) {
                     Common.log("闪避");
                     this.buff[i].update();
                     return true;
@@ -331,8 +335,8 @@ class Hero extends BaseGameObject {
             }
             //圆波剑舞
             else if (this.buff[i].buffData.id == 6) {
-                this.buff[i].update();
-                return false;
+                if (!modBuff.isExistBuff(this.buff, 4)) this.buff[i].update();
+                // return false;
             }
         }
         return false;
@@ -375,14 +379,27 @@ class Hero extends BaseGameObject {
                     status = true;
                 }
             }
-            //增加属性
-            else if (this.buff[i].buffData.id == 8) {
-                this.buff[i].update(this);
-                status = true;
-            }
+            // //增加属性
+            // else if (this.buff[i].buffData.id == 8) {
+            //     this.buff[i].update(this);
+            //     status = true;
+            // }
         }
         return status;
     }
+
+    /**
+     * 击杀增加的buff
+     */
+    public killBuff() {
+        for (let i = 0; i < this.buff.length; i++) {
+            //增加属性
+            if (this.buff[i].buffData.id == 8) {
+                this.buff[i].update(this);
+            }
+        }
+    }
+
 
     /**攻击 */
     public gotoAttack() {
@@ -424,8 +441,14 @@ class Hero extends BaseGameObject {
         /**怪物的弧度 */
         this.centerX = (2*this.originX + dx)/2;
         this.centerY = (2*this.originY + dy)/2;
-        this.deltaX = Math.cos(this.atk_radian) * useSpeed;
-        this.deltaY = Math.sin(this.atk_radian) * useSpeed;
+
+        let tempX = Math.cos(this.atk_radian) * useSpeed;
+        let tempY = Math.sin(this.atk_radian) * useSpeed;
+        this.deltaX = parseFloat(tempX.toFixed(2));
+        this.deltaY = parseFloat(tempY.toFixed(2));
+
+        // this.deltaX = Math.cos(this.atk_radian) * useSpeed;
+        // this.deltaY = Math.sin(this.atk_radian) * useSpeed;
         this.armature.play(animation["posName"], 0);
     }
 

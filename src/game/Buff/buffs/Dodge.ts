@@ -4,7 +4,7 @@
 class Dodge extends BuffBase {
     public constructor() {
         super();
-        this.buffInit();
+        // this.buffInit();
     }
 
     /**初始化 */

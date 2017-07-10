@@ -9,11 +9,6 @@ class shopItemIR extends Base {
     }
 
     protected createChildren(): void{
-        this.shopItemPop = new ShopItemPop();
-        this.shopItemPop.anchorOffsetX = Common.SCREEN_W/2;
-        this.shopItemPop.anchorOffsetY = Common.SCREEN_H/2;
-        this.shopItemPop.x = Common.SCREEN_W/2;
-        this.shopItemPop.y = Common.SCREEN_H/2;
     }
 
     private onComplete():void {
@@ -35,9 +30,9 @@ class shopItemIR extends Base {
                 }
                 else
                 {
-                    GameLayerManager.gameLayer().maskLayer.addChild(this.shopItemPop);
-                    this.shopItemPop.show(this.content, this.btn_buy.name);
-                    Animations.popupOut(this.shopItemPop, 500);
+                    let pop = WindowManager.GetInstance().GetWindow("ShopItemPop");
+                    pop.Show(this.content, this.btn_buy.name);
+                    Animations.PopupBackOut(pop, 500);
                 }
             break;
             default:
@@ -84,7 +79,4 @@ class shopItemIR extends Base {
     private img_diamond:eui.Image;
     private lab_money:eui.Label;
 
-    /*******************弹窗********************/
-    private shopItemPop:ShopItemPop;
-    /*******************************************/
 }

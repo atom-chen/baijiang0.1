@@ -22,7 +22,12 @@ class BattleFailPop extends Base {
         this.parent.removeChild(this);
         switch (event.currentTarget) {
             case this.btn_reavival:
-                
+                modBattle.recycleHero();
+                SceneManager.battleScene.effectLayer.removeChildren();
+                GameData.hp = 10;
+                SceneManager.battleScene.createHero();
+                TimerManager.getInstance().startTimer();
+                SceneManager.battleScene.battleSceneCom.onRevive();
             break;
             default:
                 Animations.sceneTransition(()=>{

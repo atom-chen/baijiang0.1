@@ -5,7 +5,7 @@
 class ContinuousInjury extends BuffBase {
     public constructor() {
         super();
-        this.buffInit();
+        // this.buffInit();
         this.bloodTips = new egret.TextField();
         this.bloodTips.size = 24;
         this.bloodTips.textColor = Common.TextColors.red;
@@ -15,13 +15,16 @@ class ContinuousInjury extends BuffBase {
     }
 
     /**初始化 */
-    public buffInit() {
+    public buffInit(options:any) {
         super.buffInit();
+        this.options = options;
         this.buffData.className = "ContinuousInjury";
         this.buffData.superpositionType = SuperpositionType.SuperpositionType_None;
         this.buffData.buffType = BuffType.BuffType_Buff;
         this.buffData.disperseType = DisperseType.DisperseType_NoClear;
         this.buffData.controlType = ControlType.NO;
+        this.buffData.id = options.id;
+        this.buffData.duration = options.duration;
     }
 
     /**开始 */

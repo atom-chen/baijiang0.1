@@ -23,19 +23,15 @@ class Bristle extends SkillBase {
         target.setEnermy();
         let enermy = target.getEnermy();
         for (let i = 0; i < enermy.length; i++) {
-            // if (enermy[i].isSkillHurt) return;
-            // enermy[i].isSkillHurt = true;
+            let buffConfig = modBuff.getBuff(3);
             if (!target.isPVP) enermy[i].removeActComplete();
-            this.buff = ObjectPool.pop("ContinuousInjury");
+            this.buff = ObjectPool.pop(buffConfig.className);
+            this.buff.buffInit(buffConfig);
             switch (this.buffIndex) {
                 //烧伤
                 case 1:
                     //特效名字
                     this.buff.effectName = "Burning";
-                    //id
-                    this.buff.buffData.id = 3;
-                    //持续时间
-                    this.buff.buffData.duration = 3;
                     //作用点
                     this.buff.buffData.postionType = PostionType.PostionType_Body;
                 break;

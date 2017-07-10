@@ -87,9 +87,10 @@ namespace modPVP {
         for (let i = 0; i < GameData.stakes.length; i++) {
             GameData.stakes[i].clearObject();
         }
-        for (let i = 0; i < len; i++) {
-            GameData.stakes.pop();
-        }
+        // for (let i = 0; i < len; i++) {
+        //     if (GameData.stakes[i].hp )
+        //     GameData.stakes.pop();
+        // }
         curWave ++;
         productRule();
     }
