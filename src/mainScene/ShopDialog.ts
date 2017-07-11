@@ -136,10 +136,7 @@ class ShopDialog extends PopupWindow {
     private createEquipPop(infos:Array<any>, type:string) {
         let pop:PopupWindow = WindowManager.GetInstance().GetWindow("DrawCardPop");
         pop.Show(infos, type);
-        pop.anchorOffsetX = Common.SCREEN_W/2;
-        pop.anchorOffsetY = Common.SCREEN_H/2;
-        Common.SetXY(pop, Common.SCREEN_W/2, Common.SCREEN_H/2)
-        Animations.popupOut(pop, 500);
+        Animations.PopupBackOut(pop, 500);
     }
 
     /**商城的配置文件 */

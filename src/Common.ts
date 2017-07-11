@@ -193,4 +193,20 @@ namespace Common {
         else
             return `${val}`;;
     }
+
+    /** 监听或者移除对象 主要是一些比较通用的对象组合 
+     * @param arr_list   对象数组
+     * @param func       监听的回调函数
+     * @param obj        对象父类
+     * @param type       监听还是移除类型 1 监听 0 移除
+    */
+    export function ListenerAndRemoveEvent(arr_list:any, func:Function, obj:any, type:number):void{
+        if(type == 1){
+            for(let i in arr_list) arr_list[i].addEventListener(egret.TouchEvent.TOUCH_TAP, func, obj);
+        }
+        else if(type == 0)
+        {
+            for(let i in arr_list) arr_list[i].removeEventListener(egret.TouchEvent.TOUCH_TAP, func, obj);
+        }
+    }
 }

@@ -92,6 +92,7 @@ class LeanCloud{
             let query = new AV.Query("EquipData");
             query.get(LeanCloud.GoodsId).then(function(todo){
                 todo.set("equip", JSON.stringify(modEquip.EquipData.GetInstance().GetEquipList()));
+                todo.set("lucky", modEquip.EquipData.GetInstance().Lucky);
                 todo.save();
             },function(error){
                 console.log(" save euqip error ")
@@ -121,6 +122,7 @@ class LeanCloud{
                     info.InsertAttrType(new modEquip.AttrType(data[i].attrType[j].type, data[i].attrType[j].value));
                 }
                 modEquip.EquipData.GetInstance().Add(info);
+                modEquip.EquipData.GetInstance().Lucky = todo.get("lucky") == null ? 0 : todo.get("lucky");
             }
         },function(error){
             console.log(" init euqip error ")

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
 	<e:Image source="mask_png" x="0" y="0" width="1136" height="640"/>
-	<e:Image x="107" y="30.5" width="916" height="584" source="battle_0008_png"/>
+	<e:Image x="110" y="28" width="941" height="588" source="battle_0008_png"/>
 
 	<e:Button id="btn_giveup" label="返回主界面" x="293.67" y="413.24" width="168" height="76">
 		<e:skinName>

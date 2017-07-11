@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
 	<e:Image source="mask_png" x="0" y="0" width="1136" height="640" locked="true"/>
-	<e:Image id="img_battlePause" x="107" y="30.5" source="battle_0009_png" width="880" height="524"/>
+	<e:Image id="img_battlePause" x="0" y="0" source="battle_0009_png" width="1136" height="642"/>
 	<e:Group id="popupGroup" width="1136" height="640" x="0" y="0" visible="false">
 		<e:Image source="mask_png" width="5680" height="3200" x="-2272" y="-1280"/>
 		<e:Image source="popmenu_0001_png" x="253.5" y="82"/>

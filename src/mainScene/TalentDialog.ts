@@ -36,14 +36,7 @@ class TalentDialog extends PopupWindow {
     }
 
     private uiCompleteHandler():void {
-        this.btn_add.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_reset.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_certain.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
-        this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
-        this.btn_closeDetail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
-        this.btn_upPower.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
-        this.btn_upDiamond.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+        this.removeEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this);
     }
 
     public Init():void{
@@ -62,7 +55,7 @@ class TalentDialog extends PopupWindow {
                 this.show_pop_view("重置天赋", "title_0009_png",2);
             break;
             default:
-                GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
+                this.Close();
             break;
         }
     }
@@ -100,9 +93,6 @@ class TalentDialog extends PopupWindow {
                 else Animations.showTips("钻石不足，不能升级天赋",1,true);
             }
 
-        }else{
-            let strs = modTalent.getTips(this.curTalentId);
-            Animations.showTips(strs, 1, true);
         }
     }
 
@@ -123,6 +113,11 @@ class TalentDialog extends PopupWindow {
                 });
             break;
         }
+    }
+
+    private onTouchUnLock(event:egret.TouchEvent):void{
+        let strs = modTalent.getTips(this.curTalentId);
+        Animations.showTips(strs, 1, true);
     }
 
     /**
@@ -272,13 +267,11 @@ class TalentDialog extends PopupWindow {
         let btn:any = this.btn_upPower.getChildAt(0);
         let diamondBtn:any = this.btn_upDiamond.getChildAt(0);
         if (modTalent.isUnlock(this.curPage, num)) {
-            diamondBtn.source = "btn_shopGet_png";
             this.lab_condition.text = "";
             this.show_btn_text(true);
             
         }else{
             this.show_btn_text(false);
-            diamondBtn.source = "button_0010_png";
             let strs = modTalent.getTips(this.curTalentId, false);
             this.lab_condition.text = strs;
         }
@@ -299,7 +292,6 @@ class TalentDialog extends PopupWindow {
      * 界面显示
      */
     public Reset():void {
-        super.Reset();
         let pages = modTalent.getTalentData().length;
         for (let i = 0; i < pages; i++) {
             if (!this.topBtnSkin[i]) {
@@ -309,6 +301,30 @@ class TalentDialog extends PopupWindow {
         }
         this.btn_add.x = 155 + 55 * pages;
         this.show_lab_text();
+
+        this.btn_add.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
+        this.btn_reset.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
+        this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
+        this.btn_certain.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
+        this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
+        this.btn_closeDetail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+        this.btn_upPower.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+        this.btn_upDiamond.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+        this.btn_unLock.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUnLock, this);
+    }
+
+    public Close():void{
+        GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
+
+        this.btn_add.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
+        this.btn_reset.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
+        this.btn_back.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
+        this.btn_certain.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
+        this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onPopupBtn, this);
+        this.btn_closeDetail.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+        this.btn_upPower.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+        this.btn_upDiamond.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
+        this.btn_unLock.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUnLock, this);
     }
 
     private show_lab_text():void{
@@ -317,21 +333,15 @@ class TalentDialog extends PopupWindow {
     }
 
     private show_btn_text(isVisible:boolean):void{
+
         let data:any = TcManager.GetInstance().GetDataFromLv(3,this.allLv);
         if(data == null) return;
 
-        if(!isVisible){
-            this.btn_upPower.label = "";
-            this.btn_upDiamond.label = "未解锁";
-        } 
-        else{
-            this.btn_upPower.label = data.power;
-            this.btn_upDiamond.label = data.diamond;
-        }  
-
+        this.btn_upPower.label = data.power;
+        this.btn_upDiamond.label = data.diamond;
         this.btn_upPower.visible = isVisible;
-        this.btn_upPower.enabled = isVisible;
-        this.img_diamond.visible = isVisible;
+        this.btn_upDiamond.visible = isVisible;
+        this.btn_unLock.visible = !isVisible;
     }
 
     private show_pop_view(strName:string,imgPath:string,type:number):void{
@@ -364,11 +374,11 @@ class TalentDialog extends PopupWindow {
 	private btn_closeDetail:eui.Button;
 	private btn_upPower:eui.Button;
     private btn_upDiamond:eui.Button;
+    private btn_unLock:eui.Button;
 	private lab_name:eui.Label;
     private lab_lv:eui.Label;
     private lab_condition:eui.Label;
     private lab_skillDetail:eui.Label;
-    private lab_consume:eui.Label;
 	/*************************************************/
     private _focusBtn:eui.Button;
     /**返回按钮 */
@@ -398,5 +408,4 @@ class TalentDialog extends PopupWindow {
     private purchassType:number;
     private pages:Array<TalentIR>;
     private img_title:eui.Image;
-    private img_diamond:eui.Image;
 }

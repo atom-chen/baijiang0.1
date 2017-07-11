@@ -146,18 +146,22 @@ class EquipUpStarWindow extends PopupWindow{
         let index:number = 0;
         let raw:number, col:number;
         let list:any = modEquip.EquipData.GetInstance().GetEquipList();
+        let currHero = HeroData.getHeroData(GameData.curHero);
+        currHero["typeId"] = currHero["typeId"] != null ? currHero["typeId"] : 0;
         for(let i:number = 0; i < list.length; i++){
             if( (list[i].Id == this.equip_info.Id && list[i].TypeID != this.equip_info.TypeID) || list[i].Id != this.equip_info.Id){
-                raw = Math.floor(index / 4);
-                col = index % 4;
-                let img:eui.Image = new eui.Image();
-                img.source = `Sequip${25-list[i].Id}_png`;
-                this.scrollGroup.addChild(img); 
-                this.equip_list.push(img);
-                Common.SetXY(img, 4 + 104*col, 4 + 104*raw);
-                img.name = i + "";
-                index++;
-                img.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
+                if((currHero.equip == list[i].Id && currHero["typeId"] != list[i].TypeID) || currHero.equip != list[i].Id){
+                    raw = Math.floor(index / 4);
+                    col = index % 4;
+                    let img:eui.Image = new eui.Image();
+                    img.source = `Sequip${25-list[i].Id}_png`;
+                    this.scrollGroup.addChild(img); 
+                    this.equip_list.push(img);
+                    Common.SetXY(img, 4 + 104*col, 4 + 104*raw);
+                    img.name = i + "";
+                    index++;
+                    img.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
+                }
             }
         }
 

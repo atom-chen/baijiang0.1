@@ -20,17 +20,8 @@ class DrawCardPop extends PopupWindow {
      * 按钮监听
      */
     private onButtonHandler(event:egret.TouchEvent):void {
-        Animations.popupIn(this, 300, ()=>{
-            modShop.putPackage(this.ids);
-            this.Close();
-        });
-        switch (event.currentTarget) {
-            case this.btn_get:
-            break;
-            case this.btn_back:
-                
-            break;
-        }
+        modShop.putPackage(this.ids);
+        this.Close();
     }
 
     /**
@@ -71,7 +62,10 @@ class DrawCardPop extends PopupWindow {
     }
 
     public Close():void{
-        super.Close();
+
+        Animations.PopupBackIn(this, 350, ()=>{
+            super.Close();
+        })
 
         this.btn_get.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
         this.btn_back.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);

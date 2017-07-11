@@ -248,6 +248,8 @@ namespace modEquip {
         }
 
         private changeIdListNumber(info:EquipInfo):void{
+            let currHero = HeroData.getHeroData(GameData.curHero);
+
             let info_list:Array<EquipInfo> = [];
             for(let i in this.equip_list){
                 if(this.equip_list[i].Id == info.Id){
@@ -256,6 +258,8 @@ namespace modEquip {
             }
             this.id_list[info.Id] = info_list.length;
             for(let i:number = 0; i < this.id_list[info.Id]; i++){
+                if(currHero.equip == info_list[i].Id && currHero["typeId"] == info_list[i].TypeID)
+                    currHero["typeId"] = i;
                 info_list[i].TypeID = i;
             }
             info_list = [];

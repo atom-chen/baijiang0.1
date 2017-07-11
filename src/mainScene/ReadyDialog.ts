@@ -28,14 +28,6 @@ class ReadyDialog extends PopupWindow {
         this._createHeroIcon();
     }
 
-    public Init():void{
-        this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
-        this.lab_diamond.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
-        this.lab_exp.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("exp"));
-        this.equipId = -1;
-        this.equipTypeId = 0;
-    }
-
     /**
      * 创建属性
      */
@@ -69,23 +61,21 @@ class ReadyDialog extends PopupWindow {
     public updateAttr(isUpgrade:boolean=false):void {
         let hero = HeroData.getHeroData(GameData.curHero);
         if(isUpgrade){
-            if(UserDataInfo.GetInstance().GetBasicData("exp") >= hero["lv"] * 100 && UserDataInfo.GetInstance().GetBasicData("soul") >= hero["lv"] * 100){
-                if(hero["lv"] >= 100){
-                     Animations.showTips("当前角色等级已满");
-                     return;
-                } 
+            if(hero["lv"] >= 100){
+                Animations.showTips("当前角色等级已满");
+                return;
+            } 
 
+            if(UserDataInfo.GetInstance().IsHaveOhterGoods("exp", hero["lv"] * 100, "soul", hero["lv"] * 100)){
                 hero["lv"]++;
-                UserDataInfo.GetInstance().SetBasicData("exp", UserDataInfo.GetInstance().GetBasicData("exp") - hero["lv"] * 100);
-                UserDataInfo.GetInstance().SetBasicData("soul", UserDataInfo.GetInstance().GetBasicData("soul") - hero["lv"] * 100);
                 this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
                 this.lab_exp.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("exp"));
                 Animations.showTips("升级成功", 1);
             }
             else 
             {
-                if(UserDataInfo.GetInstance().GetBasicData("exp") < hero["lv"] * 100) Animations.showTips("经验不足，无法升级");
-                else if(UserDataInfo.GetInstance().GetBasicData("soul") < hero["lv"] * 100) Animations.showTips("魂力不足，无法升级");
+                if(!UserDataInfo.GetInstance().IsHaveGoods("exp", hero["lv"] * 100)) Animations.showTips("经验不足，无法升级");
+                else if(!UserDataInfo.GetInstance().IsHaveGoods("soul", hero["lv"] * 100)) Animations.showTips("魂力不足，无法升级");
                 return;
             }
         }
@@ -103,14 +93,8 @@ class ReadyDialog extends PopupWindow {
     }
 
     private uiCompleteHandler():void {
-        this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_skill.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_detail.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_battle.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.btn_up.addEventListener(egret.TouchEvent.TOUCH_TAP, this.topBtnListener, this);
-        this.img_equip.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
+        this.removeEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this);
+
         this.topBtn = [this.btn_upgrade, this.btn_skill, this.btn_detail];
         //每个人物的三个技能属性
         let temp:any;
@@ -192,8 +176,7 @@ class ReadyDialog extends PopupWindow {
                 this.updateAttr(true);
             break;
             default:
-                this._stopTimer();
-                GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
+                this.Close();
             break;
         }
     }
@@ -240,9 +223,10 @@ class ReadyDialog extends PopupWindow {
         }
         this.btn_change.visible = true;
         let data = HeroData.list[GameData.curHero];
-        let equipId = data.equip;
-        if (equipId != 0){
-            let equip = modEquip.EquipData.GetInstance().GetEquipFromId(equipId, 0);
+        this.equipId = data.equip;
+        this.equipTypeId = data["typeId"] == null ? 0 : data["typeId"];
+        if (this.equipId != 0){
+            let equip = modEquip.EquipData.GetInstance().GetEquipFromId(this.equipId, 0);
             this.updateEquip(equip);
             this.btn_change.label = "替换";
         }else{
@@ -295,16 +279,42 @@ class ReadyDialog extends PopupWindow {
 
         let heroData = HeroData.getHeroData(GameData.curHero);
         heroData.equip = this.equipId ;
+        heroData["typeId"] = this.equipTypeId;
         HeroData.update();
 
         let equip:any = modEquip.EquipData.GetInstance().GetEquipFromId(this.equipId, this.equipTypeId);
         this.updateEquip(equip);
     }
+
+    public Show():void{
+        super.Show();
+
+        this.lab_soul.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("soul"));
+        this.lab_diamond.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("diamond"));
+        this.lab_exp.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("exp"));
+    }
+
     /**
      * 显示界面
      */
     public Reset(){
         this._startTimer();
+        this.eventType(1);
+        this.img_equip.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
+    }
+
+    public Close():void{
+        GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
+
+        this._stopTimer();
+        this.eventType();
+        this.img_equip.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchEquip, this);
+    }
+
+    private eventType(type:number = 0):void{
+        let btn_list = [this.btn_upgrade,this.btn_skill,this.btn_detail,this.btn_back,this.btn_change,this.btn_battle,this.btn_up];
+        Common.ListenerAndRemoveEvent(btn_list, this.topBtnListener, this, type);
+        btn_list = [];
     }
 
     /**更新英雄列表 */
@@ -388,8 +398,6 @@ class ReadyDialog extends PopupWindow {
     private starGroup:eui.Group;
     /**人物骨架组 */
     private _armatureGroup:eui.Group;
-    /**替换武器弹窗 */
-    private changeEquipPop:ChangeEquipPop;
     /**叠层 */
     private viewStack:eui.ViewStack;
     private _skill:any[] = [];

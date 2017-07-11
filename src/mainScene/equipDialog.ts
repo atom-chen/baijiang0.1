@@ -69,34 +69,21 @@ class EquipDialog extends PopupWindow {
         } 
     }
 
+    private eventType(type:number = 0):void{
+        let obj_list:any = [this.btn_back, this.btn_weapon, this.btn_change, this.btn_upgrade, this.btn_close,  this.img_weapon];
+        Common.ListenerAndRemoveEvent(obj_list, this.onTouchBtn, this, type);
+        obj_list = [];
+    }
+
     public Reset():void{
-        this.btn_back.addEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
-        this.btn_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
-        this.btn_change.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
-        this.btn_upgrade.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
-        this.btn_close.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
-        this.img_weapon.addEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
+       this.eventType(1);
     }
 
     public Close():void{
         GameLayerManager.gameLayer().dispatchEventWith(UserData.CHANGEDATA);
         LeanCloud.GetInstance().SaveEquipData();
 
-        this.btn_back.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.Close, this);
-        this.btn_weapon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
-        this.btn_change.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
-        this.btn_upgrade.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUpGrade, this);
-        this.btn_close.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchBtn, this);
-        this.img_weapon.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onEquip, this);
-    }
-
-     /** 点击升级按钮 */    
-    private onTouchUpGrade(event:egret.TouchEvent):void{
-        if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
-
-        let pop:PopupWindow = WindowManager.GetInstance().GetWindow("EquipUpWindow");
-        pop.Show(this.equip_info);
-        pop.addEventListener(modEquip.EquipSource.UPGRADE, this.upGradeGoodsInfo, this);
+        this.eventType();
     }
 
     /** 升级按钮的事件监听 */
@@ -117,22 +104,30 @@ class EquipDialog extends PopupWindow {
         }
     }
 
-    private onEquip(event:egret.TouchEvent):void {
-        if(this.equip_info == null) return;
-        WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
-    }
-
     private onTouchBtn(event:egret.TouchEvent):void{
         let target = event.target;
         if(target.currentState == "down") return;
 
         switch(target){
-            case this.btn_change:
+            case this.btn_change:                                                           //点击洗脸按钮
                 if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
                 this.setGroupStatus(false, true, "洗练", "null", "down");
                 this.showResetGroup();
             break;
-            default:
+            case this.btn_upgrade:                                                          //点击升级按钮
+                if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
+                let pop:PopupWindow = WindowManager.GetInstance().GetWindow("EquipUpWindow");
+                pop.Show(this.equip_info);
+                pop.addEventListener(modEquip.EquipSource.UPGRADE, this.upGradeGoodsInfo, this);
+            break;
+            case this.img_weapon:                                                           //点击装备
+                if(this.equip_info == null) return;
+                WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
+            break;
+            case this.btn_back:                                                             //点击关闭界面
+                this.Close();
+            break;
+            default:                                                                        //默认为close 或则点击兵器库
                 this.setGroupStatus(true, false, "兵器库", "down", "null");
             break;
         }
