@@ -54,8 +54,6 @@ class BattleSceneCom extends Base {
         let skill = this._getActSkill();
         object.source = `skill_${skill.image_id}_png`;
         this.img_hp.scaleX = 1.0;
-        this.money = Common.userData.money;
-        this.soul = Common.userData.soul;
         this.cd_time = 0;
         this.lab_cdTime.visible = false;
         this.lab_killCount.text = `0/${tcStage.count}`;
@@ -65,6 +63,10 @@ class BattleSceneCom extends Base {
         let index = modHero.getIndextFromId(id);
         this.lab_name.text = ConfigManager.tcHero[index].name;
         this.img_headIcon.source = ConfigManager.tcHero[index].icon;
+        //英雄的数据
+        let data = ConfigManager[`${GameData.curHero}Attr`];
+        let attr = data[0];
+        this._sumHP = attr.hp;
         Animations.fadeOutIn(this.lab_stage);
     }
 
@@ -106,8 +108,8 @@ class BattleSceneCom extends Base {
     }
 
     /**受伤 */
-    public onHurt():void {
-        this.img_hp.scaleX = GameData.hp/10;
+    public onHurt(value:number):void {
+        this.img_hp.scaleX = value/this._sumHP;
     }
 
     /**复活 */
@@ -136,12 +138,11 @@ class BattleSceneCom extends Base {
         return skill;
     }
 
+    private _sumHP:number;
     /**暂停 */
     private btn_pause:eui.Button;
     private btn_skill:eui.Button;
     private battleFailPop:BattleFailPop;
-    private money:number;
-    private soul:number;
     private stage_count:number;
     private cd_time:number;
 

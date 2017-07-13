@@ -4,9 +4,6 @@ class Enermy extends BaseGameObject {
         this.colorFlilter = new egret.ColorMatrixFilter(this.colorMatrix);
         this.defaultFlilter = new egret.ColorMatrixFilter(this.defaultMatrix);
         this.createExpAndSoul();
-        this.atk_timer = new egret.Timer(1000);
-        this.atk_timer.stop();
-        this.atk_timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onComplete, this);
         this.hurtText = Utils.createBitmapText("hurtFnt_fnt", this);
         this.hurtText.x = -10;
     }
@@ -47,11 +44,10 @@ class Enermy extends BaseGameObject {
         this.isSkillHurt = false;
         this.isReadSkill = false;
         this.lastAnimation = "";
-        this.atk_distance = ConfigManager.enermyConfig[data[0]].mov;
-        this.away_distance = ConfigManager.enermyConfig[data[0]].away;
-        this.atk_timer.repeatCount = ConfigManager.enermyConfig[data[0]].cd;
-        this.isComplete = true;
-        this.isRemote = ConfigManager.enermyConfig[data[0]].isRemote;
+        this.atk_distance = data[1].mov;
+        this.away_distance = data[1].away;
+        this.atk_timer.delay = this.attr.wsp * 1000;
+        this.isRemote = data[1].isRemote;
         // this.maskImprisoned.mask = this;
     }
 
@@ -158,15 +154,15 @@ class Enermy extends BaseGameObject {
     }
 
     /**受到攻击 */
-    public gotoHurt(isSkillHurt:boolean = false) {
-        if (this.hp <= 0) return;
+    public gotoHurt(hurtValue:number = 1, isSkillHurt:boolean = false) {
+        if (this.attr.hp <= 0) return;
         if ((this.curState == Enermy.Action_Dead) || (this.curState == BaseGameObject.Action_Hurt)) return;
         ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
         this.curState = BaseGameObject.Action_Hurt;
         this.armature.play(this.curState, 0);
         this.effectArmature.visible = true;
         if (!isSkillHurt) {
-            if (this.hp == 1) {
+            if (this.attr.hp <= hurtValue) {
                 this.effectArmature.play(Enermy.Action_HurtDie, 1);
                 this.effectArmature.x = 0;
                 this.effectArmature.y = 0;
@@ -174,12 +170,12 @@ class Enermy extends BaseGameObject {
                 this.effectArmature.play(BaseGameObject.Action_Hurt, 1);
                 this.effectArmature.x = -15;
                 this.effectArmature.y = 0;
-                if (this.hp < 0) this.gotoDead();
+                if (this.attr.hp < 0) this.gotoDead();
             }
             this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
         }
-        this.hp --;
-        this.hurtAnimate();
+        this.attr.hp -= hurtValue;
+        this.hurtAnimate(hurtValue);
     }
 
     /**蓄力 */
@@ -204,22 +200,13 @@ class Enermy extends BaseGameObject {
     /**
      * 受伤表现
      */
-    public hurtAnimate():void {
-        let hurtValue = MathUtils.getRandom(100, 2000);
-        this.hurtText.text = `-${hurtValue.toString()}`;
+    public hurtAnimate(value:number):void {
+        this.hurtText.text = `-${value.toString()}`;
         this.hurtText.anchorOffsetX = this.hurtText.width/2;
         this.hurtText.y = -40;
         this.hurtText.scaleX = 1;
         if (this.isReverse) this.hurtText.scaleX = -1;
         Animations.hurtTips(this.hurtText);
-    }
-    /**
-     * 攻击cd结束
-     */
-    public onComplete():void {
-        this.atk_timer.reset();
-        Common.log("攻击结束")
-        this.isComplete = true;
     }
     /**
      * 设置状态
@@ -257,7 +244,7 @@ class Enermy extends BaseGameObject {
         if (this.curState == BaseGameObject.Action_Enter || this.curState == BaseGameObject.Action_Hurt) {
             this.effectArmature.visible = false;
         }
-        if (this.hp == 0) {
+        if (this.attr.hp <= 0) {
             this.gotoDead();
         }else{
             this.gotoRun();
@@ -370,10 +357,6 @@ class Enermy extends BaseGameObject {
     public atk_distance:number;
     /**逃离距离 */
     public away_distance:number;
-    /**攻击间隔计数器 */
-    public atk_timer:egret.Timer;
-    /**攻击cd结束标志 */
-    public isComplete:boolean;
     /**是否为召唤兵 */
     public isSummon:boolean;
     /**是否为boss */

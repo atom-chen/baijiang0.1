@@ -10,6 +10,16 @@ namespace ConfigManager {
     export var enermyConfig:any;
     /**buff配置文件 */
     export var buffConfig:any;
+    /**貂蝉属性配置 */
+    export var diaochanAttr:any;
+    /**不小曼属性配置 */
+    export var buxiaomanAttr:any;
+    /**赵云属性配置 */
+    export var zhaoyunAttr:any;
+    /**小兵的属性配置 */
+    export var monsters:Array<any> = new Array();
+    /**boss的属性配置 */
+    export var boss:Array<any> = new Array();
 
     /**装备配置文件 */
     export var tcEquip:any;
@@ -43,6 +53,31 @@ namespace ConfigManager {
         tcTalentUp = RES.getRes("TcTalentUp_json");
         tcUnlockTalentPage = RES.getRes("TcUnlockTalentPage_json");
         initBattleDragonBones();
+        loadHeroConfig();
+        loadEnermyConfig();
+    }
+
+    /**加载英雄的配置文件 */
+    function loadHeroConfig() {
+        diaochanAttr = RES.getRes("TcChanAttr_json");
+        buxiaomanAttr = RES.getRes("TcManAttr_json");
+        zhaoyunAttr = RES.getRes("TcYunAttr_json");
+    }
+
+    /**加载敌方的配置文件(暂定) */
+    function loadEnermyConfig() {
+        //小兵
+        for (let i = 1; i <= 3; i++) {
+            let file:string = `TcMonster0${i}_json`;
+            let data:any = RES.getRes(file);
+            monsters.push(data);
+        }
+        //boss
+        for (let i = 1; i <= 1; i++) {
+            let file:string = `TcBoss0${i}_json`;
+            let data:any = RES.getRes(file);
+            boss.push(data);
+        }
     }
 
     export function isInArmatures(name:string):boolean {

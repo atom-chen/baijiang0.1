@@ -58,6 +58,8 @@ class Hero extends BaseGameObject {
     public init(data:Array<any>, isPVP:boolean=false) {
         super.init(data);
         this.initDragonBonesArmature(data[0]);
+        this.attr.initHeroAttr(data[1]);
+        this.atk_timer.delay = this.attr.wsp * 1000;
         this.name = data[0];
         this.offset = [[1, -113], [77, -109], [121, -50], [75, 14], [0, 23]];
         // this.offset = [[2, -74], [49, -71], [79, -32], [50, 9], [0, 15]]
@@ -205,6 +207,7 @@ class Hero extends BaseGameObject {
      * 攻击状态
      */
     public state_attack(time:number):void {
+        //滑行结束
         if (Math.abs(this.sumDeltaX) > this.atk_rangeX || Math.abs(this.sumDeltaY) > this.atk_rangeY) {
             this.gotoIdle();
             this.img_swordLight.visible = false;
@@ -227,7 +230,7 @@ class Hero extends BaseGameObject {
                             // Common.log("击晕了");
                         }
                     }
-                    this.enermy[i].gotoHurt();
+                    this.enermy[i].gotoHurt(this.attr.atk);
                 }
             }
             if (!this.isPVP){
@@ -239,32 +242,13 @@ class Hero extends BaseGameObject {
             egret.setTimeout(()=>{this.isAttack = false}, this, 100);
             return;
         }
+        if (Math.abs(this.sumDeltaX)>this.atk_rangeX/2){
+            this.img_swordLight.visible = true;
+        }
         this.x = this.x + this.deltaX;
         this.y = this.y + this.deltaY;
         this.sumDeltaX = this.sumDeltaX + this.deltaX;
         this.sumDeltaY = this.sumDeltaY + this.deltaY;
-        this.img_swordLight.x = this.offset[this.offsetIndex][0];
-        this.img_swordLight.y = this.offset[this.offsetIndex][1];
-
-        // this.setEnermy();
-        // //怪物到中点的距离
-        // for (let i = 0; i < this.enermy.length; i++) {
-        //     let dis = MathUtils.getDistance(this.x, this.y, this.enermy[i].x, this.enermy[i].y);
-        //     let range:number = (this.isPVP) ? 50:33;
-        //     if (dis < range) {
-        //         if (!this.isPVP) {
-        //             let state = this.enermy[i].curState;
-        //             if (state != Enermy.Action_Dead && state != BaseGameObject.Action_Hurt && !this.enermy[i].isReadSkill) {
-        //                 this.isHit = true;
-        //                 this.combo ++;
-        //             }
-        //             if (this.isAttackBuff(this.enermy[i])) {
-        //                 // Common.log("击晕了");
-        //             }
-        //         }
-        //         this.enermy[i].gotoHurt();
-        //     }
-        // }
     }
     /**
      * 收到攻击状态
@@ -347,7 +331,7 @@ class Hero extends BaseGameObject {
     /**
      * 受伤
      */
-    public gotoHurt() {
+    public gotoHurt(value:number = 1) {
         if (this.curState == BaseGameObject.Action_Hurt) return;
         if (!this.skill_status) {
             if (this.isImmuneBuff()) return;
@@ -358,13 +342,13 @@ class Hero extends BaseGameObject {
             this.effectArmature.visible = true;
             this.effectArmature.x = -15;
         }
-        GameData.hp --;
+        this.attr.hp -= value;
         SceneManager.battleScene.bloodTween();
-        if (GameData.hp <= 0) {
+        if (this.attr.hp <= 0) {
             SceneManager.battleScene.battleSceneCom.onFailPop();
             return;
         }
-        SceneManager.battleScene.battleSceneCom.onHurt();
+        SceneManager.battleScene.battleSceneCom.onHurt(this.attr.hp);
     }
 
     /**
@@ -405,11 +389,12 @@ class Hero extends BaseGameObject {
 
     /**攻击 */
     public gotoAttack() {
+        if (!this.isComplete) return;
         if (this.curState != BaseGameObject.Action_Idle) return;
-        // this.combo = 0;
+        this.isComplete = false;
+        this.atk_timer.start();
         this.curState = "attack";
         this.isAttack = true;
-        this.img_swordLight.visible = true;
 
         let useSpeed = this.atk_speed * 0.1;
         this.sumDeltaX = 0;
@@ -436,21 +421,22 @@ class Hero extends BaseGameObject {
             this.img_swordLight.scaleX = -1;
             this.img_swordLight.rotation = 45 * this.offsetIndex + 90;
         }
-        let dx = Math.cos(this.atk_radian) * this.atk_range;
-        let dy = Math.sin(this.atk_radian) * this.atk_range;
-        this.atk_rangeX = Math.abs(dx);
-        this.atk_rangeY = Math.abs(dy);
+        let dis_atk:number = MathUtils.getDistance(this.originX, this.originY, this.endX, this.endY);
+        if (dis_atk > this.atk_range) dis_atk = 200;
+        let dx = Math.cos(this.atk_radian) * dis_atk;
+        let dy = Math.sin(this.atk_radian) * dis_atk;
+        this.atk_rangeX = Math.floor(Math.abs(dx));
+        this.atk_rangeY = Math.floor(Math.abs(dy));
         /**怪物的弧度 */
-        this.centerX = (2*this.originX + dx)/2;
-        this.centerY = (2*this.originY + dy)/2;
+        this.centerX = Math.floor((2*this.originX + dx)/2);
+        this.centerY = Math.floor((2*this.originY + dy)/2);
 
         let tempX = Math.cos(this.atk_radian) * useSpeed;
         let tempY = Math.sin(this.atk_radian) * useSpeed;
         this.deltaX = parseFloat(tempX.toFixed(2));
         this.deltaY = parseFloat(tempY.toFixed(2));
-
-        // this.deltaX = Math.cos(this.atk_radian) * useSpeed;
-        // this.deltaY = Math.sin(this.atk_radian) * useSpeed;
+        this.img_swordLight.x = this.offset[this.offsetIndex][0];
+        this.img_swordLight.y = this.offset[this.offsetIndex][1];
         this.armature.play(animation["posName"], 0);
     }
 
@@ -595,7 +581,6 @@ class Hero extends BaseGameObject {
     private attack_effect:dragonBones.Bone;
     private img_swordLight:egret.Bitmap;
     /**剑光的偏移 */
-
     private offset:any[];
     private offsetIndex:number;
     /**是否攻击到敌人 */

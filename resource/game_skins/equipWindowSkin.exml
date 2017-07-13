@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
-	<e:Image source="equip_0001_png" x="2" y="0" width="1136" height="640"/>
+	<e:Image source="equip_0001_png" x="0" y="0" width="1136" height="640"/>
 
-	<e:Label id="lab_lv" text="等级: 100/100" x="295" y="453.5" size="25" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" width="172" textAlign="right"  textColor="0x8c8c8c"/>
-	<e:Label id="lab_name" text="方天画戟" x="9.23" y="503" fontFamily="Microsoft YaHei" bold="true" textColor="0xc1b17c" anchorOffsetX="0" width="467" textAlign="center"/>
-	<e:Button id="btn_upgrade" label="升级" x="14" y="555.34" anchorOffsetX="0" width="168" anchorOffsetY="0" height="76">
+	<e:Label id="lab_lv" text="等级: 100/100" x="906" y="451.5" size="25" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" width="172" textAlign="right"  textColor="0x5e5954"/>
+	<e:Label id="lab_name" text="方天画戟" x="656.23" y="503" fontFamily="Microsoft YaHei" bold="true" textColor="0xc1b17c" anchorOffsetX="0" width="467" textAlign="center"/>
+	<e:Button id="btn_upgrade" label="升级" x="949" y="555.34" anchorOffsetX="0" width="168" anchorOffsetY="0" height="76">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0024_png"/>
@@ -14,17 +14,18 @@
 
 
 	</e:Button>
-	<e:Button id="btn_change" label="洗练" x="188.67" y="555.34" anchorOffsetX="0" width="140" anchorOffsetY="0" height="76">
+	<e:Button id="btn_change" label="洗练" x="770" y="555.34" anchorOffsetX="0" width="168" anchorOffsetY="0" height="76">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0013_png" source.down="button_0021_png"/>
+			<e:Image width="100%" height="100%" source="button_0014_png"/>
 			<e:Label id="labelDisplay" textColor.down="0xac7841" verticalCenter="-8" fontFamily="Microsoft YaHei" bold="true" size="32" anchorOffsetX="1" anchorOffsetY="1" textColor="0x130b0b" text="洗练" horizontalCenter="0"/>
 			</e:Skin>
 		</e:skinName>
 
 
+
 	</e:Button>
-	<e:Label id="lab_title" text="兵器库" x="743" y="98" fontFamily="Microsoft YaHei" bold="true" textColor="0x0a0a0a" size="35"/>
+	<e:Label id="lab_title" text="兵器库" x="277" y="98" fontFamily="Microsoft YaHei" bold="true" textColor="0x0a0a0a" size="35"/>
 	<e:Button id="btn_back" label="" x="14" y="14" width="104" height="68">
 		<e:skinName>
 		<e:Skin states="up,down,disabled">
@@ -33,12 +34,12 @@
 		</e:Skin>
 		</e:skinName>
 	</e:Button>
-	<e:Scroller id="equip_scroll" width="632" height="472" x="496.68" y="156.67" anchorOffsetX="0" anchorOffsetY="0">
+	<e:Scroller id="equip_scroll" width="632" height="472" x="11.68" y="156.67" anchorOffsetX="0" anchorOffsetY="0">
 		<e:Group id="scrollGroup" anchorOffsetX="0" width="586" anchorOffsetY="0" height="436" x="46" y="0">
 		</e:Group>
 
 	</e:Scroller>
-	<e:Button id="btn_weapon" label="兵器库" x="336.23" y="555.34" width="140" height="76">
+	<e:Button id="btn_weapon" label="兵器库" x="336.23" y="555.34" width="140" height="76" visible="false">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
 			<e:Image width="100%" height="100%" source="button_0013_png" source.down="button_0021_png"/>
@@ -48,10 +49,10 @@
 
 
 	</e:Button>
-	<e:Image id="img_weapon" source="equip1_png" x="10" y="99.5"/>
-	<e:Image id="btn_close" source="button_0009_png" x="1080" y="93.5"/>
+	<e:Image id="img_weapon" source="equip1_png" x="661" y="99.5"/>
+	<e:Image id="btn_close" source="button_0009_png" x="1080" y="93.5" visible="false"/>
 	<e:Image source="title_0005_png" x="132.5" y="8"/>
-	<e:Image source="equip_0011_png" x="494.66" y="587.34"/>
+	<e:Image source="equip_0011_png" x="11.68" y="587.34"/>
 	<e:Image source="crystal_0001_png" x="959.65" y="42.4"/>
 	<e:Image source="sole_0001_png" x="785.98" y="42.4"/>
 	<e:Image source="power_0001_png" x="418.64" y="42.4" visible="false"/>
@@ -60,5 +61,6 @@
 	<e:Label id="lab_soul" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="828.86" bold="true" textColor="0x8B2EA5" anchorOffsetX="0" width="108" textAlign="right"/>
 	<e:Label id="lab_exp" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="642.56" bold="true" textColor="0xBC822B" anchorOffsetX="0" width="112" textAlign="right"/>
 	<e:Label id="lab_soul2" text="99999" y="52.92" size="25" fontFamily="Microsoft YaHei" x="490.01" bold="true" textColor="0xC1A77C" visible="false"/>
+	<e:Image source="shop_0003_png" x="1087.78" y="445.05"/>
 
 </e:Skin>

@@ -129,10 +129,10 @@ namespace modBattle {
         let bossCount:number = GameData.boss.length;
         surviveCount = 0;
         for (let i = 0; i < count; i++) {
-            if (GameData.monsters[i].hp > 0) surviveCount ++;
+            if (GameData.monsters[i].attr.hp > 0) surviveCount ++;
         }
         for (let i = 0; i < bossCount; i++) {
-            if (GameData.boss[i].hp > 0) surviveCount ++;
+            if (GameData.boss[i].attr.hp > 0) surviveCount ++;
         }
         // SceneManager.battleScene.battleSceneCom.update();
     }
@@ -163,12 +163,15 @@ namespace modBattle {
         //每次生产的数量
         let count:number = MathUtils.getRandom(1, 2);
         count = Math.min(count, maxEachWave[curWave]-productCount);
+        let len:number = tcStage.monster.length - 1;
         for (let i = 0; i < count; i++){
             //敌人的类型索引
-            let index:number = MathUtils.getRandom(2);
+            let index:number = MathUtils.getRandom(len);
             //生产的敌人数据
-            let data:Array<any> = tcStage.monster[index];
-            SceneManager.battleScene.createSingleMonster(data);
+            let id:number = tcStage.monster[index];
+            let lv:number = tcStage.lv;
+            let monsterData = setMonsterData(id, lv);
+            SceneManager.battleScene.createSingleMonster(monsterData);
             productCount ++;
         }
         getSurviveCount();
@@ -180,12 +183,15 @@ namespace modBattle {
      * 生产boss
      */
     function productBoss():void {
-        let index:number = MathUtils.getRandom(tcStage.boss.length-1);
-        let data:Array<any> = tcStage.boss[index];
-        if (data[0] != "boss") {
-            SceneManager.battleScene.createSingleMonster(data);
+        // let index:number = MathUtils.getRandom(tcStage.boss.length-1);
+        let data:Array<any> = tcStage.boss;
+        let monsterData:any;
+        if (data[0] < 100) {
+            monsterData = setMonsterData(data[0], data[3], false, data[1], data[2]);
+            SceneManager.battleScene.createSingleMonster(monsterData);
         }else{
-            SceneManager.battleScene.createBoss();
+            monsterData = setMonsterData(data[0], data[3], true, data[1], data[2]);
+            SceneManager.battleScene.createBoss(monsterData);
         }
     }
 
@@ -194,7 +200,6 @@ namespace modBattle {
      */
     function updateNextWave():void {
         if (isBoss) {
-            Common.log("存活", surviveCount)
             if (surviveCount > 0) return;
             GameData.curStage ++;
             if (GameData.curStage > ConfigManager.tcStage.length) GameData.curStage = 1;
@@ -243,6 +248,34 @@ namespace modBattle {
         }
         timer.repeatCount = 1;
         timer.start();
+    }
+
+    /**
+     * 设置小兵的配置数据
+     */
+    function setMonsterData(id:number, lv:number, isBoss:boolean = false, k_hp:number = 1, k_atk:number = 1):any {
+            let type:string = `monster0${id}`;
+            let data:any = getEnermyData(id);
+            if (isBoss){
+                type = `Boss0${id - 99}`;
+                data.attr = ConfigManager.boss[id-100][lv-1];
+            }else{
+                data.attr = ConfigManager.monsters[id-1][lv-1];
+            }
+            data.attr.hp *= k_hp;
+            data.attr.atk *= k_atk;
+            return [type, data];
+    }
+
+    function getEnermyData(id:number):any {
+        let enermyConf:any;
+        for (let j = 0; j < ConfigManager.enermyConfig.length; j++) {
+            if (ConfigManager.enermyConfig[j].id == id) {
+                enermyConf = ConfigManager.enermyConfig[j];
+                break;
+            }
+        }
+        return enermyConf;
     }
 
     /**生产的敌人数量 */

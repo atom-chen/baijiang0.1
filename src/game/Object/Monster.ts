@@ -38,12 +38,13 @@ class Monster extends Enermy {
     }
 
     public init(data:Array<any>, isSummon:boolean = false) {
+        this.attr.initEnermyAttr(data[1].attr);
         super.init(data);
         this.initDragonBonesArmature(data[0]);
         this.isSummon = isSummon;
         this.speed = 10;
         this.readyCount = 0;
-        this.hp = data[1];
+        this.hp = this.attr.hp;
         this.skill_atkStatus = false;
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
@@ -72,7 +73,7 @@ class Monster extends Enermy {
         if (!this.skill_atkStatus) {
             let dis = MathUtils.getDistance(skillPoint.x, skillPoint.y, GameData.heros[0].x, GameData.heros[0].y);
             if (dis <= 30) {
-                GameData.heros[0].gotoHurt();
+                GameData.heros[0].gotoHurt(this.attr.atk);
                 this.skill_atkStatus = true;
             }
         }
@@ -148,7 +149,7 @@ class Monster extends Enermy {
         if (!this.skill_atkStatus) {
             var dis = MathUtils.getDistance(this.x, this.y, GameData.heros[0].x, GameData.heros[0].y);
             if (dis < 33) {
-                GameData.heros[0].gotoHurt();
+                GameData.heros[0].gotoHurt(this.attr.atk);
                 this.skill_atkStatus = true;
             }
         }
@@ -215,8 +216,8 @@ class Monster extends Enermy {
     }
 
     /**受到攻击 */
-    public gotoHurt(isSkillHurt:boolean = false) {
-        super.gotoHurt();
+    public gotoHurt(hurtValue:number = 1, isSkillHurt:boolean = false) {
+        super.gotoHurt(hurtValue, isSkillHurt);
     }
 
     /**增加buff */

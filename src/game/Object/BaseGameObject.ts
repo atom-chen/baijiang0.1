@@ -5,6 +5,7 @@ class BaseGameObject extends egret.DisplayObjectContainer {
 
     public constructor() {
         super();
+        this.attr = new BaseCharactorData();
         this.armature = new DragonBonesArmatureContainer();
         this.effectArmature = new DragonBonesArmatureContainer();
         this.buffArmature = new DragonBonesArmatureContainer();
@@ -18,6 +19,9 @@ class BaseGameObject extends egret.DisplayObjectContainer {
         this.shadow.scaleX = 1.5;
         this.shadow.anchorOffsetX = this.shadow.width/2;
         this.addChild(this.shadow);
+        this.atk_timer = new egret.Timer(1000, 1);
+        this.atk_timer.stop();
+        this.atk_timer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this.onAttack, this);
     }
 
     public init(data:Array<any> = null) {
@@ -35,6 +39,7 @@ class BaseGameObject extends egret.DisplayObjectContainer {
         this.sumDeltaY = 0;
         this.canMove = true;
         this.isReverse = false;
+        this.isComplete = true;
     }
 
     /**
@@ -168,7 +173,11 @@ class BaseGameObject extends egret.DisplayObjectContainer {
         }
         return status;
     }
-
+    /**硬直计时器监听 */
+    private onAttack():void {
+        this.atk_timer.reset();
+        this.isComplete = true;
+    }
     public static Action_Enter:string = "enter";
     public static Action_Idle:string = "idle";
     public static Action_Attack01:string = "attack01";
@@ -178,6 +187,8 @@ class BaseGameObject extends egret.DisplayObjectContainer {
     public static Action_Attack05:string = "attack05";
     public static Action_Hurt:string = "hurt";
 
+
+    public attr:BaseCharactorData;
     /**阴影 */
     public shadow:egret.Bitmap;
     /**当前人物运动状态 */
@@ -186,7 +197,10 @@ class BaseGameObject extends egret.DisplayObjectContainer {
     public lastAnimation:string;
     /**是否反向 */
     public isReverse:boolean;
-    
+    /**攻击间隔计数器 */
+    public atk_timer:egret.Timer;
+    /**攻击cd结束标志 */
+    public isComplete:boolean;
     /**初始位置 */
     public originX:number = 0;
     public originY:number = 0;

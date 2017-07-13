@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <e:Skin width="280" height="472" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
 	<e:Image source="panel_shop_png" x="0" y="0" scaleX="1" scaleY="1"/>
-	<e:Label id="lab_name" y="20" horizontalCenter="0.5" fontFamily="Microsoft YaHei" size="28" bold="true" text="title" x="112" scaleX="1" scaleY="1" textColor="0xb5b5b4"/>
+	<e:Label id="lab_name" y="20" horizontalCenter="0.5" fontFamily="Microsoft YaHei" size="28" bold="true" text="title" x="112" scaleX="1" scaleY="1" textColor="0xd4cfc2"/>
 	<e:Image id="img_item" width="251" height="237" x="15" y="69" anchorOffsetX="0" anchorOffsetY="0" smoothing="false" source="" scaleX="1" scaleY="1"/>
 	<e:Label text="X" x="130.35" y="339" fontFamily="Microsoft YaHei" size="22" bold="true" scaleX="1" scaleY="1" textColor="0x2285a9" visible="false"/>
 	<e:Label id="lab_count" x="154.35" y="326.67" fontFamily="Microsoft YaHei" size="35" text="1" scaleX="1" scaleY="1" bold="true" visible="false"/>
@@ -13,7 +13,7 @@
 		</e:Skin>
 		</e:skinName>
 	</e:Button>
-	<e:Image id="img_soul01" x="62" y="323.99" scaleX="1" scaleY="1" source="crystal_0002_png" visible="false"/>
+	<e:Image id="img_soul01" x="226" y="321.99" scaleX="1" scaleY="1" source="shop_0003_png"/>
 	<e:Button id="btn_buy" x="4.5" y="377" label="" scaleX="1" scaleY="1">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
