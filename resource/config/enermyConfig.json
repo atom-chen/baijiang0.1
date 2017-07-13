@@ -1,30 +1,51 @@
-{
-    "monster01":{
-        "isRemote":false,
-        "mov":125,
-        "away":0,
-        "cd":3
-    },
-    "monster02":{
-        "isRemote":true,
-        "mov":500,
-        "away":300,
-        "cd":2
-    },
-    "monster03":{
-        "isRemote":false,
-        "mov":300,
-        "away":0,
-        "cd":2
-    },
-    "Boss01":{
-        "isRemote":true,
-        "mov":250,
-        "away":0,
-        "cd":2,
-        "skill":[
-            {"name":"Summon", "cd":13},
-            {"name":"SolaCut", "cd":5}
-        ]
-    }
-}
+[
+  {
+    "id": 1,
+    "type": "monster01",
+    "isRemote": false,
+    "mov": 125,
+    "away": 0,
+    "sti": 3,
+    "skill": [
+      0
+    ],
+    "name": "黄巾士兵"
+  },
+  {
+    "id": 2,
+    "type": "monster02",
+    "isRemote": true,
+    "mov": 500,
+    "away": 300,
+    "sti": 2,
+    "skill": [
+      0
+    ],
+    "name": "黄巾弓兵"
+  },
+  {
+    "id": 3,
+    "type": "monster03",
+    "isRemote": false,
+    "mov": 300,
+    "away": 0,
+    "sti": 2,
+    "skill": [
+      0
+    ],
+    "name": "黄巾枪兵"
+  },
+  {
+    "id": 100,
+    "type": "Boss01",
+    "isRemote": true,
+    "mov": 250,
+    "away": 0,
+    "sti": 2,
+    "skill": [
+      5,
+      6
+    ],
+    "name": "幽鬼王"
+  }
+]

@@ -39,9 +39,6 @@ class TalentDialog extends PopupWindow {
         this.removeEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this);
     }
 
-    public Init():void{
-    }
-
     /**
      * 顶部按钮监听
      */
@@ -64,10 +61,18 @@ class TalentDialog extends PopupWindow {
      * 弹窗按钮回调
      */
     private onPopupBtn(event:egret.TouchEvent):void {
-        Animations.popupIn(this.popupGroup, 300, ()=>{
-            GameLayerManager.gameLayer().maskLayer.removeChildren();
-            this.onPurchass(this.purchassType);
-        });
+        if(event.target == this.btn_close){
+            Animations.popupIn(this.popupGroup, 300, ()=>{
+                GameLayerManager.gameLayer().maskLayer.removeChildren();
+            });
+        }
+        else
+        {
+            Animations.popupIn(this.popupGroup, 300, ()=>{
+                GameLayerManager.gameLayer().maskLayer.removeChildren();
+                this.onPurchass(this.purchassType);
+            });
+        }
     }
 
     /**
@@ -132,12 +137,10 @@ class TalentDialog extends PopupWindow {
                 return;
             }
 
-            if(UserDataInfo.GetInstance().GetBasicData("diamond") < 50){
+            if(!UserDataInfo.GetInstance().IsHaveGoods("diamond", 50)){
                 Animations.showTips("钻石不足，无法购买天赋页", 1, true);
                 return;
             }
-
-            UserDataInfo.GetInstance().SetBasicData("diamond", UserDataInfo.GetInstance().GetBasicData("diamond") - 50);
 
             this.pageGroup.removeChildren();
             let talent = {"name":"", "count":1, "talent":[]};

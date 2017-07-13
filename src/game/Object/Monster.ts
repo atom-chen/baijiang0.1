@@ -38,12 +38,14 @@ class Monster extends Enermy {
     }
 
     public init(data:Array<any>, isSummon:boolean = false) {
+        Common.log(JSON.stringify(data[1]));
+        this.attr.initEnermyAttr(data[1].attr);
         super.init(data);
         this.initDragonBonesArmature(data[0]);
         this.isSummon = isSummon;
         this.speed = 10;
         this.readyCount = 0;
-        this.hp = data[1];
+        this.hp = this.attr.hp;
         this.skill_atkStatus = false;
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
@@ -215,8 +217,8 @@ class Monster extends Enermy {
     }
 
     /**受到攻击 */
-    public gotoHurt(isSkillHurt:boolean = false) {
-        super.gotoHurt();
+    public gotoHurt(hurtValue:number = 1, isSkillHurt:boolean = false) {
+        super.gotoHurt(hurtValue, isSkillHurt);
     }
 
     /**增加buff */

@@ -58,6 +58,8 @@ class Hero extends BaseGameObject {
     public init(data:Array<any>, isPVP:boolean=false) {
         super.init(data);
         this.initDragonBonesArmature(data[0]);
+        this.attr.initHeroAttr(data[1]);
+        this.atk_timer.delay = this.attr.wsp * 1000;
         this.name = data[0];
         this.offset = [[1, -113], [77, -109], [121, -50], [75, 14], [0, 23]];
         // this.offset = [[2, -74], [49, -71], [79, -32], [50, 9], [0, 15]]
@@ -260,7 +262,7 @@ class Hero extends BaseGameObject {
                         // Common.log("击晕了");
                     }
                 }
-                this.enermy[i].gotoHurt();
+                this.enermy[i].gotoHurt(this.attr.atk);
             }
         }
     }
@@ -403,8 +405,10 @@ class Hero extends BaseGameObject {
 
     /**攻击 */
     public gotoAttack() {
+        if (!this.isComplete) return;
         if (this.curState != BaseGameObject.Action_Idle) return;
-        // this.combo = 0;
+        this.isComplete = false;
+        this.atk_timer.start();
         this.curState = "attack";
         this.isAttack = true;
         this.img_swordLight.visible = true;
@@ -593,7 +597,6 @@ class Hero extends BaseGameObject {
     private attack_effect:dragonBones.Bone;
     private img_swordLight:egret.Bitmap;
     /**剑光的偏移 */
-
     private offset:any[];
     private offsetIndex:number;
     /**是否攻击到敌人 */

@@ -173,7 +173,10 @@ class BattleScene extends Base {
     public createHero():void {
         this.hero = ObjectPool.pop("Hero");
         GameData.heros.push(this.hero);
-        this.hero.init([GameData.curHero, GameData.hp]);
+        //测试
+        let data = ConfigManager[`${GameData.curHero}Attr`];
+        let attr = data[0];
+        this.hero.init([GameData.curHero, attr]);
         this.hero.x = Common.SCREEN_W/2;
         this.hero.y = Common.SCREEN_H/2;
         // this.hero.anchorOffsetY = -33;
@@ -206,10 +209,10 @@ class BattleScene extends Base {
     /**
      * 创建Boss
      */
-    public createBoss():void {
+    public createBoss(data):void {
         this.boss = ObjectPool.pop("Boss");
         GameData.boss.push(this.boss);
-        this.boss.init(["Boss01", 5]);
+        this.boss.init(data);
         this.boss.x = MathUtils.getRandom(100, 1050);
         this.boss.y = MathUtils.getRandom(100, 550); 
         // this.boss.anchorOffsetY = -33;

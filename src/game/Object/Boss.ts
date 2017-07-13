@@ -49,6 +49,7 @@ class Boss extends Enermy {
     }
 
     public init(data:Array<any>) {
+        this.attr.initEnermyAttr(data[1].attr);
         super.init(data);
         this.initDragonBonesArmature(data[0]);
         this.skillPoint = new egret.Point();
@@ -59,7 +60,7 @@ class Boss extends Enermy {
         this.atk_speed = 75;
         this._remote = false;
         this.skill_atkStatus = false;
-        this.hp = data[1];
+        this.hp = this.attr.hp;
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
         this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
@@ -138,7 +139,7 @@ class Boss extends Enermy {
     /**
      * 受伤
      */
-    public gotoHurt(isSkillHurt:boolean = false) {
+    public gotoHurt(hurtValue:number = 1, isSkillHurt:boolean = false) {
         if (this.hp <=0 ) return;
         if (!this.isReadSkill) {
             if (this.curState == Boss.Action_Skill02 || this.curState == "skill01") {
@@ -153,7 +154,7 @@ class Boss extends Enermy {
                     this.effectArmature.x = 0;
                     this.effectArmature.y = 0;
                 }
-                this.hurtAnimate();
+                this.hurtAnimate(hurtValue);
             }else{
                 super.gotoHurt();
             }
