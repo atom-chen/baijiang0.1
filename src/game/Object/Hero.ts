@@ -208,26 +208,28 @@ class Hero extends BaseGameObject {
         if (Math.abs(this.sumDeltaX) > this.atk_rangeX || Math.abs(this.sumDeltaY) > this.atk_rangeY) {
             this.gotoIdle();
             this.img_swordLight.visible = false;
-            // this.setEnermy();
-            // //怪物到中点的距离
-            // for (let i = 0; i < this.enermy.length; i++) {
-            //     let radian = MathUtils.getRadian2(this.centerX, this.centerY, this.enermy[i].x, this.enermy[i].y);
-            //     let dis = MathUtils.getDistance(this.centerX, this.centerY, this.enermy[i].x, this.enermy[i].y);
-            //     let angle = Math.abs(this.atk_radian - radian);
-            //     let dx = dis*Math.cos(angle);
-            //     let dy = dis*Math.sin(angle);
-            //     if ((Math.abs(dx) <= this.atk_range/2) && (Math.abs(dy) <= 30)) {
-            //         if (this.enermy[i].curState != Enermy.Action_Dead && this.enermy[i].curState != BaseGameObject.Action_Hurt) {
-            //             this.isHit = true;
-            //             this.combo ++;
-            //         }
-            //         if (this.isAttackBuff(this.enermy[i])) {
-            //             // Common.log("击晕了");
-            //         }
-            //         this.enermy[i].gotoHurt();
-            //     }else{
-            //     }
-            // }
+            this.setEnermy();
+            //怪物到中点的距离
+            for (let i = 0; i < this.enermy.length; i++) {
+                let radian = MathUtils.getRadian2(this.centerX, this.centerY, this.enermy[i].x, this.enermy[i].y);
+                let dis = MathUtils.getDistance(this.centerX, this.centerY, this.enermy[i].x, this.enermy[i].y);
+                let angle = Math.abs(this.atk_radian - radian);
+                let dx = dis*Math.cos(angle);
+                let dy = dis*Math.sin(angle);
+                if ((Math.abs(dx) <= this.atk_range/2) && (Math.abs(dy) <= 30)) {
+                    if (!this.isPVP) {
+                        let state = this.enermy[i].curState;
+                        if (state != Enermy.Action_Dead && state != BaseGameObject.Action_Hurt && !this.enermy[i].isReadSkill) {
+                            this.isHit = true;
+                            this.combo ++;
+                        }
+                        if (this.isAttackBuff(this.enermy[i])) {
+                            // Common.log("击晕了");
+                        }
+                    }
+                    this.enermy[i].gotoHurt();
+                }
+            }
             if (!this.isPVP){
                 if (this.combo >= 1) {
                     if (!this.comboTimer.running) this.comboTimer.start();
@@ -244,25 +246,25 @@ class Hero extends BaseGameObject {
         this.img_swordLight.x = this.offset[this.offsetIndex][0];
         this.img_swordLight.y = this.offset[this.offsetIndex][1];
 
-        this.setEnermy();
-        //怪物到中点的距离
-        for (let i = 0; i < this.enermy.length; i++) {
-            let dis = MathUtils.getDistance(this.x, this.y, this.enermy[i].x, this.enermy[i].y);
-            let range:number = (this.isPVP) ? 50:33;
-            if (dis < range) {
-                if (!this.isPVP) {
-                    let state = this.enermy[i].curState;
-                    if (state != Enermy.Action_Dead && state != BaseGameObject.Action_Hurt && !this.enermy[i].isReadSkill) {
-                        this.isHit = true;
-                        this.combo ++;
-                    }
-                    if (this.isAttackBuff(this.enermy[i])) {
-                        // Common.log("击晕了");
-                    }
-                }
-                this.enermy[i].gotoHurt();
-            }
-        }
+        // this.setEnermy();
+        // //怪物到中点的距离
+        // for (let i = 0; i < this.enermy.length; i++) {
+        //     let dis = MathUtils.getDistance(this.x, this.y, this.enermy[i].x, this.enermy[i].y);
+        //     let range:number = (this.isPVP) ? 50:33;
+        //     if (dis < range) {
+        //         if (!this.isPVP) {
+        //             let state = this.enermy[i].curState;
+        //             if (state != Enermy.Action_Dead && state != BaseGameObject.Action_Hurt && !this.enermy[i].isReadSkill) {
+        //                 this.isHit = true;
+        //                 this.combo ++;
+        //             }
+        //             if (this.isAttackBuff(this.enermy[i])) {
+        //                 // Common.log("击晕了");
+        //             }
+        //         }
+        //         this.enermy[i].gotoHurt();
+        //     }
+        // }
     }
     /**
      * 收到攻击状态
