@@ -8,19 +8,25 @@ class MainScene extends Base {
         this.skinName = "resource/game_skins/mainSceneSkin.exml"
     }
 
-    protected childrenCreated(): void{
-
-    }
-
     private uiCompleteHandler():void {
         this.removeEventListener(eui.UIEvent.COMPLETE, this.uiCompleteHandler, this)
 
-        let event_list:any = [this.btn_ready,this.btn_equip,this.btn_talent,this.btn_setting,this.btn_shop,this.btn_applicate,this.btn_close,this.btn_pvp];
-        for(let i in event_list) event_list[i].addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
-        GameLayerManager.gameLayer().addEventListener(UserData.CHANGEDATA, this.onChangeData, this);
-
+        this.onListener();
         this.createMainScene();
         this.show_label_text();      
+    }
+
+    /** 事件监听 */
+    private onListener():void{
+        let event_list:any = [this.btn_ready,this.btn_equip,this.btn_talent,this.btn_setting,this.btn_shop,this.btn_applicate,this.btn_close,this.btn_pvp];
+        for(let i in event_list) event_list[i].addEventListener(egret.TouchEvent.TOUCH_TAP, this.onButtonHandler, this);
+
+        let img_list:any = [this.img_power,this.img_exp, this.img_soul, this.img_diamond];
+        for(let i in img_list){
+            img_list[i].name = i;
+            img_list[i].addEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchImg, this);
+        }
+        GameLayerManager.gameLayer().addEventListener(UserData.CHANGEDATA, this.onChangeData, this);
     }
 
     /** 对象渐变效果 */
@@ -108,6 +114,15 @@ class MainScene extends Base {
             }
         }, this);
         time.start();        
+    }
+
+    private onTouchImg(event:egret.TouchEvent):void{
+        let target = event.target;
+        let type:number = parseInt(target.name);
+
+        let group = GoodsTipWindow.GetInstance();
+        group.Show(this, type);
+        Common.SetXY(group, target.x - 120, target.y + target.height + 10);
     }
 
     /**
@@ -198,6 +213,11 @@ class MainScene extends Base {
     private lab_soul:eui.Label;
     private lab_diamond:eui.Label;
     private lab_power:eui.Label;
+
+    private img_exp:eui.Image;
+    private img_soul:eui.Image;
+    private img_diamond:eui.Image;
+    private img_power:eui.Image;
 
     /**设置弹出 */
     private popupGroup:eui.Group;

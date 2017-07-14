@@ -119,7 +119,7 @@ class SwordDance extends BuffBase {
             for (let i = 0; i < enermy.length; i++) {
                 let dis = MathUtils.getDistance(this.target.x, this.target.y, enermy[i].x, enermy[i].y);
                 if (dis <= 150) {
-                    enermy[i].gotoHurt();
+                    enermy[i].gotoHurt(this.target.attr.atk);
                 }
             }
         }

@@ -128,7 +128,7 @@
 
 	</e:Button>
 	<e:Image x="141.5" y="8" source="title_00012_png"/>
-	<e:Scroller id="_scrollHero" width="492" height="70" x="11" y="557" anchorOffsetY="0" anchorOffsetX="0">
+	<e:Scroller id="_scrollHero" width="492" height="88" x="11" y="542" anchorOffsetY="0" anchorOffsetX="0">
 	</e:Scroller>
 	<e:Image source="img_nameBox_png" x="12" y="106"/>
 	<e:Label id="lab_heroName" text="英雄名称" y="116.01" anchorOffsetX="0" textAlign="center" fontFamily="Microsoft YaHei" size="32" bold="true" anchorOffsetY="0" verticalAlign="middle" textColor="0x260909" horizontalCenter="-460"/>

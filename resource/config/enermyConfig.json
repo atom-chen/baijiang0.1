@@ -43,8 +43,8 @@
     "away": 0,
     "sti": 2,
     "skill": [
-      5,
-      6
+      "Summon",
+      "SolaCut"
     ],
     "name": "幽鬼王"
   }

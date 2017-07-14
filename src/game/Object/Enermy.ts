@@ -165,11 +165,11 @@ class Enermy extends BaseGameObject {
             if (this.attr.hp <= hurtValue) {
                 this.effectArmature.play(Enermy.Action_HurtDie, 1);
                 this.effectArmature.x = 0;
-                this.effectArmature.y = 0;
+                this.effectArmature.y = 5;
             }else{
                 this.effectArmature.play(BaseGameObject.Action_Hurt, 1);
                 this.effectArmature.x = -15;
-                this.effectArmature.y = 0;
+                this.effectArmature.y = 5;
                 if (this.attr.hp < 0) this.gotoDead();
             }
             this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
@@ -201,11 +201,12 @@ class Enermy extends BaseGameObject {
      * 受伤表现
      */
     public hurtAnimate(value:number):void {
+        this.addChild(this.hurtText);
         this.hurtText.text = `-${value.toString()}`;
         this.hurtText.anchorOffsetX = this.hurtText.width/2;
-        this.hurtText.y = -40;
-        this.hurtText.scaleX = 1;
-        if (this.isReverse) this.hurtText.scaleX = -1;
+        this.hurtText.y = this.y;
+        this.hurtText.x = this.x;
+        SceneManager.battleScene.effectLayer.addChild(this.hurtText);
         Animations.hurtTips(this.hurtText);
     }
     /**

@@ -2,7 +2,7 @@
 <e:Skin width="1136" height="640" xmlns:e="http://ns.egret.com/eui" xmlns:w="http://ns.egret.com/wing">
     <e:Image source="mask_png" width="5680" height="3200" x="-2272" y="-1280"/>
 	<e:Image x="70" y="46" source="shop_popupBg1_png"/>
-	<e:Label text="商品信息" x="484.01" y="80.01" textColor="0xdedede" fontFamily="Microsoft YaHei" bold="true" size="40" visible="false"/>
+
 	<e:Button id="btn_back" label="" x="985" y="82">
 		<e:skinName>
 			<e:Skin states="up,down,disabled">
@@ -14,17 +14,7 @@
 	<e:Image id="img_item" width="254" height="240" x="146.8" y="186.4" anchorOffsetX="0" anchorOffsetY="0" smoothing="false"/>
 	<e:Label id="lab_itemName" text="新手礼包" y="193.08" left="435" bold="true" fontFamily="Microsoft YaHei" size="34" textColor="0x707070"/>
 	<e:Label id="lab_detail" text="" x="436" y="258" fontFamily="Microsoft YaHei" multiline="true" anchorOffsetX="0" width="512" anchorOffsetY="0" height="171" bold="true" size="26" lineSpacing="5" textColor="0x494949"/>
-	<e:Button id="btn_buy" label="500" x="424" y="484" visible="false">
-		<e:skinName>
-			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="btn_shopGet_png" width.down="90%" height.down="90%" horizontalCenter="0" verticalCenter="0"/>
-			<e:Image source="crystal_0002_png" horizontalCenter="-60" verticalCenter="-8" width.down="36" height.down="36"/>
-			<e:Label id="labelDisplay" size.down="27" horizontalCenter="20" verticalCenter="-8" textColor="0xe2e4b5" fontFamily="Microsoft YaHei" bold="true"/>
-			</e:Skin>
-		</e:skinName>
 
-
-	</e:Button>
 
 	<e:Image x="496" y="82" source="title_0001_png"/>
 </e:Skin>

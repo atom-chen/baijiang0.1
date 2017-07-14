@@ -120,9 +120,14 @@ class TalentDialog extends PopupWindow {
         }
     }
 
+    /** 点击解锁按钮 */
     private onTouchUnLock(event:egret.TouchEvent):void{
-        let strs = modTalent.getTips(this.curTalentId);
-        Animations.showTips(strs, 1, true);
+        if(this.allLv >= 71) Animations.showTips("天赋已点满", 1, true);
+        else
+        {
+            let strs = modTalent.getTips(this.curTalentId);
+            Animations.showTips(strs, 1, true);
+        }
     }
 
     /**
@@ -132,7 +137,7 @@ class TalentDialog extends PopupWindow {
         let talentPage = modTalent.getTalentData();
         if (type == 1) {
             //购买天赋页
-            if (talentPage.length == 5) {
+            if (talentPage.length >= 10) {
                 Animations.showTips("天赋页已满", 1, true);
                 return;
             }
@@ -269,6 +274,14 @@ class TalentDialog extends PopupWindow {
 
         let btn:any = this.btn_upPower.getChildAt(0);
         let diamondBtn:any = this.btn_upDiamond.getChildAt(0);
+        
+        if(this.allLv >= 71){
+            this.show_btn_text(false);
+            this.btn_unLock.label = "天赋已点满";
+            return;
+        }
+        else this.btn_unLock.label = "未解锁";
+        
         if (modTalent.isUnlock(this.curPage, num)) {
             this.lab_condition.text = "";
             this.show_btn_text(true);

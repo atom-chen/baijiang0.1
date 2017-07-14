@@ -48,7 +48,7 @@ class SolaCut extends SkillBase {
         if ((Math.abs(deltax) <= 45) && (Math.abs(deltay) <= 43)) {
             if (!this.target.skill_atkStatus) {
                 this.target.skill_atkStatus = true;
-                GameData.heros[0].gotoHurt();
+                GameData.heros[0].gotoHurt(this.target.attr.atk);
             }
         }
     }

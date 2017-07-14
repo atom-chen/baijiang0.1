@@ -325,10 +325,10 @@ class ReadyDialog extends PopupWindow {
         this._armatureGroup.removeChildren();
         for (var key in HeroData.list) {
             let tempGroup:eui.Group = new eui.Group();
-            let img_head = Utils.createBitmap(`img_${key}_png`);
+            let img_head = Utils.createBitmap(`img_${key}1_png`);
             tempGroup.addChild(img_head);
             tempGroup.addEventListener(egret.TouchEvent.TOUCH_TAP, this._onSelete, this);
-            tempGroup.x = count * 70;
+            tempGroup.x = count * 100;
             tempGroup.name = key;
             count ++;
             group.addChild(tempGroup);

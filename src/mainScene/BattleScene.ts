@@ -162,8 +162,8 @@ class BattleScene extends Base {
         this.blood.touchEnabled = false;
         this.blood.visible = false;
         this.addChild(this.particleLayer);
-        this.addChild(this.effectLayer);
         this.addChild(this.battleLayer);
+        this.addChild(this.effectLayer);
         this.addChild(this.blood);
     }
 

@@ -23,24 +23,18 @@ class EquipDialog extends PopupWindow {
         this.txt_attr_list = [];
         this.goods_index = 0;
 
-        this.equipGroup = new eui.Group();
-        this.scrollGroup.addChild(this.equipGroup);
-
-        this.resetGroup = new eui.Group();
-        this.scrollGroup.addChild(this.resetGroup);
-       
         for(let i:number = 0; i < 6; i++){
             this.reset_list[i] = new eui.Group();                   
-            this.resetGroup.addChild(this.reset_list[i]);
-            Common.SetXY(this.reset_list[i], 0, 105 * i)
+            this.resetScrollGroup.addChild(this.reset_list[i]);
+            Common.SetXY(this.reset_list[i], this.resetGroup.width - 452 >> 1, 105 * i)
 
             this.reset_btn_list[i] = new eui.Image();               
             this.img_star_list[i] = new egret.Bitmap();
             this.txt_attr_list[i] = Common.CreateText("", 25, 0xffffff, true, "Microsoft YaHei");
 
             this.star_list[i] = new egret.Bitmap(RES.getRes("star_00_png"));
-            this.addChild(this.star_list[i]);
-            Common.SetXY(this.star_list[i], i * 32 + 20, this.btn_back.y + this.btn_back.height + 30)
+            this.equipGroup.addChild(this.star_list[i]);
+            Common.SetXY(this.star_list[i], i * 32 + 10, 10);
         }
 
         this.imgClick = new egret.Bitmap( RES.getRes("equip_0009_png"));
@@ -51,7 +45,7 @@ class EquipDialog extends PopupWindow {
 
         super.Show();
 
-        this.setGroupStatus(true, false, "兵器库", "down", "null");
+        this.setGroupStatus(true, false);
         this.show_label_data();
         this.createEquips();
 
@@ -70,7 +64,7 @@ class EquipDialog extends PopupWindow {
     }
 
     private eventType(type:number = 0):void{
-        let obj_list:any = [this.btn_back, this.btn_weapon, this.btn_change, this.btn_upgrade, this.btn_close,  this.img_weapon];
+        let obj_list:any = [this.btn_back, this.btn_weapon, this.btn_change, this.btn_upgrade, this.btn_close,  this.img_weapon, this.img_detail];
         Common.ListenerAndRemoveEvent(obj_list, this.onTouchBtn, this, type);
         obj_list = [];
     }
@@ -99,20 +93,18 @@ class EquipDialog extends PopupWindow {
                 {text:modEquip.EquipSource.EQUIPLV + "", style:{"textColor":0xf28b01}}
             ]
             if(event.data >= modEquip.EquipSource.EQUIPLV){
-                if(this.btn_change.currentState == "down") this.showResetGroup();
+                this.showResetGroup();
             } 
         }
     }
 
     private onTouchBtn(event:egret.TouchEvent):void{
         let target = event.target;
-        if(target.currentState == "down") return;
 
         switch(target){
             case this.btn_change:                                                           //点击洗脸按钮
                 if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
-                this.setGroupStatus(false, true, "洗练", "null", "down");
-                this.showResetGroup();
+                this.setGroupStatus(false, true);
             break;
             case this.btn_upgrade:                                                          //点击升级按钮
                 if(modEquip.EquipData.GetInstance().GetEquipNum() == 0) return;
@@ -124,11 +116,15 @@ class EquipDialog extends PopupWindow {
                 if(this.equip_info == null) return;
                 WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
             break;
+            case this.img_detail:
+                if(this.equip_info == null) return;
+                WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
+            break;
             case this.btn_back:                                                             //点击关闭界面
                 this.Close();
             break;
             default:                                                                        //默认为close 或则点击兵器库
-                this.setGroupStatus(true, false, "兵器库", "down", "null");
+                this.setGroupStatus(true, false);
             break;
         }
     }
@@ -154,6 +150,7 @@ class EquipDialog extends PopupWindow {
         Common.SetXY(this.imgClick, this.weapon_list[index].x, this.weapon_list[index].y);
         
         this.showEquipStar(this.equip_info.Star);
+        this.showResetGroup();
     }
 
     /** 显示装备星级 */
@@ -201,7 +198,7 @@ class EquipDialog extends PopupWindow {
 
         let data = modEquip.GetEquipLvFromValue(value);
         this.img_star_list[index].texture = RES.getRes(data.img);
-        Common.SetXY(this.img_star_list[index], this.img_star_list[index].width, imgBg.height - this.img_star_list[index].height >> 1);
+        Common.SetXY(this.img_star_list[index], this.img_star_list[index].width - 7, imgBg.height - this.img_star_list[index].height >> 1);
         group.addChild(this.img_star_list[index]);
 
         group.addChild(this.txt_attr_list[index]);
@@ -289,7 +286,7 @@ class EquipDialog extends PopupWindow {
         //移除所有的对象
         for(let i:number = 0; i < this.weapon_list.length; i++) this.weapon_list.pop();
         this.weapon_list = [];
-        this.equipGroup.removeChildren();
+        this.scrollGroup.removeChildren();
 
         //获得当前拥有的物品
         let raw, col;
@@ -299,7 +296,7 @@ class EquipDialog extends PopupWindow {
             col = i % 6;
             let img:eui.Image = new eui.Image();
             img.source = `Sequip${25-equip_list[i].Id}_png`;
-            this.equipGroup.addChild(img); 
+            this.scrollGroup.addChild(img); 
             img.name = i + "";
             img.x = 4 +104*col;
             img.y = 8 +104*raw;
@@ -314,7 +311,7 @@ class EquipDialog extends PopupWindow {
                 }
             }
         }
-        this.equipGroup.addChild(this.imgClick);
+        this.scrollGroup.addChild(this.imgClick);
     }
 
     /** 显示洗练的租 */
@@ -336,19 +333,16 @@ class EquipDialog extends PopupWindow {
     }
 
     /** 设置租的状态 */
-    private setGroupStatus(isShowWeapon:boolean, isShowReset:boolean, title:string, weaponStatus:string, resetStatus:string):void{
+    private setGroupStatus(isShowWeapon:boolean, isShowReset:boolean):void{
         this.equipGroup.visible = isShowWeapon;
         this.resetGroup.visible = isShowReset;
-        this.btn_close.visible  = isShowReset;
-        this.lab_title.text     = title;
-        this.btn_weapon.currentState = weaponStatus;
-        this.btn_change.currentState = resetStatus;
-        this.scrollGroup.scrollV = 0;
     }
 
     private scrollGroup:eui.Group;
     private equipGroup:eui.Group;
     private resetGroup:eui.Group;
+    private resetScrollGroup:eui.Group;
+    
     private goods_index:number;
 
     /** 按钮 */
@@ -361,9 +355,9 @@ class EquipDialog extends PopupWindow {
     /** 装备 */
     private imgClick:egret.Bitmap;
     private img_weapon:eui.Image;
+    private img_detail:eui.Image;
     private lab_name:eui.Label;
     private lab_lv:eui.Label;
-    private lab_title:eui.Label;
     private lab_exp:eui.Label;
     private lab_soul:eui.Label;
     private lab_diamond:eui.Label;

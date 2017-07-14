@@ -114,7 +114,7 @@ class ShopDialog extends PopupWindow {
         let group = new eui.Group();
         for (let i = 0; i < content.length; i++) {
             let panel:shopItemIR = new shopItemIR();
-            panel.show(content[i], type);
+            panel.Show(content[i], type, i);
             panel.x = 290 * i;
             group.addChild(panel);
         }

@@ -19,15 +19,17 @@ class Summon extends SkillBase {
     }
 
     public update(target:any=null) {
-        //每次生产的数量
-        let count:number = MathUtils.getRandom(1, 2);
-        for (let i = 0; i < count; i++){
-            //敌人的类型索引
-            let index:number = MathUtils.getRandom(2);
-            //生产的敌人数据
-            let data:Array<any> = this._summon[index];
-            SceneManager.battleScene.createSingleMonster(data, true);
-        }
+        // //每次生产的数量
+        // let count:number = MathUtils.getRandom(1, 2);
+        // for (let i = 0; i < count; i++){
+        //     //敌人的类型索引
+        //     let index:number = MathUtils.getRandom(2);
+        //     //生产的敌人数据
+        //     let data:Array<any> = this._summon[index];
+        //     let monsterData = modBattle.setMonsterData(data[0], data[1]);
+        //     SceneManager.battleScene.createSingleMonster(data, true);
+        // }
+        modBattle.summonEnermy();
     }
 
     public end() {
@@ -55,8 +57,8 @@ class Summon extends SkillBase {
 
     private target:any;
     private _summon:Array<any> = [
-        ["monster01", 1],
-        ["monster02", 1],
-        ["monster03", 1]
+        [1, 1],
+        [2, 1],
+        [3, 1]
     ]
 }

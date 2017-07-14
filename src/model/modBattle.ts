@@ -94,6 +94,38 @@ namespace modBattle {
         for (let i = 0; i < heroCount; i++) GameData.heros.pop();
     }
 
+    export function summonEnermy() {
+        //每次生产的数量
+        let count:number = MathUtils.getRandom(1, 2);
+        let len:number = tcStage.monster.length - 1;
+        for (let i = 0; i < count; i++){
+            //敌人的类型索引
+            let index:number = MathUtils.getRandom(len);
+            //生产的敌人数据
+            let id:number = tcStage.monster[index];
+            let lv:number = tcStage.lv;
+            let monsterData = setMonsterData(id, lv);
+            SceneManager.battleScene.createSingleMonster(monsterData);
+        }
+    }
+
+    /**
+     * 设置小兵的配置数据
+     */
+    function setMonsterData(id:number, lv:number, isBoss:boolean = false, k_hp:number = 1, k_atk:number = 1):any {
+            let type:string = `monster0${id}`;
+            let data:any = getEnermyData(id);
+            if (isBoss){
+                type = `Boss0${id - 99}`;
+                data.attr = ConfigManager.boss[id-100][lv-1];
+            }else{
+                data.attr = ConfigManager.monsters[id-1][lv-1];
+            }
+            data.attr.hp *= k_hp;
+            data.attr.atk *= k_atk;
+            return [type, data];
+    }
+
     /**
      * 定时结束回调函数
      */
@@ -248,23 +280,6 @@ namespace modBattle {
         }
         timer.repeatCount = 1;
         timer.start();
-    }
-
-    /**
-     * 设置小兵的配置数据
-     */
-    function setMonsterData(id:number, lv:number, isBoss:boolean = false, k_hp:number = 1, k_atk:number = 1):any {
-            let type:string = `monster0${id}`;
-            let data:any = getEnermyData(id);
-            if (isBoss){
-                type = `Boss0${id - 99}`;
-                data.attr = ConfigManager.boss[id-100][lv-1];
-            }else{
-                data.attr = ConfigManager.monsters[id-1][lv-1];
-            }
-            data.attr.hp *= k_hp;
-            data.attr.atk *= k_atk;
-            return [type, data];
     }
 
     function getEnermyData(id:number):any {

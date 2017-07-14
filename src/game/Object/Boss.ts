@@ -66,12 +66,12 @@ class Boss extends Enermy {
      * 设置技能
      */
     private _addSkill(data:any):void {
-        // this._skill = [];
-        // for (let i = 0; i < data.skill.length; i++) {
-        //     let skillConfig = bossConfig.skill[i];
-        //     this._skill[i] = ObjectPool.pop(skillConfig.name);
-        //     this._skill[i].init(this);
-        // }
+        this._skill = [];
+        for (let i = 0; i < data.skill.length; i++) {
+            let skillConfig = data.skill[i];
+            this._skill[i] = ObjectPool.pop(skillConfig);
+            this._skill[i].init(this);
+        }
     }
 
     /**
@@ -127,7 +127,7 @@ class Boss extends Enermy {
             var dis = MathUtils.getDistance(this.x, this.y, GameData.heros[0].x, GameData.heros[0].y);
             if (dis < 33) {
                 this.skill_atkStatus = true;
-                GameData.heros[0].gotoHurt();
+                GameData.heros[0].gotoHurt(this.attr.atk);
             }
         }
     }
@@ -147,13 +147,13 @@ class Boss extends Enermy {
      * 受伤
      */
     public gotoHurt(hurtValue:number = 1, isSkillHurt:boolean = false) {
-        if (this.hp <=0 ) return;
+        if (this.attr.hp <=0 ) return;
         if (!this.isReadSkill) {
             if (this.curState == Boss.Action_Skill02 || this.curState == "skill01") {
                 this.isReadSkill = true;
-                this.hp --;
+                this.attr.hp -= hurtValue;
                 ShakeTool.getInstance().shakeObj(SceneManager.battleScene, 1, 5, 5);
-                if (this.hp <= 0){
+                if (this.attr.hp <= 0){
                     this.curState = BaseGameObject.Action_Hurt;
                     this.armature.play(this.curState, 0);
                     this.effectArmature.visible = true;
@@ -163,7 +163,7 @@ class Boss extends Enermy {
                 }
                 this.hurtAnimate(hurtValue);
             }else{
-                super.gotoHurt();
+                super.gotoHurt(hurtValue, isSkillHurt);
             }
         }
         // this.filters = [this.defaultFlilter];
@@ -232,10 +232,6 @@ class Boss extends Enermy {
         if (this.reverse(this, this.radian)) {
             this.skillArmature.y = this.y;
         }
-        // let dx = Math.cos(this.radian) * this.atk_range;
-        // let dy = Math.sin(this.radian) * this.atk_range;
-        // this.atk_rangeX = Math.abs(dx);
-        // this.atk_rangeY = Math.abs(dy);
     }
 
     /**增加buff */
