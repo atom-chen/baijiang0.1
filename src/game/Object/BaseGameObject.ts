@@ -62,6 +62,13 @@ class BaseGameObject extends egret.DisplayObjectContainer {
     }
 
     /**
+     * 获取当前的状态
+     */
+    public getCurState() {
+        return this.curState;
+    }
+
+    /**
      * update
      */
     public update(time:number):void {

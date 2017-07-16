@@ -180,7 +180,7 @@ class Boss extends Enermy {
         super.gotoAttack();
         this.deltaX = 0;
         this.deltaY = 0;
-
+        this.skill_atkStatus = true;
         this.atk_direction = this.getWalkPosition("attack", this.radian);
         this.armature.play(this.atk_direction, 1);
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);

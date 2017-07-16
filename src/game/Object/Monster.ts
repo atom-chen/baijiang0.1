@@ -73,7 +73,12 @@ class Monster extends Enermy {
         if (!this.skill_atkStatus) {
             let dis = MathUtils.getDistance(skillPoint.x, skillPoint.y, GameData.heros[0].x, GameData.heros[0].y);
             if (dis <= 30) {
-                GameData.heros[0].gotoHurt(this.attr.atk);
+                let state = GameData.heros[0].getCurState();
+                if (state == "attack") {
+                    this._bound();
+                }else{
+                    GameData.heros[0].gotoHurt(this.attr.atk);
+                }
                 this.skill_atkStatus = true;
             }
         }

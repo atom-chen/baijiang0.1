@@ -242,7 +242,7 @@ class Hero extends BaseGameObject {
             egret.setTimeout(()=>{this.isAttack = false}, this, 100);
             return;
         }
-        if (Math.abs(this.sumDeltaX)>this.atk_rangeX/2){
+        if (Math.abs(this.sumDeltaX)>this.atk_rangeX/3){
             this.img_swordLight.visible = true;
         }
         this.x = this.x + this.deltaX;
@@ -332,7 +332,7 @@ class Hero extends BaseGameObject {
      * 受伤
      */
     public gotoHurt(value:number = 1) {
-        if (this.curState == BaseGameObject.Action_Hurt) return;
+        if (this.curState == BaseGameObject.Action_Hurt || this.curState == "attack") return;
         if (!this.skill_status) {
             if (this.isImmuneBuff()) return;
             this.curState = BaseGameObject.Action_Hurt;
@@ -413,16 +413,20 @@ class Hero extends BaseGameObject {
             endX = this.endX - this.offset[this.offsetIndex][0];
         }
         this.atk_radian = MathUtils.getRadian2(this.originX, this.originY, endX, endY);
-
-        this.img_swordLight.scaleX = 1;
-        // this.img_swordLight.rotation = MathUtils.getAngle(this.atk_radian) + 360;
-        this.img_swordLight.rotation = 45 * this.offsetIndex - 90;
-        if (this.reverse(this, this.atk_radian)) {
-            this.img_swordLight.scaleX = -1;
-            this.img_swordLight.rotation = 45 * this.offsetIndex + 90;
-        }
         let dis_atk:number = MathUtils.getDistance(this.originX, this.originY, this.endX, this.endY);
         if (dis_atk > this.atk_range) dis_atk = 200;
+        this.img_swordLight.scaleX = dis_atk/280;
+        //实际角度
+        let trueAngle:number = Math.floor(MathUtils.getAngle(this.atk_radian));
+        //剑尖角度
+        let swordAngle:number = 45 * this.offsetIndex - 90;
+        if (this.reverse(this, this.atk_radian)) {
+            this.img_swordLight.scaleX = -dis_atk/280;
+            trueAngle = Math.floor(-MathUtils.getAngle(this.atk_radian));
+            swordAngle = 45 * this.offsetIndex + 90;
+            if (trueAngle < 0) trueAngle += 360;
+        }
+        this.img_swordLight.rotation = swordAngle + ((trueAngle - swordAngle)/2.25);
         let dx = Math.cos(this.atk_radian) * dis_atk;
         let dy = Math.sin(this.atk_radian) * dis_atk;
         this.atk_rangeX = Math.floor(Math.abs(dx));

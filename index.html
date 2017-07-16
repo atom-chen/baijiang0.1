@@ -71,6 +71,7 @@
 	<script egret="game" src="bin-debug/Common.js"></script>
 	<script egret="game" src="bin-debug/game/Machine/IdleState.js"></script>
 	<script egret="game" src="bin-debug/game/Machine/StateType.js"></script>
+	<script egret="game" src="bin-debug/game/Object/BaseCharactorData.js"></script>
 	<script egret="game" src="bin-debug/component/BattleSceneCom.js"></script>
 	<script egret="game" src="bin-debug/game/Object/Boss.js"></script>
 	<script egret="game" src="bin-debug/component/EquipStarIR.js"></script>
@@ -126,6 +127,7 @@
 	<script egret="game" src="bin-debug/popup/drawCardPop.js"></script>
 	<script egret="game" src="bin-debug/popup/EquipUpStarWindow.js"></script>
 	<script egret="game" src="bin-debug/popup/EquipUpWindow.js"></script>
+	<script egret="game" src="bin-debug/popup/GoodsTipWindow.js"></script>
 	<script egret="game" src="bin-debug/component/TalentIR.js"></script>
 	<script egret="game" src="bin-debug/popup/PVPWindow.js"></script>
 	<script egret="game" src="bin-debug/popup/ResetEquipAttrWindow.js"></script>
@@ -161,7 +163,7 @@
          data-content-height="640"
          data-show-paint-rect="false"
          data-multi-fingered="2"
-         data-show-fps="false" data-show-log="false"
+         data-show-fps="true" data-show-log="false"
          data-show-fps-style="x:0,y:0,size:20,textColor:0xffffff,bgAlpha:0.9">
     </div>
     <script>
@@ -187,7 +189,7 @@
 		// appId: APP_ID,
 		// appKey: APP_KEY
 		// });
-        egret.runEgret({renderMode:"canvas", audioType:0});
+        egret.runEgret({renderMode:"webgl", audioType:0});
     </script>
 </body>
 </html>

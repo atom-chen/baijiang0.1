@@ -149,6 +149,7 @@ namespace modBattle {
         let waveCount:number = tcStage.wave;
         //敌方的配置
         maxEachWave = MathUtils.randomStage(maxCount, waveCount);
+        Common.log("敌方配置---->", maxEachWave);
         curWave = 0;
     }
 
