@@ -105,7 +105,7 @@ namespace modBattle {
             let id:number = tcStage.monster[index];
             let lv:number = tcStage.lv;
             let monsterData = setMonsterData(id, lv);
-            SceneManager.battleScene.createSingleMonster(monsterData);
+            SceneManager.battleScene.createSingleMonster(monsterData, false, true);
         }
     }
 
@@ -221,7 +221,7 @@ namespace modBattle {
         let monsterData:any;
         if (data[0] < 100) {
             monsterData = setMonsterData(data[0], data[3], false, data[1], data[2]);
-            SceneManager.battleScene.createSingleMonster(monsterData);
+            SceneManager.battleScene.createSingleMonster(monsterData, true);
         }else{
             monsterData = setMonsterData(data[0], data[3], true, data[1], data[2]);
             SceneManager.battleScene.createBoss(monsterData);

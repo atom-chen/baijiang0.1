@@ -37,11 +37,12 @@ class Monster extends Enermy {
         this.skillArmature.scaleY = 1.5;
     }
 
-    public init(data:Array<any>, isSummon:boolean = false) {
+    public init(data:Array<any>, isElite:boolean = false, isSummon:boolean = false) {
         this.attr.initEnermyAttr(data[1].attr);
         super.init(data);
         this.initDragonBonesArmature(data[0]);
         this.isSummon = isSummon;
+        this.isElite = isElite;
         this.speed = 10;
         this.readyCount = 0;
         this.hp = this.attr.hp;
@@ -295,6 +296,9 @@ class Monster extends Enermy {
                     }else{
                         this.gotoAttack();
                     }
+                }
+                else if (this.readyCount == 2 && this.isElite) {
+                    Animations.fadeOutIn(this.img_sigh, 200);
                 }
             break;
         }

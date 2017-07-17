@@ -192,10 +192,10 @@ namespace modTalent {
      */
     export function getData(curPage:number=null, talentId:number=null):any {
         let talent:any = null;
-        if (!curPage && !talentId) {
+        if (curPage == null && talentId == null) {
             talent = talentPage;
         }
-        else if(curPage && !talentId) {
+        else if(curPage != null && talentId == null) {
             talent = talentPage[curPage];
         }else{
             let curTalent = talentPage[curPage];
@@ -208,6 +208,21 @@ namespace modTalent {
         }
         return talent;
     }
+
+    /**
+     * 从测试数据获取天赋数据(仅测试使用)
+     */
+    export function getTestData(talentId:number):any {
+        let talent:any;
+        for (let i = 0; i < GameData.testTalent.talent.length; i++) {
+            if (GameData.testTalent.talent[i][0] == talentId) {
+                talent = GameData.testTalent.talent[i];
+                break;
+            }
+        } 
+        return talent;
+    }
+
 
     /**未解锁状态的提示 */
     export function getTips(talentId:number, isTips:boolean = true):string {

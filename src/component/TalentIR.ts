@@ -66,6 +66,7 @@ class TalentIR extends Base {
         }
         this.pageText.text = `第${this.page}页`;
         this.initUnlockAndLv(this.page);
+        this.ShowCanClickTalent();
     }
     private onComplete():void {
         // this.setUnlock();
@@ -90,12 +91,25 @@ class TalentIR extends Base {
             this.iconGroup[id-1]["Mask"].visible = false;
             this.iconGroup[id-1]["lv"] = talent[1];
             this.lvGroup[id-1].text = `${talent[1]}/${this._maxLv[id-1]}`;
-            if (talent[1] == this._maxLv[id-1]){
+            if(talent[1] > 0){
                 this.iconGroup[id-1]["box"].visible = true;
+            }
+
+            if (talent[1] == this._maxLv[id-1]){
                 this.lvGroup[id-1].textColor = 0x91bd32;
             }
         }
         modTalent.setUnlock(curPage);
+    }
+
+    /** 显示是否要显示遮罩 */
+    public ShowCanClickTalent():void{
+        for(let i:number = 0; i < this.iconGroup.length; i++){
+            if(!modTalent.isUnlock(this.page, i + 1)){
+                this.iconGroup[i]["Mask"].visible = true;
+            }
+            else this.iconGroup[i]["Mask"].visible = false;
+        }
     }
 
     /**
@@ -105,10 +119,12 @@ class TalentIR extends Base {
         modTalent.setUnlock(curPage);
         for (let i = 0; i < modTalent.talentCount; i++) {
             this.iconGroup[i]["Mask"].visible = true;
+            this.iconGroup[i]["box"].visible = false;
             this.iconGroup[i]["lv"] = 0;
             this.lvGroup[i].text = `0/${this._maxLv[i]}`;
             this.lvGroup[i].textColor = Common.TextColors.lvNotFull;
         }
+        this.ShowCanClickTalent();
     }
 
     /**
@@ -125,8 +141,8 @@ class TalentIR extends Base {
         this.iconGroup[this.curTalentId-1]["lv"] ++;
         let level = this.iconGroup[this.curTalentId-1]["lv"];
         this.lvGroup[this.curTalentId-1].text = `${level}/${this._maxLv[this.curTalentId-1]}`;
+        this.iconGroup[this.curTalentId-1]["box"].visible = true;
         if (level == this._maxLv[this.curTalentId-1]){
-            this.iconGroup[this.curTalentId-1]["box"].visible = true;
             this.lvGroup[this.curTalentId-1].textColor = 0x91bd32;
         }
     }

@@ -45,6 +45,9 @@ class Summon extends SkillBase {
         if (this.target.curState == "skill01" || this.target.curState == "attack") return;
         Common.log("召唤小兵");
         this.target.curState = "skill02";
+        setTimeout(()=>{
+            Animations.fadeOutIn(this.target.img_sigh, 200);
+        }, 50);
         this.target.armature.play("skill02", 1);
     }
 

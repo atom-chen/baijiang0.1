@@ -5,31 +5,49 @@
 class AddProperty extends BuffBase {
     public constructor() {
         super();
-        this.buffInit();
+        // this.buffInit();
     }
 
     /**初始化 */
-    public buffInit() {
+    public buffInit(options:any) {
         super.buffInit();
+        this.options = options;
         this.buffData.className = "AddProperty";
         this.buffData.superpositionType = SuperpositionType.SuperpositionType_Overlay;
         this.buffData.buffType = BuffType.BuffType_DeBuff;
         this.buffData.disperseType = DisperseType.DisperseType_NoClear;
         this.buffData.controlType = ControlType.NO;
         this.buffData.postionType = PostionType.PostionType_Body;
-        this.buffData.duration = 5;
-        this.buffData.id = 8;
+        this.buffData.duration = options.duration;
+        this.buffData.id = options.id;
 
-        let count = 50 * this.buffData.duration;
-        this._tempTimer = new egret.Timer(20, count);
-        this._tempTimer.stop();
-        this._tempTimer.addEventListener(egret.TimerEvent.TIMER, this._onUpdate, this);
-        this._tempTimer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this._onComplete, this);
+        if (this.buffData.duration > 0) {
+            let count = 50 * this.buffData.duration;
+            if (!this._tempTimer) this._tempTimer = new egret.Timer(20, count);
+            this._tempTimer.stop();
+            this._tempTimer.addEventListener(egret.TimerEvent.TIMER, this._onUpdate, this);
+            this._tempTimer.addEventListener(egret.TimerEvent.TIMER_COMPLETE, this._onComplete, this);
+        }
     }
 
     /**开始 */
     public buffStart(target:any) {
         this.AddEffect(target);
+        switch (this.buffData.id) {
+            //狂怒
+            case 20:
+                //获取等级
+                let talent = modTalent.getTestData(1);
+                let lv = talent[1];
+                let index:number = modTalent.getIndexFromId(1);
+                let value:number = ConfigManager.tcTalent[index].value[lv-1];
+                this.target.attr.wsp *= (1 - value/100);
+                this.target.setWSPDelay();
+            break;
+            //巫术
+            case 21:
+            break;
+        }
     }
 
     /**结束 */
@@ -45,8 +63,10 @@ class AddProperty extends BuffBase {
         //增加的属性(后续扩展可以增加任何属性)
 
         this.target.speed *= (1+0.5);
+        this._extraValue = Math.floor(this.target.attr.atk * 0.15);
+        this.target.attr.atk += this._extraValue;
 
-        this._tempTimer.start();
+        if (this.buffData.duration > 0) this._tempTimer.start();
     }
 
     /**
@@ -68,6 +88,7 @@ class AddProperty extends BuffBase {
         Common.log("buff 结束");
         //恢复原来数值(后续扩展)
         this.target.speed = 40;
+        this.target.attr.atk -= this._extraValue;
         this._tempTimer.reset();
     }
 
@@ -104,7 +125,14 @@ class AddProperty extends BuffBase {
         this.target.skillArmature.visible = false;
     }
 
+    /**回收buff */
+    public recycleBuff() {
+        super.recycleBuff();
+        if (this.buffData.duration > 0) this._tempTimer.reset();
+    }
+
     private target:any;
+    private _extraValue:number;
     private _extraBuff:UnableMove;
     private _tempTimer:egret.Timer;
     private _isReset:boolean;

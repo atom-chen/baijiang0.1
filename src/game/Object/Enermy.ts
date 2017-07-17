@@ -6,6 +6,12 @@ class Enermy extends BaseGameObject {
         this.createExpAndSoul();
         this.hurtText = Utils.createBitmapText("hurtFnt_fnt", this);
         this.hurtText.x = -10;
+        this.img_sigh = Utils.createBitmap("img_sigh_png");
+        this.img_sigh.scaleX = 0.5;
+        this.img_sigh.scaleY = 0.5;
+        this.img_sigh.y = -100;
+        this.img_sigh.alpha = 0;
+        this.addChild(this.img_sigh);
     }
 
     public initDragonBonesArmature(name:string):void {
@@ -89,20 +95,23 @@ class Enermy extends BaseGameObject {
         if (!this.canMove) return;
         this.moveToTarget(GameData.heros[0].x, GameData.heros[0].y, ()=>{
             let useSpeed:number = this.speed * 0.1;
+            let distance:number = MathUtils.getDistance(GameData.heros[0].x, GameData.heros[0].y, this.x, this.y);
             this.radian = MathUtils.getRadian2(this.x, this.y, this.endX, this.endY);
             let animation = this.getWalkPosition("run", this.radian);
-            this.deltaX = Math.cos(this.radian) * useSpeed;
-            this.deltaY = Math.sin(this.radian) * useSpeed;
-            this.x = this.x + this.deltaX;
-            this.y = this.y + this.deltaY;
             this.reverse(this, this.radian);
             if (animation != this.lastAnimation) {
                 this.lastAnimation = animation;
                 this.armature.play(animation, 0);
             }
+            if (distance > 15 ){
+                this.deltaX = Math.cos(this.radian) * useSpeed;
+                this.deltaY = Math.sin(this.radian) * useSpeed;
+                this.x = this.x + this.deltaX;
+                this.y = this.y + this.deltaY;
+            }
             if (this.isComplete == true) {
-                let dis:number = MathUtils.getDistance(GameData.heros[0].x, GameData.heros[0].y, this.x, this.y);
-                if (dis <= this.atk_distance) {
+                // let dis:number = MathUtils.getDistance(GameData.heros[0].x, GameData.heros[0].y, this.x, this.y);
+                if (distance <= this.atk_distance) {
                     this.gotoReady();
                 }
             }
@@ -360,6 +369,8 @@ class Enermy extends BaseGameObject {
     public away_distance:number;
     /**是否为召唤兵 */
     public isSummon:boolean;
+    /**是否为精英怪 */
+    public isElite:boolean;
     /**是否为boss */
     public isBoss:boolean;
     /**是否技能准备 */
@@ -373,6 +384,8 @@ class Enermy extends BaseGameObject {
     public isMovSoul:boolean;
     /**伤害位图 */
     public hurtText:egret.BitmapText;
+    /**感叹号(攻击提示) */
+    public img_sigh:egret.Bitmap;
 
     /*************敌方的状态***************/
     public static Action_Run01:string = "run01";

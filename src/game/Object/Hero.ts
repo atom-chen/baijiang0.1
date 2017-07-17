@@ -53,6 +53,7 @@ class Hero extends BaseGameObject {
         this.effectArmature.scaleY = 1.5;
         this.skillArmature.scaleX = 1.5;
         this.skillArmature.scaleY = 1.5;
+        this.img_swordLight.texture = RES.getRes(`${name}-pugong_png`);
     }
 
     public init(data:Array<any>, isPVP:boolean=false) {
@@ -91,11 +92,23 @@ class Hero extends BaseGameObject {
     }
 
     /**
+     * 设置硬直时间
+     */
+    public setWSPDelay():void {
+        this.atk_timer.delay = Math.floor(this.attr.wsp * 1000);
+    }
+
+    /**
      * 设置buff或被动技能
      */
     public setBuff():void {
         // let buff = HeroData.list[this.name].buff;
         let buff:Array<number> = ConfigManager.heroConfig[this.name].buff;
+        let talent:Array<any> = GameData.testTalent.talent;
+        for (let i = 0; i < talent.length; i++) {
+            let id = talent[i][0] + 19;
+            buff.push(id);
+        }
         for (let i = 0; i < buff.length; i++) {
             let buffConfig = modBuff.getBuff(buff[i]);
             let newBuff = ObjectPool.pop(buffConfig.className);
@@ -230,6 +243,8 @@ class Hero extends BaseGameObject {
                             // Common.log("击晕了");
                         }
                     }
+                    let value = this.attr.atk;
+                    if (this.isCrit()) value *= 1.5;
                     this.enermy[i].gotoHurt(this.attr.atk);
                 }
             }
@@ -329,11 +344,30 @@ class Hero extends BaseGameObject {
     }
 
     /**
+     * 是否闪避
+     */
+    public isDodge():boolean {
+        let random = MathUtils.getRandom(1, 100);
+        if (random <= this.attr.avo) return true;
+        return false;
+    }
+
+    /**
+     * 是否暴击
+     */
+    public isCrit():boolean {
+        let random = MathUtils.getRandom(1, 100);
+        if (random <= this.attr.crt) return true;
+        return false;
+    }
+
+    /**
      * 受伤
      */
     public gotoHurt(value:number = 1) {
         if (this.curState == BaseGameObject.Action_Hurt || this.curState == "attack") return;
         if (!this.skill_status) {
+            if (this.isDodge()) return;
             if (this.isImmuneBuff()) return;
             this.curState = BaseGameObject.Action_Hurt;
             this.img_swordLight.visible = false;
@@ -543,7 +577,7 @@ class Hero extends BaseGameObject {
      * 创建剑光
      */
     private createSwordLight():void {
-        this.img_swordLight = Utils.createBitmap("atk_effect_png");
+        this.img_swordLight = Utils.createBitmap("diaochan-pugong_png");
         this.img_swordLight.anchorOffsetX = this.img_swordLight.width;
         this.img_swordLight.anchorOffsetY = this.img_swordLight.height/2;
         this.img_swordLight.visible = false;

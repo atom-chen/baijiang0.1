@@ -36,7 +36,7 @@ class BattleScene extends Base {
             this.effectLayer.addChild(this.comboGroup);
         }
         modBattle.init();
-        GameData.hp = 10;
+        // Common.log(JSON.stringify(modTalent.getData(0)));
         DragonBonesFactory.getInstance().startTimer();
         this.createHero();
     }
@@ -195,10 +195,10 @@ class BattleScene extends Base {
         })
     }
 
-    public createSingleMonster(data:Array<any>, isSummon:boolean = false):void {
+    public createSingleMonster(data:Array<any>, isElite:boolean = false, isSummon:boolean = false):void {
         this.monster = ObjectPool.pop("Monster");
         GameData.monsters.push(this.monster);
-        this.monster.init(data, isSummon);
+        this.monster.init(data, isElite, isSummon);
         this.monster.x = MathUtils.getRandom(100, 1050);
         this.monster.y = MathUtils.getRandom(100, 550);
         // this.monster.anchorOffsetY = -33;

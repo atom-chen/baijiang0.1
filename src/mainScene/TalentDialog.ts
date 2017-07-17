@@ -80,14 +80,6 @@ class TalentDialog extends PopupWindow {
      */
     private _unLockTalent(type:string) {
         if (modTalent.isUnlock(this.curPage, this.curTalentId)) {
-            if (this.curLevel >= this._curMaxLv) {
-                Animations.showTips("此天赋已满", 1, true);
-                return;
-            }
-            if (modTalent.isTalentFull(this.curPage, this.curTalentId)) {
-                Animations.showTips("天赋已点满", 1, true);
-                return;
-            }
 
             if (type == "power") {
                 if(UserDataInfo.GetInstance().IsHaveGoods("power", TcManager.GetInstance().GetDataFromLv(3, this.allLv).power)) this.update();
@@ -242,13 +234,17 @@ class TalentDialog extends PopupWindow {
         let index:number = modTalent.getIndexFromId(this.curTalentId);
         this._updateTalentDesc(index, this.curLevel);
         if (this.curLevel == this._curMaxLv) this.lab_lv.textColor = Common.TextColors.lvFull;
-        //更新能量点
+       
+        modTalent.setData(this.curPage, this.curTalentId, this.curLevel);
+        Animations.showTips("天赋升级成功", 1);
+
+         //更新能量点
         // this.lab_power
         this.pages[this.curPage].setTalentLv();
         this.pages[this.curPage].setUnlock(this.curTalentId);
-        modTalent.setData(this.curPage, this.curTalentId, this.curLevel);
-        Animations.showTips("天赋升级成功", 1);
-        this.show_btn_text(true);
+        this.pages[this.curPage].ShowCanClickTalent();
+
+        this.isSkillFull();
     }
 
     /**
@@ -274,18 +270,12 @@ class TalentDialog extends PopupWindow {
 
         let btn:any = this.btn_upPower.getChildAt(0);
         let diamondBtn:any = this.btn_upDiamond.getChildAt(0);
-        
-        if(this.allLv >= 71){
-            this.show_btn_text(false);
-            this.btn_unLock.label = "天赋已点满";
-            return;
-        }
-        else this.btn_unLock.label = "未解锁";
-        
+
+       if(this.isSkillFull()) return;
+
         if (modTalent.isUnlock(this.curPage, num)) {
             this.lab_condition.text = "";
             this.show_btn_text(true);
-            
         }else{
             this.show_btn_text(false);
             let strs = modTalent.getTips(this.curTalentId, false);
@@ -342,6 +332,28 @@ class TalentDialog extends PopupWindow {
         this.btn_upDiamond.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onSkillPop, this);
         this.btn_unLock.removeEventListener(egret.TouchEvent.TOUCH_TAP, this.onTouchUnLock, this);
     }
+
+    /** 如果天赋慢的话则返回true  否则返回false */
+    private isSkillFull():boolean{
+
+        //如果当前的天赋等级为最高级的话 则显示天赋已满
+        if (this.curLevel >= this._curMaxLv) {
+            this.show_btn_text(false);
+            this.btn_unLock.label = "当前天赋已满";
+            return true;
+        } 
+        
+        //如果天赋等级已经最高则显示天赋已点满
+        if(modTalent.isTalentFull(this.curPage, this.curTalentId) || this.allLv >= 71){
+            this.show_btn_text(false);
+            this.btn_unLock.label = " 天赋已点满";
+            return true;
+        }
+        else this.btn_unLock.label = "未解锁";
+
+        return false;
+    }
+
 
     private show_lab_text():void{
         this.lab_power.text = Common.TranslateDigit(UserDataInfo.GetInstance().GetBasicData("power"));

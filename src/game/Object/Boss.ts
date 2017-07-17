@@ -141,6 +141,7 @@ class Boss extends Enermy {
     /**奔跑 */
     public gotoRun() {
         super.gotoRun();
+        this.isReadSkill = false;
     }
 
     /**
@@ -181,6 +182,9 @@ class Boss extends Enermy {
         this.deltaX = 0;
         this.deltaY = 0;
         this.skill_atkStatus = true;
+        setTimeout(()=>{
+            Animations.fadeOutIn(this.img_sigh, 200);
+        }, 200);
         this.atk_direction = this.getWalkPosition("attack", this.radian);
         this.armature.play(this.atk_direction, 1);
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
@@ -193,6 +197,9 @@ class Boss extends Enermy {
         this.curState = "skill01";
         this.originX = this.x;
         this.originY = this.y;
+        setTimeout(()=>{
+            Animations.fadeOutIn(this.img_sigh, 200);
+        }, 500);
         /**攻击的弧度 */
         this.radian = MathUtils.getRadian2(this.originX, this.originY, GameData.heros[0].x, GameData.heros[0].y);
         this.atk_direction = this.getWalkPosition("skill01_", this.radian);

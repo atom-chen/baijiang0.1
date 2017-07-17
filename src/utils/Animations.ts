@@ -46,11 +46,11 @@ namespace Animations {
     }
 
     //淡出淡入
-    export function fadeOutIn(target:any):void {
-        egret.Tween.get(target).to({ alpha: 1.0 }, 200);
+    export function fadeOutIn(target:any, delay:number = 1000):void {
+        egret.Tween.get(target).to({ alpha: 1.0 }, 200, egret.Ease.quintOut);
         egret.setTimeout(function () {
-                egret.Tween.get(target).to({ alpha: 0 }, 200);
-            }, this, 1000);
+                egret.Tween.get(target).to({ alpha: 0 }, 200, egret.Ease.quintIn);
+            }, this, delay);
     }
     //淡出
     export function fadeOut(target:any, time:number = 500, func:Function = null, completeFunc:Function = null):void {

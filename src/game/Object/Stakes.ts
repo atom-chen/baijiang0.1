@@ -21,6 +21,7 @@ class Stakes extends egret.DisplayObjectContainer {
     public init() {
         this.alpha = 1.0;
         this.hp = 5;
+        this.curState = "";
         this.buff = [];
         //buff动画
         this.buffArmature.register(DragonBonesFactory.getInstance().makeArmature("buff", "buff", 10), [
@@ -51,9 +52,7 @@ class Stakes extends egret.DisplayObjectContainer {
     }
 
     public clearObject():void {
-        this.curState = "hurt";
         this.buffArmature.visible = false;
-        Common.log("木桩", GameData.stakes.length);
         Animations.fadeIn(this, 500, ()=>{
             ObjectPool.push(this);
             if (this.parent && this.parent.removeChild) this.parent.removeChild(this);

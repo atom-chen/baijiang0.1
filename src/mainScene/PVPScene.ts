@@ -180,8 +180,11 @@ class PVPScene extends Base {
     private _createHero():void {
         this._hero = ObjectPool.pop("Hero");
         GameData.heros.push(this._hero);
-        this._hero.init([GameData.curHero, GameData.hp], true);
-        this._hero.x = Common.SCREEN_W/2 - 50;
+        //测试
+        let data = ConfigManager[`${GameData.curHero}Attr`];
+        let attr = data[0];
+        this._hero.init([GameData.curHero, attr], true);
+        this._hero.x = Common.SCREEN_W/2;
         this._hero.y = Common.SCREEN_H/2;
         // this.hero.anchorOffsetY = -33;
         this._hero.anchorOffsetY = -50;

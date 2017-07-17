@@ -14,5 +14,18 @@
     {"id":24, "className":"UnableMove", "cd":0, "duration":3},
     {"id":25, "className":"UnableMove", "cd":0, "duration":3},
     {"id":26, "className":"UnableMove", "cd":0, "duration":3},
-    {"id":27, "className":"UnableMove", "cd":0, "duration":3}
+    {"id":27, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":28, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":29, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":30, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":31, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":32, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":33, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":34, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":35, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":36, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":37, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":38, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":39, "className":"UnableMove", "cd":0, "duration":3},
+    {"id":40, "className":"UnableMove", "cd":0, "duration":3}
 ]

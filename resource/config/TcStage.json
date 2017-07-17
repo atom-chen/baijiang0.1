@@ -1,12 +1,14 @@
 [
   {
     "stage": 1,
-    "count": 80,
+    "count": 2,
     "wave": 2,
     "monster": [
-      1
+      1,
+      2,
+      3
     ],
-    "lv": 1,
+    "lv": 10,
     "boss": [
       100,
       1,
