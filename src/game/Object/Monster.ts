@@ -227,12 +227,8 @@ class Monster extends Enermy {
     }
 
     /**增加buff */
-    public addBuff(buff:any) {
-        if (this.curState == Monster.Action_Dead || this.curState == BaseGameObject.Action_Hurt) return;
-        if (this.isExistBuff(buff) && (buff.buffData.controlType == ControlType.YES) && (buff.buffData.superpositionType == SuperpositionType.SuperpositionType_None)) return;
-        this.buff.push(buff);
-        this.armature.play(BaseGameObject.Action_Hurt);
-        buff.buffStart(this);
+    public addBuff(buff:any, isBind:boolean = false) {
+        super.addBuff(buff, isBind);
     }
 
     /**蓄力 */

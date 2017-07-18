@@ -170,13 +170,14 @@ class BattleScene extends Base {
     /**
      * 创建英雄
      */
-    public createHero():void {
+    public createHero(isRevival:boolean = false, hp:number = 1):void {
         this.hero = ObjectPool.pop("Hero");
         GameData.heros.push(this.hero);
         //测试
         let data = ConfigManager[`${GameData.curHero}Attr`];
         let attr = data[0];
-        this.hero.init([GameData.curHero, attr]);
+        //数据结构后续优化
+        this.hero.init([GameData.curHero, attr, isRevival, hp]);
         this.hero.x = Common.SCREEN_W/2;
         this.hero.y = Common.SCREEN_H/2;
         // this.hero.anchorOffsetY = -33;

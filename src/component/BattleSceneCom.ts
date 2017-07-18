@@ -113,11 +113,15 @@ class BattleSceneCom extends Base {
     }
 
     /**复活 */
-    public onRevive():void {
-        this.img_hp.scaleX = 1.0;
-        this.cd_time = 0;
-        this.lab_cdTime.visible = false;
-        this.img_skillMask.visible = false;
+    public onRevive(isPassive:boolean = false, value:number = 1):void {
+        if (!isPassive){
+            this.cd_time = 0;
+            this.lab_cdTime.visible = false;
+            this.img_skillMask.visible = false;
+            value = this._sumHP;
+        }
+        Common.log("实际--->", value, "总共---->", this._sumHP);
+        this.img_hp.scaleX = value/this._sumHP;
     }
 
     public removeEventListener():void {

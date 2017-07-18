@@ -10,6 +10,7 @@ class SevenInOut extends SkillBase {
 
     public init() {
         super.init();
+        this.isBindBuff = false;
         this.cd = 300;
         this.mask = Utils.createBitmap("sevenInOut_png");
         this.mask.width = Common.SCREEN_W;
@@ -52,6 +53,18 @@ class SevenInOut extends SkillBase {
         }
         egret.setTimeout(()=>{
             target.visible = true;
+            if (this.isBindBuff) {
+                for (let i = 0; i < this._enermy.length; i++) {
+                    let buffConfig = modBuff.getBuff(3);
+                    this.buff = ObjectPool.pop(buffConfig.className);
+                    this.buff.buffInit(buffConfig);
+                    //特效名字
+                    this.buff.effectName = "Burning";
+                    //作用点
+                    this.buff.buffData.postionType = PostionType.PostionType_Body;
+                    this._enermy[i].addBuff(this.buff, true);
+                }
+            }
         }, this, 700);
         Animations.fadeOut(this.mask, 500, null, ()=>{
             Animations.fadeIn(this.mask, 200);
@@ -59,8 +72,17 @@ class SevenInOut extends SkillBase {
     }
 
     public update(target:any) {
+        let buff:any = this.target.buff;
+        for (let i = 0; i < buff.length; i++) {
+            //冥火之触
+            if (buff[i].buffData.id == 26) {
+                this.isBindBuff = true;
+                break;
+            }
+        }
         target.setEnermy();
         let enermy = target.getEnermy();
+        this._enermy = enermy;
         for (let i = 0; i < enermy.length; i++) {
             if (!this.target.isPVP) enermy[i].removeActComplete();
             if (enermy[i].hp > 0) {
@@ -80,7 +102,9 @@ class SevenInOut extends SkillBase {
         this.update(this.target)
     }
 
-    private buff:UnableMove;
+
+    private _enermy:any;
+    private buff:ContinuousInjury;
     private target:any;
     private copySkillArmature:Array<DragonBonesArmatureContainer>;
     private position = [
@@ -92,4 +116,5 @@ class SevenInOut extends SkillBase {
         [350, 150, -10]
     ];
     private mask:egret.Bitmap;
+    private isBindBuff:boolean;
 }

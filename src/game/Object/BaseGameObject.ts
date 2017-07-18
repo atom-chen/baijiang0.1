@@ -254,4 +254,5 @@ class BaseGameObject extends egret.DisplayObjectContainer {
     public speed:number;
     public attack:number;
     public hp:number;
+    public originHP:number;
 }

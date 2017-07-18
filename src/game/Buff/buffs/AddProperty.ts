@@ -20,6 +20,7 @@ class AddProperty extends BuffBase {
         this.buffData.postionType = PostionType.PostionType_Body;
         this.buffData.duration = options.duration;
         this.buffData.id = options.id;
+        this._extraValue = 0;
 
         if (this.buffData.duration > 0) {
             let count = 50 * this.buffData.duration;
@@ -33,19 +34,24 @@ class AddProperty extends BuffBase {
     /**开始 */
     public buffStart(target:any) {
         this.AddEffect(target);
+        let value:number;
+        if (this.buffData.id >= 20) value = this.getTalentValue();
         switch (this.buffData.id) {
+            //梨花落雨
+            case 9:
+                this.target.attr.crt += 20;
+            break;
             //狂怒
             case 20:
-                //获取等级
-                let talent = modTalent.getTestData(1);
-                let lv = talent[1];
-                let index:number = modTalent.getIndexFromId(1);
-                let value:number = ConfigManager.tcTalent[index].value[lv-1];
                 this.target.attr.wsp *= (1 - value/100);
                 this.target.setWSPDelay();
             break;
             //巫术
             case 21:
+            break;
+            //先天资质
+            case 23:
+                this.target.attr.atk += value;
             break;
         }
     }
@@ -63,9 +69,10 @@ class AddProperty extends BuffBase {
         //增加的属性(后续扩展可以增加任何属性)
 
         this.target.speed *= (1+0.5);
-        this._extraValue = Math.floor(this.target.attr.atk * 0.15);
-        this.target.attr.atk += this._extraValue;
-
+        if (this._extraValue == 0){
+            this._extraValue = Math.floor(this.target.attr.atk * 0.15);
+            this.target.attr.atk += this._extraValue;
+        }
         if (this.buffData.duration > 0) this._tempTimer.start();
     }
 
@@ -89,6 +96,7 @@ class AddProperty extends BuffBase {
         //恢复原来数值(后续扩展)
         this.target.speed = 40;
         this.target.attr.atk -= this._extraValue;
+        this._extraValue = 0;
         this._tempTimer.reset();
     }
 

@@ -5,7 +5,7 @@ namespace modTalent {
     /**天赋的个数 */
     export var talentCount:number = 21;
     /**最多点亮天赋个数 */
-    var maxCount = 10;
+    export var maxCount = 10;
     /**天赋名称 */
     var talentName = ["浩劫", "风行", "回复"];
     /**

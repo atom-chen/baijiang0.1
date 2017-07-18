@@ -66,10 +66,9 @@ class TalentIR extends Base {
         }
         this.pageText.text = `第${this.page}页`;
         this.initUnlockAndLv(this.page);
-        this.ShowCanClickTalent();
     }
     private onComplete():void {
-        // this.setUnlock();
+        this.removeEventListener(eui.UIEvent.COMPLETE, this.onComplete, this);
     }
 
     private onIconListener(event:egret.TouchEvent):void {
@@ -83,8 +82,15 @@ class TalentIR extends Base {
      * 初始化解锁状态和天赋等级
      */
     public initUnlockAndLv(curPage:number):void {
+       this.showIconGroupStatus();
+        modTalent.setUnlock(curPage);
+        this.ShowCanClickTalent();
+    }
+
+    /** 显示图标租的状态 */
+    private showIconGroupStatus():void{
         let talentPage = modTalent.getTalentData();
-        let userTalent = talentPage[curPage].talent;
+        let userTalent = talentPage[this.page].talent;
         for (let i = 0; i < userTalent.length; i++) {
             let talent = userTalent[i];
             let id = talent[0];
@@ -99,16 +105,27 @@ class TalentIR extends Base {
                 this.lvGroup[id-1].textColor = 0x91bd32;
             }
         }
-        modTalent.setUnlock(curPage);
     }
 
     /** 显示是否要显示遮罩 */
     public ShowCanClickTalent():void{
-        for(let i:number = 0; i < this.iconGroup.length; i++){
-            if(!modTalent.isUnlock(this.page, i + 1)){
+        let talentPage = modTalent.getTalentData();
+        let userTalent = talentPage[this.page].talent;
+        let len = userTalent.length;
+        if(len < modTalent.maxCount){
+            for(let i:number = 0; i < this.iconGroup.length; i++){
+                if(!modTalent.isUnlock(this.page, i + 1)){
+                    this.iconGroup[i]["Mask"].visible = true;
+                }
+                else this.iconGroup[i]["Mask"].visible = false;
+            }
+        }
+        else
+        {
+            for(let i:number = 0; i < this.iconGroup.length; i++){
                 this.iconGroup[i]["Mask"].visible = true;
             }
-            else this.iconGroup[i]["Mask"].visible = false;
+            this.showIconGroupStatus();
         }
     }
 

@@ -13,7 +13,7 @@ class Stunned extends BuffBase {
         super.buffInit();
         this.options = options;
         this.buffData.className = "Stunned";
-        this.buffData.probability = 10;
+        this.buffData.probability = 90;
         this.buffData.superpositionType = SuperpositionType.SuperpositionType_None;
         this.buffData.buffType = BuffType.BuffType_DeBuff;
         this.buffData.disperseType = DisperseType.DisperseType_NoClear;
@@ -48,7 +48,8 @@ class Stunned extends BuffBase {
         this._extraBuff.buffData.postionType = PostionType.PostionType_Head;
         if (target.attr.hp > this.target.attr.atk){
             target.addBuff(this._extraBuff);
-            target.gotoHurt(this.target.attr.atk);
+            let value:number = this.target.getHurtValue();
+            target.gotoHurt(value);
         }
         if (callBack) {
             callBack();

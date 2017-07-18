@@ -22,4 +22,82 @@ namespace modBuff {
         }
         return false;
     }
+
+    /**
+     * 检测是否有免疫伤害的buff或者反弹伤害的buff
+     */
+    export function isImmuneBuff(obj:Hero):boolean {
+        for (let i = 0; i < obj.buff.length; i++) {
+            //护盾
+            if (obj.buff[i].buffData.id == 4) {
+                // obj.skillArmature.visible = false;
+                obj.buff[i].update();
+                return true
+            }
+            //回避伤害(以40%概率测试)
+            else if (obj.buff[i].buffData.id == 5) {
+                let random = MathUtils.getRandom(1, 100);
+                if (random <= 10) {
+                    obj.buff[i].update();
+                    return true;
+                }
+            }
+            //圆波剑舞
+            else if (obj.buff[i].buffData.id == 6) {
+                if (!modBuff.isExistBuff(obj.buff, 4)) obj.buff[i].update();
+                // return false;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 是否复活
+     */
+    export function isRevival(obj:Hero):boolean {
+        let status:boolean = false;
+        for (let i = 0; i < obj.buff.length; i++) {
+            //秘密储备
+            if (obj.buff[i].buffData.id == 28) {
+                // obj.skillArmature.visible = false;
+                obj.buff[i].update(obj, (isRevival)=>{
+                    status = isRevival;
+                });
+            }
+        }
+        return status;
+    }
+
+    /**
+     * 检测是否有普通攻击的buff
+     */
+    export function isAttackBuff(obj:Hero, target:any):boolean {
+        let status:boolean = false;
+        for (let i = 0; i < obj.buff.length; i++) {
+            //击晕(以10%概率测试)
+            if (obj.buff[i].buffData.id == 7) {
+                let random = MathUtils.getRandom(1, 100);
+                if (random <= obj.buff[i].buffData.probability) {
+                    obj.buff[i].update(target);
+                    status = true;
+                }
+            }
+            //新鲜血液
+            else if (obj.buff[i].buffData.id == 22) {
+                obj.buff[i].update(target);
+                status = true;
+            }
+            //猎人
+            else if (obj.buff[i].buffData.id == 24) {
+                obj.buff[i].update(target);
+                status = true;
+            }
+            //战争热诚
+            else if (obj.buff[i].buffData.id == 25) {
+                obj.buff[i].update(target);
+                status = true;
+            }
+        }
+        return status;
+    }
 }

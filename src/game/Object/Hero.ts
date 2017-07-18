@@ -65,6 +65,7 @@ class Hero extends BaseGameObject {
         this.offset = [[1, -113], [77, -109], [121, -50], [75, 14], [0, 23]];
         // this.offset = [[2, -74], [49, -71], [79, -32], [50, 9], [0, 15]]
         this.speed = 40;
+        this.originHP = this.attr.hp;
         this.atk_range = 200;
         this.atk_speed = 150;
         this.combo = 0;
@@ -84,11 +85,9 @@ class Hero extends BaseGameObject {
             this.visible = true;
             this.gotoEnter();
         }, this, 500);
-        //增加动画完成函数
-        this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
-        this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
-        this.skillArmature.addCompleteCallFunc(this.skillArmaturePlayEnd, this);
         this.effectArmature.visible = false;
+        this._hurtValue = 0;
+        if (data[2]) this.attr.hp = data[3];
     }
 
     /**
@@ -133,6 +132,7 @@ class Hero extends BaseGameObject {
                 this.buff[i].recycleBuff();
             }
         }
+        ConfigManager.heroConfig[this.name].buff.splice(2);
     }
 
     /**
@@ -159,6 +159,23 @@ class Hero extends BaseGameObject {
      */
     public getEnermy():any {
         return this.enermy;
+    }
+
+    /**获取连击数 */
+    public getCombo():number {
+        return this.combo;
+    }
+
+    /**设置伤害数值 */
+    public setHurtValue(value):void {
+        this._hurtValue = value;
+    }
+
+    /**伤害数值 */
+    public getHurtValue():number {
+        let value = this.attr.atk;
+        if (this.isCrit()) value = Math.floor(value * 1.5);
+        return value;
     }
 
     /**
@@ -239,13 +256,12 @@ class Hero extends BaseGameObject {
                             this.isHit = true;
                             this.combo ++;
                         }
-                        if (this.isAttackBuff(this.enermy[i])) {
+                        if (modBuff.isAttackBuff(this, this.enermy[i])) {
                             // Common.log("击晕了");
                         }
                     }
-                    let value = this.attr.atk;
-                    if (this.isCrit()) value *= 1.5;
-                    this.enermy[i].gotoHurt(this.attr.atk);
+                    let value = this.getHurtValue();
+                    this.enermy[i].gotoHurt(value);
                 }
             }
             if (!this.isPVP){
@@ -315,35 +331,6 @@ class Hero extends BaseGameObject {
     }
 
     /**
-     * 检测是否有免疫伤害的buff或者反弹伤害的buff
-     */
-    public isImmuneBuff():boolean {
-        for (let i = 0; i < this.buff.length; i++) {
-            //护盾
-            if (this.buff[i].buffData.id == 4) {
-                // this.skillArmature.visible = false;
-                this.buff[i].update();
-                return true
-            }
-            //回避伤害(以40%概率测试)
-            else if (this.buff[i].buffData.id == 5) {
-                let random = MathUtils.getRandom(1, 100);
-                if (random <= 10) {
-                    Common.log("闪避");
-                    this.buff[i].update();
-                    return true;
-                }
-            }
-            //圆波剑舞
-            else if (this.buff[i].buffData.id == 6) {
-                if (!modBuff.isExistBuff(this.buff, 4)) this.buff[i].update();
-                // return false;
-            }
-        }
-        return false;
-    }
-
-    /**
      * 是否闪避
      */
     public isDodge():boolean {
@@ -368,7 +355,7 @@ class Hero extends BaseGameObject {
         if (this.curState == BaseGameObject.Action_Hurt || this.curState == "attack") return;
         if (!this.skill_status) {
             if (this.isDodge()) return;
-            if (this.isImmuneBuff()) return;
+            if (modBuff.isImmuneBuff(this)) return;
             this.curState = BaseGameObject.Action_Hurt;
             this.img_swordLight.visible = false;
             this.armature.play(this.curState, 0);
@@ -379,35 +366,13 @@ class Hero extends BaseGameObject {
         this.attr.hp -= value;
         SceneManager.battleScene.bloodTween();
         if (this.attr.hp <= 0) {
-            SceneManager.battleScene.battleSceneCom.onFailPop();
+            this.removeComplete();
+            if (modBuff.isRevival(this)) Common.log("复活");
+            else SceneManager.battleScene.battleSceneCom.onFailPop();
             return;
         }
         SceneManager.battleScene.battleSceneCom.onHurt(this.attr.hp);
     }
-
-    /**
-     * 检测是否有普通攻击的buff
-     */
-    private isAttackBuff(target:any):boolean {
-        let status:boolean = false;
-        for (let i = 0; i < this.buff.length; i++) {
-            //击晕(以10%概率测试)
-            if (this.buff[i].buffData.id == 7) {
-                let random = MathUtils.getRandom(1, 100);
-                if (random <= this.buff[i].buffData.probability) {
-                    this.buff[i].update(target);
-                    status = true;
-                }
-            }
-            // //增加属性
-            // else if (this.buff[i].buffData.id == 8) {
-            //     this.buff[i].update(this);
-            //     status = true;
-            // }
-        }
-        return status;
-    }
-
     /**
      * 击杀增加的buff
      */
@@ -510,6 +475,10 @@ class Hero extends BaseGameObject {
         switch (evt) {
             case "shake":
                 ShakeTool.getInstance().shakeObj(SceneManager.curScene, 1, 5, 5);
+                //增加动画完成函数
+                this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
+                this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
+                this.skillArmature.addCompleteCallFunc(this.skillArmaturePlayEnd, this);
             break;
             case "idleEnd":
                 this.armature.visible = false;
@@ -547,6 +516,7 @@ class Hero extends BaseGameObject {
                 this.setBuff();
                 this.shadow.visible = true;
                 if (this.isPVP) SceneManager.pvpScene.createCountDown();
+                Common.log(JSON.stringify(this.attr));
             break;
         }
     }
@@ -586,6 +556,7 @@ class Hero extends BaseGameObject {
 
     private isPlay:boolean;
     private isAttack:boolean;
+    private _hurtValue:number;
     /**技能状态 0:没有释放 1:开始释放 */
     private skill_status:boolean;
     public  isPVP:boolean;

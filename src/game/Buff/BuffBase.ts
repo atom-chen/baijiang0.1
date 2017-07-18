@@ -57,7 +57,18 @@ class BuffBase {
 
     /**回收buff类 */
     public recycleBuff() {
+        Common.log("回收---->", this.buffData.className)
         ObjectPool.push(this);
+    }
+
+    /**获取天赋的数值 */
+    public getTalentValue():number {
+        let id:number = this.buffData.id;
+        let talent = modTalent.getTestData(id-19);
+        let lv = talent[1];
+        let index:number = modTalent.getIndexFromId(id-19);
+        let value:number = ConfigManager.tcTalent[index].value[lv-1];
+        return value;
     }
 
     public options:any;

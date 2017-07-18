@@ -163,7 +163,6 @@ class TalentDialog extends PopupWindow {
                 return;
             }
 
-            this.allLv = 1;
             talentPage[this.curPage].talent = [];
             talentPage[this.curPage]["count"] = this.allLv;
             this.pages[this.curPage].reset(this.curPage);
@@ -171,6 +170,7 @@ class TalentDialog extends PopupWindow {
 
             this.show_lab_text();
         }
+        this.allLv = 1;
     }
 
     /**
@@ -244,7 +244,7 @@ class TalentDialog extends PopupWindow {
         this.pages[this.curPage].setUnlock(this.curTalentId);
         this.pages[this.curPage].ShowCanClickTalent();
 
-        this.isSkillFull();
+        if(!this.isSkillFull()) this.show_btn_text(true);
     }
 
     /**
@@ -344,9 +344,9 @@ class TalentDialog extends PopupWindow {
         } 
         
         //如果天赋等级已经最高则显示天赋已点满
-        if(modTalent.isTalentFull(this.curPage, this.curTalentId) || this.allLv >= 71){
+        if(modTalent.isTalentFull(this.curPage, this.curTalentId)){
             this.show_btn_text(false);
-            this.btn_unLock.label = " 天赋已点满";
+            this.btn_unLock.label = "最多点亮十个天赋";
             return true;
         }
         else this.btn_unLock.label = "未解锁";

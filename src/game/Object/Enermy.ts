@@ -211,6 +211,7 @@ class Enermy extends BaseGameObject {
      */
     public hurtAnimate(value:number):void {
         this.addChild(this.hurtText);
+        value = Math.floor(value);
         this.hurtText.text = `-${value.toString()}`;
         this.hurtText.anchorOffsetX = this.hurtText.width/2;
         this.hurtText.y = this.y;
@@ -241,6 +242,24 @@ class Enermy extends BaseGameObject {
         ObjectPool.push(this);
         if (this.parent && this.parent.removeChild) this.parent.removeChild(this);
     }
+    /**增加buff */
+    public addBuff(buff:any, isBind:boolean = false) {
+        if (isBind && this.curState != Monster.Action_Dead) {
+            this.buffStartAct(buff);
+            return;
+        }
+        if (this.curState == Monster.Action_Dead || this.curState == BaseGameObject.Action_Hurt) return;
+        if (this.isExistBuff(buff) && (buff.buffData.controlType == ControlType.YES) && (buff.buffData.superpositionType == SuperpositionType.SuperpositionType_None)) return;
+        this.buffStartAct(buff);
+    }
+
+    /**buff开始作用 */
+    public buffStartAct(buff:any) {
+        this.buff.push(buff);
+        this.armature.play(BaseGameObject.Action_Hurt);
+        buff.buffStart(this);
+    }
+
     /**
      * 帧事件处理函数
      */
