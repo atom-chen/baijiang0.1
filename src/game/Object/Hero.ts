@@ -57,6 +57,7 @@ class Hero extends BaseGameObject {
     }
 
     public init(data:Array<any>, isPVP:boolean=false) {
+        this._isInvincible = true;
         super.init(data);
         this.initDragonBonesArmature(data[0]);
         this.attr.initHeroAttr(data[1]);
@@ -88,6 +89,13 @@ class Hero extends BaseGameObject {
         this.effectArmature.visible = false;
         this._hurtValue = 0;
         if (data[2]) this.attr.hp = data[3];
+    }
+
+    /**
+     * 无敌状态
+     */
+    public gotoInvincible():void {
+        Animations.flash(this, 3000, 100, ()=>{this._isInvincible = false});
     }
 
     /**
@@ -173,9 +181,9 @@ class Hero extends BaseGameObject {
 
     /**伤害数值 */
     public getHurtValue():number {
-        let value = this.attr.atk;
-        if (this.isCrit()) value = Math.floor(value * 1.5);
-        return value;
+        // let value = this.attr.atk;
+        // if (this.isCrit()) value = Math.floor(value * 1.5);
+        return this._hurtValue;
     }
 
     /**
@@ -242,6 +250,7 @@ class Hero extends BaseGameObject {
             this.gotoIdle();
             this.img_swordLight.visible = false;
             this.setEnermy();
+            this.setHurtValue(this.attr.atk);
             //怪物到中点的距离
             for (let i = 0; i < this.enermy.length; i++) {
                 let radian = MathUtils.getRadian2(this.centerX, this.centerY, this.enermy[i].x, this.enermy[i].y);
@@ -260,8 +269,12 @@ class Hero extends BaseGameObject {
                             // Common.log("击晕了");
                         }
                     }
-                    let value = this.getHurtValue();
-                    this.enermy[i].gotoHurt(value);
+                    // let value = this.getHurtValue();
+                    if (this.isCrit()){
+                        this._hurtValue *= 1.5;
+                    }
+                    Common.log("伤害值---->", this._hurtValue);
+                    this.enermy[i].gotoHurt(this._hurtValue);
                 }
             }
             if (!this.isPVP){
@@ -352,6 +365,7 @@ class Hero extends BaseGameObject {
      * 受伤
      */
     public gotoHurt(value:number = 1) {
+        if (this._isInvincible) return;
         if (this.curState == BaseGameObject.Action_Hurt || this.curState == "attack") return;
         if (!this.skill_status) {
             if (this.isDodge()) return;
@@ -512,6 +526,7 @@ class Hero extends BaseGameObject {
                 this.skill.end();
             break;
             case BaseGameObject.Action_Enter:
+                this.gotoInvincible();
                 this.gotoIdle();
                 this.setBuff();
                 this.shadow.visible = true;
@@ -594,4 +609,6 @@ class Hero extends BaseGameObject {
     private offsetIndex:number;
     /**是否攻击到敌人 */
     private isHit:boolean;
+    /**是否无敌状态 */
+    private _isInvincible:boolean;
 }

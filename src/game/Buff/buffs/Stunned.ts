@@ -46,10 +46,11 @@ class Stunned extends BuffBase {
         this._extraBuff.buffData.duration = buffConfig.duration;
         //作用点
         this._extraBuff.buffData.postionType = PostionType.PostionType_Head;
-        if (target.attr.hp > this.target.attr.atk){
+        let value:number = this.target.getHurtValue();
+        if (target.attr.hp > value){
             target.addBuff(this._extraBuff);
-            let value:number = this.target.getHurtValue();
-            target.gotoHurt(value);
+            // let value:number = this.target.getHurtValue();
+            // target.gotoHurt(value);
         }
         if (callBack) {
             callBack();

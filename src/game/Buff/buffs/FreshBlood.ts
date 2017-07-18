@@ -41,9 +41,10 @@ class FreshBlood extends BuffBase {
         let value:number = this.getTalentValue();
         if (!this._isFirst) {
             this._isFirst = true;
-            let hurtValue:number = Math.floor(this.target.attr.atk * (value/100+1));
-            Common.log("FreshBlood", hurtValue);
-            target.gotoHurt(hurtValue);
+            let hurtValue:number = this.target.getHurtValue() * (value/100+1);
+            this.target.setHurtValue(hurtValue);
+            Common.log("FreshBlood", hurtValue, this.target.getHurtValue());
+            // target.gotoHurt(hurtValue);
             let index = this.target.buff.indexOf(this);
             this.target.buff.splice(index, 1);
             ObjectPool.push(this);

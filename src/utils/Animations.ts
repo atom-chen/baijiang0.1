@@ -52,6 +52,29 @@ namespace Animations {
                 egret.Tween.get(target).to({ alpha: 0 }, 200, egret.Ease.quintIn);
             }, this, delay);
     }
+
+    /**
+     * 闪烁
+     */
+    export function flash(target:any, time:number = 1000, unitTime:number = 100, func:Function = null) {
+        let count:number = Math.floor(time/(2*unitTime));
+        let num:number = 0;
+        var animate = function() {
+            egret.Tween.get(target).to({alpha:0.5},unitTime).call(()=>{
+                egret.Tween.get(target).to({alpha:1},unitTime).call(()=>{
+                    egret.Tween.removeTweens(target);
+                    num ++;
+                    if (num < count){
+                        animate()
+                    }else{
+                        if (func) func();
+                    }
+                },this)
+            },this);
+        }.bind(this);
+        animate();
+    }
+
     //淡出
     export function fadeOut(target:any, time:number = 500, func:Function = null, completeFunc:Function = null):void {
         target.alpha = 0;

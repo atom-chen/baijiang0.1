@@ -36,9 +36,10 @@ class Hunter extends BuffBase {
         let value:number = this.getTalentValue();
         let hurtValue:number = this.target.getHurtValue();
         if (this.target.getCombo() > value) {
-            hurtValue = Math.floor(hurtValue * 1.5);
+            hurtValue *= 1.5;
+            this.target.setHurtValue(hurtValue);
         }
-        target.gotoHurt(hurtValue);
+        // target.gotoHurt(hurtValue);
     }
 
     /**增加特效 */
