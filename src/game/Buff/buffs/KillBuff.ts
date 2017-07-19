@@ -69,6 +69,7 @@ class KillBuff extends BuffBase {
         else if (this.buffData.id == 40) {
             let shield:number = this.target.getShieldCount();
             this.target.setShieldCount(shield - this._extraShield);
+            SceneManager.battleScene.battleSceneCom.setShieldProgress(this.target.getShieldCount());
             this._extraShield = 0;
         }
         this._tempTimer.reset();
@@ -129,9 +130,10 @@ class KillBuff extends BuffBase {
                 // }
                 let shield:number = this.target.getShieldCount();
                 this.target.setShieldCount(shield - this._extraShield);
+                Common.log("风语者的祝福开启--->", this.target.getShieldCount(), this._extraShield);
                 this._extraShield = Math.floor(this.target.originHP * (value/100));
-                this.target.setShieldCount(shield + this._extraShield);
-                Common.log("风语者的祝福开启--->", this.target.getShieldCount());
+                this.target.setShieldCount(this.target.getShieldCount() + this._extraShield);
+                
                 SceneManager.battleScene.battleSceneCom.setShieldProgress(this.target.getShieldCount());
                 this._tempTimer.start();
             break;
