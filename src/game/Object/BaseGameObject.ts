@@ -28,7 +28,6 @@ class BaseGameObject extends egret.DisplayObjectContainer {
         TimerManager.getInstance().doFrame(1, 0, this.onFrame, this);
         this.isEnemy = true;
         this.speed = 3;
-        this.attack = 0;
         this.hp = 0;
         this.originX = 0;
         this.originY = 0;
@@ -49,10 +48,25 @@ class BaseGameObject extends egret.DisplayObjectContainer {
         this.speed = value
     }
     /**
+     * 获取移动速度
+     */
+    public getSpeed():number {
+        return this.speed;
+    }
+    /**
      * 设置攻击范围
      */
     public setAttackRange(value:number):void {
         this.atk_range = value;
+    }
+    /**设置伤害数值 */
+    public setHurtValue(value):void {
+        this._hurtValue = value;
+    }
+
+    /**伤害数值 */
+    public getHurtValue():number {
+        return this._hurtValue;
     }
     /**
      * 帧执行函数
@@ -252,7 +266,9 @@ class BaseGameObject extends egret.DisplayObjectContainer {
     /**是否受到控制 */
     public canMove:boolean;
     public speed:number;
-    public attack:number;
     public hp:number;
+    /**初始血量 */
     public originHP:number;
+    /**对敌人的伤害值 */
+    public _hurtValue:number;
 }

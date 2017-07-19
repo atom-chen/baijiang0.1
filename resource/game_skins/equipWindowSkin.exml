@@ -20,16 +20,7 @@
 		</e:Group>
 
 	</e:Scroller>
-	<e:Button id="btn_weapon" label="兵器库" x="336.23" y="555.34" width="140" height="76" visible="false">
-		<e:skinName>
-			<e:Skin states="up,down,disabled">
-			<e:Image width="100%" height="100%" source="button_0013_png" source.down="button_0021_png"/>
-			<e:Label id="labelDisplay" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" anchorOffsetY="1" size="32" textColor.down="0xac7841" textColor="0x130b0b" horizontalCenter="0" verticalCenter="-8"/>
-			</e:Skin>
-		</e:skinName>
 
-
-	</e:Button>
 	<e:Group id="equipGroup" width="484" height="544" x="652" y="96.33" anchorOffsetX="0" anchorOffsetY="0">
 		<e:Image id="img_weapon" source="equip1_png" scaleX="1" scaleY="1" anchorOffsetY="0" height="389"/>
 		<e:Label id="lab_lv" text="等级: 100/100" size="25" fontFamily="Microsoft YaHei" bold="true" anchorOffsetX="0" width="172" textAlign="right" textColor="0x5e5954" x="250.23" y="358"/>

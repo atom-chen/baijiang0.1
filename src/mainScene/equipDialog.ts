@@ -64,7 +64,7 @@ class EquipDialog extends PopupWindow {
     }
 
     private eventType(type:number = 0):void{
-        let obj_list:any = [this.btn_back, this.btn_weapon, this.btn_change, this.btn_upgrade, this.btn_close,  this.img_weapon, this.img_detail];
+        let obj_list:any = [this.btn_back, this.btn_change, this.btn_upgrade, this.btn_close,  this.img_weapon, this.img_detail];
         Common.ListenerAndRemoveEvent(obj_list, this.onTouchBtn, this, type);
         obj_list = [];
     }
@@ -112,19 +112,15 @@ class EquipDialog extends PopupWindow {
                 pop.Show(this.equip_info);
                 pop.addEventListener(modEquip.EquipSource.UPGRADE, this.upGradeGoodsInfo, this);
             break;
-            case this.img_weapon:                                                           //点击装备
-                if(this.equip_info == null) return;
-                WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
-            break;
-            case this.img_detail:
-                if(this.equip_info == null) return;
-                WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
-            break;
             case this.btn_back:                                                             //点击关闭界面
                 this.Close();
             break;
-            default:                                                                        //默认为close 或则点击兵器库
+            case this.btn_close:
                 this.setGroupStatus(true, false);
+            break;
+            default:                                                                  
+                if(this.equip_info == null) return;
+                WindowManager.GetInstance().GetWindow("EquipInfoDialog").Show(this.equip_info);
             break;
         }
     }
@@ -213,6 +209,7 @@ class EquipDialog extends PopupWindow {
         this.reset_btn_list[index].addEventListener(egret.TouchEvent.TOUCH_TAP, this.onClickResetBtn, this);
     }
 
+    /** 点击洗练或者升星的按钮事件 */
     private onClickResetBtn(event:egret.TouchEvent):void{
         let target = event.target;
         let index:number = parseInt(target.name);
@@ -226,6 +223,7 @@ class EquipDialog extends PopupWindow {
         }
         else
         {
+            /** 如果当前的等级大于或者等于需求的等级则可以升星 否则弹出一个提示 */
             if(this.equip_info.Lv >= modEquip.EquipSource.EQUIPLV){
                 let pop:PopupWindow = WindowManager.GetInstance().GetWindow("EquipUpStarWindow");
                 pop.Show(this.equip_info);
@@ -346,7 +344,6 @@ class EquipDialog extends PopupWindow {
     private goods_index:number;
 
     /** 按钮 */
-    private btn_weapon:eui.Button;
     private btn_back:eui.Button;
     private btn_change:eui.Button;
     private btn_upgrade:eui.Button;

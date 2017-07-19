@@ -186,10 +186,11 @@ namespace modEquip {
             return this.instance;
         }
 
-        public Add(val:EquipInfo):void{
+        public Add(val:EquipInfo, type:number = 0):void{
             val.TypeID = this.id_list[val.Id]++;
             this.equip_list.push(val);
             this.listSort();
+            if(type == 1) LeanCloud.GetInstance().SaveEquipData();
         }
 
         public Pop():void{
@@ -231,6 +232,7 @@ namespace modEquip {
 
             this.equip_list.push(info);
             this.listSort();
+            LeanCloud.GetInstance().SaveEquipData();
         }
 
         /** 移除装备信息 */
@@ -295,7 +297,6 @@ namespace modEquip {
                     }
                 }
             }
-            LeanCloud.GetInstance().SaveEquipData();
         }
 
         private equip_list:Array<EquipInfo>;

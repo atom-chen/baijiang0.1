@@ -67,6 +67,7 @@ class Hero extends BaseGameObject {
         // this.offset = [[2, -74], [49, -71], [79, -32], [50, 9], [0, 15]]
         this.speed = 40;
         this.originHP = this.attr.hp;
+        this._shieldCount = 0;
         this.atk_range = 200;
         this.atk_speed = 150;
         this.combo = 0;
@@ -103,6 +104,27 @@ class Hero extends BaseGameObject {
      */
     public setWSPDelay():void {
         this.atk_timer.delay = Math.floor(this.attr.wsp * 1000);
+    }
+
+    /**
+     * 设置技能冷却时间
+     */
+    public setSkillCd(value:number) {
+        this.skill.cd = value;
+    }
+
+    public getSkillCd():number {
+        return this.skill.cd;
+    }
+
+    /**设置护盾的值 */
+    public setShieldCount(value:number) {
+        this._shieldCount = value;
+    }
+
+    /**获取护盾的值 */
+    public getShieldCount():number {
+        return this._shieldCount;
     }
 
     /**
@@ -174,18 +196,6 @@ class Hero extends BaseGameObject {
         return this.combo;
     }
 
-    /**设置伤害数值 */
-    public setHurtValue(value):void {
-        this._hurtValue = value;
-    }
-
-    /**伤害数值 */
-    public getHurtValue():number {
-        // let value = this.attr.atk;
-        // if (this.isCrit()) value = Math.floor(value * 1.5);
-        return this._hurtValue;
-    }
-
     /**
      * 每帧数据更新
      */
@@ -250,7 +260,6 @@ class Hero extends BaseGameObject {
             this.gotoIdle();
             this.img_swordLight.visible = false;
             this.setEnermy();
-            this.setHurtValue(this.attr.atk);
             //怪物到中点的距离
             for (let i = 0; i < this.enermy.length; i++) {
                 let radian = MathUtils.getRadian2(this.centerX, this.centerY, this.enermy[i].x, this.enermy[i].y);
@@ -259,6 +268,7 @@ class Hero extends BaseGameObject {
                 let dx = dis*Math.cos(angle);
                 let dy = dis*Math.sin(angle);
                 if ((Math.abs(dx) <= this.atk_range/2) && (Math.abs(dy) <= 30)) {
+                    this.setHurtValue(this.attr.atk);
                     if (!this.isPVP) {
                         let state = this.enermy[i].curState;
                         if (state != Enermy.Action_Dead && state != BaseGameObject.Action_Hurt && !this.enermy[i].isReadSkill) {
@@ -362,14 +372,42 @@ class Hero extends BaseGameObject {
     }
 
     /**
+     * 是否存在溢出血量的护盾
+     */
+    public overFlow(value:number):number {
+        let hurt:number = 0;
+        if (this._shieldCount >= value) {
+            this._shieldCount -= value;
+        }else{
+            hurt = value - this._shieldCount;
+            this._shieldCount = 0;
+        }
+        for (let i = 0; i < this.buff.length; i++) {
+            //风语者的祝福
+            if (this.buff[i].buffData.id == 40) {
+                this.buff[i].shieldBeAttack(value);
+                break;
+            }
+        }
+        SceneManager.battleScene.battleSceneCom.setShieldProgress(this._shieldCount);
+        return hurt;
+    }
+
+    /**
      * 受伤
      */
     public gotoHurt(value:number = 1) {
         if (this._isInvincible) return;
+        //回避
+        if (this.isDodge()) return;
+        //护盾
+        let shieldCount:number = this.overFlow(value);
+        if (shieldCount == 0) return;
+        else value = shieldCount;
+        //免疫伤害
+        if (modBuff.isImmuneBuff(this)) return;
         if (this.curState == BaseGameObject.Action_Hurt || this.curState == "attack") return;
         if (!this.skill_status) {
-            if (this.isDodge()) return;
-            if (modBuff.isImmuneBuff(this)) return;
             this.curState = BaseGameObject.Action_Hurt;
             this.img_swordLight.visible = false;
             this.armature.play(this.curState, 0);
@@ -385,7 +423,7 @@ class Hero extends BaseGameObject {
             else SceneManager.battleScene.battleSceneCom.onFailPop();
             return;
         }
-        SceneManager.battleScene.battleSceneCom.onHurt(this.attr.hp);
+        SceneManager.battleScene.battleSceneCom.setHpProgress(this.attr.hp);
     }
     /**
      * 击杀增加的buff
@@ -394,6 +432,22 @@ class Hero extends BaseGameObject {
         for (let i = 0; i < this.buff.length; i++) {
             //增加属性
             if (this.buff[i].buffData.id == 8) {
+                this.buff[i].update(this);
+            }
+            //刺客
+            else if (this.buff[i].buffData.id == 29) {
+                this.buff[i].update(this);
+            }
+            //盛宴
+            else if (this.buff[i].buffData.id == 36) {
+                this.buff[i].update(this);
+            }
+            //探云手
+            else if (this.buff[i].buffData.id == 37) {
+                this.buff[i].update(this);
+            }
+            //风语者的祝福
+            else if (this.buff[i].buffData.id == 40) {
                 this.buff[i].update(this);
             }
         }
@@ -532,6 +586,7 @@ class Hero extends BaseGameObject {
                 this.shadow.visible = true;
                 if (this.isPVP) SceneManager.pvpScene.createCountDown();
                 Common.log(JSON.stringify(this.attr));
+                SceneManager.battleScene.battleSceneCom.setShieldProgress(this._shieldCount);
             break;
         }
     }
@@ -571,10 +626,10 @@ class Hero extends BaseGameObject {
 
     private isPlay:boolean;
     private isAttack:boolean;
-    private _hurtValue:number;
     /**技能状态 0:没有释放 1:开始释放 */
     private skill_status:boolean;
     public  isPVP:boolean;
+    /**攻击到的敌人 */
     private enermy:Array<any>;
 
     public name:string;
@@ -592,6 +647,8 @@ class Hero extends BaseGameObject {
 
     private atk_radian:number;
 
+    /**护盾 */
+    private _shieldCount:number;
     /**技能 */
     private skill:any;
     /**技能范围 */

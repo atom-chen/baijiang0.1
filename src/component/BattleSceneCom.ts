@@ -54,6 +54,7 @@ class BattleSceneCom extends Base {
         let skill = this._getActSkill();
         object.source = `skill_${skill.image_id}_png`;
         this.img_hp.scaleX = 1.0;
+        this.img_shield.scaleX = 0;
         this.cd_time = 0;
         this.lab_cdTime.visible = false;
         this.lab_killCount.text = `0/${tcStage.count}`;
@@ -107,9 +108,14 @@ class BattleSceneCom extends Base {
         }
     }
 
-    /**受伤 */
-    public onHurt(value:number):void {
+    /**设置血量的长度 */
+    public setHpProgress(value:number):void {
         this.img_hp.scaleX = value/this._sumHP;
+    }
+
+    /**设置护盾的长度 */
+    public setShieldProgress(value:number):void {
+        this.img_shield.scaleX = value/this._sumHP;
     }
 
     /**复活 */
@@ -154,6 +160,7 @@ class BattleSceneCom extends Base {
     private img_headIcon:eui.Image;
     private lab_name:eui.Label;
     private img_hp:eui.Image;
+    private img_shield:eui.Image;
     private img_killCount:egret.Bitmap;
     private lab_killCount:eui.Label;
     private lab_cdTime:eui.Label;

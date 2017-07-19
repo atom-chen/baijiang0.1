@@ -24,6 +24,20 @@ namespace modBuff {
     }
 
     /**
+     * 是否技能冷却缩短
+     */
+    export function isCdShorten(obj:Hero):boolean {
+        for (let i = 0; i < obj.buff.length; i++) {
+            //智谋
+            if (obj.buff[i].buffData.id == 32) {
+                obj.buff[i].update();
+                return true
+            }
+        }
+        return false;
+    }
+
+    /**
      * 检测是否有免疫伤害的buff或者反弹伤害的buff
      */
     export function isImmuneBuff(obj:Hero):boolean {
@@ -73,6 +87,7 @@ namespace modBuff {
      */
     export function isAttackBuff(obj:Hero, target:any):boolean {
         let status:boolean = false;
+        // let len:number = obj.buff.length;
         for (let i = 0; i < obj.buff.length; i++) {
             //击晕(以10%概率测试)
             if (obj.buff[i].buffData.id == 7) {
@@ -85,6 +100,7 @@ namespace modBuff {
             //新鲜血液
             else if (obj.buff[i].buffData.id == 22) {
                 obj.buff[i].update(target);
+                i -- ;
                 status = true;
             }
             //猎人
@@ -95,6 +111,23 @@ namespace modBuff {
             //战争热诚
             else if (obj.buff[i].buffData.id == 25) {
                 obj.buff[i].update(target);
+                status = true;
+            }
+            //无情
+            else if (obj.buff[i].buffData.id == 30) {
+                obj.buff[i].update(target);
+                status = true;
+            }
+            //死神的赠礼
+            else if (obj.buff[i].buffData.id == 31) {
+                obj.buff[i].update(target);
+                i -- ;
+                status = true;
+            }
+            //雷霆领主的法令
+            else if (obj.buff[i].buffData.id == 33) {
+                obj.buff[i].update(target);
+                // i -- ;
                 status = true;
             }
         }

@@ -45,7 +45,6 @@ class Monster extends Enermy {
         this.isElite = isElite;
         this.speed = 10;
         this.readyCount = 0;
-        this.hp = this.attr.hp;
         this.skill_atkStatus = false;
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);

@@ -1,8 +1,8 @@
 /**
- * 新鲜血液
- * 对第一个攻击到的敌人造成额外伤害，对BOSS效果减半，冷却时间45秒。
+ * 死神的赠礼
+ * 每60秒攻击对首个目标造成敌方最大n%生命值的伤害，对BOSS无效。
  */
-class FreshBlood extends BuffBase {
+class ReaperGift extends BuffBase {
     public constructor() {
         super();
     }
@@ -11,7 +11,7 @@ class FreshBlood extends BuffBase {
     public buffInit(options:any) {
         super.buffInit();
         this.options = options;
-        this.buffData.className = "FreshBlood";
+        this.buffData.className = "ReaperGift";
         this.buffData.superpositionType = SuperpositionType.SuperpositionType_None;
         this.buffData.buffType = BuffType.BuffType_DeBuff;
         this.buffData.disperseType = DisperseType.DisperseType_NoClear;
@@ -19,7 +19,9 @@ class FreshBlood extends BuffBase {
         this.buffData.postionType = PostionType.PostionType_Body;
         this.buffData.id = options.id;
         this.buffData.cd = options.cd;
-        this._isFirst = false;
+        this.buffData.duration = options.duration;
+        this.isFirst = false;
+        this._value = this.getTalentValue();
     }
 
     /**开始 */
@@ -32,27 +34,31 @@ class FreshBlood extends BuffBase {
         let newBuff = ObjectPool.pop(this.buffData.className);
         newBuff.buffInit(this.options);
         this.target.addBuff(newBuff);
-        this._isFirst = false;
+        this.isFirst = false;
         TimerManager.getInstance().remove(this.buffEnd, this);
+    }
+
+
+    /**重置复活次数 */
+    public reset():void {
+
     }
 
     /**刷新数据 */
     public update(target:any, callBack:Function = null) {
         let value:number = this.getTalentValue();
-        if (!this._isFirst) {
-            this._isFirst = true;
-            let hurtValue:number = this.target.getHurtValue() * (value/100+1);
+        Common.log("死神的赠礼开启");
+        if (!this.isFirst) {
+            this.isFirst = true;
+            let extraHurt:number = target.originHP * (value/100);
+            let hurtValue:number = this.target.getHurtValue() + extraHurt;
             this.target.setHurtValue(hurtValue);
-            Common.log("新鲜血液", hurtValue, this.target.getHurtValue());
-            // target.gotoHurt(hurtValue);
+            // Common.log("死神的赠礼开启", hurtValue, this.target.getHurtValue());
             let index = this.target.buff.indexOf(this);
             this.target.buff.splice(index, 1);
             ObjectPool.push(this);
             let duration = this.buffData.cd * 1000;
             TimerManager.getInstance().doTimer(duration, 0, this.buffEnd, this);
-        }
-        if (callBack) {
-            callBack();
         }
     }
 
@@ -75,6 +81,7 @@ class FreshBlood extends BuffBase {
         super.recycleBuff();
         TimerManager.getInstance().remove(this.buffEnd, this);
     }
-    private _isFirst:boolean;
+    private isFirst:boolean;
+    private _value:number;
     private target:any;
 }

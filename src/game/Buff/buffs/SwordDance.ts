@@ -112,6 +112,9 @@ class SwordDance extends BuffBase {
             this.ShowEffect();
             this.target.skillArmature.play(this.effectName, 1, 1, 0, 2);
             this.position(this.target.skillArmature);
+            let index = this.target.buff.indexOf(this);
+            this.target.buff.splice(index, 1);
+            ObjectPool.push(this);
             let duration = this.buffData.cd * 1000;
             TimerManager.getInstance().doTimer(duration, 0, this.buffEnd, this);
             this.target.setEnermy();

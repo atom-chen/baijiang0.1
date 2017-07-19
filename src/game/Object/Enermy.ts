@@ -54,6 +54,8 @@ class Enermy extends BaseGameObject {
         this.away_distance = data[1].away;
         this.atk_timer.delay = this.attr.wsp * 1000;
         this.isRemote = data[1].isRemote;
+        this.originHP = this.attr.hp;
+        this.beAttackCount = 0;
         // this.maskImprisoned.mask = this;
     }
 
@@ -184,6 +186,7 @@ class Enermy extends BaseGameObject {
             this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
         }
         this.attr.hp -= hurtValue;
+        this.beAttackCount ++;
         this.hurtAnimate(hurtValue);
     }
 
@@ -362,6 +365,17 @@ class Enermy extends BaseGameObject {
         this.img_soul.alpha = 0;
         this.addChild(this.img_soul);
     }
+
+    /**设置受击次数 */
+    public setBeAttackCount(value):void {
+        this.beAttackCount = value;
+    }
+
+    /**获取受击次数 */
+    public getBeAttackCount():number {
+        return this.beAttackCount;
+    }
+
     /****************************************************/
 
     public colorMatrix = [
@@ -405,6 +419,8 @@ class Enermy extends BaseGameObject {
     public hurtText:egret.BitmapText;
     /**感叹号(攻击提示) */
     public img_sigh:egret.Bitmap;
+    /**受击次数 */
+    public beAttackCount:number;
 
     /*************敌方的状态***************/
     public static Action_Run01:string = "run01";

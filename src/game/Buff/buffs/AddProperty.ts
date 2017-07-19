@@ -21,6 +21,7 @@ class AddProperty extends BuffBase {
         this.buffData.duration = options.duration;
         this.buffData.id = options.id;
         this._extraValue = 0;
+        this._extraSpeed = 0;
 
         if (this.buffData.duration > 0) {
             let count = 50 * this.buffData.duration;
@@ -53,6 +54,16 @@ class AddProperty extends BuffBase {
             case 23:
                 this.target.attr.atk += value;
             break;
+            //智谋
+            case 32:
+                let cd:number = this.target.getSkillCd();
+                this.target.setSkillCd(Math.floor(cd*(1-value/100)));
+            break;
+            //漫游者
+            case 38:
+                let speed:number = this.target.getSpeed() * (1 + value/100);
+                this.target.setSpeed(Math.floor(speed));
+            break;
         }
     }
 
@@ -64,12 +75,12 @@ class AddProperty extends BuffBase {
     /**刷新数据 */
     public update(target:any, callBack:Function = null) {
         this._isReset = true;
-        this.target.speed = 40;
-        Common.log("增加属性buff")
-        //增加的属性(后续扩展可以增加任何属性)
-
-        this.target.speed *= (1+0.5);
-        if (this._extraValue == 0){
+        if (this._extraValue == 0 && this._extraSpeed == 0){
+            let speed:number = this.target.getSpeed();
+            Common.log("增加属性buff")
+            //增加的属性(后续扩展可以增加任何属性)
+            this._extraSpeed = speed * 0.5;
+            this.target.setSpeed(speed + this._extraSpeed);
             this._extraValue = Math.floor(this.target.attr.atk * 0.15);
             this.target.attr.atk += this._extraValue;
         }
@@ -94,8 +105,10 @@ class AddProperty extends BuffBase {
         this._isReset = false;
         Common.log("buff 结束");
         //恢复原来数值(后续扩展)
-        this.target.speed = 40;
+        let speed:number = this.target.getSpeed();
+        this.target.setSpeed(speed - this._extraSpeed);
         this.target.attr.atk -= this._extraValue;
+        this._extraSpeed = 0;
         this._extraValue = 0;
         this._tempTimer.reset();
     }
@@ -140,7 +153,10 @@ class AddProperty extends BuffBase {
     }
 
     private target:any;
+    /**附加的攻击值 */
     private _extraValue:number;
+    /**附加的移动速度值 */
+    private _extraSpeed:number;
     private _extraBuff:UnableMove;
     private _tempTimer:egret.Timer;
     private _isReset:boolean;

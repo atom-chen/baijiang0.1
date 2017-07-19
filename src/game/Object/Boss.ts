@@ -54,7 +54,6 @@ class Boss extends Enermy {
         this.atk_speed = 75;
         this._remote = false;
         this.skill_atkStatus = false;
-        this.hp = this.attr.hp;
         //增加动画完成函数
         this.armature.addCompleteCallFunc(this.armaturePlayEnd, this);
         this.effectArmature.addCompleteCallFunc(this.effectArmaturePlayEnd, this);
@@ -162,6 +161,7 @@ class Boss extends Enermy {
                     this.effectArmature.x = 0;
                     this.effectArmature.y = 0;
                 }
+                this.beAttackCount ++;
                 this.hurtAnimate(hurtValue);
             }else{
                 super.gotoHurt(hurtValue, isSkillHurt);
