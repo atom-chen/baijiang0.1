@@ -26,6 +26,7 @@ class Imprisoned extends SkillBase {
         this._effectGroup.alpha = 1;
         this._effectFunc();
         egret.Tween.get(this._effectGroup).to({alpha:0}, 3000);
+        this.duration = target.attr.dur;
         if (target.isPVP) return;
         for (let i = 0; i < enermy.length; i++) {
             if (enermy[i].isSkillHurt) return;
@@ -33,6 +34,7 @@ class Imprisoned extends SkillBase {
             enermy[i].removeActComplete();
             let buffCofig = modBuff.getBuff(1);
             this.buff = ObjectPool.pop(buffCofig.className);
+            buffCofig.duration = this.duration;
             this.buff.buffInit(buffCofig);
             switch (this.buffIndex) {
                 //禁锢

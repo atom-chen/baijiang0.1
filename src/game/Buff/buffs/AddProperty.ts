@@ -49,10 +49,12 @@ class AddProperty extends BuffBase {
             break;
             //巫术
             case 21:
+                this.target.attr.skd = Math.floor(this.target.attr.skd*(1+value/100))
             break;
             //先天资质
             case 23:
-                this.target.attr.atk += value;
+                let level:number = HeroData.getHeroData(GameData.curHero).lv;
+                this.target.attr.atk += (value * (level - 1));
             break;
             //智谋
             case 32:

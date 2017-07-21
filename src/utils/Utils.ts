@@ -89,4 +89,19 @@ namespace Utils {
         parent.addChild(bitmapText);
         return bitmapText;
     }
+
+    /**
+     * 深复制对象方法
+     */
+    export function cloneObj(obj) {  
+        var newObj = {};  
+        if (obj instanceof Array) {  
+            newObj = [];  
+        }  
+        for (var key in obj) {  
+            var val = obj[key];    
+            newObj[key] = typeof val === 'object' ? cloneObj(val): val;  
+        }  
+        return newObj;  
+    }; 
 }

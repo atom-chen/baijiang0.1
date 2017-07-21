@@ -7,6 +7,8 @@ class BaseCharactorData {
         this.name = GameData.curHero;
         this.initAttr(data);
         this.avo = data.avo;
+        this.skd = data.skd;
+        this.dur = data.dur;
     }
 
     /**
@@ -53,4 +55,8 @@ class BaseCharactorData {
     public mov:number;
     /**技能冷却 */
     public cd:number;
+    /**技能伤害 */
+    public skd:number;
+    /**技能持续时间 */
+    public dur:number;
 }

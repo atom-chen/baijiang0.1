@@ -114,7 +114,7 @@ namespace modBattle {
      */
     function setMonsterData(id:number, lv:number, isBoss:boolean = false, k_hp:number = 1, k_atk:number = 1):any {
             let type:string = `monster0${id}`;
-            let data:any = getEnermyData(id);
+            let data:any = Utils.cloneObj(getEnermyData(id));
             if (isBoss){
                 type = `Boss0${id - 99}`;
                 data.attr = ConfigManager.boss[id-100][lv-1];

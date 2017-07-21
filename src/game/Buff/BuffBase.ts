@@ -65,6 +65,8 @@ class BuffBase {
     public getTalentValue():number {
         let id:number = this.buffData.id;
         let talent = modTalent.getTestData(id-19);
+        // let curPage:number = UserDataInfo.GetInstance().GetBasicData("curTalentPage") - 1;
+        // let talent = modTalent.getData(curPage, id-19);
         let lv = talent[1];
         let index:number = modTalent.getIndexFromId(id-19);
         let value:number = ConfigManager.tcTalent[index].value[lv-1];
@@ -72,6 +74,8 @@ class BuffBase {
     }
 
     public options:any;
+    /**伤害 */
+    public damage:number;
 
     /*****************特效相关*******************/
     public effectName:string;

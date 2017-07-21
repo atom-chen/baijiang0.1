@@ -25,6 +25,7 @@ class ContinuousInjury extends BuffBase {
         this.buffData.controlType = ControlType.NO;
         this.buffData.id = options.id;
         this.buffData.duration = options.duration;
+        this.damage = options.damage;
     }
 
     /**开始 */
@@ -49,11 +50,11 @@ class ContinuousInjury extends BuffBase {
         if (this.target.scaleX == -1) this.bloodTips.scaleX = -1;
         this.target.addChild(this.bloodTips);
         this.bloodTips.y = this.target.buffArmature.y;
-        this.bloodTips.text = "-1";
+        this.bloodTips.text = `-${this.damage}`;
         this.bloodTips.alpha = 0;
         var step2:Function = function(){
-            this.target.hp --;
-            if (this.target.hp == 0){
+            this.target.attr.hp -= this.damage;
+            if (this.target.attr.hp <= 0){
                 TimerManager.getInstance().remove(this.update, this);
                 this.target.gotoDead();
             }
@@ -66,7 +67,7 @@ class ContinuousInjury extends BuffBase {
 
     /**刷新数据 */
     public update() {
-        if (this.target.hp > 0) {
+        if (this.target.attr.hp > 0) {
             if (!this.target.isPVP && this.target.curState != "xuli01"){
                 this.target.gotoRun();
             }

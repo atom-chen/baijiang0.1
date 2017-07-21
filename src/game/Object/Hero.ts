@@ -73,7 +73,7 @@ class Hero extends BaseGameObject {
         this.combo = 0;
         this.isEnemy = false;
         this.isPlay = false;
-        this.isAttack = false;
+        // this.isAttack = false;
         this.isPVP = isPVP;
         this.skill_status = false;
         this.enermy = [];
@@ -134,6 +134,9 @@ class Hero extends BaseGameObject {
         // let buff = HeroData.list[this.name].buff;
         let buff:Array<number> = ConfigManager.heroConfig[this.name].buff;
         let talent:Array<any> = GameData.testTalent.talent;
+        // let curPage:number = UserDataInfo.GetInstance().GetBasicData("curTalentPage") - 1;
+        // let talent:Array<any> = modTalent.getData(curPage).talent;
+        // Common.log("talent---->", JSON.stringify(talent));
         for (let i = 0; i < talent.length; i++) {
             let id = talent[i][0] + 19;
             buff.push(id);
@@ -283,7 +286,7 @@ class Hero extends BaseGameObject {
                     if (this.isCrit()){
                         this._hurtValue *= 1.5;
                     }
-                    Common.log("伤害值---->", this._hurtValue);
+                    // Common.log("伤害值---->", this._hurtValue);
                     this.enermy[i].gotoHurt(this._hurtValue);
                 }
             }
@@ -293,7 +296,7 @@ class Hero extends BaseGameObject {
                     if (this.combo >= 2) SceneManager.battleScene.update(this.combo);
                 }
             }
-            egret.setTimeout(()=>{this.isAttack = false}, this, 100);
+            // egret.setTimeout(()=>{this.isAttack = false}, this, 100);
             return;
         }
         if (Math.abs(this.sumDeltaX)>this.atk_rangeX/3){
@@ -317,7 +320,8 @@ class Hero extends BaseGameObject {
     public moveToTarget(gotoX:number, gotoY:number, func:Function = null):void {
         super.moveToTarget(gotoX, gotoY, func);
         this.img_swordLight.visible = false;
-        if (this.isAttack || this.curState == BaseGameObject.Action_Hurt || this.curState == Hero.Action_Skill || this.curState == BaseGameObject.Action_Enter) return;
+        // if (this.isAttack || this.curState == BaseGameObject.Action_Hurt || this.curState == Hero.Action_Skill || this.curState == BaseGameObject.Action_Enter) return;
+        if (this.curState == BaseGameObject.Action_Hurt || this.curState == Hero.Action_Skill || this.curState == BaseGameObject.Action_Enter) return;
         if (func != null) {
             func();
         }
@@ -328,7 +332,7 @@ class Hero extends BaseGameObject {
      */
     public gotoIdle() {
         this.curState = Hero.Action_Idle;
-        this.isAttack = false;
+        // this.isAttack = false;
         this.isPlay = false;
         this.img_swordLight.visible = false;
         super.gotoIdle();
@@ -407,9 +411,9 @@ class Hero extends BaseGameObject {
         //免疫伤害
         if (modBuff.isImmuneBuff(this)) return;
         if (this.curState == BaseGameObject.Action_Hurt || this.curState == "attack") return;
+        this.curState = BaseGameObject.Action_Hurt;
+        this.img_swordLight.visible = false;
         if (!this.skill_status) {
-            this.curState = BaseGameObject.Action_Hurt;
-            this.img_swordLight.visible = false;
             this.armature.play(this.curState, 0);
             this.effectArmature.play(BaseGameObject.Action_Hurt, 1);
             this.effectArmature.visible = true;
@@ -461,7 +465,7 @@ class Hero extends BaseGameObject {
         this.isComplete = false;
         this.atk_timer.start();
         this.curState = "attack";
-        this.isAttack = true;
+        // this.isAttack = true;
 
         let useSpeed = this.atk_speed * 0.1;
         this.sumDeltaX = 0;
@@ -569,7 +573,7 @@ class Hero extends BaseGameObject {
      */
     private effectArmaturePlayEnd():void {
         this.effectArmature.visible = false;
-        this.isAttack = false;
+        // this.isAttack = false;
         this.gotoIdle();
     }
 
@@ -625,7 +629,7 @@ class Hero extends BaseGameObject {
     }
 
     private isPlay:boolean;
-    private isAttack:boolean;
+    // private isAttack:boolean;
     /**技能状态 0:没有释放 1:开始释放 */
     private skill_status:boolean;
     public  isPVP:boolean;

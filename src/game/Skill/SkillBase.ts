@@ -50,4 +50,8 @@ class SkillBase {
     public name:string;
     /**冷却时间 */
     public cd:number;
+    /**伤害 */
+    public damage:number;
+    /**持续时间 */
+    public duration:number;
 }

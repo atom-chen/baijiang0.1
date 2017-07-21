@@ -80,15 +80,16 @@ class SevenInOut extends SkillBase {
                 break;
             }
         }
+        this.damage = target.attr.skd;
         target.setEnermy();
         let enermy = target.getEnermy();
         this._enermy = enermy;
         for (let i = 0; i < enermy.length; i++) {
             if (!this.target.isPVP) enermy[i].removeActComplete();
-            if (enermy[i].hp > 0) {
+            if (enermy[i].attr.hp > 0) {
                 enermy[i].setCurState("none");
             }
-            enermy[i].gotoHurt();
+            enermy[i].gotoHurt(this.damage);
         }
     }
 

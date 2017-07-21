@@ -159,7 +159,7 @@ class DragonBonesArmature extends egret.DisplayObjectContainer {
     public playMuti(actions:Array<string>, id:Array<number>, playTimes:Array<number> = null):void {
         this.start();
         for (let i = 0; i < actions.length; i++) {
-            this._armature.animation.fadeIn(actions[i], 0, 0, 0, `Group${id[i]}`, dragonBones.Animation.SameLayerAndGroup);
+            // this._armature.animation.fadeIn(actions[i], 0, 0, 0, `Group${id[i]}`, dragonBones.Animation.SameLayerAndGroup);
         }   
     }
 

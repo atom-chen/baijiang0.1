@@ -179,6 +179,7 @@ class TalentDialog extends PopupWindow {
     private pageBtnListener(event:egret.TouchEvent):void {
         let target = event.currentTarget;
         this.curPage = target.id;
+        UserDataInfo.GetInstance().SetBasicData("curTalentPage", this.curPage + 1);
         LeanCloud.GetInstance().SaveRoleData("curTalentPage", this.curPage + 1);
         // Common.log(target);
         modTalent.setUnlock(this.curPage);

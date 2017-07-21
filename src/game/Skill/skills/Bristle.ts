@@ -22,10 +22,14 @@ class Bristle extends SkillBase {
     public update(target:any) {
         target.setEnermy();
         let enermy = target.getEnermy();
+        this.duration = target.attr.dur;
+        this.damage = target.attr.skd;
         for (let i = 0; i < enermy.length; i++) {
             let buffConfig = modBuff.getBuff(3);
             if (!target.isPVP) enermy[i].removeActComplete();
             this.buff = ObjectPool.pop(buffConfig.className);
+            buffConfig.duration = this.duration;
+            buffConfig.damage = this.damage;
             this.buff.buffInit(buffConfig);
             switch (this.buffIndex) {
                 //烧伤

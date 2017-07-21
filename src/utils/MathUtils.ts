@@ -143,8 +143,9 @@ namespace MathUtils {
         var disX:number = Math.round(p2X - p1X);
         var disY:number = Math.round(p2Y - p1Y);
         var disQ:number = disX * disX + disY * disY;
-        var dis:number = Math.sqrt(disQ)
-        return parseFloat(dis.toFixed(2));
+        var temp:number = InvSqrt(disQ);
+        var dis:number = 1/temp;
+        return Math.floor(dis);
     }
 
     /**获取两点的中点坐标 */
@@ -265,5 +266,19 @@ namespace MathUtils {
             array.push(data);
         }
         return array;
+    }
+
+    /**
+     * 平方根倒数
+     */
+    export function InvSqrt(n:number, precision:number = 1) {
+        let y = new Float32Array(1);
+        let i = new Int32Array(y.buffer);
+        y[0] = n;
+        i[0] = 0x5f375a86 - (i[0] >> 1);
+        for (let iter = 0; iter < precision; iter ++) {
+            y[0] = y[0] * (1.5 - ((n * 0.5) * y[0] * y[0]));
+        }
+        return y[0];
     }
 }
